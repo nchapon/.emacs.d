@@ -4,3 +4,6 @@ auto-save-list/
 places
 bookmarks
 .smex-items
+url
+swank/
+tramp

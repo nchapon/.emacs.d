@@ -39,8 +39,7 @@ markdown-mode ))
                              "~/notes/GTD/valtech.org"
                              "~/notes/GTD/toread.org"
                              "~/notes/GTD/tolearn.org"
-                             "~/notes/valtech/missions/tinubu/notes.org"
-                             ))
+                          ))
 
 
 (setq org-agenda-start-on-weekday nil) ;Start agenda on current day
@@ -79,6 +78,9 @@ markdown-mode ))
 (setq org-agenda-include-diary t)
 
 ;; Publish
+;; Force publish
+;;(setq org-publish-use-timestamps-flag nil)
+
 (require 'org-publish)
 (setq org-publish-project-alist
       '(
@@ -93,7 +95,7 @@ markdown-mode ))
          :publishing-function org-publish-org-to-html
          :headline-levels 4             ; Just the default for this project.
          :auto-preamble t
-         :style "<link rel=\"stylesheet\" title=\"Standard\" href=\"/home/nchapon/public_html/style/worg.css\" type=\"text/css\" />"
+         :style "<link rel=\"stylesheet\" title=\"Standard\" href=\"/home/nchapon/public_html/style/style.css\" type=\"text/css\" />"
          :section-numbers nil
 	 :table-of-contents nil
          )
