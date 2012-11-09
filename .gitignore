@@ -7,3 +7,5 @@ bookmarks
 url
 swank/
 tramp
+repl-port
+session.*
