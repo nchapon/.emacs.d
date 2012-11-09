@@ -1,5 +1,14 @@
 (add-to-list 'load-path "~/.emacs.d")
 
+;; Turn on font-lock mode to color text in certain modes
+(global-font-lock-mode t)
+;; Make sure spaces are used when indenting code
+(setq-default indent-tabs-mode nil)
+
+
+;; Used by tramp
+(setq tramp-default-method "ssh")
+
 ;; Add Marmalade package archive for Emacs starter kit and other Emacs packages
 
 (require 'package)
@@ -30,11 +39,22 @@ markdown-mode ))
 ;(require 'auto-complete-config)
 ;(ac-config-default)
 
+(custom-set-variables
+'(cua-mode t nil (cua-base))
+ )
+
+;; REPL configuration
+(require 'nrepl)
+
+; Stop the error buffer from popping up while working in the REPL buffer
+(setq nrepl-popup-stacktraces nil)
+
+
 ;; Org Configuration
 ;; Org Agenda
 
 
-; Org agenda config
+;; Org agenda config
 (setq org-agenda-files (list "~/notes/GTD/perso.org"
                              "~/notes/GTD/valtech.org"
                              "~/notes/GTD/toread.org"
@@ -58,7 +78,7 @@ markdown-mode ))
 (global-set-key "\C-cb" 'org-iswitchb)
 
 ;; Capture mode
-;;(setq org-default-notes-file (concat org-directory "/notes.org"))
+;; (setq org-default-notes-file (concat org-directory "/notes.org"))
 (setq org-capture-templates
       '(("t" "Todo" entry (file+headline "~/notes/GTD/perso.org" "Tasks")
          "* TODO %?\n  %i\n  %a")
@@ -79,7 +99,7 @@ markdown-mode ))
 
 ;; Publish
 ;; Force publish
-;;(setq org-publish-use-timestamps-flag nil)
+;; (setq org-publish-use-timestamps-flag nil)
 
 (require 'org-publish)
 (setq org-publish-project-alist
@@ -114,10 +134,6 @@ markdown-mode ))
 
         
    )
-
-
-
-
 
 
 ;; Clojure development
