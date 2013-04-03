@@ -1,149 +1,75 @@
-(add-to-list 'load-path "~/.emacs.d")
+;; Turn off mouse interface early in startup to avoid momentary display
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
-;; Turn on font-lock mode to color text in certain modes
-(global-font-lock-mode t)
-;; Make sure spaces are used when indenting code
-(setq-default indent-tabs-mode nil)
+;;(setq debug-on-error t)
 
+;; Set path to dependencies
+(setq site-lisp-dir
+      (expand-file-name "site-lisp" user-emacs-directory))
 
-;; Used by tramp
-(setq tramp-default-method "ssh")
+(setq
+ tmp-dir      (file-name-as-directory (concat user-emacs-directory "tmp"))
+ autosaves-dir(file-name-as-directory (concat tmp-dir  "autosaves"))
+ backups-dir  (file-name-as-directory (concat tmp-dir  "backups")))
 
-;; Add Marmalade package archive for Emacs starter kit and other Emacs packages
+;; create tmp dirs if necessary
+(make-directory tmp-dir t)
+(make-directory autosaves-dir t)
+(make-directory backups-dir t)
 
-(require 'package)
-(add-to-list 'package-archives
-'("marmalade" . "http://marmalade-repo.org/packages/") )
-(package-initialize)
-
-
-;; Add Clojure and other supporting packages to the Emacs environment
-;; Packages are installed if they are not already present
-;; The list includes packages for the starter kit, Clojure and markdown files (used by github)
-
-(when (not package-archive-contents)
-  (package-refresh-contents))
-
-(defvar my-packages '(starter-kit starter-kit-lisp starter-kit-eshell starter-kit-bindings
-clojure-mode clojure-test-mode remember
-        rainbow-delimiters
-        ac-slime popup
-markdown-mode ))
-
-(dolist (p my-packages)
-  (when (not (package-installed-p p))
-    (package-install p)))
-
-;;Autocomplete mode
-;(add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
-;(require 'auto-complete-config)
-;(ac-config-default)
-
-(custom-set-variables
-'(cua-mode t nil (cua-base))
- )
-
-;; REPL configuration
-(require 'nrepl)
-
-; Stop the error buffer from popping up while working in the REPL buffer
-(setq nrepl-popup-stacktraces nil)
+;; Set up load path
+(add-to-list 'load-path user-emacs-directory)
+(add-to-list 'load-path site-lisp-dir)
 
 
-;; Org Configuration
-;; Org Agenda
+;; Setup packages
+(require 'setup-package)
 
 
-;; Org agenda config
-(setq org-agenda-files (list "~/notes/GTD/perso.org"
-                             "~/notes/GTD/valtech.org"
-                             "~/notes/GTD/toread.org"
-                             "~/notes/GTD/tolearn.org"
-                          ))
+;; Install extensions if they're missing
+(defun init--install-packages ()
+  (packages-install
+   (cons 'magit melpa)
+   (cons 'paredit melpa)
+   (cons 'cl-lib gnu)
+   (cons 'ido-ubiquitous marmalade)
+   (cons 'move-text melpa)
+   (cons 'gist melpa)
+   (cons 'htmlize melpa)
+   (cons 'smartparens melpa)
+   (cons 'slime-js marmalade)
+   (cons 'git-commit-mode melpa)
+   (cons 'gitconfig-mode melpa)
+   (cons 'gitignore-mode melpa)
+   (cons 'clojure-mode melpa)
+   (cons 'popwin melpa)
+   (cons 'nrepl melpa)))
+
+(condition-case nil
+    (init--install-packages)
+  (error
+   (package-refresh-contents)
+   (init--install-packages)))
 
 
-(setq org-agenda-start-on-weekday nil) ;Start agenda on current day
 
-(setq org-todo-keywords
-       '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)" )))
+;; configuration
+(require 'preferences)
+(require 'bindings)
 
-(setq org-todo-keyword-faces
-           '(("TODO" . org-warning) ("INPROGRESS" . "orange") ("WAITING" . "cyan")
-             ("CANCELED" . (:foreground "grey" :weight bold))))
-
-
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
-
-;; Capture mode
-;; (setq org-default-notes-file (concat org-directory "/notes.org"))
-(setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/notes/GTD/perso.org" "Tasks")
-         "* TODO %?\n  %i\n  %a")
-        ("v" "Todo Valtech" entry (file+headline "~/notes/GTD/valtech.org" "Tasks")
-         "* TODO %?\n  %i\n  %a")
-        ("l" "To learn" entry (file+headline "~/notes/GTD/tolearn.org" "To Learn")
-         "* TO_LEARN %?\n  %i\n  %a")
-        ("r" "To read" entry (file+headline "~/notes/GTD/toread.org" "To Read")
-         "* TO_READ %?\n  %i\n  %a")
-        ("f" "FishLog" plain (file+datetree+prompt "~/notes/private/fishlog.org")
-         "%[~/notes/templates/fishlog.org]"
-         )
-        ("j" "Journal" entry (file+datetree "~/notes/GTD/journal.org")
-         "* %?\nEntered on %U\n  %i\n  %a"))
-)
-;; Diary
-(setq org-agenda-include-diary t)
-
-;; Publish
-;; Force publish
-;; (setq org-publish-use-timestamps-flag nil)
-
-(require 'org-publish)
-(setq org-publish-project-alist
-      '(
-
-       ;; ... add all the components here (see below)...
-
-        ("org-notes"
-         :base-directory "~/notes/"
-         :base-extension "org"
-         :publishing-directory "~/public_html/"
-         :recursive t
-         :publishing-function org-publish-org-to-html
-         :headline-levels 4             ; Just the default for this project.
-         :auto-preamble t
-         :style "<link rel=\"stylesheet\" title=\"Standard\" href=\"/home/nchapon/public_html/style/style.css\" type=\"text/css\" />"
-         :section-numbers nil
-	 :table-of-contents nil
-         )
-        
-         ;; These are static files (images, pdf, etc)
-	 ("org-static"
-	        :base-directory "~/notes/" ;; Change this to your local dir
-		:base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|txt\\|asc"
-		:publishing-directory "~/public_html/"
-	        :recursive t
-		:publishing-function org-publish-attachment
-	 )
-
-	    ("org" :components ("org-notes" "org-static"))
-	 )
-
-        
-   )
+(require 'backup-conf)
+(require 'ido-conf)
+(require 'magit-conf)
+(require 'org-conf)
+(require 'paredit-conf)
+(require 'popwin-conf)
 
 
-;; Clojure development
-
-;; Launch the Clojure repl via Leiningen - M-x clojure-jack-in
-;; Global shortcut definition to fire up clojure repl and connect to it
-
-(global-set-key (kbd "C-c C-j") 'clojure-jack-in)
-
-
-;; Colour mach parens and other structure characters to make code easy to follow
-
-(global-rainbow-delimiters-mode)
+;;(eval-after-load (require 'paredit-conf))
+;; TODO
+;; Dired
+;; iBuffer
+;; FFIP
+;; MidjeMode
