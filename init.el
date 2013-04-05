@@ -1,8 +1,3 @@
-;; Turn off mouse interface early in startup to avoid momentary display
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-
 ;;(setq debug-on-error t)
 
 ;; Set path to dependencies
@@ -45,6 +40,7 @@
    (cons 'gitignore-mode melpa)
    (cons 'clojure-mode melpa)
    (cons 'popwin melpa)
+   (cons 'color-theme-solarized melpa)
    (cons 'nrepl melpa)))
 
 (condition-case nil
@@ -56,6 +52,7 @@
 
 
 ;; configuration
+(require 'appearence)
 (require 'preferences)
 (require 'bindings)
 
