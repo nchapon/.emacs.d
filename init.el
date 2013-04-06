@@ -57,6 +57,7 @@
 (require 'bindings)
 
 (require 'backup-conf)
+(require 'functions)
 (require 'ido-conf)
 (require 'magit-conf)
 (require 'org-conf)

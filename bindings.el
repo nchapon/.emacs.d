@@ -24,4 +24,19 @@
 (global-set-key "\C-c\C-k" 'kill-region)
 
 
+;; Find Recent File
+(global-set-key (kbd "C-x C-r")   'ido-recentf-open)
+
+;; Occurences in a file
+(global-set-key "\C-co" 'occur)
+
+
+;; Move line up or down
+(global-set-key [(control shift up)]  'move-line-up)
+(global-set-key [(control shift down)]  'move-line-down)
+
+
+
+
+
 (provide 'bindings)

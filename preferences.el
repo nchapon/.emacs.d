@@ -59,6 +59,11 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
+;; Default indentation
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
+
 
 ;; Always display line and column numbers
 (setq line-number-mode t)
@@ -81,7 +86,7 @@
   (interactive)
   (if (find-file (ido-completing-read "Find recent file: " recentf-list))
       (message "Opening file...")
-        (message "Aborting")))
+	(message "Aborting")))
 
 
 ;;enable winner mode for C-c-(<left>|<right>) to navigate the history
@@ -97,5 +102,3 @@
 
 
 (provide 'preferences)
-
-
