@@ -40,6 +40,7 @@
    (cons 'gitignore-mode melpa)
    (cons 'clojure-mode melpa)
    (cons 'popwin melpa)
+   (cons 'smex melpa)
    (cons 'color-theme-solarized melpa)
    (cons 'nrepl melpa)))
 
@@ -63,6 +64,7 @@
 (require 'org-conf)
 (require 'paredit-conf)
 (require 'popwin-conf)
+(require 'smex-conf)
 
 
 ;;(eval-after-load (require 'paredit-conf))

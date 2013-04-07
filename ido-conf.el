@@ -1,6 +1,5 @@
 ;; Interactively Do Things
 (require 'ido)
-(message "IDO Conf")
 
 (ido-mode t)
 (setq ido-enable-prefix nil
@@ -35,7 +34,3 @@
 
 
 (provide 'ido-conf)
-
-
-
-
