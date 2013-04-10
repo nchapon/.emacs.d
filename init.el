@@ -41,6 +41,7 @@
    (cons 'clojure-mode melpa)
    (cons 'popwin melpa)
    (cons 'pomodoro melpa)
+   (cons 'find-file-in-project marmalade)
    (cons 'smex melpa)
    (cons 'color-theme-solarized melpa)
    (cons 'nrepl melpa)))
@@ -56,10 +57,11 @@
 ;; configuration
 (require 'appearence)
 (require 'preferences)
-(require 'bindings)
+
 
 (require 'backup-conf)
 (require 'functions)
+(require 'ffip-conf)
 (require 'ido-conf)
 (require 'magit-conf)
 (require 'org-conf)
@@ -67,10 +69,7 @@
 (require 'popwin-conf)
 (require 'smex-conf)
 
+;;SetUp key bindings
+(require 'bindings)
 
 ;;(eval-after-load (require 'paredit-conf))
-;; TODO
-;; Dired
-;; iBuffer
-;; FFIP
-;; MidjeMode

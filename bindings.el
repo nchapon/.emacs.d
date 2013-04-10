@@ -36,6 +36,32 @@
 (global-set-key [(control shift down)]  'move-line-down)
 
 
+;; Find file in project
+(global-set-key (kbd "C-x f") 'find-file-in-project)
+
+;; Find file in project, with specific patterns
+(global-unset-key (kbd "C-x C-o")) ;; which used to be delete-blank-lines (also bound to C-c C-<return>)
+(global-set-key (kbd "C-x C-o ja") (ffip-create-pattern-file-finder "*.java"))
+(global-set-key (kbd "C-x C-o js") (ffip-create-pattern-file-finder "*.js"))
+(global-set-key (kbd "C-x C-o jp") (ffip-create-pattern-file-finder "*.jsp"))
+(global-set-key (kbd "C-x C-o cs") (ffip-create-pattern-file-finder "*.css"))
+(global-set-key (kbd "C-x C-o cl") (ffip-create-pattern-file-finder "*.clj"))
+(global-set-key (kbd "C-x C-o el") (ffip-create-pattern-file-finder "*.el"))
+(global-set-key (kbd "C-x C-o md") (ffip-create-pattern-file-finder "*.md"))
+(global-set-key (kbd "C-x C-o or") (ffip-create-pattern-file-finder "*.org"))
+(global-set-key (kbd "C-x C-o tx") (ffip-create-pattern-file-finder "*.txt"))
+(global-set-key (kbd "C-x C-o fm") (ffip-create-pattern-file-finder "*.ftl"))
+
+
+
+
+
+
+
+
+
+
+
 
 
 
