@@ -40,6 +40,7 @@
    (cons 'gitignore-mode melpa)
    (cons 'clojure-mode melpa)
    (cons 'popwin melpa)
+   (cons 'pomodoro melpa)
    (cons 'smex melpa)
    (cons 'color-theme-solarized melpa)
    (cons 'nrepl melpa)))
