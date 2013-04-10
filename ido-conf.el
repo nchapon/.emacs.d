@@ -21,6 +21,10 @@
 (require 'ido-ubiquitous)
 (ido-ubiquitous-mode 1)
 
+;;Set Ignore Case
+(setq ido-case-fold t)
+
+
 ;; Fix ido-ubiquitous for newer packages
 (defmacro ido-ubiquitous-use-new-completing-read (cmd package)
   `(eval-after-load ,package
