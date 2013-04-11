@@ -57,6 +57,7 @@
 ;; configuration
 (require 'appearence)
 (require 'preferences)
+(require 'mode-mappings)
 
 
 (require 'backup-conf)
