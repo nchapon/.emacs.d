@@ -4,6 +4,14 @@
 (define-key global-map (kbd "C-+") 'text-scale-increase)
 (define-key global-map (kbd "C--") 'text-scale-decrease)
 
+;; Global key bindings
+(global-set-key (kbd "RET")         'newline-and-indent)
+(global-set-key (kbd "C-<f4>")      'kill-buffer-and-window)
+(global-set-key (kbd "<delete>")    'delete-char)  ; delete == delete
+(global-set-key (kbd "M-g")         'goto-line)
+
+(when (fboundp 'ibuffer)
+  (global-set-key (kbd "C-x C-b") 'ibuffer))   ;; prefer ibuffer
 
 ;; Orgmode keys
 (global-set-key "\C-cl" 'org-store-link)
@@ -35,8 +43,8 @@
 (global-set-key [(control shift up)]  'move-line-up)
 (global-set-key [(control shift down)]  'move-line-down)
 
-
-;; Find file in project
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Find file in project configuration
 (global-set-key (kbd "C-x f") 'find-file-in-project)
 
 ;; Find file in project, with specific patterns
@@ -53,11 +61,14 @@
 (global-set-key (kbd "C-x C-o fm") (ffip-create-pattern-file-finder "*.ftl"))
 
 
+;; ELisp
 
+;;(global-set-key (kbd "C-h e f") 'find-function)
+;;(global-set-key (kbd "C-c e s") 'scratch)
 
-
-
-
+;; program shortcuts
+(global-set-key (kbd "C-c E") ;; .emacs
+  (lambda()(interactive)(find-file "~/.emacs.d/init.el")))
 
 
 
