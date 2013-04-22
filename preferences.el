@@ -86,7 +86,7 @@
   (interactive)
   (if (find-file (ido-completing-read "Find recent file: " recentf-list))
       (message "Opening file...")
-	(message "Aborting")))
+    (message "Aborting")))
 
 
 ;;enable winner mode for C-c-(<left>|<right>) to navigate the history
@@ -99,6 +99,10 @@
 ;;saving the file
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
+
+
+;; undo-tree
+(global-undo-tree-mode)
 
 
 (provide 'preferences)

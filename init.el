@@ -28,6 +28,7 @@
   (packages-install
    (cons 'magit melpa)
    (cons 'paredit melpa)
+   (cons 'csv-mode melpa)
    (cons 'cl-lib gnu)
    (cons 'ido-ubiquitous marmalade)
    (cons 'move-text melpa)
@@ -39,8 +40,11 @@
    (cons 'gitconfig-mode melpa)
    (cons 'gitignore-mode melpa)
    (cons 'clojure-mode melpa)
+   (cons 'midje-mode melpa)
    (cons 'popwin melpa)
+   (cons 'markdown-mode melpa)
    (cons 'pomodoro melpa)
+   (cons 'undo-tree melpa)
    (cons 'find-file-in-project marmalade)
    (cons 'smex melpa)
    (cons 'color-theme-solarized melpa)
@@ -61,10 +65,12 @@
 
 
 (require 'backup-conf)
+(require 'clojure-conf)
 (require 'functions)
 (require 'ffip-conf)
 (require 'ido-conf)
 (require 'magit-conf)
+(require 'markdown-conf)
 (require 'org-conf)
 (require 'paredit-conf)
 (require 'popwin-conf)
