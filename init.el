@@ -27,6 +27,9 @@
 (defun init--install-packages ()
   (packages-install
    (cons 'magit melpa)
+   (cons 'auto-complete melpa)
+   (cons 'fuzzy melpa)
+   (cons 'popup melpa)
    (cons 'paredit melpa)
    (cons 'csv-mode melpa)
    (cons 'cl-lib gnu)
@@ -47,6 +50,7 @@
    (cons 'undo-tree melpa)
    (cons 'find-file-in-project marmalade)
    (cons 'smex melpa)
+   (cons 'yasnippet melpa)
    (cons 'color-theme-solarized melpa)
    (cons 'nrepl melpa)))
 
@@ -63,7 +67,7 @@
 (require 'preferences)
 (require 'mode-mappings)
 
-
+(require 'ac-conf)
 (require 'backup-conf)
 (require 'clojure-conf)
 (require 'functions)
@@ -71,12 +75,17 @@
 (require 'ido-conf)
 (require 'magit-conf)
 (require 'markdown-conf)
+(require 'mvn-help)
 (require 'org-conf)
 (require 'paredit-conf)
 (require 'popwin-conf)
 (require 'smex-conf)
+(require 'yasnippet-conf)
 
 ;;SetUp key bindings
 (require 'bindings)
+
+
+
 
 ;;(eval-after-load (require 'paredit-conf))

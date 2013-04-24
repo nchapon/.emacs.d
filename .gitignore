@@ -10,3 +10,4 @@ tramp
 repl-port
 session.*
 /tmp
+*.dat
