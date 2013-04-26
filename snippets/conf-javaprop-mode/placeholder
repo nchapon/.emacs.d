@@ -2,4 +2,5 @@
 # name: placeholder
 # key: placeholder
 # --
-*@ Description @default=@*
+#*@ ${1:description} @default=${2:defaultValue}@*
+${3:name}=@@$3@@$0
