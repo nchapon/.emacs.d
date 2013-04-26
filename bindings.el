@@ -5,7 +5,7 @@
 (define-key global-map (kbd "C--") 'text-scale-decrease)
 
 ;; Global key bindings
-(global-set-key (kbd "RET")         'newline-and-indent)
+;;(global-set-key (kbd "RET")         'newline-and-indent)
 (global-set-key (kbd "C-<f4>")      'kill-buffer-and-window)
 (global-set-key (kbd "<delete>")    'delete-char)  ; delete == delete
 (global-set-key (kbd "M-g")         'goto-line)
@@ -49,17 +49,17 @@
 
 ;; Find file in project, with specific patterns
 (global-unset-key (kbd "C-x C-o")) ;; which used to be delete-blank-lines (also bound to C-c C-<return>)
-(global-set-key (kbd "C-x C-o ja") (ffip-create-pattern-file-finder "*.java"))
-(global-set-key (kbd "C-x C-o js") (ffip-create-pattern-file-finder "*.js"))
-(global-set-key (kbd "C-x C-o jp") (ffip-create-pattern-file-finder "*.jsp"))
-(global-set-key (kbd "C-x C-o cs") (ffip-create-pattern-file-finder "*.css"))
-(global-set-key (kbd "C-x C-o cl") (ffip-create-pattern-file-finder "*.clj"))
+(global-set-key (kbd "C-x C-o java") (ffip-create-pattern-file-finder "*.java"))
+(global-set-key (kbd "C-x C-o js") (ffip-create-pattern-file-finder "*.js" "*.jsp" "*.json"))
+;;(global-set-key (kbd "C-x C-o jsp") (ffip-create-pattern-file-finder "*.jsp"))
+(global-set-key (kbd "C-x C-o css") (ffip-create-pattern-file-finder "*.css"))
+(global-set-key (kbd "C-x C-o clj") (ffip-create-pattern-file-finder "*.clj"))
 (global-set-key (kbd "C-x C-o el") (ffip-create-pattern-file-finder "*.el"))
 (global-set-key (kbd "C-x C-o md") (ffip-create-pattern-file-finder "*.md"))
-(global-set-key (kbd "C-x C-o or") (ffip-create-pattern-file-finder "*.org"))
-(global-set-key (kbd "C-x C-o tx") (ffip-create-pattern-file-finder "*.txt"))
-(global-set-key (kbd "C-x C-o fm") (ffip-create-pattern-file-finder "*.ftl"))
-
+(global-set-key (kbd "C-x C-o org") (ffip-create-pattern-file-finder "*.org"))
+(global-set-key (kbd "C-x C-o txt") (ffip-create-pattern-file-finder "*.txt"))
+(global-set-key (kbd "C-x C-o ftl") (ffip-create-pattern-file-finder "*.ftl"))
+(global-set-key (kbd "C-x C-o xml") (ffip-create-pattern-file-finder "*.xml"))
 
 ;; ELisp
 
