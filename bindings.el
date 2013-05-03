@@ -51,7 +51,6 @@
 (global-unset-key (kbd "C-x C-o")) ;; which used to be delete-blank-lines (also bound to C-c C-<return>)
 (global-set-key (kbd "C-x C-o java") (ffip-create-pattern-file-finder "*.java"))
 (global-set-key (kbd "C-x C-o js") (ffip-create-pattern-file-finder "*.js" "*.jsp" "*.json"))
-;;(global-set-key (kbd "C-x C-o jsp") (ffip-create-pattern-file-finder "*.jsp"))
 (global-set-key (kbd "C-x C-o css") (ffip-create-pattern-file-finder "*.css"))
 (global-set-key (kbd "C-x C-o clj") (ffip-create-pattern-file-finder "*.clj"))
 (global-set-key (kbd "C-x C-o el") (ffip-create-pattern-file-finder "*.el"))
@@ -60,6 +59,7 @@
 (global-set-key (kbd "C-x C-o txt") (ffip-create-pattern-file-finder "*.txt"))
 (global-set-key (kbd "C-x C-o ftl") (ffip-create-pattern-file-finder "*.ftl"))
 (global-set-key (kbd "C-x C-o xml") (ffip-create-pattern-file-finder "*.xml"))
+(global-set-key (kbd "C-x C-o pom") (ffip-create-pattern-file-finder "pom.xml"))
 
 ;; ELisp
 
