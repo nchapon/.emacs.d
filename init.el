@@ -81,6 +81,7 @@
 (require 'popwin-conf)
 (require 'smex-conf)
 (require 'yasnippet-conf)
+(require 'init-csv-mode)
 
 ;;SetUp key bindings
 (require 'bindings)
