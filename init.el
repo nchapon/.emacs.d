@@ -52,7 +52,8 @@
    (cons 'smex melpa)
    (cons 'yasnippet melpa)
    (cons 'color-theme-solarized melpa)
-   (cons 'nrepl melpa)))
+   (cons 'nrepl melpa)
+   (cons 'ac-nrepl melpa)))
 
 (condition-case nil
     (init--install-packages)
