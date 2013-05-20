@@ -1,5 +1,5 @@
 # name: #+begin_src … … #+end_src
-# key: src
+# key: source
 # --
 #+begin_src $1
 $0
