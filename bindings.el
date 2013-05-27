@@ -19,7 +19,7 @@
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 
-;;set help shortcut by default
+;; Set help shortcut by default
 (global-set-key (kbd "C-h") 'help-command)
 
 ;; Navigation betweeen buffers with ALT+ARROWS
@@ -30,6 +30,8 @@
 (global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\C-c\C-k" 'kill-region)
+
+(global-set-key (kbd "M-y") 'browse-kill-ring)
 
 
 ;; Find Recent File

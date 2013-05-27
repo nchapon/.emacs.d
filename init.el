@@ -43,6 +43,7 @@
    (cons 'gitconfig-mode melpa)
    (cons 'gitignore-mode melpa)
    (cons 'clojure-mode melpa)
+   (cons 'browse-kill-ring melpa)
    (cons 'midje-mode melpa)
    (cons 'popwin melpa)
    (cons 'markdown-mode melpa)
@@ -86,8 +87,3 @@
 
 ;;SetUp key bindings
 (require 'bindings)
-
-
-
-
-;;(eval-after-load (require 'paredit-conf))

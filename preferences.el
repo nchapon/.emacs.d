@@ -72,15 +72,15 @@
 ;; Lines should be 80 characters wide, not 72
 (setq fill-column 80)
 
-;; Enable recent files mode.
-;; get rid of `find-file-read-only' and replace it with something
-;; more useful.
+;;; Enable recent files mode.
+;;; get rid of `find-file-read-only' and replace it with something
+;;; more useful.
 (require 'recentf)
 (setq recentf-save-file (concat tmp-dir "recentf")
       recentf-max-saved-items 200)
 (recentf-mode t)
 
-
+;;; IDO recent file
 (defun ido-recentf-open ()
   "Use `ido-completing-read' to \\[find-file] a recent file"
   (interactive)
@@ -89,19 +89,27 @@
     (message "Aborting")))
 
 
-;;enable winner mode for C-c-(<left>|<right>) to navigate the history
-;;of buffer changes i.e. undo a split screen
+;;; Browse Kill Ring
+(require 'browse-kill-ring)
+
+(setq browse-kill-ring-highlight-current-entry t)
+(setq browse-kill-ring-no-duplicates t)
+(setq browse-kill-ring-display-duplicates nil)
+(setq browse-kill-ring-highlight-inserted-item nil)
+
+
+;;; Enable winner mode for C-c-(<left>|<right>) to navigate the history
+;;; of buffer changes i.e. undo a split screen
 (when (fboundp 'winner-mode)
       (winner-mode 1))
 
 
-;;remove all trailing whitespace and trailing blank lines before
-;;saving the file
+;;; Remove all trailing whitespace and trailing blank lines before
+;;; saving the file
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
 
-
-;; undo-tree
+;;; Undo Tree Mode
 (global-undo-tree-mode)
 
 
