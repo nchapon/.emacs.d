@@ -59,16 +59,14 @@
 (global-set-key (kbd "C-x C-o txt") (ffip-create-pattern-file-finder "*.txt"))
 (global-set-key (kbd "C-x C-o ftl") (ffip-create-pattern-file-finder "*.ftl"))
 (global-set-key (kbd "C-x C-o xml") (ffip-create-pattern-file-finder "*.xml"))
+(global-set-key (kbd "C-x C-o vm") (ffip-create-pattern-file-finder "*.vm"))
 (global-set-key (kbd "C-x C-o pom") (ffip-create-pattern-file-finder "pom.xml"))
 
-;; ELisp
 
-;;(global-set-key (kbd "C-h e f") 'find-function)
-;;(global-set-key (kbd "C-c e s") 'scratch)
-
-;; program shortcuts
-(global-set-key (kbd "C-c E") ;; .emacs
-  (lambda()(interactive)(find-file "~/.emacs.d/init.el")))
+;;; Emacs Configuration File Shortcuts
+(global-set-key (kbd "C-c I") 'find-user-init-file)
+(global-set-key (kbd "C-c P") 'find-user-prefs-file)
+(global-set-key (kbd "C-c B") 'find-user-bindings-file )
 
 
 
