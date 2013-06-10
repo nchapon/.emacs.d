@@ -44,6 +44,7 @@
    (cons 'gitignore-mode melpa)
    (cons 'clojure-mode melpa)
    (cons 'browse-kill-ring melpa)
+   (cons 'ace-jump-mode melpa)
    (cons 'midje-mode melpa)
    (cons 'popwin melpa)
    (cons 'markdown-mode melpa)

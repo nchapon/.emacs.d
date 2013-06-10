@@ -48,7 +48,7 @@
 (global-set-key [(control shift down)]  'move-line-down)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Find file in project configuration
+;;; Find file in project configuration
 (global-set-key (kbd "C-x f") 'find-file-in-project)
 
 ;; Find file in project, with specific patterns
@@ -72,8 +72,7 @@
 (global-set-key (kbd "C-c P") 'find-user-prefs-file)
 (global-set-key (kbd "C-c B") 'find-user-bindings-file )
 
-
-
-
+;;; Ace Jump Mode key binding
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
 (provide 'bindings)

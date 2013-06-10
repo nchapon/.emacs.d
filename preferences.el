@@ -113,4 +113,7 @@
 (global-undo-tree-mode)
 
 
+;;; Ace Jump Mode
+(require 'ace-jump-mode)
+
 (provide 'preferences)
