@@ -40,6 +40,8 @@
 ;; Occurences in a file
 (global-set-key "\C-co" 'occur)
 
+;;; Rotate Window
+(global-set-key (kbd "C-c w r") 'rotate-windows)
 
 ;; Move line up or down
 (global-set-key [(control shift up)]  'move-line-up)
