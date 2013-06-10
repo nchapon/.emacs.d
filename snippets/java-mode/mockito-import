@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Mockito Static Import
+# key: mockito-import
+# --
+import static org.mockito.Mockito.*;
