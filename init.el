@@ -43,6 +43,7 @@
    (cons 'gitconfig-mode melpa)
    (cons 'gitignore-mode melpa)
    (cons 'clojure-mode melpa)
+   (cons 'clojure-test-mode melpa)
    (cons 'browse-kill-ring melpa)
    (cons 'ace-jump-mode melpa)
    (cons 'midje-mode melpa)
@@ -88,3 +89,11 @@
 
 ;;SetUp key bindings
 (require 'bindings)
+
+
+(require 'org-crypt)
+(org-crypt-use-before-save-magic)
+(setq org-tags-exclude-from-inheritance (quote ("crypt")))
+;; GPG key to use for encryption
+;; Either the Key ID or set to nil to use symmetric encryption.
+(setq org-crypt-key nil)

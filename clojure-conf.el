@@ -1,4 +1,6 @@
 ;; Clojure configuration mode
+(require 'clojure-mode)
+(require 'clojure-test-mode)
 
 ;; Enable Midje Mode
 (require 'midje-mode)
@@ -12,6 +14,13 @@
 (setq nrepl-popup-stacktraces-in-repl t)
 (setq nrepl-history-file "~/.emacs.d/nrepl-history")
 
+(defadvice nrepl-default-err-handler (after select-nrepl-error-buffer activate)
+  "Focus the error buffer after errors, like Emacs normally does."
+  (select-window (get-buffer-window "*nrepl-error*")))
+
+
+
+
 ;; Repl mode hook
 (add-hook 'nrepl-mode-hook 'subword-mode)
 
@@ -21,6 +30,8 @@
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'nrepl-mode))
 (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+
+
 
 
 
