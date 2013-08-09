@@ -40,6 +40,18 @@
 ;; Occurences in a file
 (global-set-key "\C-co" 'occur)
 
+
+;; loccur key bindings
+;; defines shortcut for loccur of the current word
+(require 'loccur)
+(define-key global-map [(control o)] 'loccur-current)
+;; defines shortcut for the interactive loccur command
+(define-key global-map [(control meta o)] 'loccur)
+;; defines shortcut for the loccur of the previously found word
+(define-key global-map [(control shift o)] 'loccur-previous-match)
+
+
+
 ;;; Rotate Window
 (global-set-key (kbd "C-c w r") 'rotate-windows)
 

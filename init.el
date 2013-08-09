@@ -28,6 +28,7 @@
   (packages-install
    (cons 'magit melpa)
    (cons 'auto-complete melpa)
+   (cons 'loccur melpa)
    (cons 'fuzzy melpa)
    (cons 'popup melpa)
    (cons 'paredit melpa)
