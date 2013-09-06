@@ -2,8 +2,10 @@
 (add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.tag$" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.ftl$" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.jsp$" . html-mode))
 
-
+;;ClojureScript
+(add-to-list 'auto-mode-alist '("\\.cljs$" . clojure-mode))
 
 
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
