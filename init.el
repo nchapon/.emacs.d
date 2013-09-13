@@ -80,7 +80,7 @@
 (require 'ido-conf)
 (require 'magit-conf)
 (require 'markdown-conf)
-(require 'mvn-help)
+(require 'java-conf)
 (require 'org-conf)
 (require 'paredit-conf)
 (require 'popwin-conf)

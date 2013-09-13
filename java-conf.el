@@ -38,6 +38,9 @@
   (interactive)
   (add-hook 'java-mode-hook 'mvn-buffer-init))
 
-(provide 'mvn-help)
 
-;;; mvn-help.el ends here
+
+
+(provide 'java-conf)
+
+;;; java-conf.el ends here
