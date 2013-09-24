@@ -109,6 +109,14 @@
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
 
+;;; Always delete and copy recursively
+(setq dired-recursive-delete 'always)
+(setq dired-recursive-copy 'always)
+
+;;; Enable C-x C-j
+(require 'dired-x)
+
+
 ;;; Undo Tree Mode
 (global-undo-tree-mode)
 
