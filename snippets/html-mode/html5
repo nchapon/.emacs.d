@@ -1,0 +1,15 @@
+# contributor: nchapon
+# name: html5
+# key: html5
+# --
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>$1</title>
+  </head>
+  <body>
+
+
+  </body>
+</html>
