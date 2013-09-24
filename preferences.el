@@ -116,12 +116,15 @@
 ;;; Enable C-x C-j
 (require 'dired-x)
 
-
 ;;; Undo Tree Mode
 (global-undo-tree-mode)
 
-
 ;;; Ace Jump Mode
 (require 'ace-jump-mode)
+
+
+;;; Expand Region
+(require 'expand-region)
+
 
 (provide 'preferences)

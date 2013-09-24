@@ -55,6 +55,7 @@
    (cons 'find-file-in-project marmalade)
    (cons 'smex melpa)
    (cons 'yasnippet melpa)
+   (cons 'expand-region melpa)
    (cons 'color-theme-solarized melpa)
    (cons 'nrepl melpa)
    (cons 'ac-nrepl melpa)))
