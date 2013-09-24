@@ -79,12 +79,22 @@
 (global-set-key (kbd "C-x C-o pom") (ffip-create-pattern-file-finder "pom.xml"))
 
 
+;;; Ace Jump Mode key binding
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
+;;; Expand Region
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+;; Binding for custom functions
+;; Duplicate current line
+
 ;;; Emacs Configuration File Shortcuts
 (global-set-key (kbd "C-c I") 'find-user-init-file)
 (global-set-key (kbd "C-c P") 'find-user-prefs-file)
 (global-set-key (kbd "C-c B") 'find-user-bindings-file )
 
-;;; Ace Jump Mode key binding
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+(global-set-key (kbd "C-c d") 'duplicate-current-line-or-region)
+
+
 
 (provide 'bindings)

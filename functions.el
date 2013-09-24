@@ -61,6 +61,8 @@
           (setq i (1+ i))))))))
 
 
+;;; Integrate Emacs Prelude Functions
+;;; https://github.com/bbatsov/prelude
 
 (defun copy-file-name-to-clipboard ()
   "Copy the current buffer file name to the clipboard."
@@ -71,6 +73,117 @@
     (when filename
       (kill-new filename)
       (message "Copied buffer file name '%s' to the clipboard." filename))))
+
+
+(defun duplicate-current-line-or-region (arg)
+  "Duplicates the current line or region ARG times.
+If there's no region, the current line will be duplicated.  However, if
+there's a region, all lines that region covers will be duplicated."
+  (interactive "p")
+  (let (beg end (origin (point)))
+    (if (and mark-active (> (point) (mark)))
+        (exchange-point-and-mark))
+    (setq beg (line-beginning-position))
+    (if mark-active
+        (exchange-point-and-mark))
+    (setq end (line-end-position))
+    (let ((region (buffer-substring-no-properties beg end)))
+      (-dotimes arg
+                (lambda (n)
+                  (goto-char end)
+                  (newline)
+                  (insert region)
+                  (setq end (point))))
+      (goto-char (+ origin (* (length region) arg) arg)))))
+
+;; TODO: Remove code duplication by extracting something more generic
+(defun duplicate-and-comment-current-line-or-region (arg)
+  "Duplicates and comments the current line or region ARG times.
+If there's no region, the current line will be duplicated.  However, if
+there's a region, all lines that region covers will be duplicated."
+  (interactive "p")
+  (let (beg end (origin (point)))
+    (if (and mark-active (> (point) (mark)))
+        (exchange-point-and-mark))
+    (setq beg (line-beginning-position))
+    (if mark-active
+        (exchange-point-and-mark))
+    (setq end (line-end-position))
+    (let ((region (buffer-substring-no-properties beg end)))
+      (comment-or-uncomment-region beg end)
+      (setq end (line-end-position))
+      (-dotimes arg
+                (lambda (n)
+                  (goto-char end)
+                  (newline)
+                  (insert region)
+                  (setq end (point))))
+      (goto-char (+ origin (* (length region) arg) arg)))))
+
+(defun rename-file-and-buffer ()
+  "Renames current buffer and file it is visiting."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (message "Buffer is not visiting a file!")
+      (let ((new-name (read-file-name "New name: " filename)))
+        (cond
+         ((vc-backend filename) (vc-rename-file filename new-name))
+         (t
+          (rename-file filename new-name t)
+          (set-visited-file-name new-name t t)))))))
+
+(defun delete-file-and-buffer ()
+  "Kill the current buffer and deletes the file it is visiting."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (when filename
+      (if (vc-backend filename)
+          (vc-delete-file filename)
+        (when (y-or-n-p (format "Are you sure you want to delete %s? " filename))
+          (delete-file filename)
+          (message "Deleted file %s" filename)
+          (kill-buffer))))))
+
+(defun view-url ()
+  "Open a new buffer containing the contents of URL."
+  (interactive)
+  (let* ((default (thing-at-point-url-at-point))
+         (url (read-from-minibuffer "URL: " default)))
+    (switch-to-buffer (url-retrieve-synchronously url))
+    (rename-buffer url t)
+    (cond ((search-forward "<?xml" nil t) (nxml-mode))
+          ((search-forward "<html" nil t) (html-mode)))))
+
+(defun prelude-untabify-buffer ()
+  "Remove all tabs from the current buffer."
+  (interactive)
+  (untabify (point-min) (point-max)))
+
+(defun prelude-cleanup-buffer ()
+  "Perform a bunch of operations on the whitespace content of a buffer."
+  (interactive)
+  (prelude-indent-buffer)
+  (prelude-untabify-buffer)
+  (whitespace-cleanup))
+
+;; (defun jboss-start ()
+;;   "Start JBOSS Server"
+;;   (interactive)
+;;   (let* ((cmd "mytest")
+;;          (process (start-process-shell-command
+;;                    "jboss-server"
+;;                    (generate-new-buffer-name "*JBOSS*")
+;;                    cmd)))
+;;     (with-current-buffer (process-buffer process))
+;;     (message "Starting JBoss server...")))
+
+
+
+;; (setq exec-path (append exec-path '("/home/nchapon/opt/bin")))
+;; (locate-file "mytest" exec-path)
+
+;; /home/nchapon/opt/jboss-epp-5.1/jboss-as/bin
 
 
 (provide 'functions)
