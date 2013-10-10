@@ -182,16 +182,16 @@ there's a region, all lines that region covers will be duplicated."
     (cond ((search-forward "<?xml" nil t) (nxml-mode))
           ((search-forward "<html" nil t) (html-mode)))))
 
-(defun prelude-untabify-buffer ()
+(defun untabify-buffer ()
   "Remove all tabs from the current buffer."
   (interactive)
   (untabify (point-min) (point-max)))
 
-(defun prelude-cleanup-buffer ()
+(defun cleanup-buffer ()
   "Perform a bunch of operations on the whitespace content of a buffer."
   (interactive)
-  (prelude-indent-buffer)
-  (prelude-untabify-buffer)
+  (indent-buffer)
+  (untabify-buffer)
   (whitespace-cleanup))
 
 ;; (defun jboss-start ()
