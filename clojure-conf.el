@@ -5,6 +5,7 @@
 ;; Enable Midje Mode
 (require 'midje-mode)
 
+(define-key clojure-mode-map (kbd "RET") 'newline-and-indent)
 
 ;; nrepl
 (require 'nrepl)
