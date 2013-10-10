@@ -1,0 +1,7 @@
+# contributor: nchapon
+# name: <section><h3>...</h3></section>
+# key: section
+# --
+<section>
+    <h3>$1</h3>
+</section>
