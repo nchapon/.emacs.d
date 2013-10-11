@@ -96,5 +96,9 @@
 (global-set-key (kbd "C-c d") 'duplicate-current-line-or-region)
 
 
+;;; Join lines
+(global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
+
+
 
 (provide 'bindings)
