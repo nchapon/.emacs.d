@@ -33,7 +33,7 @@
                ac-source-yasnippet))
 
 (dolist (mode '(magit-log-edit-mode log-edit-mode org-mode text-mode haml-mode
-                sass-mode yaml-mode csv-mode espresso-mode haskell-mode
+                sass-mode yaml-mode espresso-mode haskell-mode
                 html-mode nxml-mode sh-mode smarty-mode clojure-mode
                 lisp-mode java-mode conf-javaprop-mode))
   (add-to-list 'ac-modes mode))

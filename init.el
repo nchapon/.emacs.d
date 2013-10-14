@@ -33,14 +33,12 @@
    (cons 'popup melpa)
    (cons 'paredit melpa)
    (cons 'tagedit melpa)
-   (cons 'csv-mode melpa)
    (cons 'cl-lib gnu)
    (cons 'ido-ubiquitous marmalade)
    (cons 'move-text melpa)
    (cons 'gist melpa)
    (cons 'htmlize melpa)
    (cons 'smartparens melpa)
-   (cons 'slime-js marmalade)
    (cons 'git-commit-mode melpa)
    (cons 'gitconfig-mode melpa)
    (cons 'gitignore-mode melpa)
@@ -58,6 +56,7 @@
    (cons 'yasnippet melpa)
    (cons 'expand-region melpa)
    (cons 'color-theme-solarized melpa)
+   (cons 'pkg-info melpa)
    (cons 'nrepl melpa)
    (cons 'ac-nrepl melpa)))
 
@@ -89,7 +88,7 @@
 (require 'popwin-conf)
 (require 'smex-conf)
 (require 'yasnippet-conf)
-(require 'init-csv-mode)
+
 
 ;;SetUp key bindings
 (require 'bindings)
