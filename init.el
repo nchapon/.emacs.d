@@ -84,6 +84,7 @@
 (require 'markdown-conf)
 (require 'java-conf)
 (require 'org-conf)
+(require 'org-daypage)
 (require 'paredit-conf)
 (require 'popwin-conf)
 (require 'smex-conf)

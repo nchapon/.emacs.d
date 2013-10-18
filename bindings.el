@@ -40,7 +40,6 @@
 ;; Occurences in a file
 (global-set-key "\C-co" 'occur)
 
-
 ;; loccur key bindings
 ;; defines shortcut for loccur of the current word
 (require 'loccur)
@@ -91,7 +90,7 @@
 ;;; Emacs Configuration File Shortcuts
 (global-set-key (kbd "C-c I") 'find-user-init-file)
 (global-set-key (kbd "C-c P") 'find-user-prefs-file)
-(global-set-key (kbd "C-c B") 'find-user-bindings-file )
+(global-set-key (kbd "C-c B") 'find-user-bindings-file)
 
 (global-set-key (kbd "C-c d") 'duplicate-current-line-or-region)
 
