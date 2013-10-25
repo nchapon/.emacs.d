@@ -1,10 +1,6 @@
 (require 'compile)
 
 
-
-
-
-
 ;; Set up ENV variables to have the same as bash
 (when (file-exists-p "~/.bash_profile")
   (setenv "JAVA_HOME" (shell-command-to-string "source ~/.bash_profile; echo -n $JAVA_HOME"))
@@ -75,8 +71,33 @@
   (previous-line)
   (indent-for-tab-command))
 
+
+
+
+
+
+
+(defun java-src-file (root symbol)
+  "Find java source file"
+  (interactive)
+  (first (split-string (shell-command-to-string
+                        (format "find %s -iname %s"
+                                root symbol)))))
+
+(defun java-src (query)
+  "Open java source file "
+  (interactive "P")
+  (let* ((symbol (concat (thing-at-point 'symbol) ".java"))
+        (root (locate-dominating-file (buffer-file-name) ".git"))
+        (file (java-src-file root symbol)))
+    (find-file file)))
+
+;; Override key bindings
 (eval-after-load 'cc-mode
-  '(define-key java-mode-map (kbd "{") 'my-electric-brace))
+'(progn
+   (define-key java-mode-map (kbd "{") 'my-electric-brace)
+   (define-key java-mode-map (kbd "C-c C-s") 'java-src)))
+
 
 (provide 'java-conf)
 
