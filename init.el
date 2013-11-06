@@ -56,8 +56,9 @@
    (cons 'yasnippet melpa)
    (cons 'expand-region melpa)
    (cons 'color-theme-solarized melpa)
+   (cons 'zenburn-theme melpa)
    (cons 'pkg-info melpa)
-   (cons 'nrepl melpa)
+   (cons 'cider melpa)
    (cons 'ac-nrepl melpa)))
 
 (condition-case nil
