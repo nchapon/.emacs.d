@@ -1,6 +1,7 @@
 (require 'compile)
 
 
+
 ;; Set up ENV variables to have the same as bash
 (when (file-exists-p "~/.bash_profile")
   (setenv "JAVA_HOME" (shell-command-to-string "source ~/.bash_profile; echo -n $JAVA_HOME"))
@@ -56,9 +57,8 @@
   (interactive)
   (add-hook 'java-mode-hook 'mvn-buffer-init))
 
-
-
-(defun my-electric-brace ()
+(defun java-electric-brace ()
+  "Insert automatically close brace after 2 new lines."
   (interactive)
   (insert " {")
   (backward-char)
@@ -71,34 +71,50 @@
   (previous-line)
   (indent-for-tab-command))
 
-
-
-
-
-
-
-(defun java-src-file (root symbol)
-  "Find java source file"
+(defun java-symbol-at-point ()
+  "Read symbol at point"
   (interactive)
-  (first (split-string (shell-command-to-string
-                        (format "find %s -iname %s"
-                                root symbol)))))
+  (let ((str (thing-at-point 'symbol)))
+    str))
+
+(defun java-read-symbol-name (prompt callback &optional query)
+  "Read symbol name."
+  (let ((symbol-name (java-symbol-at-point)))
+    (cond
+     ((not (or current-prefix-arg query (not symbol-name)))
+      (funcall callback symbol-name))
+     (t (funcall callback (read-from-minibuffer prompt))))))
+
+(defun java-project-dir ()
+  "Returns java project dir for current buffer"
+  (locate-dominating-file (buffer-file-name) ".git"))
+
+(defun java-find-file (symbol)
+  "Find java file from project root"
+  (shell-command-to-string
+    (format "find %s -iname %s.java"
+            (java-project-dir) symbol)))
+
+(defun java-src-handler (symbol)
+  "Create a handler to lookup java source code for SYMBOL"
+  (let ((results (java-find-file symbol)))
+    (cond
+     ((string= "" results) (message "No source file for symbol %s" symbol))
+     (t (find-file (first (split-string results)))))))
 
 (defun java-src (query)
-  "Open java source file "
+  "Open java source file for the given QUERY.
+Defaults to the symbol ayt point. With prefix arg or no symbol under
+point, prompts for a var"
   (interactive "P")
-  (let* ((symbol (concat (thing-at-point 'symbol) ".java"))
-        (root (locate-dominating-file (buffer-file-name) ".git"))
-        (file (java-src-file root symbol)))
-    (find-file file)))
+  (java-read-symbol-name "Class :" 'java-src-handler query))
 
 ;; Override key bindings
 (eval-after-load 'cc-mode
 '(progn
-   (define-key java-mode-map (kbd "{") 'my-electric-brace)
+   (define-key java-mode-map (kbd "{") 'java-electric-brace)
    (define-key java-mode-map (kbd "C-c C-s") 'java-src)))
 
 
 (provide 'java-conf)
-
 ;;; java-conf.el ends here
