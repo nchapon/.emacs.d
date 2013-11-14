@@ -29,6 +29,15 @@
 
 
 
+(defun java-find-package ()
+  "Find the package ot the current Java buffer"
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+       (when (re-search-forward "\\(^package \\(.*\\);$\\)" nil t))
+          (match-string-no-properties 2)))
+
+
 
 (defun mvn-test ()
   "Runs mvn test"
@@ -109,10 +118,50 @@ point, prompts for a var"
   (interactive "P")
   (java-read-symbol-name "Class :" 'java-src-handler query))
 
+(defun java-in-tests-p ()
+  "Check whether the current file is a test file."
+  (string-match-p "src/test/java" (buffer-file-name)))
+
+(defun java-test-for (package)
+  "Returns the path of the the test file for a given PACKAGE."
+  (let ((segments (split-string package "\\.")))
+    (format
+     "%ssrc/test/java/%s/%sTest.java"
+     (locate-dominating-file (buffer-file-name) "pom.xml")
+     (mapconcat 'identity segments "/")
+     (car (split-string (buffer-name) "\\.java")))))
+
+(defun java-implementation-for (package)
+  "Returns the path of the the implementaion file for a given PACKAGE."
+  (let ((segments (split-string package "\\.")))
+    (format
+     "%ssrc/main/java/%s/%s.java"
+     (locate-dominating-file (buffer-file-name) "pom.xml")
+     (mapconcat 'identity segments "/")
+     (car (split-string (buffer-name) "Test\\.java")))))
+
+(defun java-jump-to-test ()
+  "Jump from implementation file to test."
+  (interactive)
+    (find-file (java-test-for (java-find-package))))
+
+(defun java-jump-to-implementation ()
+  "Jump from test file to implementation."
+  (find-file (java-implementation-for (java-find-package))))
+
+(defun java-jump-between-tests-and-code ()
+  "Jump between tests and code"
+  (interactive)
+  (if (java-in-tests-p)
+       (java-jump-to-implementation)
+    (java-jump-to-test)))
+
+
 ;; Override key bindings
 (eval-after-load 'cc-mode
 '(progn
    (define-key java-mode-map (kbd "{") 'java-electric-brace)
+   (define-key java-mode-map (kbd "C-c C-t") 'java-jump-between-tests-and-code)
    (define-key java-mode-map (kbd "C-c C-s") 'java-src)))
 
 
