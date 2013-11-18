@@ -88,7 +88,6 @@
 (require 'org-daypage)
 (require 'paredit-conf)
 (require 'popwin-conf)
-(require 'smex-conf)
 (require 'yasnippet-conf)
 
 

@@ -16,7 +16,6 @@
 
 (add-to-list 'ido-ignore-directories "target")
 
-
 ;; Use ido everywhere
 (require 'ido-ubiquitous)
 (ido-ubiquitous-mode 1)
@@ -32,9 +31,19 @@
         (let ((ido-ubiquitous-enable-compatibility nil))
           ad-do-it))))
 
-;;(ido-ubiquitous-use-new-completing-read webjump 'webjump)
-;;(ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
-;;(ido-ubiquitous-use-new-completing-read yas/visit-snippet-file 'yasnippet)
+
+;;;;
+;;;; Smex is a M-x enhancement for Emacs
+;;;;
+(require 'smex)
+
+(smex-initialize)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
 
 
 (provide 'ido-conf)
