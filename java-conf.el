@@ -8,7 +8,7 @@
   (setenv "PATH" (shell-command-to-string "source ~/.bash_profile; echo -n $PATH")))
 
 
-(defun mvn(&optional args)
+(defun java-mvn-build ()
   "Searches up the path for a pom.xml"
   (interactive)
   (let* ((dir (file-name-as-directory (expand-file-name default-directory)))
@@ -19,14 +19,21 @@
     (if (not found)
         (message "No pom.xml found")
       (compile (read-from-minibuffer "Command: "
-                                     (concat "mvn -f " dir "pom.xml install") nil nil 'compile-history)))))
+                                     (concat "mvn -f " dir "pom.xml clean install") nil nil 'compile-history)))))
+
+
+(defun java-mvn-test ()
+  "Runs mvn test from a buffer file"
+  (interactive)
+  (compile
+        (format
+         "cd %s; mvn -Dtest=%s test"
+         (locate-dominating-file (buffer-file-name) "pom.xml")
+         (car(split-string (buffer-name) "\\.")))))
 
 ;;; For maven 2/3 output
 (add-to-list 'compilation-error-regexp-alist
              '("^.*?\\(/.*\\):\\[\\([0-9]*\\),\\([0-9]*\\)\\]" 1 2 3))
-
-(global-set-key (kbd "C-c m") 'mvn)
-
 
 
 (defun java-find-package ()
@@ -36,35 +43,6 @@
     (goto-char (point-min))
        (when (re-search-forward "\\(^package \\(.*\\);$\\)" nil t))
           (match-string-no-properties 2)))
-
-
-
-(defun mvn-test ()
-  "Runs mvn test"
-  (interactive)
-  (compile
-        (format
-         "cd %s; mvn clean -Dtest=%s test"
-         (locate-dominating-file (buffer-file-name) "pom.xml")
-         (car(split-string (buffer-name) "\\.")))))
-
-
-
-;;;###autoload
-(defun mvn-buffer-init ()
-  "Initialize a buffer.
-   Use this as a hook function in java-mode."
-  (make-variable-buffer-local 'compile-command)
-  (setq compile-command
-        (format
-         "cd %s ; mvn -Dtest=%s test"
-         (locate-dominating-file (buffer-file-name) "pom.xml") (buffer-name))))
-
-;;;###autoload
-(defun mvn-init ()
-  "Initialize this package."
-  (interactive)
-  (add-hook 'java-mode-hook 'mvn-buffer-init))
 
 (defun java-electric-brace ()
   "Insert automatically close brace after 2 new lines."
@@ -161,6 +139,8 @@ point, prompts for a var"
 (eval-after-load 'cc-mode
 '(progn
    (define-key java-mode-map (kbd "{") 'java-electric-brace)
+   (define-key java-mode-map (kbd "C-c C-b") 'java-mvn-build)
+   (define-key java-mode-map (kbd "C-c C-r") 'java-mvn-test)
    (define-key java-mode-map (kbd "C-c C-t") 'java-jump-between-tests-and-code)
    (define-key java-mode-map (kbd "C-c C-s") 'java-src)))
 
