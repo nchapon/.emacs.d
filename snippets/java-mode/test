@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: Junit test method
+# key: test
+# --
+@Test
+public void should_$0() throws Exception {
+
+    asserThat(true).isFalse();
+
+}
