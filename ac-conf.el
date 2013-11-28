@@ -1,18 +1,14 @@
 ;;auto-complete mode configuration
 (require 'popup)
 (require 'fuzzy)
-
-
 (require 'auto-complete)
 (require 'auto-complete-config)
+
 (ac-config-default)
 (ac-flyspell-workaround)
 
 (add-to-list 'load-path "~/.emacs.d")    ; This may not be appeared if you have already added.
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-
-;;(add-to-list 'ac-dictionary-directories (concat (live-pack-lib-dir) "auto-complete/dict"))
-;;(setq ac-comphist-file (concat live-tmp-dir "ac-comphist.dat"))
 
 (global-auto-complete-mode t)
 (setq ac-auto-show-menu t)
@@ -35,7 +31,7 @@
 (dolist (mode '(magit-log-edit-mode log-edit-mode org-mode text-mode haml-mode
                 sass-mode yaml-mode espresso-mode haskell-mode
                 html-mode nxml-mode sh-mode smarty-mode clojure-mode
-                lisp-mode java-mode conf-javaprop-mode))
+                lisp-mode java-mode conf-javaprop-mode sql-mode))
   (add-to-list 'ac-modes mode))
 
 

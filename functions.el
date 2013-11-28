@@ -194,23 +194,4 @@ there's a region, all lines that region covers will be duplicated."
   (untabify-buffer)
   (whitespace-cleanup))
 
-;; (defun jboss-start ()
-;;   "Start JBOSS Server"
-;;   (interactive)
-;;   (let* ((cmd "mytest")
-;;          (process (start-process-shell-command
-;;                    "jboss-server"
-;;                    (generate-new-buffer-name "*JBOSS*")
-;;                    cmd)))
-;;     (with-current-buffer (process-buffer process))
-;;     (message "Starting JBoss server...")))
-
-
-
-;; (setq exec-path (append exec-path '("/home/nchapon/opt/bin")))
-;; (locate-file "mytest" exec-path)
-
-;; /home/nchapon/opt/jboss-epp-5.1/jboss-as/bin
-
-
 (provide 'functions)

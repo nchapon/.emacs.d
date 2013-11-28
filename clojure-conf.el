@@ -5,6 +5,12 @@
 ;; Enable Midje Mode
 ;;(require 'midje-mode)
 
+
+;;; ClojureScript
+(add-to-list 'auto-mode-alist '("\\.cljs$" . clojure-mode))
+
+
+
 (define-key clojure-mode-map (kbd "RET") 'newline-and-indent)
 
 ;; cider
@@ -18,12 +24,6 @@
 (setq cider-repl-wrap-history t)
 (setq cider-repl-history-size 1000)
 (setq cider-repl-history-file "~/.emacs.d/nrepl-history")
-
-;; (defadvice nrepl-default-err-handler (after select-nrepl-error-buffer activate)
-;;   "Focus the error buffer after errors, like Emacs normally does."
-;;   (select-window (get-buffer-window "*nrepl-error*")))
-
-
 
 
 ;; Cider mode hook

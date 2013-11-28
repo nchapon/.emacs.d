@@ -1,4 +1,7 @@
-;;use file path to ensure buffer name uniqueness
+;;; Global Preferences
+
+
+;;; use file path to ensure buffer name uniqueness
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 (setq uniquify-separator "/")
@@ -72,24 +75,21 @@
 ;; Lines should be 80 characters wide, not 72
 (setq fill-column 80)
 
-;;; Enable recent files mode.
-;;; get rid of `find-file-read-only' and replace it with something
-;;; more useful.
-(require 'recentf)
-(setq recentf-save-file (concat tmp-dir "recentf")
-      recentf-max-saved-items 200)
-(recentf-mode t)
-
-;;; IDO recent file
-(defun ido-recentf-open ()
-  "Use `ido-completing-read' to \\[find-file] a recent file"
-  (interactive)
-  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-      (message "Opening file...")
-    (message "Aborting")))
 
 
+;;; Delete old versions
+(setq delete-old-versions t
+  kept-new-versions 6
+  kept-old-versions 2
+  version-control t)
+
+;;; Write backup files to own directory
+(setq backup-directory-alist
+      `(("." . ,(expand-file-name backups-dir))))
+
+;;;
 ;;; Browse Kill Ring
+;;;
 (require 'browse-kill-ring)
 
 (setq browse-kill-ring-highlight-current-entry t)
@@ -113,6 +113,7 @@
 (setq dired-recursive-delete 'always)
 (setq dired-recursive-copy 'always)
 
+
 ;;; Enable C-x C-j
 (require 'dired-x)
 
@@ -122,9 +123,38 @@
 ;;; Ace Jump Mode
 (require 'ace-jump-mode)
 
-
 ;;; Expand Region
 (require 'expand-region)
 
+
+;;;
+;;; Popwin : Popup Window Manager.
+;;;
+(require 'popwin)
+(setq display-buffer-function 'popwin:display-buffer)
+
+(setq popwin:special-display-config
+      '(("*Help*"  :height 30 :stick t)
+        ("*Completions*" :noselect t)
+        ("*compilation*" :noselect t)
+        ("*Backtrace*" :height 30)
+        ("*Messages*" :height 30)
+        ("*Occur*" :noselect t)
+        ("\\*Slime Description.*" :noselect t :regexp t :height 30)
+        ("*magit-commit*" :noselect t :height 40 :width 80 :stick t)
+        ("*magit-diff*" :noselect t :height 40 :width 80)
+        ("*magit-edit-log*" :noselect t :height 15 :width 80)
+        ("\\*Slime Inspector.*" :regexp t :height 30)
+        ("*Ido Completions*" :noselect t :height 30)
+        ("*eshell*" :height 30)
+        ("\\*ansi-term\\*.*" :regexp t :height 30)
+        ("*shell*" :height 30)
+        ("*gists*" :height 30)
+        ("*sldb.*":regexp t :height 30)
+        ("*nrepl-error*" :height 30 :stick t)
+        ("*nrepl-doc*" :height 30 :stick t)
+        ("*nrepl-src*" :height 30 :stick t)
+        ("*Kill Ring*" :height 30)
+        ("*Compile-Log*" :height 30 :stick t)))
 
 (provide 'preferences)

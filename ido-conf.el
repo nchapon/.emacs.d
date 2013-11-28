@@ -31,6 +31,22 @@
         (let ((ido-ubiquitous-enable-compatibility nil))
           ad-do-it))))
 
+;;; Enable recent files mode.
+;;; get rid of `find-file-read-only' and replace it with something
+;;; more useful.
+(require 'recentf)
+(setq recentf-save-file (concat tmp-dir "recentf")
+      recentf-max-saved-items 200)
+(recentf-mode t)
+
+
+;;; IDO with recent file
+(defun ido-recentf-open ()
+  "Use `ido-completing-read' to \\[find-file] a recent file"
+  (interactive)
+  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+      (message "Opening file...")
+    (message "Aborting")))
 
 ;;;;
 ;;;; Smex is a M-x enhancement for Emacs
