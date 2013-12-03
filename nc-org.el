@@ -85,4 +85,4 @@
 
 
 
-(provide 'org-conf)
+(provide 'nc-org)

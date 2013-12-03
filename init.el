@@ -101,30 +101,22 @@
 ;;; custom configuration
 ;;;
 
-(require 'appearence)
-(require 'preferences)
-(require 'ac-conf)
-(require 'clojure-conf)
-(require 'functions)
-(require 'ffip-conf)
-(require 'html-conf)
-(require 'ido-conf)
-(require 'magit-conf)
-(require 'markdown-conf)
-(require 'java-conf)
-(require 'org-conf)
+(require 'nc-appearence)
+(require 'nc-preferences)
+(require 'nc-ac)
+(require 'nc-clojure)
+(require 'nc-functions)
+(require 'nc-ffip)
+(require 'nc-html)
+(require 'nc-ido)
+(require 'nc-magit)
+(require 'nc-markdown)
+(require 'nc-java)
+(require 'nc-org)
 (require 'org-daypage)
-(require 'paredit-conf)
-(require 'yasnippet-conf)
-
-
-;; editing
-;; web
-;; prog
-;; bindings
-
-;;SetUp key bindings
-(require 'bindings)
+(require 'nc-paredit)
+(require 'nc-yasnippet)
+(require 'nc-bindings)
 
 
 (require 'org-crypt)

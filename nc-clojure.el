@@ -43,4 +43,4 @@
   '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 
 
-(provide 'clojure-conf)
+(provide 'nc-clojure)

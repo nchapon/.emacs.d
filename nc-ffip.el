@@ -45,4 +45,4 @@ Example:
          "overlays"
          "vendor")))
 
-(provide 'ffip-conf)
+(provide 'nc-ffip)

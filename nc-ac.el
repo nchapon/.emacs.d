@@ -43,4 +43,4 @@
 (define-key ac-completing-map "\r" 'nil)
 
 
-(provide 'ac-conf)
+(provide 'nc-ac)

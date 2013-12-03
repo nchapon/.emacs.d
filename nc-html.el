@@ -16,4 +16,4 @@
      (add-hook 'html-mode-hook (lambda () (tagedit-mode 1)))))
 
 
-(provide 'html-conf)
+(provide 'nc-html)

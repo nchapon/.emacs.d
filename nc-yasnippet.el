@@ -25,4 +25,4 @@
                       (define-key yas/keymap [tab] 'yas/next-field)))
 
 
-(provide 'yasnippet-conf)
+(provide 'nc-yasnippet)

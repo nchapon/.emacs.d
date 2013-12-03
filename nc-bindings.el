@@ -100,4 +100,4 @@
 
 
 
-(provide 'bindings)
+(provide 'nc-bindings)

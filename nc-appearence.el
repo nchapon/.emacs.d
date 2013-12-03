@@ -29,4 +29,4 @@
     (fringe-mode 4))
 
 
-(provide 'appearence)
+(provide 'nc-appearence)

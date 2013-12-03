@@ -26,15 +26,15 @@
 
 
 (defun find-user-prefs-file ()
-  "Find User preferences : preferences.el"
+  "Find User preferences : nc-preferences.el"
   (interactive)
-  (find-user-config-file "preferences.el"))
+  (find-user-config-file "nc-preferences.el"))
 
 ;;; User Bindings File
 (defun find-user-bindings-file ()
-  "Find User Bindings file : bindings.el"
+  "Find User Bindings file : nc-bindings.el"
   (interactive)
-  (find-user-config-file "bindings.el"))
+  (find-user-config-file "nc-bindings.el"))
 
 ;;; Rotate windows : from emacs live
 (defun rotate-windows ()
@@ -194,4 +194,4 @@ there's a region, all lines that region covers will be duplicated."
   (untabify-buffer)
   (whitespace-cleanup))
 
-(provide 'functions)
+(provide 'nc-functions)

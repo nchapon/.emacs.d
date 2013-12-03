@@ -1,4 +1,4 @@
-;;; magit-conf.el
+;;; magit
 
 (require 'magit)
 
@@ -21,4 +21,4 @@
 
 
 
-(provide 'magit-conf)
+(provide 'nc-magit)

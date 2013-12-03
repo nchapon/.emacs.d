@@ -62,4 +62,4 @@
 
 
 
-(provide 'ido-conf)
+(provide 'nc-ido)

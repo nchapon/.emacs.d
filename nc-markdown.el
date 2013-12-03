@@ -6,4 +6,4 @@
 
 
 
-(provide 'markdown-conf)
+(provide 'nc-markdown)

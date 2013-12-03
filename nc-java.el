@@ -145,5 +145,4 @@ point, prompts for a var"
    (define-key java-mode-map (kbd "C-c C-s") 'java-src)))
 
 
-(provide 'java-conf)
-;;; java-conf.el ends here
+(provide 'nc-java)
