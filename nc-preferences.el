@@ -23,6 +23,8 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
+;; Increase emacs GC
+(setq gc-cons-threshold 20000000)
 
 ;; Move files to trash when deleting
 (setq delete-by-moving-to-trash t)
