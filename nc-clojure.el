@@ -3,7 +3,7 @@
 (require 'clojure-test-mode)
 
 ;; Enable Midje Mode
-;;(require 'midje-mode)
+(require 'midje-mode)
 
 
 ;;; ClojureScript
