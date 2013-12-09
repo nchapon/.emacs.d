@@ -36,6 +36,13 @@
              '("^.*?\\(/.*\\):\\[\\([0-9]*\\),\\([0-9]*\\)\\]" 1 2 3))
 
 
+(defun java-path-for (package)
+  "Convert package name to real path."
+  (interactive)
+  (let ((segments (split-string package "\\." t)))
+    (mapconcat 'identity segments "/")))
+
+
 (defun java-find-package ()
   "Find the package ot the current Java buffer"
   (interactive)
@@ -43,6 +50,17 @@
     (goto-char (point-min))
        (when (re-search-forward "\\(^package \\(.*\\);$\\)" nil t))
           (match-string-no-properties 2)))
+
+
+(defun java-find-symbol-package (symbol)
+  "Find the package for the current symbol"
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (let ((case-fold-search t))
+      (if (re-search-forward (format "\\(^import \\(.*\\)%s;$\\)" symbol) nil t)
+        (match-string-no-properties 2)
+      (java-find-package)))))
 
 (defun java-electric-brace ()
   "Insert automatically close brace after 2 new lines."
@@ -76,11 +94,13 @@
   "Returns java project dir for current buffer"
   (locate-dominating-file (buffer-file-name) ".git"))
 
+
 (defun java-find-file (symbol)
   "Find java file from project root"
-  (shell-command-to-string
-    (format "find %s -iname %s.java"
-            (java-project-dir) symbol)))
+  (let ((package (java-find-symbol-package symbol)))
+    (shell-command-to-string
+    (format "find %s -iname %s.java -print0 | grep -FzZ %s"
+            (java-project-dir) symbol (java-path-for package)))))
 
 (defun java-src-handler (symbol)
   "Create a handler to lookup java source code for SYMBOL"
@@ -102,21 +122,19 @@ point, prompts for a var"
 
 (defun java-test-for (package)
   "Returns the path of the the test file for a given PACKAGE."
-  (let ((segments (split-string package "\\.")))
-    (format
-     "%ssrc/test/java/%s/%sTest.java"
-     (locate-dominating-file (buffer-file-name) "pom.xml")
-     (mapconcat 'identity segments "/")
-     (car (split-string (buffer-name) "\\.java")))))
+  (format
+   "%ssrc/test/java/%s/%sTest.java"
+   (locate-dominating-file (buffer-file-name) "pom.xml")
+   (java-path-for package)
+   (car (split-string (buffer-name) "\\.java"))))
 
 (defun java-implementation-for (package)
   "Returns the path of the the implementaion file for a given PACKAGE."
-  (let ((segments (split-string package "\\.")))
-    (format
-     "%ssrc/main/java/%s/%s.java"
-     (locate-dominating-file (buffer-file-name) "pom.xml")
-     (mapconcat 'identity segments "/")
-     (car (split-string (buffer-name) "Test\\.java")))))
+  (format
+   "%ssrc/main/java/%s/%s.java"
+   (locate-dominating-file (buffer-file-name) "pom.xml")
+   (java-path-for package)
+   (car (split-string (buffer-name) "Test\\.java"))))
 
 (defun java-jump-to-test ()
   "Jump from implementation file to test."
