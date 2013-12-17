@@ -2,7 +2,7 @@
 (require 'cc-mode)
 (require 'compile)
 
-(defun java-mvn-build ()
+(defun javax-mvn-build ()
   "Builds current maven project"
   (interactive)
   (let* ((dir (file-name-as-directory (expand-file-name default-directory)))
@@ -16,7 +16,7 @@
                                      (concat "mvn -f " dir "pom.xml clean install") nil nil 'compile-history)))))
 
 
-(defun java-mvn-test ()
+(defun javax-mvn-test ()
   "Runs mvn test from a buffer file"
   (interactive)
   (compile
@@ -30,14 +30,14 @@
              '("^.*?\\(/.*\\):\\[\\([0-9]*\\),\\([0-9]*\\)\\]" 1 2 3))
 
 
-(defun java-path-for (package)
+(defun javax-path-for (package)
   "Convert PACKAGE name to real path."
   (interactive)
   (let ((segments (split-string package "\\." t)))
     (mapconcat 'identity segments "/")))
 
 
-(defun java-find-package ()
+(defun javax-find-package ()
   "Find current buffer package"
   (interactive)
   (save-excursion
@@ -46,7 +46,7 @@
           (match-string-no-properties 2)))
 
 
-(defun java-find-symbol-package (symbol)
+(defun javax-find-symbol-package (symbol)
   "Find the package for the current SYMBOL"
   (interactive)
   (save-excursion
@@ -54,9 +54,9 @@
     (let ((case-fold-search t))
       (if (re-search-forward (format "\\(^import \\(.*\\)%s;$\\)" symbol) nil t)
         (match-string-no-properties 2)
-      (java-find-package)))))
+      (javax-find-package)))))
 
-(defun java-electric-brace ()
+(defun javax-electric-brace ()
   "Insert automatically close brace after 2 new lines."
   (interactive)
   (insert " {")
@@ -70,89 +70,89 @@
   (previous-line)
   (indent-for-tab-command))
 
-(defun java-symbol-at-point ()
+(defun javax-symbol-at-point ()
   "Read symbol at point"
   (interactive)
   (let ((str (thing-at-point 'symbol)))
     str))
 
-(defun java-read-symbol-name (prompt callback &optional query)
+(defun javax-read-symbol-name (prompt callback &optional query)
   "Read symbol name."
-  (let ((symbol-name (java-symbol-at-point)))
+  (let ((symbol-name (javax-symbol-at-point)))
     (cond
      ((not (or current-prefix-arg query (not symbol-name)))
       (funcall callback symbol-name))
      (t (funcall callback (read-from-minibuffer prompt))))))
 
-(defun java-project-dir ()
+(defun javax-project-dir ()
   "Returns java project dir for current buffer"
   (locate-dominating-file (buffer-file-name) ".git"))
 
-(defun java-find-file (symbol)
+(defun javax-find-file (symbol)
   "Find java file from project root"
-  (let ((package (java-find-symbol-package symbol)))
+  (let ((package (javax-find-symbol-package symbol)))
     (shell-command-to-string
     (format "find %s -iname %s.java -print0 | grep -FzZ %s"
-            (java-project-dir) symbol (java-path-for package)))))
+            (javax-project-dir) symbol (javax-path-for package)))))
 
-(defun java-src-handler (symbol)
+(defun javax-src-handler (symbol)
   "Create a handler to lookup java source code for SYMBOL"
-  (let ((results (java-find-file symbol)))
+  (let ((results (javax-find-file symbol)))
     (cond
      ((string= "" results) (message "No source file for symbol %s" symbol))
      (t (find-file (first (split-string results)))))))
 
-(defun java-src (query)
+(defun javax-src (query)
   "Open java source file for the given QUERY.
 Defaults to the symbol at point. With prefix arg or no symbol under
 point, prompts for a var"
   (interactive "P")
-  (java-read-symbol-name "Class :" 'java-src-handler query))
+  (javax-read-symbol-name "Class :" 'javax-src-handler query))
 
-(defun java-in-tests-p ()
+(defun javax-in-tests-p ()
   "Check whether the current file is a test file."
   (string-match-p "src/test/java" (buffer-file-name)))
 
-(defun java-test-for (package)
+(defun javax-test-for (package)
   "Returns the path of the the test file for a given PACKAGE."
   (format
    "%ssrc/test/java/%s/%sTest.java"
    (locate-dominating-file (buffer-file-name) "pom.xml")
-   (java-path-for package)
+   (javax-path-for package)
    (car (split-string (buffer-name) "\\.java"))))
 
-(defun java-implementation-for (package)
+(defun javax-implementation-for (package)
   "Returns the path of the the implementaion file for a given PACKAGE."
   (format
    "%ssrc/main/java/%s/%s.java"
    (locate-dominating-file (buffer-file-name) "pom.xml")
-   (java-path-for package)
+   (javax-path-for package)
    (car (split-string (buffer-name) "Test\\.java"))))
 
-(defun java-jump-to-test ()
+(defun javax-jump-to-test ()
   "Jump from implementation file to test."
   (interactive)
-    (find-file (java-test-for (java-find-package))))
+    (find-file (javax-test-for (javax-find-package))))
 
-(defun java-jump-to-implementation ()
+(defun javax-jump-to-implementation ()
   "Jump from test file to implementation."
-  (find-file (java-implementation-for (java-find-package))))
+  (find-file (javax-implementation-for (javax-find-package))))
 
-(defun java-jump-between-tests-and-code ()
+(defun javax-jump-between-tests-and-code ()
   "Jump between tests and code"
   (interactive)
-  (if (java-in-tests-p)
-       (java-jump-to-implementation)
-    (java-jump-to-test)))
+  (if (javax-in-tests-p)
+       (javax-jump-to-implementation)
+    (javax-jump-to-test)))
 
 
 (defvar javax-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key java-mode-map (kbd "{") 'java-electric-brace)
-    (define-key java-mode-map (kbd "C-c C-b") 'java-mvn-build)
-    (define-key java-mode-map (kbd "C-c C-r") 'java-mvn-test)
-    (define-key java-mode-map (kbd "C-c C-t") 'java-jump-between-tests-and-code)
-    (define-key java-mode-map (kbd "C-c C-s") 'java-src)
+    (define-key java-mode-map (kbd "{") 'javax-electric-brace)
+    (define-key java-mode-map (kbd "C-c C-b") 'javax-mvn-build)
+    (define-key java-mode-map (kbd "C-c C-r") 'javax-mvn-test)
+    (define-key java-mode-map (kbd "C-c C-t") 'javax-jump-between-tests-and-code)
+    (define-key java-mode-map (kbd "C-c C-s") 'javax-src)
     map)
   "Keymap for Javax mode.")
 
