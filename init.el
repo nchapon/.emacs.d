@@ -18,6 +18,10 @@
 (add-to-list 'load-path user-emacs-directory)
 (add-to-list 'load-path site-lisp-dir)
 
+;;; Add user specific config
+(setq user-settings-dir (concat user-emacs-directory "custom/" user-login-name))
+(add-to-list 'load-path user-settings-dir)
+
 
 ;;;
 ;;; Setup packages
@@ -113,15 +117,12 @@
 (require 'nc-markdown)
 (require 'nc-java)
 (require 'nc-org)
-(require 'org-daypage)
 (require 'nc-paredit)
 (require 'nc-yasnippet)
 (require 'nc-bindings)
 
 
-(require 'org-crypt)
-(org-crypt-use-before-save-magic)
-(setq org-tags-exclude-from-inheritance (quote ("crypt")))
-;; GPG key to use for encryption
-;; Either the Key ID or set to nil to use symmetric encryption.
-(setq org-crypt-key nil)
+;;; From https://github.com/magnars/.emacs.d/blob/master/init.el
+;;; Conclude init by setting up specifics for the current user
+(when (file-exists-p user-settings-dir)
+  (mapc 'load (directory-files user-settings-dir t "^[^#].*el$")))
