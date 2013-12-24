@@ -2,6 +2,30 @@
 (require 'cc-mode)
 (require 'compile)
 
+
+
+(defcustom javax-mvn-build-command "mvn -f %spom.xml clean install"
+  "Format string to run mvn build command. his format string
+   should use '%s' to substitute the project maven root
+   directory."
+  :group 'javax
+  :type 'string
+  :safe 'stringp)
+
+(defcustom javax-mvn-compile-command "cd %s; mvn -o compile"
+  "Format string to run mvn compile command. This format string
+   should use '%s' to substitute the project maven root
+   directory."
+  :group 'javax
+  :type 'string
+  :safe 'stringp)
+
+
+
+
+
+
+
 (defun javax-mvn-build ()
   "Builds current maven project"
   (interactive)
@@ -13,8 +37,16 @@
     (if (not found)
         (message "No pom.xml found")
       (compile (read-from-minibuffer "Command: "
-                                     (concat "mvn -f " dir "pom.xml clean install") nil nil 'compile-history)))))
+                                     (format javax-mvn-build-command dir) nil nil 'compile-history)))))
 
+(defun javax-mvn-compile ()
+  "Runs mvn test from a buffer file"
+  (interactive)
+  (compile
+        (format
+         javax-mvn-compile-command
+         (locate-dominating-file (buffer-file-name) "pom.xml")
+         (car(split-string (buffer-name) "\\.")))))
 
 (defun javax-mvn-test ()
   "Runs mvn test from a buffer file"
@@ -150,6 +182,7 @@ point, prompts for a var"
   (let ((map (make-sparse-keymap)))
     (define-key java-mode-map (kbd "{") 'javax-electric-brace)
     (define-key java-mode-map (kbd "C-c C-b") 'javax-mvn-build)
+    (define-key java-mode-map (kbd "C-c C-k") 'javax-mvn-compile)
     (define-key java-mode-map (kbd "C-c C-r") 'javax-mvn-test)
     (define-key java-mode-map (kbd "C-c C-t") 'javax-jump-between-tests-and-code)
     (define-key java-mode-map (kbd "C-c C-s") 'javax-src)
