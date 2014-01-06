@@ -80,7 +80,7 @@
 
 ;;; Ace Jump Mode key binding
 (define-key global-map (kbd "C-c j") 'ace-jump-mode)
-(define-key global-map (kbd "C-c k") 'ace-jump-mode-pop-mark) ;; jump back from ring
+;;(define-key global-map (kbd "C-c k") 'ace-jump-mode-pop-mark) ;; jump back from ring
 
 ;;; Expand Region
 (global-set-key (kbd "C-=") 'er/expand-region)
@@ -88,12 +88,12 @@
 ;; Binding for custom functions
 
 ;;; Emacs Configuration File Shortcuts
-(global-set-key (kbd "C-c I") 'find-user-init-file)
-(global-set-key (kbd "C-c P") 'find-user-prefs-file)
-(global-set-key (kbd "C-c B") 'find-user-bindings-file)
+(global-set-key (kbd "C-c I") 'my-init-file)
+(global-set-key (kbd "C-c P") 'my-prefs-file)
+(global-set-key (kbd "C-c B") 'my-bindings-file)
 
 ;; Duplicate current line
-(global-set-key (kbd "C-c d") 'duplicate-current-line-or-region)
+(global-set-key (kbd "C-c d") 'my-duplicate-current-line-or-region)
 
 ;;; Join lines
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))

@@ -14,27 +14,27 @@
   (indent-according-to-mode))
 
 ;;; Edit the user Init File
-(defun find-user-init-file ()
+(defun my-init-file ()
   "Edit the user init file in another window"
   (interactive)
   (find-file-other-window user-init-file))
 
 ;;; Edit user configuration file
-(defun find-user-config-file (f)
+(defun my-config-file (f)
   "Edit user emacs configuration file"
     (find-file-other-window (concat user-emacs-directory f)))
 
 
-(defun find-user-prefs-file ()
+(defun my-prefs-file ()
   "Find User preferences : nc-preferences.el"
   (interactive)
-  (find-user-config-file "nc-preferences.el"))
+  (my-config-file "nc-preferences.el"))
 
 ;;; User Bindings File
-(defun find-user-bindings-file ()
+(defun my-bindings-file ()
   "Find User Bindings file : nc-bindings.el"
   (interactive)
-  (find-user-config-file "nc-bindings.el"))
+  (my-config-file "nc-bindings.el"))
 
 ;;; Rotate windows : from emacs live
 (defun rotate-windows ()
@@ -91,7 +91,7 @@ point reaches the beginning or end of the buffer, stop there."
                 'smarter-move-beginning-of-line)
 
 
-(defun copy-file-name-to-clipboard ()
+(defun my-copy-file-name-to-clipboard ()
   "Copy the current buffer file name to the clipboard."
   (interactive)
   (let ((filename (if (equal major-mode 'dired-mode)
@@ -102,7 +102,7 @@ point reaches the beginning or end of the buffer, stop there."
       (message "Copied buffer file name '%s' to the clipboard." filename))))
 
 
-(defun duplicate-current-line-or-region (arg)
+(defun my-duplicate-current-line-or-region (arg)
   "Duplicates the current line or region ARG times.
 If there's no region, the current line will be duplicated.  However, if
 there's a region, all lines that region covers will be duplicated."
