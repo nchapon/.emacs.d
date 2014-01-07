@@ -177,6 +177,39 @@ point, prompts for a var"
        (javax-jump-to-implementation)
     (javax-jump-to-test)))
 
+(defun javax-search-symbol (symbol)
+  "Search symbol, should be case sensitive."
+  (let ((case-fold-search nil))
+    (re-search-forward (format "\\b%s\\b" symbol) nil t)))
+
+(defun javax-clear-unused-imports (classname)
+  "Clear unused imported classes."
+  (goto-char (point-min))
+  (javax-search-symbol classname)
+  (let ((kill-whole-line t))
+    (when (not (javax-search-symbol classname))
+      (beginning-of-line)
+      (kill-line))))
+
+(defun javax-imported-classes ()
+  "List all imported classes"
+  (interactive)
+  (let ((imported-classes nil))
+     (while (re-search-forward "^import.*\\(\\.\\w+;\\)" nil t)
+      (let ((found (match-string-no-properties 1)))
+        (push (substring found 1 (- (string-width found) 1)) imported-classes)))
+    imported-classes))
+
+(defun javax-organize-imports ()
+  "Organize imports"
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (let ((imported-classes (javax-imported-classes)))
+      (while imported-classes
+        (javax-clear-unused-imports (first imported-classes))
+        (setq imported-classes (rest imported-classes))))))
+
 
 (defvar javax-mode-map
   (let ((map (make-sparse-keymap)))
@@ -186,6 +219,7 @@ point, prompts for a var"
     (define-key java-mode-map (kbd "C-c C-r") 'javax-mvn-test)
     (define-key java-mode-map (kbd "C-c C-t") 'javax-jump-between-tests-and-code)
     (define-key java-mode-map (kbd "C-c C-s") 'javax-src)
+    (define-key java-mode-map (kbd "C-c C-o") 'javax-organize-imports)
     map)
   "Keymap for Javax mode.")
 
