@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Log Debug
+# key: ldebug
+# --
+logger.debug("");
