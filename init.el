@@ -92,7 +92,8 @@
    (cons 'zenburn-theme melpa)
    (cons 'pkg-info melpa)
    (cons 'cider melpa)
-   (cons 'ac-nrepl melpa)))
+   (cons 'ac-nrepl melpa)
+   (cons 'feature-mode melpa)))
 
 (condition-case nil
     (init--install-packages)
