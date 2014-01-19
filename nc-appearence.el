@@ -1,10 +1,10 @@
-;; Turn off mouse interface early in startup to avoid momentary display
+;;; Turn off mouse interface early in startup to avoid momentary display
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
-;; Solarized-them light to stop working in the dark
-(load-theme 'zenburn t)
+;;; By default solorized dark
+(load-theme 'solarized-dark t)
 
 (setq visible-bell t
        font-lock-maximum-decoration t
@@ -13,7 +13,7 @@
 
 (set-face-background 'region "#464740")
 
-;; Org Mode Faces
+;;; Org Mode Faces
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "red" :weight bold))
     ("INPROGRESS" . (:foreground  "orange" :weight bold))
@@ -24,7 +24,7 @@
 
 
 
-;; make fringe smaller
+;;; make fringe smaller
 (if (fboundp 'fringe-mode)
     (fringe-mode 4))
 
