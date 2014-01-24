@@ -12,3 +12,4 @@ session.*
 /tmp
 *.dat
 /nrepl-history
+.cask/

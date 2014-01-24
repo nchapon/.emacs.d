@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Declare and instantiate
+# key: new
+# --
+${1:Object} ${1:$(downcase yas-text)} = new $1($2);$0

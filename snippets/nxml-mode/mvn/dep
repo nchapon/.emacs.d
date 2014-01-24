@@ -1,0 +1,9 @@
+# contributor: Nicolas Chapon
+# name: <dependency>...</dependency>
+# key: dep
+# --
+<dependency>
+  <groupId>$2</groupId>
+  <artifactId>$1</artifactId>
+  <version>$0</version>
+</dependency>

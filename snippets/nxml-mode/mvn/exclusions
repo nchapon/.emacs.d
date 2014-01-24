@@ -1,0 +1,10 @@
+# contributor: Nicolas Chapon
+# name: <exclusions>...</exclusions>
+# key: exclusions
+# --
+<exclusions>
+  <exclusion>
+    <groupId>$1</groupId>
+    <artifactId>$0</artifactId>
+  </exclusion>
+</exclusions>
