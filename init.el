@@ -71,7 +71,6 @@
    (cons 'popup melpa)
    (cons 'paredit melpa)
    (cons 'tagedit melpa)
-   (cons 'cl-lib gnu)
    (cons 'ido-ubiquitous marmalade)
    (cons 'move-text melpa)
    (cons 'gist melpa)
@@ -98,7 +97,8 @@
    (cons 'pkg-info melpa)
    (cons 'cider melpa)
    (cons 'ac-nrepl melpa)
-   (cons 'feature-mode melpa)))
+   (cons 'feature-mode melpa)
+   (cons 'multiple-cursors melpa)))
 
 (condition-case nil
     (init--install-packages)

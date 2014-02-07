@@ -128,6 +128,8 @@
 ;;; Expand Region
 (require 'expand-region)
 
+;;; Multiple cursors
+(require 'multiple-cursors)
 
 ;;;
 ;;; Popwin : Popup Window Manager.
