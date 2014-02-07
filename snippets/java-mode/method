@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Create a new method
+# key: method
+# --
+${1:$$(yas/choose-value '("public" "protected" "private" ""))} ${2:type} ${3:name} (${4:args}) {
+    $0
+}
