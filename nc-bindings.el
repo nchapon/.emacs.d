@@ -76,6 +76,7 @@
 (global-set-key (kbd "C-x C-o xml") (ffip-create-pattern-file-finder "*.xml"))
 (global-set-key (kbd "C-x C-o vm") (ffip-create-pattern-file-finder "*.vm"))
 (global-set-key (kbd "C-x C-o pom") (ffip-create-pattern-file-finder "pom.xml"))
+(global-set-key (kbd "C-x C-o sql") (ffip-create-pattern-file-finder "*.sql"))
 
 
 ;;; Ace Jump Mode key binding
