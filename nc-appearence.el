@@ -4,7 +4,7 @@
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
 ;;; By default solorized dark
-(load-theme 'solarized-dark t)
+(load-theme 'zenburn t) ;;; Switch to zenburn because solarized is broken
 
 (setq visible-bell t
        font-lock-maximum-decoration t

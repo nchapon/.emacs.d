@@ -98,7 +98,8 @@
    (cons 'cider melpa)
    (cons 'ac-nrepl melpa)
    (cons 'feature-mode melpa)
-   (cons 'multiple-cursors melpa)))
+   (cons 'multiple-cursors melpa)
+   (cons 'flycheck melpa)))
 
 (condition-case nil
     (init--install-packages)
@@ -132,3 +133,4 @@
 ;;; Conclude init by setting up specifics for the current user
 (when (file-exists-p user-settings-dir)
   (mapc 'load (directory-files user-settings-dir t "^[^#].*el$")))
+
