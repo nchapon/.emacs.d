@@ -49,7 +49,8 @@
 ;; defines shortcut for the loccur of the previously found word
 (define-key global-map [(control shift o)] 'loccur-previous-match)
 
-
+;; Hippie expand
+(global-set-key "\M- " 'hippie-expand)
 
 ;;; Rotate Window
 (global-set-key (kbd "C-c w r") 'rotate-windows)
