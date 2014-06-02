@@ -100,6 +100,7 @@
    (cons 'feature-mode melpa)
    (cons 'multiple-cursors melpa)
    (cons 'flycheck melpa)
+   (cons 'web-mode melpa)
    (cons 'js2-mode melpa)
    (cons 'js2-refactor melpa)))
 
