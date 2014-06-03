@@ -18,4 +18,9 @@
      (add-hook 'html-mode-hook (lambda () (tagedit-mode 1)))))
 
 
+;; Don't override global M-j keybinding (join lines)
+(eval-after-load "js2-mode"
+  '(define-key js2-mode-map (kbd "M-j") nil))
+
+
 (provide 'nc-html)
