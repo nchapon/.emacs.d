@@ -83,7 +83,7 @@
 
 ;;; Ace Jump Mode key binding
 (define-key global-map (kbd "C-c j") 'ace-jump-mode)
-;;(define-key global-map (kbd "C-c k") 'ace-jump-mode-pop-mark) ;; jump back from ring
+(define-key global-map (kbd "C-c k") 'ace-jump-mode-pop-mark)
 
 ;;; Expand Region
 (global-set-key (kbd "C-=") 'er/expand-region)
