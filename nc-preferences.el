@@ -67,8 +67,9 @@
 ;; Default indentation
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
-;;(setq indent-line-function 'insert-tab)
 
+;; Indent new line if necessary
+(define-key global-map (kbd "RET") 'newline-and-indent)
 
 ;; Always display line and column numbers
 (setq line-number-mode t)
