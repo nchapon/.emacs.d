@@ -102,7 +102,8 @@
    (cons 'flycheck melpa)
    (cons 'web-mode melpa)
    (cons 'js2-mode melpa)
-   (cons 'js2-refactor melpa)))
+   (cons 'js2-refactor melpa)
+   (cons 'exec-path-from-shell melpa)))
 
 (condition-case nil
     (init--install-packages)
@@ -131,6 +132,9 @@
 (require 'nc-yasnippet)
 (require 'nc-bindings)
 
+;;; Be sure path is correctly initialized : need by cider and javax !
+(require 'exec-path-from-shell)
+(exec-path-from-shell-initialize)
 
 ;;; From https://github.com/magnars/.emacs.d/blob/master/init.el
 ;;; Conclude init by setting up specifics for the current user
