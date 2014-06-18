@@ -37,6 +37,7 @@
 (require 'recentf)
 (setq recentf-save-file (concat tmp-dir "recentf")
       recentf-max-saved-items 200)
+(add-to-list 'recentf-exclude "COMMIT_EDITMSG\\'")
 (recentf-mode t)
 
 
