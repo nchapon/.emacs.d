@@ -19,7 +19,7 @@
 (add-to-list 'load-path site-lisp-dir)
 
 ;;; Add user specific config
-(setq user-settings-dir (concat user-emacs-directory "custom/" user-login-name))
+(setq user-settings-dir (concat user-emacs-directory "custom/" (car (split-string system-name "\\."))))
 (add-to-list 'load-path user-settings-dir)
 
 
@@ -126,7 +126,6 @@
 (require 'nc-ido)
 (require 'nc-magit)
 (require 'nc-markdown)
-(require 'nc-java)
 (require 'nc-org)
 (require 'nc-paredit)
 (require 'nc-yasnippet)
@@ -137,6 +136,6 @@
 (exec-path-from-shell-initialize)
 
 ;;; From https://github.com/magnars/.emacs.d/blob/master/init.el
-;;; Conclude init by setting up specifics for the current user
+;;; Conclude init by setting up specifics for the current system
 (when (file-exists-p user-settings-dir)
   (mapc 'load (directory-files user-settings-dir t "^[^#].*el$")))
