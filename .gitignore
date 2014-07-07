@@ -13,3 +13,5 @@ session.*
 *.dat
 /nrepl-history
 .cask/
+/eshell/
+/custom/
