@@ -157,9 +157,4 @@ org-time-stamp except the default date will be the date of the daypage."
 (global-set-key "\C-ci" 'daypage-new-item)
 (global-set-key "\C-cN" 'find-daypage)
 
-(setq org-agenda-files
-     (append
-        org-agenda-files
-        (list (expand-file-name daypage-path))))
-
 (provide 'org-daypage)

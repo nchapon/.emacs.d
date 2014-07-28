@@ -16,21 +16,27 @@
 
 
 
-(setq org-agenda-files (list "~/notes/GTD/perso.org"
-                             "~/notes/GTD/valtech.org"
+(setq org-agenda-files (list "~/notes/GTD/todo.org"
                              "~/notes/GTD/toread.org"
                              "~/notes/GTD/tolearn.org"
                              "~/notes/GTD/tosee.org"
                              ))
 
 
+;;; Edit my todo page
+(defun nc/todo-page ()
+  "Edit my todo list page"
+  (interactive)
+  (find-file-other-window "~/notes/GTD/todo.org"))
+
+;; Binding todo file
+(global-set-key "\C-cT" 'nc/todo-page)
+
+
 
 ;; Capture mode
-;; (setq org-default-notes-file (concat org-directory "/notes.org"))
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/notes/GTD/perso.org" "Tasks")
-         "* TODO %?\n  %i\n  %a")
-        ("v" "Todo Valtech" entry (file+headline "~/notes/GTD/valtech.org" "Tasks")
+      '(("t" "Todo" entry (file+headline "~/notes/GTD/todo.org" "Tasks")
          "* TODO %?\n  %i\n  %a")
         ("l" "To learn" entry (file+headline "~/notes/GTD/tolearn.org" "To Learn")
          "* TO_LEARN %?\n  %i\n  %a")
@@ -40,8 +46,7 @@
          "%[~/notes/templates/fishlog.org]"
          )
         ("j" "Journal" entry (file+datetree "~/notes/GTD/journal.org")
-         "* %?\nEntered on %U\n  %i\n  %a"))
-      )
+         "* %?\nEntered on %U\n  %i\n  %a")))
 
 
 ;;; Publishing notes
