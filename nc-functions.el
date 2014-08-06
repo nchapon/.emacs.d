@@ -194,4 +194,13 @@ there's a region, all lines that region covers will be duplicated."
   (untabify-buffer)
   (whitespace-cleanup))
 
+;;; From prelude https://github.com/bbatsov/prelude/blob/master/core/prelude-core.el
+(defun nc/switch-to-previous-buffer ()
+  "Switch to previously open buffer.
+Repeated invocations toggle between the two most recently open buffers."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
+
+
+
 (provide 'nc-functions)

@@ -103,7 +103,8 @@
    (cons 'web-mode melpa)
    (cons 'js2-mode melpa)
    (cons 'js2-refactor melpa)
-   (cons 'exec-path-from-shell melpa)))
+   (cons 'exec-path-from-shell melpa)
+   (cons 'key-chord melpa)))
 
 (condition-case nil
     (init--install-packages)
