@@ -162,4 +162,15 @@
         ("*Kill Ring*" :height 30)
         ("*Compile-Log*" :height 30 :stick t)))
 
+
+;;; From prelude
+(require 'compile)
+(setq compilation-ask-about-save nil ; Just save before compiling
+      compilation-always-kill t ; Just kill old compile processes before
+                                        ; starting the new one
+      compilation-scroll-output 'first-error ; Automatically scroll to first
+                                        ; error
+      )
+
+
 (provide 'nc-preferences)
