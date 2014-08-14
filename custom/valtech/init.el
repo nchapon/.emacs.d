@@ -18,9 +18,9 @@
 
 (setq org-agenda-files (list "~/notes/GTD/todo.org"
                              "~/notes/GTD/toread.org"
+                             "~/notes/GTD/meetings.org"
                              "~/notes/GTD/tolearn.org"
-                             "~/notes/GTD/tosee.org"
-                             ))
+                             "~/notes/GTD/tosee.org"))
 
 
 ;;; Edit my todo page
@@ -29,8 +29,15 @@
   (interactive)
   (find-file-other-window "~/notes/GTD/todo.org"))
 
-;; Binding todo file
+;;; Edit my meetings page
+(defun nc/meetings-page ()
+  "Edit my meetings page"
+  (interactive)
+  (find-file-other-window "~/notes/GTD/meetings.org"))
+
+;;; Binding
 (global-set-key "\C-cT" 'nc/todo-page)
+(global-set-key "\C-cM" 'nc/meetings-page)
 
 
 
