@@ -16,3 +16,6 @@ session.*
 /eshell/
 /custom/
 /.mc-lists.el
+/%backup%~
+/projectile-bookmarks.eld
+/var/
