@@ -59,28 +59,6 @@
 (global-set-key [(control shift up)]  'move-line-up)
 (global-set-key [(control shift down)]  'move-line-down)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Find file in project configuration
-(global-set-key (kbd "C-x f") 'find-file-in-project)
-
-;; Find file in project, with specific patterns
-(global-unset-key (kbd "C-x C-o")) ;; which used to be delete-blank-lines (also bound to C-c C-<return>)
-(global-set-key (kbd "C-x C-o java") (ffip-create-pattern-file-finder "*.java"))
-(global-set-key (kbd "C-x C-o js") (ffip-create-pattern-file-finder "*.js" "*.jsp" "*.json"))
-(global-set-key (kbd "C-x C-o css") (ffip-create-pattern-file-finder "*.css"))
-(global-set-key (kbd "C-x C-o clj") (ffip-create-pattern-file-finder "*.clj"))
-(global-set-key (kbd "C-x C-o el") (ffip-create-pattern-file-finder "*.el"))
-(global-set-key (kbd "C-x C-o md") (ffip-create-pattern-file-finder "*.md"))
-(global-set-key (kbd "C-x C-o org") (ffip-create-pattern-file-finder "*.org"))
-(global-set-key (kbd "C-x C-o txt") (ffip-create-pattern-file-finder "*.txt"))
-(global-set-key (kbd "C-x C-o ftl") (ffip-create-pattern-file-finder "*.ftl"))
-(global-set-key (kbd "C-x C-o xml") (ffip-create-pattern-file-finder "*.xml"))
-(global-set-key (kbd "C-x C-o vm") (ffip-create-pattern-file-finder "*.vm"))
-(global-set-key (kbd "C-x C-o pom") (ffip-create-pattern-file-finder "pom.xml"))
-(global-set-key (kbd "C-x C-o sql") (ffip-create-pattern-file-finder "*.sql"))
-(global-set-key (kbd "C-x C-o prp") (ffip-create-pattern-file-finder "*.properties"))
-
-
 ;;; Ace Jump Mode key binding
 (define-key global-map (kbd "C-c j") 'ace-jump-mode)
 (define-key global-map (kbd "C-c k") 'ace-jump-mode-pop-mark)
