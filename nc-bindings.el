@@ -60,7 +60,7 @@
 (global-set-key [(control shift down)]  'move-line-down)
 
 ;;; Ace Jump Mode key binding
-(define-key global-map (kbd "C-c j") 'ace-jump-mode)
+(define-key global-map (kbd "C-c /") 'ace-jump-mode)
 (define-key global-map (kbd "C-c k") 'ace-jump-mode-pop-mark)
 
 ;;; Expand Region
