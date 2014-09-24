@@ -1,6 +1,6 @@
 ;; Clojure configuration mode
 (require 'clojure-mode)
-(require 'clojure-test-mode)
+
 
 ;; Enable Midje Mode
 (require 'midje-mode)
