@@ -11,7 +11,7 @@
        color-theme-is-global t
        truncate-partial-width-windows nil)
 
-(set-face-background 'region "#464740")
+(set-face-background 'region "#585953")
 
 ;;; Org Mode Faces
 (setq org-todo-keyword-faces
@@ -21,8 +21,6 @@
     ("TO_SEE" . (:foreground "orange" :weight bold))
     ("WAITING" . (:foreground  "cyan" :weight bold))
     ("CANCELED" . (:foreground "grey" :weight bold))))
-
-
 
 ;;; make fringe smaller
 (if (fboundp 'fringe-mode)
