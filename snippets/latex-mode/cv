@@ -1,0 +1,13 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: cv entry
+# key: cv
+# binding: direct-keybinding
+# --
+%% $1
+\cventry{de à ...}{$1}{$0}{}{}{Description.
+\begin{itemize}
+\item item1
+\item item2
+\item item3
+\end{itemize}
+\textbf{Technologies} : technos}
