@@ -76,6 +76,7 @@
    (cons 'cider melpa)
    (cons 'clojure-mode melpa)
    (cons 'color-theme-solarized melpa)
+   (cons 'company melpa)
    (cons 'exec-path-from-shell melpa)
    (cons 'expand-region melpa)
    (cons 'feature-mode melpa)
