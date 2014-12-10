@@ -2,4 +2,8 @@
 # name: package
 # key: pa
 # --
-package ${1:`(mapconcat 'identity (cdr (member "java" (split-string default-directory "/" t))) ".")`};$0
+package ${1:`(--reduce
+ (format "%s.%s" acc it)
+ (split-string
+           (-last-item (s-split "src/main/java/\\|src/test/java/" default-directory))
+           "/" t))`};$0
