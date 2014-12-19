@@ -103,6 +103,8 @@
 ;; Gobal keys for usefuls functions
 
 (global-set-key (kbd "<f1>") 'shell)
+(global-set-key (kbd "<f2>") 'rgrep)
+;;(global-set-key (kbd "C-<f2>") ') multi occur
 (global-set-key (kbd "<f6>") 'magit-status)
 
 
