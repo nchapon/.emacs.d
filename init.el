@@ -1,4 +1,4 @@
-;;(setq debug-on-error t)
+(setq debug-on-error t)
 
 ;; Set path to dependencies
 (setq site-lisp-dir
@@ -40,11 +40,13 @@
 (defvar melpa '("melpa" . "http://melpa.milkbox.net/packages/"))
 
 
+
 ;; Add marmalade to package repos
 (add-to-list 'package-archives marmalade)
 (add-to-list 'package-archives melpa t)
+(add-to-list 'package-archives gnu t)
 
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+
 
 (package-initialize)
 
@@ -52,6 +54,8 @@
              (file-exists-p "~/.emacs.d/elpa/archives/gnu")
              (file-exists-p "~/.emacs.d/elpa/archives/melpa"))
   (package-refresh-contents))
+
+
 
 (defun packages-install (&rest packages)
   (mapc (lambda (package)
@@ -64,6 +68,7 @@
         packages)
   (package-initialize)
   (delete-other-windows))
+
 
 
 ;; Install extensions if they're missing
@@ -103,6 +108,7 @@
    (cons 'popup melpa)
    (cons 'popwin melpa)
    (cons 'projectile melpa)
+   (cons 'restclient melpa)
    (cons 'smartparens melpa)
    (cons 'smex melpa)
    (cons 'tagedit melpa)

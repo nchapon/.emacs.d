@@ -1,5 +1,8 @@
 ;;; Org Mode Configuration
-(require 'org-publish)
+
+(require 'ox-publish)
+(require 'ox-odt)
+
 
 ;;; Start agenda on current day
 (setq org-agenda-start-on-weekday nil)
@@ -17,6 +20,7 @@
   (interactive (list (read-regexp "Enter a regexp to grep:")))
   (find-grep
    (format "find ~/notes -name '*.org' -print0 | xargs -0 grep -i -n -- %s" regexp)))
+
 
 
 (provide 'nc-org)
