@@ -19,3 +19,5 @@ session.*
 /%backup%~
 /projectile-bookmarks.eld
 /var/
+/ido.last
+/smex-items

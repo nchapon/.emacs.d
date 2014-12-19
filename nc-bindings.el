@@ -100,11 +100,19 @@
 ;; (global-set-key (allo "M-s ps") 'mc/mark-previous-symbol-like-this)
 ;; (global-set-key (kbd "M-s as") 'mc/mark-all-symbols-like-this)
 
+;; Gobal keys for usefuls functions
+
+(global-set-key (kbd "<f1>") 'shell)
+(global-set-key (kbd "<f6>") 'magit-status)
+
+
 (require 'key-chord)
 
 (key-chord-define-global "jj" 'ace-jump-word-mode)
 (key-chord-define-global "jl" 'ace-jump-line-mode)
 (key-chord-define-global "jk" 'ace-jump-char-mode)
+(key-chord-define-global "jf" 'projectile-find-file)
+(key-chord-define-global "js" 'projectile-grep)
 (key-chord-define-global "JJ" 'nc/switch-to-previous-buffer)
 (key-chord-define-global "uu" 'undo-tree-visualize)
 (key-chord-define-global "xx" 'execute-extended-command)
