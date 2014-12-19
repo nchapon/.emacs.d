@@ -69,7 +69,6 @@
 ;; Install extensions if they're missing
 (defun init--install-packages ()
   (packages-install
-   (cons 'ac-nrepl melpa)
    (cons 'ace-jump-mode melpa)
    (cons 'auto-complete melpa)
    (cons 'browse-kill-ring melpa)
