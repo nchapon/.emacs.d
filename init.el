@@ -115,6 +115,7 @@
    (cons 'undo-tree melpa)
    (cons 'web-mode melpa)
    (cons 'yasnippet melpa)
+   (cons 'yaml-mode melpa)
    (cons 'zenburn-theme melpa)))
 
 (condition-case nil
