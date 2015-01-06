@@ -91,7 +91,7 @@ point reaches the beginning or end of the buffer, stop there."
                 'smarter-move-beginning-of-line)
 
 
-(defun my-copy-file-name-to-clipboard ()
+(defun nc/copy-file-name-to-clipboard ()
   "Copy the current buffer file name to the clipboard."
   (interactive)
   (let ((filename (if (equal major-mode 'dired-mode)
@@ -172,7 +172,7 @@ there's a region, all lines that region covers will be duplicated."
           (message "Deleted file %s" filename)
           (kill-buffer))))))
 
-(defun view-url ()
+(defun nc/view-url ()
   "Open a new buffer containing the contents of URL."
   (interactive)
   (let* ((default (thing-at-point-url-at-point))
