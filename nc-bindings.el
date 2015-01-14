@@ -82,29 +82,21 @@
 ;;; Start playing with multiple cursors
 ;;; Multiple cursors
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C-S-c C-e") 'mc/edit-ends-of-lines)
-(global-set-key (kbd "C-S-c C-a") 'mc/edit-beginnings-of-lines)
-
-;; additional regions matching current region
-;; (global-set-key (kbd "M-d") 'mc/mark-all-dwim)
+(global-set-key (kbd "C-$") 'mc/edit-ends-of-lines)
+(global-set-key (kbd "C-^") 'mc/edit-beginnings-of-lines)
 (global-set-key (kbd "C-<") 'mc/mark-previous-word-like-this)
 (global-set-key (kbd "C->") 'mc/mark-next-word-like-this)
-;; (global-set-key (kbd "C-Æ") 'mc/mark-more-like-this-extended)
+(global-set-key (kbd "C-*") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-%") 'mc/mark-all-dwim)
+
 ;; (global-set-key (kbd "M-å") 'mc/mark-all-in-region)
 
-;; ;; Symbol and word specific mark-more
-;; (global-set-key (allo "M-s nw") 'mc/mark-next-word-like-this)
-;; (global-set-key (allo "M-s pw") 'mc/mark-previous-word-like-this)
-;; (global-set-key (kbd "M-s aw") 'mc/mark-all-words-like-this)
-;; (global-set-key (kbd "M-s ns") 'mc/mark-next-symbol-like-this)
-;; (global-set-key (allo "M-s ps") 'mc/mark-previous-symbol-like-this)
-;; (global-set-key (kbd "M-s as") 'mc/mark-all-symbols-like-this)
+
 
 ;; Gobal keys for usefuls functions
 
 (global-set-key (kbd "<f1>") 'shell)
 (global-set-key (kbd "<f2>") 'rgrep)
-;;(global-set-key (kbd "C-<f2>") ') multi occur
 (global-set-key (kbd "<f6>") 'magit-status)
 
 
