@@ -1,12 +1,8 @@
 ;;; Org Mode Configuration
-(defvar emacs-with-org8 (string-match "^8" org-version))
-(defvar emacs-with-org7 (string-match "^7" org-version))
+(require 'ox-publish)
+(require 'ox-odt)
 
-(cond (emacs-with-org8
-       (require 'ox-publish)
-       (require 'ox-odt)))
 
-(cond (emacs-with-org7 (require 'org-publish)))
 
 ;;; Start agenda on current day
 (setq org-agenda-start-on-weekday nil)
