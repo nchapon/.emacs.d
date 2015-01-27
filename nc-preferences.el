@@ -78,6 +78,13 @@
 ;; Lines should be 80 characters wide, not 72
 (setq fill-column 80)
 
+;; Smart mode line
+(require 'smart-mode-line)
+
+(setq sml/theme 'automatic)
+
+(sml/setup)
+;;(sml/apply-theme 'respectful)
 
 
 ;;; Delete old versions
@@ -171,6 +178,8 @@
       compilation-scroll-output 'first-error ; Automatically scroll to first
                                         ; error
       )
+
+
 
 
 (provide 'nc-preferences)

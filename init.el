@@ -110,6 +110,7 @@
    (cons 'projectile melpa)
    (cons 'restclient melpa)
    (cons 'smartparens melpa)
+   (cons 'smart-mode-line melpa)
    (cons 'smex melpa)
    (cons 'tagedit melpa)
    (cons 'undo-tree melpa)
