@@ -27,4 +27,12 @@
     (fringe-mode 4))
 
 
+;; Smart mode line
+(require 'smart-mode-line)
+
+(setq sml/theme 'automatic)
+;;(setq sml/confirm-load-theme t)
+(sml/setup)
+;;(sml/apply-theme 'respectful)
+
 (provide 'nc-appearence)
