@@ -22,6 +22,11 @@
 (setq user-settings-dir (concat user-emacs-directory "custom/" (car (split-string system-name "\\."))))
 (add-to-list 'load-path user-settings-dir)
 
+(setq custom-file "~/.emacs.d/custom.el")
+(when (file-exists-p custom-file)
+  (load custom-file))
+
+
 
 ;; Add external projects to load path
 (dolist (project (directory-files site-lisp-dir t "\\w+"))
@@ -144,6 +149,9 @@
 (require 'nc-paredit)
 (require 'nc-yasnippet)
 (require 'nc-bindings)
+
+
+
 
 ;;; Be sure path is correctly initialized : need by cider and javax !
 (require 'exec-path-from-shell)

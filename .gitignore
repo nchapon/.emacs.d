@@ -21,3 +21,4 @@ session.*
 /var/
 /ido.last
 /smex-items
+/custom.el
