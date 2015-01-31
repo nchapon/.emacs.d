@@ -73,8 +73,8 @@
 (global-set-key (kbd "C-c P") 'my-prefs-file)
 (global-set-key (kbd "C-c B") 'my-bindings-file)
 
-;; Duplicate current line
-(global-set-key (kbd "C-c d") 'my-duplicate-current-line-or-region)
+;; Duplicate current line or region
+(global-set-key (kbd "C-c d") 'nc/duplicate-current-line-or-region)
 
 ;;; Join lines
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
@@ -88,8 +88,6 @@
 (global-set-key (kbd "C->") 'mc/mark-next-word-like-this)
 (global-set-key (kbd "C-*") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-%") 'mc/mark-all-dwim)
-
-;; (global-set-key (kbd "M-å") 'mc/mark-all-in-region)
 
 
 
@@ -110,6 +108,7 @@
 (key-chord-define-global "JJ" 'nc/switch-to-previous-buffer)
 (key-chord-define-global "uu" 'undo-tree-visualize)
 (key-chord-define-global "xx" 'execute-extended-command)
+(key-chord-define-global "qq" 'nc/cleanup-buffer)
 (key-chord-define-global "yy" 'browse-kill-ring)
 
 (key-chord-mode +1)

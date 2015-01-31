@@ -102,7 +102,7 @@ point reaches the beginning or end of the buffer, stop there."
       (message "Copied buffer file name '%s' to the clipboard." filename))))
 
 
-(defun my-duplicate-current-line-or-region (arg)
+(defun nc/duplicate-current-line-or-region (arg)
   "Duplicates the current line or region ARG times.
 If there's no region, the current line will be duplicated.  However, if
 there's a region, all lines that region covers will be duplicated."
@@ -124,7 +124,7 @@ there's a region, all lines that region covers will be duplicated."
       (goto-char (+ origin (* (length region) arg) arg)))))
 
 ;; TODO: Remove code duplication by extracting something more generic
-(defun duplicate-and-comment-current-line-or-region (arg)
+(defun nc/duplicate-and-comment-current-line-or-region (arg)
   "Duplicates and comments the current line or region ARG times.
 If there's no region, the current line will be duplicated.  However, if
 there's a region, all lines that region covers will be duplicated."
@@ -147,7 +147,7 @@ there's a region, all lines that region covers will be duplicated."
                   (setq end (point))))
       (goto-char (+ origin (* (length region) arg) arg)))))
 
-(defun rename-file-and-buffer ()
+(defun nc/rename-file-and-buffer ()
   "Renames current buffer and file it is visiting."
   (interactive)
   (let ((filename (buffer-file-name)))
@@ -160,7 +160,7 @@ there's a region, all lines that region covers will be duplicated."
           (rename-file filename new-name t)
           (set-visited-file-name new-name t t)))))))
 
-(defun delete-file-and-buffer ()
+(defun nc/delete-file-and-buffer ()
   "Kill the current buffer and deletes the file it is visiting."
   (interactive)
   (let ((filename (buffer-file-name)))
@@ -182,17 +182,28 @@ there's a region, all lines that region covers will be duplicated."
     (cond ((search-forward "<?xml" nil t) (nxml-mode))
           ((search-forward "<html" nil t) (html-mode)))))
 
-(defun untabify-buffer ()
+(defun nc/untabify-buffer ()
   "Remove all tabs from the current buffer."
   (interactive)
   (untabify (point-min) (point-max)))
 
-(defun cleanup-buffer ()
-  "Perform a bunch of operations on the whitespace content of a buffer."
+(defun nc/cleanup-buffer-safe ()
+  "Perform a bunch of safe operations on the whitespace content of a buffer.
+Does not indent buffer, because it is used for a before-save-hook, and that
+might be bad."
   (interactive)
-  (indent-buffer)
-  (untabify-buffer)
-  (whitespace-cleanup))
+  (nc/untabify-buffer)
+  (delete-trailing-whitespace)
+  (set-buffer-file-coding-system 'utf-8))
+
+(defun nc/cleanup-buffer ()
+  "Perform a bunch of operations on the whitespace content of a buffer.
+Including indent-buffer, which should not be called automatically on save."
+  (interactive)
+  (nc/cleanup-buffer-safe)
+  (indent-buffer))
+
+(global-set-key (kbd "C-c n") 'nc/cleanup-buffer)
 
 ;;; From prelude https://github.com/bbatsov/prelude/blob/master/core/prelude-core.el
 (defun nc/switch-to-previous-buffer ()
@@ -200,7 +211,5 @@ there's a region, all lines that region covers will be duplicated."
 Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
-
-
 
 (provide 'nc-functions)
