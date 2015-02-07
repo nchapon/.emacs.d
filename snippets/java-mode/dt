@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: Junit test method
-# key: test
+# name: Define test method
+# key: dt
 # --
 @Test
 public void should_$0() throws Exception {
