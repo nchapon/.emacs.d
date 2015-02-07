@@ -35,7 +35,7 @@
 
 
 ;; Find Recent File
-(global-set-key (kbd "C-x C-r")   'ido-recentf-open)
+(global-set-key (kbd "C-x C-r")   'helm-recentf)
 
 ;; Occurences in a file
 (global-set-key "\C-co" 'occur)

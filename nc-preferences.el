@@ -148,7 +148,6 @@
         ("*magit-diff*" :noselect t :height 40 :width 80)
         ("*magit-edit-log*" :noselect t :height 15 :width 80)
         ("\\*Slime Inspector.*" :regexp t :height 30)
-        ("*Ido Completions*" :noselect t :height 30)
         ("*eshell*" :height 30)
         ("\\*ansi-term\\*.*" :regexp t :height 30)
         ("*shell*" :height 30)
