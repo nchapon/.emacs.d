@@ -142,6 +142,7 @@
 (require 'nc-preferences)
 (require 'nc-ac)
 (require 'nc-clojure)
+(require 'nc-eshell)
 (require 'nc-functions)
 (require 'nc-projectile)
 (require 'nc-html)
@@ -152,8 +153,6 @@
 (require 'nc-paredit)
 (require 'nc-yasnippet)
 (require 'nc-bindings)
-
-
 
 
 ;;; Be sure path is correctly initialized : need by cider and javax !
