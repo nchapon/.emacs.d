@@ -2,6 +2,7 @@
 (require 'helm-projectile)
 (when (executable-find "curl")
   (setq helm-google-suggest-use-curl-p t))
+
 ;; See https://github.com/bbatsov/prelude/pull/670 for a detailed
 ;; discussion of these options.
 (setq helm-split-window-in-side-p t
@@ -23,6 +24,12 @@
 (define-key helm-command-map (kbd "SPC") 'helm-all-mark-rings)
 
 
+;; To be sure target dir is ignored for grep
+(add-to-list 'grep-find-ignored-directories "target")
+(add-to-list 'projectile-globally-ignored-directories "target")
+
+
+
 (require 'helm-eshell)
 
 (global-set-key (kbd "M-x") 'helm-M-x)
@@ -38,10 +45,12 @@
 (define-key minibuffer-local-map (kbd "C-c C-l") 'helm-minibuffer-history)
 ;; shell history.
 (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring)
+
 ;; use helm to list eshell history
 (add-hook 'eshell-mode-hook
           #'(lambda ()
               (substitute-key-definition 'eshell-list-history 'helm-eshell-history eshell-mode-map)))
+
 (substitute-key-definition 'find-tag 'helm-etags-select global-map)
 (setq projectile-completion-system 'helm)
 
