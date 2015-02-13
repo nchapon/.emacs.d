@@ -1,10 +1,10 @@
 # -*- mode: snippet -*-
 # name: Define test method
-# key: dt
+# key: test.test
 # --
 @Test
 public void should_$0() throws Exception {
 
-    asserThat(true).isFalse();
+    assertThat(true).isFalse();
 
 }

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name : List
+# key : ll
+# --
+List<${1:type}> ${2:variable} = new ${3:$$(yas/choose-value '("Array" "Linked"))}List<>();

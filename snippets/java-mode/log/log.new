@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: SFL4J Logger Factory
-# key: lnew
+# name: SFL4J Logger
+# key: log.new
 # --
 private static Logger logger = LoggerFactory.getLogger(`(file-name-sans-extension (buffer-name))`.class);

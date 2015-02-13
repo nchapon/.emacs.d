@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: Slf4J Import
-# key: limports
+# key: log.imp
 # --
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

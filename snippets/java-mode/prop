@@ -1,14 +1,14 @@
 # -*- mode: snippet -*-
-# name: property
+# name: declare property with getters and setters
 # key: prop
 # --
 private ${1:T} ${2:value};
 
-public $1 get${2:$(capitalize yas-text)}() {
+public $1 get${2:$(s-upper-camel-case yas-text)}() {
    return $2;
 }
 
-public void set${2:$(capitalize yas-text)}($1 $2) {
+public void set${2:$(s-upper-camel-case yas-text)}($1 $2) {
    this.$2 = $2;
 }
 $0
