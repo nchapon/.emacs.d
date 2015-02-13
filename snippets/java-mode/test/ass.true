@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name : Assert true
+# key : ass.true
+# --
+assertThat(${1:symbol}).isTrue();
