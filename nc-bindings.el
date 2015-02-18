@@ -107,6 +107,7 @@
 (key-chord-define-global "GG" 'projectile-grep)
 (key-chord-define-global "JJ" 'nc/switch-to-previous-buffer)
 (key-chord-define-global "DD" 'delete-region)
+(key-chord-define-global "OO" 'helm-occur)
 (key-chord-define-global "uu" 'undo-tree-visualize)
 (key-chord-define-global "xx" 'execute-extended-command)
 (key-chord-define-global "qq" 'nc/cleanup-buffer)
