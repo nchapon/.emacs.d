@@ -99,6 +99,7 @@
    (cons 'helm-ag melpa)
    (cons 'helm-descbinds melpa)
    (cons 'helm-projectile melpa)
+   (cons 'helm-gtags melpa)
    (cons 'htmlize melpa)
    (cons 'js2-mode melpa)
    (cons 'js2-refactor melpa)
