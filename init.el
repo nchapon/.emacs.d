@@ -80,7 +80,6 @@
 (defun init--install-packages ()
   (packages-install
    (cons 'ace-jump-mode melpa)
-   (cons 'auto-complete melpa)
    (cons 'browse-kill-ring melpa)
    (cons 'cider melpa)
    (cons 'clojure-mode melpa)
@@ -141,7 +140,7 @@
 
 (require 'nc-appearence)
 (require 'nc-preferences)
-(require 'nc-ac)
+(require 'nc-company)
 (require 'nc-clojure)
 (require 'nc-eshell)
 (require 'nc-projectile)
