@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Copies files to remote locations
+# key: copy
+# binding: direct-keybinding
+# --
+- name: ${1:Copies files to remote locations.}
+  copy: src=$2 dest=$3 $0
