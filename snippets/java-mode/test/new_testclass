@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: New test class ...
+# key: new_tclass
+# --
+package ${1:`(java-package)`};
+
+import static org.fest.assertions.Assertions.assertThat;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.After;
+
+public class ${2:`(java-class-name)`} {
+       $0
+}

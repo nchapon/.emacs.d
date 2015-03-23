@@ -11,6 +11,22 @@
   (setenv "JAVA_HOME" (shell-command-to-string "source ~/.bash_profile; echo -n $JAVA_HOME"))
   (setenv "PATH" (shell-command-to-string "source ~/.bash_profile; echo -n $PATH")))
 
+
+(defun java-package ()
+  "Returns java package name for the current buffer."
+  (interactive)
+  (--reduce
+   (format "%s.%s" acc it)
+   (split-string
+    (-last-item (s-split "src/main/java/\\|src/test/java/" default-directory))
+    "/" t)))
+
+(defun java-class-name ()
+  "Returns java class name for the current buffer."
+  (interactive)
+  (file-name-sans-extension (buffer-name)))
+
+
 (require 'javax-mode)
 
 (provide 'nc-java)
