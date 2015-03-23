@@ -16,12 +16,29 @@
 
 ;; Configure cider
 (setq cider-hide-special-buffers t)
-(setq cider-popup-stacktraces nil)
-(setq cider-repl-popup-stacktraces t)
-(setq cider-auto-select-error-buffer t)
+
+;;(setq cider-popup-stacktraces nil)
+;;(setq cider-repl-popup-stacktraces t)
+;;(setq cider-auto-select-error-buffer t)
+
+;; nice pretty printing
+(setq cider-repl-use-pretty-printing t)
+;; nicer font lock in REPL
+(setq cider-repl-use-clojure-font-lock t)
+
+;; result prefix for the REPL
+(setq cider-repl-result-prefix ";; => ")
+
 (setq cider-repl-wrap-history t)
-(setq cider-repl-history-size 1000)
-(setq cider-repl-history-file "~/.emacs.d/nrepl-history")
+
+;; looong history
+(setq cider-repl-history-size 3000)
+
+;; REPL history file
+(setq cider-repl-history-file "~/.emacs.d/cider-history")
+
+;; error buffer not popping up
+(setq cider-show-error-buffer nil)
 
 
 ;; Cider mode hook
