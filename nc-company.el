@@ -23,38 +23,10 @@
   (set-face-attribute 'company-scrollbar-bg nil :inherit 'company-tooltip :background "gray20")
   (set-face-attribute 'company-scrollbar-fg nil :background "gray40"))
 
-;; (when (executable-find "tern")
-;;   (after "company-tern-autoloads"
-;;     (add-to-list 'company-backends 'company-tern)))
-
-;; (setq company-global-modes
-;;       '(not
-;;         eshell-mode comint-mode org-mode erc-mode))
-
-;; (defadvice company-complete-common (around advice-for-company-complete-common activate)
-;;   (when (null (yas-expand))
-;;     ad-do-it))
-
-;; (defun my-company-tab ()
-;;   (interactive)
-;;   (when (null (yas-expand))
-;;     (company-select-next)))
-
-;; Yasnippet is only accessible with c tab
-(global-set-key (kbd "<C-tab>") 'company-yasnippet)
-
-
-
+;; Yasnippet is only accessible with ALT INSERT
+(nc/after-load 'company
+  (global-set-key (kbd "<M-insert>") 'company-yasnippet))
 
 (global-company-mode)
-
-;; (when (display-graphic-p)
-;;   (require-package 'company-quickhelp)
-;;   (setq company-quickhelp-delay 0.2)
-;;   (company-quickhelp-mode t))
-
-
-
-
 
 (provide 'nc-company)
