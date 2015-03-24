@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
-# name: Log Debug
-# key: log.deb
+# name: Logger Debug
+# key: ld
+# group: Logger
 # --
 logger.debug("");

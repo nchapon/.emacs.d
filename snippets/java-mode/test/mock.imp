@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
-# name: Mockito Static Import
-# key: mock.imp
+# name: Import Mockito Classes
+# key: tim
+# group: Test
 # --
 import static org.mockito.Mockito.*;

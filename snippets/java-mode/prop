@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: declare property with getters and setters
+# name: New Property with getters and setters
 # key: prop
 # --
 private ${1:T} ${2:value};

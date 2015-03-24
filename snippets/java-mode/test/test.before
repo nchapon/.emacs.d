@@ -1,5 +1,7 @@
 # -*- mode: snippet -*-
-# name : @Before
+# name: Test Before Method
+# key: tb
+# group: Test
 #  --
 /**
 *

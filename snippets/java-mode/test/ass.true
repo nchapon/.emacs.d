@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
-# name : Assert true
-# key : ass.true
+# name : Assert True
+# key : tat
+# group: Test
 # --
 assertThat(${1:symbol}).isTrue();

@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
-# name: New test class ...
-# key: new_tclass
+# name: New Junit Test Class
+# key: tcla
+# group: Test
 # --
 package ${1:`(java-package)`};
 

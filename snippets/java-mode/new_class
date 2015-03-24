@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: new class ...
-# key: new_class
+# name: New Class
+# key: cla
 # --
 package ${1:`(java-package)`};
 

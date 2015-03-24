@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: package
+# name: Package
 # key: pa
 # --
 package ${1:`(--reduce

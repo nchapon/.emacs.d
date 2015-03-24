@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
-# name: Slf4J Import
-# key: log.imp
+# name: Import Logger
+# key: limp
+# group: Logger
 # --
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
 # name : Assert Equals
-# key : ass.equals
+# key : tae
+# group: Test
 # --
 assertThat(${1:expected}).isEqualTo(${2:actual});

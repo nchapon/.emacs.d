@@ -1,9 +1,8 @@
 # -*- mode: snippet -*-
-#name : @After
+# name: Test After Method
+# key: ta
+# group: Test
 # --
-/**
-*
-*/
 @After
 public void ${1:name}() {
    $0

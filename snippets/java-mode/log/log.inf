@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
 # name: Logger Info
-# key: log.inf
+# key: li
+# group: Logger
 # --
-logger.info("");
+logger.info("$1");

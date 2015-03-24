@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
-# name: Define test method
-# key: test.test
+# name: New Test Method
+# key: tm
+# group: Test
 # --
 @Test
 public void should_$0() throws Exception {
