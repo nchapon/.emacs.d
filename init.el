@@ -1,5 +1,3 @@
-(setq debug-on-error t)
-
 ;; Set path to dependencies
 (setq site-lisp-dir
       (expand-file-name "site-lisp" user-emacs-directory))
@@ -137,7 +135,7 @@
 ;;;
 ;;; custom configuration
 ;;;
-
+(require 'nc-functions)
 (require 'nc-appearence)
 (require 'nc-preferences)
 (require 'nc-company)
@@ -151,7 +149,6 @@
 (require 'nc-org)
 (require 'nc-paredit)
 (require 'nc-yasnippet)
-(require 'nc-functions)
 (require 'nc-bindings)
 
 
