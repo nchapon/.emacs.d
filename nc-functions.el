@@ -182,28 +182,17 @@ there's a region, all lines that region covers will be duplicated."
     (cond ((search-forward "<?xml" nil t) (nxml-mode))
           ((search-forward "<html" nil t) (html-mode)))))
 
-(defun nc/untabify-buffer ()
-  "Remove all tabs from the current buffer."
+(defun nc/clean-up-buffer-or-region ()
+  "Untabifies, indents and deletes trailing whitespace from buffer or region."
   (interactive)
-  (untabify (point-min) (point-max)))
-
-(defun nc/cleanup-buffer-safe ()
-  "Perform a bunch of safe operations on the whitespace content of a buffer.
-Does not indent buffer, because it is used for a before-save-hook, and that
-might be bad."
-  (interactive)
-  (nc/untabify-buffer)
-  (delete-trailing-whitespace)
-  (set-buffer-file-coding-system 'utf-8))
-
-(defun nc/cleanup-buffer ()
-  "Perform a bunch of operations on the whitespace content of a buffer.
-Including indent-buffer, which should not be called automatically on save."
-  (interactive)
-  (nc/cleanup-buffer-safe)
-  (indent-buffer))
-
-(global-set-key (kbd "C-c n") 'nc/cleanup-buffer)
+  (save-excursion
+    (unless (region-active-p)
+      (mark-whole-buffer))
+    (untabify (region-beginning) (region-end))
+    (indent-region (region-beginning) (region-end))
+    (save-restriction
+      (narrow-to-region (region-beginning) (region-end))
+      (delete-trailing-whitespace))))
 
 ;;; From prelude https://github.com/bbatsov/prelude/blob/master/core/prelude-core.el
 (defun nc/switch-to-previous-buffer ()
