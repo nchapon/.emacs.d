@@ -73,11 +73,17 @@
   (delete-other-windows))
 
 
+(defun require-package (package)
+  "Install given PACKAGE only if it's not already installed."
+  (when (not (package-installed-p package))
+    (package-install package)))
+
 
 ;; Install extensions if they're missing
 (defun init--install-packages ()
   (packages-install
    (cons 'ace-jump-mode melpa)
+   (cons 'ace-window melpa)
    (cons 'browse-kill-ring melpa)
    (cons 'cider melpa)
    (cons 'clojure-mode melpa)
@@ -138,6 +144,7 @@
 (require 'nc-functions)
 (require 'nc-appearence)
 (require 'nc-preferences)
+(require 'nc-navigation)
 (require 'nc-company)
 (require 'nc-clojure)
 (require 'nc-eshell)
@@ -150,6 +157,10 @@
 (require 'nc-paredit)
 (require 'nc-yasnippet)
 (require 'nc-bindings)
+
+
+
+
 
 
 ;;; Be sure path is correctly initialized : need by cider and javax !
