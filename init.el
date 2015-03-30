@@ -72,18 +72,32 @@
   (package-initialize)
   (delete-other-windows))
 
+(require 'cl)
+
+(defun online? ()
+  (if (and (functionp 'network-interface-list)
+           (network-interface-list))
+      (some (lambda (iface) (unless (equal "lo" (car iface))
+                              (member 'up (first (last (network-interface-info
+                                                        (car iface)))))))
+            (network-interface-list))
+    t))
+
+
+(when (online?)
+  (unless package-archive-contents (package-refresh-contents)))
+
 
 (defun require-package (package)
   "Install given PACKAGE only if it's not already installed."
   (when (not (package-installed-p package))
     (package-install package)))
 
-
+;; All the code below should be deleted...
 ;; Install extensions if they're missing
 (defun init--install-packages ()
   (packages-install
    (cons 'ace-jump-mode melpa)
-   (cons 'ace-window melpa)
    (cons 'browse-kill-ring melpa)
    (cons 'cider melpa)
    (cons 'clojure-mode melpa)
