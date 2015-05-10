@@ -99,6 +99,8 @@
   (packages-install
    (cons 'ace-jump-mode melpa)
    (cons 'browse-kill-ring melpa)
+   (cons 'queue gnu) ;; emacs 24.5 need by cider
+   (cons 'let-alist gnu) ;; emacs 24.5 need by flycheck
    (cons 'cider melpa)
    (cons 'clojure-mode melpa)
    (cons 'color-theme-solarized melpa)
