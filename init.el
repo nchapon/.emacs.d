@@ -24,6 +24,9 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+(setq proxy-config (concat user-settings-dir "/proxy.config"))
+(when (file-exists-p proxy-config)
+  (load proxy-config))
 
 
 ;; Add external projects to load path
@@ -31,7 +34,7 @@
   (when (file-directory-p project)
     (add-to-list 'load-path project)))
 
-;;;
+;;
 ;;; Setup packages
 ;;;
 (require 'package)
@@ -97,6 +100,7 @@
 ;; Install extensions if they're missing
 (defun init--install-packages ()
   (packages-install
+   (cons 'use-package melpa)
    (cons 'ace-jump-mode melpa)
    (cons 'browse-kill-ring melpa)
    (cons 'queue gnu) ;; emacs 24.5 need by cider
@@ -175,13 +179,10 @@
 (require 'nc-bindings)
 
 
-
-
-
-
 ;;; Be sure path is correctly initialized : need by cider and javax !
 (require 'exec-path-from-shell)
-(exec-path-from-shell-initialize)
+(when (string-equal system-type "gnu/linux")
+  (exec-path-from-shell-initialize))
 
 ;;; From https://github.com/magnars/.emacs.d/blob/master/init.el
 ;;; Conclude init by setting up specifics for the current system
