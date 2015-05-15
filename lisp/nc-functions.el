@@ -22,7 +22,7 @@
 ;;; Edit user configuration file
 (defun my-config-file (f)
   "Edit user emacs configuration file"
-    (find-file-other-window (concat user-emacs-directory f)))
+    (find-file-other-window (concat user-emacs-directory "lisp/" f)))
 
 
 (defun my-prefs-file ()

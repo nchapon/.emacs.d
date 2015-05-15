@@ -1,19 +1,11 @@
-;; Set path to dependencies
-(setq site-lisp-dir
-      (expand-file-name "site-lisp" user-emacs-directory))
+;;;
+;;; Load path
+;;;
 
-(setq
- tmp-dir      (file-name-as-directory (concat user-emacs-directory "tmp"))
- autosaves-dir(file-name-as-directory (concat tmp-dir  "autosaves"))
- backups-dir  (file-name-as-directory (concat tmp-dir  "backups")))
-
-;; create tmp dirs if necessary
-(make-directory tmp-dir t)
-(make-directory autosaves-dir t)
-(make-directory backups-dir t)
+(setq site-lisp-dir (expand-file-name "site-lisp" user-emacs-directory))
 
 ;; Set up load path
-(add-to-list 'load-path user-emacs-directory)
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (add-to-list 'load-path site-lisp-dir)
 
 ;;; Add user specific config
@@ -34,7 +26,21 @@
   (when (file-directory-p project)
     (add-to-list 'load-path project)))
 
-;;
+;;;
+;;; Autosave and backups-dir
+;;;
+
+(setq
+ tmp-dir      (file-name-as-directory (concat user-emacs-directory "tmp"))
+ autosaves-dir(file-name-as-directory (concat tmp-dir  "autosaves"))
+ backups-dir  (file-name-as-directory (concat tmp-dir  "backups")))
+
+;; create tmp dirs if necessary
+(make-directory tmp-dir t)
+(make-directory autosaves-dir t)
+(make-directory backups-dir t)
+
+;;;
 ;;; Setup packages
 ;;;
 (require 'package)
