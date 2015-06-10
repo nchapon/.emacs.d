@@ -24,3 +24,5 @@ session.*
 /custom.el
 /recentf
 /cider-history
+/projectile.cache
+/server/
