@@ -8,13 +8,13 @@
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (add-to-list 'load-path site-lisp-dir)
 
-;;; Add user specific config
-(setq user-settings-dir (concat user-emacs-directory "custom/" (car (split-string system-name "\\."))))
-(add-to-list 'load-path user-settings-dir)
-
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
   (load custom-file))
+
+;;; Add user specific config identified by hostname
+(setq user-settings-dir (concat user-emacs-directory "custom/" (car (split-string system-name "\\."))))
+(add-to-list 'load-path user-settings-dir)
 
 (setq proxy-config (concat user-settings-dir "/proxy.config"))
 (when (file-exists-p proxy-config)
@@ -180,7 +180,5 @@
 (when (string-equal system-type "gnu/linux")
   (exec-path-from-shell-initialize))
 
-;;; From https://github.com/magnars/.emacs.d/blob/master/init.el
-;;; Conclude init by setting up specifics for the current system
 (when (file-exists-p user-settings-dir)
-  (mapc 'load (directory-files user-settings-dir t "^[^#].*el$")))
+  (load (concat user-settings-dir "/" "init.el")))
