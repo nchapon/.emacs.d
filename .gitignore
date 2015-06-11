@@ -26,3 +26,4 @@ session.*
 /cider-history
 /projectile.cache
 /server/
+/games/

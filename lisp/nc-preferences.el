@@ -12,10 +12,6 @@
 ;; Allow pasting selection outside of Emacs
 (setq x-select-enable-clipboard t)
 
-;; Enable CUA mode
-;;(cua-mode t)
-;;(setq cua-enable-cua-keys t)
-
 ;; Auto refresh buffers
 (global-auto-revert-mode 1)
 
