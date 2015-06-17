@@ -136,6 +136,7 @@
    (cons 'popup melpa)
    (cons 'popwin melpa)
    (cons 'projectile melpa)
+   (cons 'rainbow-mode gnu)
    (cons 'restclient melpa)
    (cons 'smartparens melpa)
    (cons 'smart-mode-line melpa)
