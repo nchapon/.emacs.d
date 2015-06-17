@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: main method
+# key: main
+# binding: direct-keybinding
+# --
+public static void main(String[] args) {
+    $0
+}
