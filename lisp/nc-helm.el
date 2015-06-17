@@ -1,3 +1,4 @@
+(require 'use-package)
 (require 'helm-config)
 (require 'helm-projectile)
 (when (executable-find "curl")
@@ -27,8 +28,6 @@
 ;; To be sure target dir is ignored for grep
 (add-to-list 'grep-find-ignored-directories "target")
 (add-to-list 'projectile-globally-ignored-directories "target")
-
-
 
 (require 'helm-eshell)
 
@@ -84,7 +83,9 @@
      (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)))
 
 
-
+(use-package helm-git-grep
+    :ensure t
+    :bind ("C-c g" . helm-git-grep))
 
 
 
