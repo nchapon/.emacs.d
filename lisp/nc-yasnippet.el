@@ -1,4 +1,5 @@
 (require 'yasnippet)
+(require 'use-package)
 
 ;; Use only own snippets, do not use bundled ones
 (setq yas/snippet-dirs '("~/.emacs.d/snippets"))
@@ -24,5 +25,29 @@
                       (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
                       (define-key yas/keymap [tab] 'yas/next-field)))
 
+
+(use-package helm-config
+  :defer t
+  :config
+  (use-package yasnippet
+    :bind ("M-=" . yas-insert-snippet)
+    :config
+    (progn
+      (defun my-yas/prompt (prompt choices &optional display-fn)
+        (let* ((names (loop for choice in choices
+                            collect (or (and display-fn
+                                             (funcall display-fn choice))
+                                        choice)))
+               (selected (helm-other-buffer
+                          `(((name . ,(format "%s" prompt))
+                             (candidates . names)
+                             (action . (("Insert snippet" . (lambda (arg)
+                                                              arg))))))
+                          "*helm yas/prompt*")))
+          (if selected
+              (let ((n (position selected names :test 'equal)))
+                (nth n choices))
+            (signal 'quit "user quit!"))))
+      (custom-set-variables '(yas/prompt-functions '(my-yas/prompt))))))
 
 (provide 'nc-yasnippet)
