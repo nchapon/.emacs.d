@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: java-enum
-# key: java-enum
+# name: enum -- Create new Java Enum
+# key: enum
 # type: command
 # --
 (let ((yas-good-grace nil)

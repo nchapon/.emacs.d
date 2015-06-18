@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name:  Default constructor
+# name:  ctor -- Default constructor
 # key: ctor
 # --
 public `(file-name-sans-extension (buffer-name))`() {

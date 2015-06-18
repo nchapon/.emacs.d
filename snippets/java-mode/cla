@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: New Class
+# name: cla -- Creates new class.
 # key: cla
 # --
 package ${1:`(java-package)`};

@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: Enumeration : iterate over values
+# name: while-enum -- Enumeration : iterate over values
 # key: while-enum
 # --
 while($0.hasMoreElements()){
