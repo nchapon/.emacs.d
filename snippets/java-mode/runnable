@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: runnable
+# key: runnable
+# binding: direct-keybinding
+# --
+new Runnable() {
+    public void run() {
+        $0
+}

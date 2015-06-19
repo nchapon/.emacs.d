@@ -1,5 +1,5 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: main-- new Main Method
+# name: main method
 # key: main
 # binding: direct-keybinding
 # --

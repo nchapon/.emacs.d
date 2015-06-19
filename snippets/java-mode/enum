@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: enum -- Create new Java Enum
+# name: public enum
 # key: enum
 # type: command
 # --

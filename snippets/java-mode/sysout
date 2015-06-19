@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: System.out.println
+# key: sysout
+# binding: direct-keybinding
+# --
+System.out.println("$0");

@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: new -- Declare and instantiate object
+# name: cerate new object
 # key: new
 # --
 ${1:Object} ${1:$(downcase yas-text)} = new $1($2);$0
