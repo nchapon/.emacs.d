@@ -30,7 +30,7 @@
   :defer t
   :config
   (use-package yasnippet
-    :bind ("M-=" . yas-insert-snippet)
+    :bind ("M-<insert>" . yas-insert-snippet)
     :config
     (progn
       (defun my-yas/prompt (prompt choices &optional display-fn)

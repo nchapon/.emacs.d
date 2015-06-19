@@ -25,7 +25,7 @@
 
 ;; Yasnippet is only accessible with ALT INSERT
 (nc/after-load 'company
-  (global-set-key (kbd "<M-insert>") 'company-yasnippet))
+  (global-set-key (kbd "M-=") 'company-yasnippet))
 
 (global-company-mode)
 
