@@ -1,0 +1,5 @@
+# contributor: Nicolas Chapon
+# name: <java.version>...</java.version>
+# key: java
+# --
+<java.version>$0</java.version>
