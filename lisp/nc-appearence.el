@@ -11,6 +11,12 @@
        color-theme-is-global t
        truncate-partial-width-windows nil)
 
+;;; Install source code pro before.
+(cond
+ ((find-font (font-spec :name "Source Code Pro"))
+   (set-frame-font "Source Code Pro-14" nil t)))
+
+
 (set-face-background 'region "#585953")
 
 ;;; Org Mode Faces
