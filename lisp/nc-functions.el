@@ -208,4 +208,18 @@ Repeated invocations toggle between the two most recently open buffers."
   `(eval-after-load ,feature
      '(progn ,@body)))
 
+
+(defun nc/markdown-code-block (beg end)
+  "Wrap the current region into a code block."
+  (interactive "r")
+  (save-excursion
+    (goto-char end)
+    (when (not (bolp))
+      (insert "\n"))
+    (insert "```\n")
+    (goto-char beg)
+    (forward-line 0)
+    (insert "```\n")))
+
+
 (provide 'nc-functions)
