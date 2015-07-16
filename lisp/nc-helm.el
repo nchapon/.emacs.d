@@ -59,14 +59,6 @@
 ;; enable Helm version of Projectile with replacment commands
 (helm-projectile-on)
 
-;; search in my notes
-(defvar nc/notes-directory "~/notes")
-
-(defun nc/helm-do-grep-notes ()
-  "Search my book notes."
-  (interactive)
-  (helm-do-grep-1 (list nc/notes-directory) t))
-
 ;; Using GTAGS
 (add-hook 'java-mode-hook 'helm-gtags-mode)
 
