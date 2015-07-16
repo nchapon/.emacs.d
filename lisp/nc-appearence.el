@@ -10,7 +10,38 @@
 
 (load-theme 'leuven t) ;;; Switch to zenburn because solarized is broken
 
+(defun nc-appearance/light ()
+  (interactive)
+  (load-theme 'leuven t)
+  (set-face-attribute 'mode-line nil
+                      :foreground "#cccccc"
+                      :background "#000000"
+                      :box nil
+                      :weight 'bold)
+  (set-face-attribute 'mode-line-buffer-id nil
+                      :foreground "white"
+                      :weight 'bold))
 
+
+(defun nc-appearance/dark ()
+  (interactive)
+  (load-theme 'zenburn t)
+  (set-face-background 'region "#585953")
+  ;; Subtler highlight
+;;(set-face-background 'magit-item-highlight "#121212")
+;;(set-face-foreground 'diff-context "#666666")
+;;(set-face-foreground 'diff-added "#00cc33")
+;;(set-face-foreground 'diff-removed "#ff0000"))
+
+
+;; Install the colour scheme according to personal taste.
+(defun nc-appearance/apply-style ()
+  (interactive)
+  (cond
+   ((equal nc-personal-taste/style 'dark)
+    (nc-appearance/dark))
+   ((equal nc-personal-taste/style 'light)
+    (nc-appearance/light))))
 
 
 
@@ -25,7 +56,7 @@
    (set-frame-font "Source Code Pro-14" nil t)))
 
 
-;;(set-face-background 'region "#585953")
+
 
 ;;; Org Mode Faces
 (setq org-todo-keyword-faces
