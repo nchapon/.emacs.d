@@ -4,7 +4,15 @@
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
 ;;; By default solorized dark
-(load-theme 'zenburn t) ;;; Switch to zenburn because solarized is broken
+(setq custom-appearance (concat user-settings-dir "/appearance.el"))
+
+
+
+(load-theme 'leuven t) ;;; Switch to zenburn because solarized is broken
+
+
+
+
 
 (setq visible-bell t
        font-lock-maximum-decoration t
@@ -17,7 +25,7 @@
    (set-frame-font "Source Code Pro-14" nil t)))
 
 
-(set-face-background 'region "#585953")
+;;(set-face-background 'region "#585953")
 
 ;;; Org Mode Faces
 (setq org-todo-keyword-faces
