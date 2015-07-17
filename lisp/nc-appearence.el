@@ -16,7 +16,6 @@
   (set-face-attribute 'mode-line nil
                       :foreground "#cccccc"
                       :background "#000000"
-                      :box nil
                       :weight 'bold)
   (set-face-attribute 'mode-line-buffer-id nil
                       :foreground "white"
@@ -28,10 +27,10 @@
   (load-theme 'zenburn t)
   (set-face-background 'region "#585953")
   ;; Subtler highlight
-;;(set-face-background 'magit-item-highlight "#121212")
-;;(set-face-foreground 'diff-context "#666666")
-;;(set-face-foreground 'diff-added "#00cc33")
-;;(set-face-foreground 'diff-removed "#ff0000"))
+  (set-face-background 'magit-item-highlight "#121212")
+  (set-face-foreground 'diff-context "#666666")
+  (set-face-foreground 'diff-added "#00cc33")
+  (set-face-foreground 'diff-removed "#ff0000"))
 
 
 ;; Install the colour scheme according to personal taste.
