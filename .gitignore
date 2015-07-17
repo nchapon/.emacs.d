@@ -14,7 +14,6 @@ session.*
 /nrepl-history
 .cask/
 /eshell/
-/custom/
 /.mc-lists.el
 /%backup%~
 /projectile-bookmarks.eld
