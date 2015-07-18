@@ -7,9 +7,6 @@
 (setq custom-appearance (concat user-settings-dir "/appearance.el"))
 
 
-
-(load-theme 'leuven t) ;;; Switch to zenburn because solarized is broken
-
 (defun nc-appearance/light ()
   (interactive)
   (load-theme 'leuven t)
@@ -21,7 +18,7 @@
                       :foreground "white"
                       :weight 'bold))
 
-
+(require 'magit)
 (defun nc-appearance/dark ()
   (interactive)
   (load-theme 'zenburn t)
@@ -33,6 +30,13 @@
   (set-face-foreground 'diff-removed "#ff0000"))
 
 
+(defcustom nc-personal-taste/style 'dark
+  "Light or dark colour scheme?"
+  :group 'ohai-emacs
+  :type '(choice (const :tag "Light" light)
+                 (const :tag "Dark" dark)))
+
+
 ;; Install the colour scheme according to personal taste.
 (defun nc-appearance/apply-style ()
   (interactive)
@@ -42,6 +46,8 @@
    ((equal nc-personal-taste/style 'light)
     (nc-appearance/light))))
 
+
+(nc-appearance/apply-style)
 
 
 (setq visible-bell t
