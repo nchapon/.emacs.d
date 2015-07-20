@@ -3,9 +3,16 @@
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
-;;; By default solorized dark
-(setq custom-appearance (concat user-settings-dir "/appearance.el"))
 
+
+;; Two appearance themes light or dark
+;; By defaut fark theme
+;; Light theme can be persisted for future sessions with customize menu (M-x customize)
+(defcustom nc/style 'dark
+  "Light or dark colour scheme?"
+  :group 'nc-emacs
+  :type '(choice (const :tag "Light" light)
+                 (const :tag "Dark" dark)))
 
 (defun nc-appearance/light ()
   (interactive)
@@ -30,23 +37,16 @@
   (set-face-foreground 'diff-removed "#ff0000"))
 
 
-(defcustom nc-personal-taste/style 'dark
-  "Light or dark colour scheme?"
-  :group 'ohai-emacs
-  :type '(choice (const :tag "Light" light)
-                 (const :tag "Dark" dark)))
-
-
-;; Install the colour scheme according to personal taste.
+;; Install the colour scheme according to personal style.
 (defun nc-appearance/apply-style ()
   (interactive)
   (cond
-   ((equal nc-personal-taste/style 'dark)
+   ((equal nc/style 'dark)
     (nc-appearance/dark))
-   ((equal nc-personal-taste/style 'light)
+   ((equal nc/style 'light)
     (nc-appearance/light))))
 
-
+;; Apply theme style
 (nc-appearance/apply-style)
 
 
@@ -60,9 +60,6 @@
  ((find-font (font-spec :name "Source Code Pro"))
    (set-frame-font "Source Code Pro-14" nil t)))
 
-
-
-
 ;;; Org Mode Faces
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "red" :weight bold))
@@ -75,7 +72,6 @@
 ;;; make fringe smaller
 (if (fboundp 'fringe-mode)
     (fringe-mode 4))
-
 
 ;; Smart mode line
 (require 'smart-mode-line)
