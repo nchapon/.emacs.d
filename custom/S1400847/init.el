@@ -118,34 +118,4 @@
   (interactive)
   (file-name-sans-extension (buffer-name)))
 
-(defun java-eval ()
-  "Run current Java file."
-  (interactive)
-  (save-buffer)
-  (let* ((source (file-name-nondirectory buffer-file-name))
-         (out (file-name-sans-extension source))
-         (class (concat (jx/mvn-project-dir) out ".class")))
-    (setenv "CLASSPATH" default-directory)
-    (shell-command (format "rm -f %s && javac %s" class source))
-    (if (file-exists-p class)
-        (message (shell-command-to-string (format "java -cp target %s" out)))
-      (progn
-        (set (make-local-variable 'compile-command)
-             (format "javac %s" source))
-
-        (command-execute 'compile)))))
-
-
-(defun java-full-class-name ()
-    "Returns java full classname (x.y.z.Class) from current buffer"
-  (interactive)
-  (concat (java-package) "." (java-class-name)))
-
-(defun java-eval-buffer ()
-    "DOCSTRING"
-    (interactive)
-    (message (shell-command-to-string (format "cd %s && java -cp target/classes %s" (jx/mvn-project-dir) (java-full-class-name)))))
-
-
-
 (setq nxml-child-indent 4)

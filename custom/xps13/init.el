@@ -140,3 +140,11 @@
          ("\C-cN" . find-daypage))
   :init
   (setq daypage-path "/home/nchapon/notes/GTD/days/"))
+
+
+
+(add-hook 'java-mode-hook
+          (lambda ()
+            (c-set-offset 'substatement-open 0
+                          (if (assoc 'inexpr-class c-offsets-alist)
+                              (c-set-offset 'inexpr-class 0)))))
