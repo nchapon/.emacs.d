@@ -31,7 +31,8 @@
   (load-theme 'zenburn t)
   (set-face-background 'region "#585953")
   ;; Subtler highlight
-  (set-face-background 'magit-item-highlight "#121212")
+  (set-face-background 'magit-section-highlight "#121212")
+
   (set-face-foreground 'diff-context "#666666")
   (set-face-foreground 'diff-added "#00cc33")
   (set-face-foreground 'diff-removed "#ff0000"))
