@@ -2,5 +2,8 @@
 # name: creates new HashMap
 # key: chm
 # group: collection
+# condition: javax-mode
 # --
+`(jx/add-import-if-necessary "java.util.HashMap")`
+`(jx/add-import-if-necessary "java.util.Map")`
 Map<${1:Type}> ${2:name} = new HashMap<>();
