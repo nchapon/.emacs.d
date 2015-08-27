@@ -50,7 +50,8 @@
    (concat org-notes-directory "/" path))
 
 ;;; Agenda configuration
-(setq org-agenda-files (list (expand-org-notes-path "GTD/todo.org")))
+(setq org-agenda-files (list (expand-org-notes-path "GTD/todo.org")
+                             (expand-org-notes-path "GTD/tolearn.org")))
 
 (setq diary-file (expand-org-notes-path "diary"))
 
