@@ -40,9 +40,9 @@
 (defvar org-notes-directory "C:/PROGRAMJAVA/nchapon/notes")
 
 (defun nc/helm-do-grep-notes ()
-  "Search my book notes."
+  "Search in my org notes."
   (interactive)
-  (helm-do-grep-1 (list org-notes-directory) t))
+  (helm-do-grep-1 (list org-notes-directory) t nil (list "*.org")))
 
 
 (defun expand-org-notes-path (path)
