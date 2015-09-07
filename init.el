@@ -102,12 +102,14 @@
    (cons 'queue gnu) ;; emacs 24.5 need by cider
    (cons 'let-alist gnu) ;; emacs 24.5 need by flycheck
    (cons 'cider melpa)
+   (cons 'clj-refactor melpa)
    (cons 'clojure-mode melpa)
    (cons 'color-theme-solarized melpa)
    (cons 'company melpa)
    (cons 'exec-path-from-shell melpa)
    (cons 'expand-region melpa)
    (cons 'feature-mode melpa)
+   (cons 'f melpa)
    (cons 'flycheck melpa)
    (cons 'fuzzy melpa)
    (cons 'gist melpa)
