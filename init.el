@@ -48,10 +48,12 @@
 
 (defvar gnu '("gnu" . "http://elpa.gnu.org/packages/"))
 (defvar melpa '("melpa" . "http://melpa.milkbox.net/packages/"))
+(defvar melpa-stable '("melpa" . "https://stable.melpa.org/packages/"))
 
 
 (add-to-list 'package-archives melpa t)
 (add-to-list 'package-archives gnu t)
+(add-to-list 'package-archives melpa-stable t)
 
 (package-initialize)
 
@@ -101,8 +103,8 @@
    (cons 'browse-kill-ring melpa)
    (cons 'queue gnu) ;; emacs 24.5 need by cider
    (cons 'let-alist gnu) ;; emacs 24.5 need by flycheck
-   (cons 'cider melpa)
-   (cons 'clj-refactor melpa)
+   (cons 'cider melpa-stable)
+   (cons 'clj-refactor melpa-stable)
    (cons 'clojure-mode melpa)
    (cons 'color-theme-solarized melpa)
    (cons 'company melpa)
