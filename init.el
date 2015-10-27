@@ -132,6 +132,7 @@
    (cons 'midje-mode melpa)
    (cons 'move-text melpa)
    (cons 'multiple-cursors melpa)
+   (cons 'ox-reveal melpa)
    (cons 'paredit melpa)
    (cons 'pkg-info melpa)
    (cons 'pomodoro melpa)
