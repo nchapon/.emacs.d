@@ -47,8 +47,8 @@
 
 
 (defvar gnu '("gnu" . "http://elpa.gnu.org/packages/"))
-(defvar melpa '("melpa" . "http://melpa.milkbox.net/packages/"))
-(defvar melpa-stable '("melpa" . "https://stable.melpa.org/packages/"))
+(defvar melpa '("melpa" . "https://melpa.org/packages/"))
+(defvar melpa-stable '("melpa-stable" . "https://stable.melpa.org/packages/"))
 
 
 (add-to-list 'package-archives melpa t)
@@ -132,7 +132,7 @@
    (cons 'midje-mode melpa)
    (cons 'move-text melpa)
    (cons 'multiple-cursors melpa)
-   (cons 'ox-reveal melpa)
+   ;;(cons 'ox-reveal melpa)
    (cons 'paredit melpa)
    (cons 'pkg-info melpa)
    (cons 'pomodoro melpa)
