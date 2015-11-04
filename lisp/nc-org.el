@@ -14,5 +14,7 @@
 ;; Diary
 (setq org-agenda-include-diary t)
 
+;; Line in agenda is selected
+(add-hook 'org-agenda-mode-hook 'hl-line-mode)
 
 (provide 'nc-org)
