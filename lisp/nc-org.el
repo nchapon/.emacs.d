@@ -100,4 +100,10 @@
         ("j" "Journal" entry (file+datetree (nc/expand-org-notes-path "GTD/journal.org"))
          "* %?\nEntered on %U\n  %i\n  %a")))
 
+
+;; Refile
+; Targets include this file and any file contributing to the agenda - up to 3 levels deep
+(setq org-refile-targets (quote ((nil :maxlevel . 3)
+                                 (org-agenda-files :maxlevel . 3))))
+
 (provide 'nc-org)

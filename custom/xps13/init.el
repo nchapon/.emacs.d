@@ -1,6 +1,7 @@
 (require 'use-package)
 
 (setq org-agenda-files (list (nc/expand-org-notes-path "GTD/todo.org")
+                             (nc/expand-org-notes-path "GTD/refile.org")
                              (nc/expand-org-notes-path "GTD/tolearn.org")))
 
 ;;; Org crypt to use GPG
