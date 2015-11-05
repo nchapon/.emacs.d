@@ -61,15 +61,6 @@
  ((find-font (font-spec :name "Source Code Pro"))
    (set-frame-font "Source Code Pro-14" nil t)))
 
-;;; Org Mode Faces
-(setq org-todo-keyword-faces
-      '(("TODO" . (:foreground "red" :weight bold))
-    ("INPROGRESS" . (:foreground  "orange" :weight bold))
-    ("GET_SUBS" . (:foreground  "grey" :weight bold))
-    ("TO_SEE" . (:foreground "orange" :weight bold))
-    ("WAITING" . (:foreground  "cyan" :weight bold))
-    ("CANCELED" . (:foreground "grey" :weight bold))))
-
 ;;; make fringe smaller
 (if (fboundp 'fringe-mode)
     (fringe-mode 4))
