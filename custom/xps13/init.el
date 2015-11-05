@@ -1,13 +1,7 @@
 (require 'use-package)
 
-
-;;; AZ Settings
-(defun az-settings ()
-  "AZ Settings"
-  (interactive)
-  (setq nxml-child-indent 4)
-  (setq javax-mvn-build-command "az-mvn -f %spom.xml clean install -Ptheme.skip,jrebel")
-  (setq javax-mvn-compile-command "cd %s;az-mvn -o compile"))
+(setq org-agenda-files (list (nc/expand-org-notes-path "GTD/todo.org")
+                             (nc/expand-org-notes-path "GTD/tolearn.org")))
 
 ;;; Org crypt to use GPG
 (require 'org-crypt)
@@ -16,47 +10,6 @@
 ;; GPG key to use for encryption
 ;; Either the Key ID or set to nil to use symmetric encryption.
 (setq org-crypt-key nil)
-
-
-
-(setq org-agenda-files (list "~/notes/GTD/todo.org"
-                             "~/notes/GTD/toread.org"
-                             "~/notes/GTD/meetings.org"
-                             "~/notes/GTD/tolearn.org"
-                             "~/notes/GTD/tosee.org"))
-
-
-;;; Edit my todo page
-(defun nc/todo-page ()
-  "Edit my todo list page"
-  (interactive)
-  (find-file-other-window "~/notes/GTD/todo.org"))
-
-;;; Edit my meetings page
-(defun nc/meetings-page ()
-  "Edit my meetings page"
-  (interactive)
-  (find-file-other-window "~/notes/GTD/meetings.org"))
-
-;;; Binding
-(global-set-key "\C-cT" 'nc/todo-page)
-(global-set-key "\C-cM" 'nc/meetings-page)
-
-
-
-;; Capture mode
-(setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/notes/GTD/todo.org" "Tasks")
-         "* TODO %?\n  %i\n  %a")
-        ("l" "To learn" entry (file+headline "~/notes/GTD/tolearn.org" "To Learn")
-         "* TO_LEARN %?\n  %i\n  %a")
-        ("r" "To read" entry (file+headline "~/notes/GTD/toread.org" "To Read")
-         "* TO_READ %?\n  %i\n  %a")
-        ("f" "FishLog" plain (file+datetree+prompt "~/notes/private/fishlog.org")
-         "%[~/notes/templates/fishlog.org]"
-         )
-        ("j" "Journal" entry (file+datetree "~/notes/GTD/journal.org")
-         "* %?\nEntered on %U\n  %i\n  %a")))
 
 
 ;;; Publishing notes

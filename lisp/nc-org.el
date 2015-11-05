@@ -10,7 +10,7 @@
 (setq org-agenda-skip-scheduled-if-done t)
 
 
-
+;; TODO keywords
 (setq org-todo-keywords
       '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)" )))
 
@@ -62,5 +62,42 @@
 
 
 
+;;; Customize org notes directory
+;;; customize this variable if necessary (M-x customize-variable)
+(defcustom nc/org-notes-directory "~/notes"
+  "Org notes directory. By defaut in user Home directory"
+  :group 'nc-emacs
+  :type 'string
+  :safe 'stringp)
+
+(defun nc/helm-do-grep-notes ()
+  "Search in all my org notes."
+  (interactive)
+  (helm-do-grep-1 (list nc/org-notes-directory) t nil (list "*.org")))
+
+(defun nc/expand-org-notes-path (path)
+    "Expand org-notes-directory with PATH"
+   (concat nc/org-notes-directory "/" path))
+
+(setq diary-file (nc/expand-org-notes-path "diary"))
+
+;;; Edit my todo page
+(defun nc/todo-page ()
+  "Edit my todo list page"
+  (interactive)
+  (find-file-other-window (nc/expand-org-notes-path "GTD/todo.org")))
+
+;; Binding todo file
+(global-set-key "\C-cT" 'nc/todo-page)
+
+;; Capture mode
+(setq org-capture-templates
+      '(("t" "todo" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+        ("f" "FishLog" plain (file+datetree+prompt (nc/expand-org-notes-path "private/fishlog.org"))
+         "%[~/notes/templates/fishlog.org]"
+         )
+        ("j" "Journal" entry (file+datetree (nc/expand-org-notes-path "GTD/journal.org"))
+         "* %?\nEntered on %U\n  %i\n  %a")))
 
 (provide 'nc-org)

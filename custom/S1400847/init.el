@@ -37,38 +37,15 @@
 (if (eq window-system 'w32)
     (set-default-font "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1"))
 
-(defvar org-notes-directory "C:/PROGRAMJAVA/nchapon/notes")
-
-(defun nc/helm-do-grep-notes ()
-  "Search in my org notes."
-  (interactive)
-  (helm-do-grep-1 (list org-notes-directory) t nil (list "*.org")))
-
-
-(defun expand-org-notes-path (path)
-    "Expand org-notes-directory with PATH"
-   (concat org-notes-directory "/" path))
-
-;;; Agenda configuration
-(setq org-agenda-files (list (expand-org-notes-path "GTD/todo.org")
-                             (expand-org-notes-path "GTD/cnp.org")
-                             (expand-org-notes-path "GTD/tolearn.org")))
-
-(setq diary-file (expand-org-notes-path "diary"))
-
-;;; Edit my todo page
-(defun nc/todo-page ()
-  "Edit my todo list page"
-  (interactive)
-  (find-file-other-window (expand-org-notes-path "GTD/todo.org")))
-
-;; Binding todo file
-(global-set-key "\C-cT" 'nc/todo-page)
-
 (use-package cygwin-mount
              :ensure t
              :config (cygwin-mount-activate))
 
+
+;;; Agenda configuration
+(setq org-agenda-files (list (nc/expand-org-notes-path "GTD/todo.org")
+                             (nc/expand-org-notes-path "GTD/cnp.org")
+                             (nc/expand-org-notes-path "GTD/tolearn.org")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org day page configuration ;;
@@ -76,7 +53,7 @@
 (use-package org-daypage
   :load-path "C:/PROGRAMJAVA/nchapon/lisp/org-daypage"
   :config
-  (setq daypage-path (expand-org-notes-path "GTD/days/")))
+  (setq daypage-path (nc/expand-org-notes-path "GTD/days/")))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
