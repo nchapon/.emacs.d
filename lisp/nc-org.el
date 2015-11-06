@@ -129,8 +129,8 @@
 
 
 ;; Refile
-; Targets include this file and any file contributing to the agenda - up to 3 levels deep
-(setq org-refile-targets (quote ((nil :maxlevel . 3)
-                                 (org-agenda-files :maxlevel . 3))))
+; Targets include this file and any file contributing to the agenda - up to 2 levels deep
+(setq org-refile-targets (quote ((nil :maxlevel . 2)
+                                 (org-agenda-files :maxlevel . 2))))
 
 (provide 'nc-org)
