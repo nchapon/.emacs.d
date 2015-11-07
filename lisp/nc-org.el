@@ -104,7 +104,7 @@
 
 (defun nc/expand-org-notes-path (path)
     "Expand org-notes-directory with PATH"
-   (concat nc/org-notes-directory "/" path))
+    (expand-file-name (concat nc/org-notes-directory "/" path)))
 
 (setq diary-file (nc/expand-org-notes-path "diary"))
 
