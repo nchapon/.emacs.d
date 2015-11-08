@@ -68,8 +68,8 @@
 
         ("H" "Home and Office lists"
          ((agenda)
-          (tags-todo "CNP")
-          (tags-todo "HOME")
+          (tags-todo "@cnp")
+          (tags-todo "@home")
           (tags-todo "COMPUTER")
           (tags-todo "READING")
           (tags "-REFILE"
