@@ -2,6 +2,7 @@
 
 (setq org-agenda-files (list (nc/expand-org-notes-path "GTD/todo.org")
                              (nc/expand-org-notes-path "GTD/refile.org")
+                             (nc/expand-org-notes-path "GTD/journal.org")
                              (nc/expand-org-notes-path "GTD/someday.org")))
 
 ;;; Org crypt to use GPG
