@@ -39,6 +39,11 @@
 ;; Line in agenda is selected
 (add-hook 'org-agenda-mode-hook 'hl-line-mode)
 
+
+;;; Archiving
+(setq org-archive-mark-done nil)
+(setq org-archive-location "%s_archive::* Archived Tasks")
+
 (defun nc/skip-non-archivable-tasks ()
   "Skip trees that are not available for archiving"
   (save-restriction
