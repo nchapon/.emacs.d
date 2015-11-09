@@ -120,7 +120,9 @@
 ;; Capture mode
 (setq org-capture-templates
       '(("t" "todo" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
-               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+         "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+        ("r" "respond" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
         ("f" "FishLog" plain (file+datetree+prompt (nc/expand-org-notes-path "private/fishlog.org"))
          "%[~/notes/templates/fishlog.org]"
          )
