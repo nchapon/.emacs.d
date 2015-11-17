@@ -73,6 +73,9 @@
 
         ("H" "Home and Office lists"
          ((agenda)
+          (tags "REFILE"
+                      ((org-agenda-overriding-header "Tasks to Refile")
+                       (org-tags-match-list-sublevels nil)))
           (tags-todo "@cnp")
           (tags-todo "@home")
           (tags-todo "COMPUTER")
@@ -127,16 +130,18 @@
       '(("t" "todo" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
          "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
         ("r" "respond" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
-               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+               "* NEXT Repondre mail %? :MAIL:\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
         ("f" "FishLog" plain (file+datetree+prompt (nc/expand-org-notes-path "private/fishlog.org"))
          "%[~/notes/templates/fishlog.org]"
          )
+        ("n" "note" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
         ("j" "Journal" entry (file+datetree (nc/expand-org-notes-path "GTD/journal.org"))
          "* %?\nEntered on %U\n  %i\n  %a")))
 
 
 ;; Refile
-; Targets include this file and any file contributing to the agenda - up to 2 levels deep
+;; Targets include this file and any file contributing to the agenda - up to 2 levels deep
 (setq org-refile-targets (quote ((nil :maxlevel . 2)
                                  (org-agenda-files :maxlevel . 2))))
 
