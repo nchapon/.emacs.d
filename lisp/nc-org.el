@@ -116,7 +116,7 @@
 
 (setq diary-file (nc/expand-org-notes-path "diary"))
 
-;;; Edit my todo page
+;; Edit my todo page
 (defun nc/todo-page ()
   "Edit my todo list page"
   (interactive)
@@ -124,6 +124,16 @@
 
 ;; Binding todo file
 (global-set-key "\C-cT" 'nc/todo-page)
+
+
+;; Edit my journal file
+(defun nc/journal ()
+  "Edit my journal"
+  (interactive)
+  (find-file-other-window (nc/expand-org-notes-path "GTD/journal.org")))
+
+;; Binding journal file
+(global-set-key "\C-cj" 'nc/journal)
 
 ;; Capture mode
 (setq org-capture-templates
