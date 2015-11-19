@@ -9,6 +9,8 @@
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
 
+;; Display deadlines 30
+(setq org-deadline-warning-days 30)
 
 ;; TODO keywords
 (setq org-todo-keywords
