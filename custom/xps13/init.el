@@ -87,18 +87,6 @@
   (interactive)
   (file-name-sans-extension (buffer-name)))
 
-
-(use-package org-daypage
-  :load-path "/home/nchapon/work/emacs-lisp/org-daypage/"
-  :bind (("\C-cn" . todays-daypage)
-         ("\C-c." . daypage-time-stamp)
-         ("\C-ci" . daypage-new-item)
-         ("\C-cN" . find-daypage))
-  :init
-  (setq daypage-path "/home/nchapon/notes/GTD/days/"))
-
-
-
 (add-hook 'java-mode-hook
           (lambda ()
             (c-set-offset 'substatement-open 0

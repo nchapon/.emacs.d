@@ -49,14 +49,6 @@
                              (nc/expand-org-notes-path "GTD/journal.org")
                              (nc/expand-org-notes-path "GTD/someday.org")))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Org day page configuration ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package org-daypage
-  :load-path "C:/PROGRAMJAVA/nchapon/lisp/org-daypage"
-  :config
-  (setq daypage-path (nc/expand-org-notes-path "GTD/days/")))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Password management ;;
