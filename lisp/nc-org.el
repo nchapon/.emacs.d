@@ -29,6 +29,17 @@
               ("HOLD" :foreground "magenta" :weight bold)
               ("CANCELLED" :foreground "forest green" :weight bold))))
 
+;; Triggers that automatically assign tags to tasks based on
+;; state changes.
+(setq org-todo-state-tags-triggers
+      (quote (("CANCELLED" ("CANCELLED" . t))
+              ("WAITING" ("WAITING" . t))
+              ("HOLD" ("WAITING") ("HOLD" . t))
+              (done ("WAITING") ("HOLD"))
+              ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+              ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+              ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+
 ;; Diary
 (setq org-agenda-include-diary t)
 
@@ -69,24 +80,56 @@
             (or subtree-end (point-max)))
         next-headline))))
 
+(require 'org-helpers)
+
+(setq org-agenda-span 'day)
+
 (setq org-agenda-custom-commands
       '(("P" "Projects"
          ((tags "PROJECT")))
 
+        ("p" "Projects" tags-todo "-CANCELLED/!"
+         ((org-agenda-overriding-header "Currently Active Projects")
+          (org-agenda-skip-function
+           '(oh/agenda-skip :subtree-if '(non-project inactive)))
+          (org-agenda-sorting-strategy '(priority-down category-keep))
+          (org-tags-match-list-sublevels 'indented)))
+
         ("H" "Home and Office lists"
-         ((agenda)
+         ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep user-defined-up))))
           (tags "REFILE"
                       ((org-agenda-overriding-header "Tasks to Refile")
                        (org-tags-match-list-sublevels nil)))
-          (tags-todo "@cnp")
-          (tags-todo "@home")
-          (tags-todo "COMPUTER")
-          (tags-todo "READING")
+
+          (tags-todo "-archived-shopping-CANCELLED/!-HOLD-WAITING"
+                     ((org-agenda-overriding-header "Stuck Projects")
+                      (org-agenda-skip-function
+                       '(oh/agenda-skip :headline-if '(non-project)
+                                        :subtree-if '(non-stuck-project inactive-project scheduled deadline)))
+                        (org-tags-match-list-sublevels 'intended)))
+
+          (tags-todo "-WAITING-CANCELLED/!NEXT"
+                     ((org-agenda-overriding-header "Next Tasks")
+                      (org-agenda-skip-function
+                       '(oh/agenda-skip :subtree-if '(inactive project scheduled deadline)))
+                      (org-tags-match-list-sublevels t)
+                      (org-agenda-sorting-strategy '(priority-down todo-state-down effort-up category-keep))))
+
+          (tags-todo "-archived-shopping-CANCELLED/!-NEXT-HOLD-WAITING"
+                     ((org-agenda-overriding-header "Available Tasks")
+                      (org-agenda-skip-function
+                       '(oh/agenda-skip :headline-if '(project)
+                                        :subtree-if '(inactive scheduled deadline)
+                                        :subtree-if-unrestricted-and '(subtask)
+                                        :subtree-if-restricted-and '(single-task)))
+                      (org-agenda-sorting-strategy '(priority-down category-keep))
+                      (org-tags-match-list-sublevels nil)))
           (tags "-REFILE"
                 ((org-agenda-overriding-header "Tasks to Archive")
                        (org-agenda-skip-function 'nc/skip-non-archivable-tasks)
                        (org-tags-match-list-sublevels nil)))
           ))
+
 
         ("D" "Daily Action List"
          ((agenda "" ((org-agenda-ndays 1)

@@ -27,3 +27,5 @@ session.*
 /server/
 /games/
 /image-dired/
+/abbrev_defs
+/org-clock-save.el
