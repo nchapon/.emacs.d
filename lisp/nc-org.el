@@ -138,6 +138,16 @@
           (org-agenda-skip-function '(oh/agenda-skip :subtree-if '(project)))))))
 
 
+;; Some keybindings that should be activated in org-mode
+(defun custom-org-agenda-mode-defaults ()
+  "Executed as org-agenda-mode-hook."
+  (org-defkey org-agenda-mode-map "W" 'oh/agenda-remove-restriction)
+  (org-defkey org-agenda-mode-map "N" 'oh/agenda-restrict-to-subtree)
+  (org-defkey org-agenda-mode-map "P" 'oh/agenda-restrict-to-project)
+  (org-defkey org-agenda-mode-map "q" 'bury-buffer))
+
+(add-hook 'org-agenda-mode-hook 'custom-org-agenda-mode-defaults 'append)
+
 
 ;;; Customize org notes directory
 ;;; customize this variable if necessary (M-x customize-variable)
