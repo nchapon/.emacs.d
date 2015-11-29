@@ -76,7 +76,7 @@
                        '(oh/agenda-skip :headline-if '(non-project)
                                         :subtree-if '(non-stuck-project inactive-project scheduled deadline)))
                       (org-tags-match-list-sublevels 'intended)))
-          (tags-todo "-WAITING-CANCELLED/!NEXT"
+          (tags-todo "-WATCHING-READING-WAITING-CANCELLED/!NEXT"
                      ((org-agenda-overriding-header "Next Tasks")
                       (org-agenda-skip-function
                        '(oh/agenda-skip :subtree-if '(inactive project scheduled deadline)))
@@ -108,6 +108,12 @@
         ("r" "Tasks to Refile" tags "REFILE"
          ((org-agenda-overriding-header "Tasks to Refile")
           (org-tags-match-list-sublevels nil)))
+        ("W" "To See" tags "WATCHING"
+         ((org-agenda-overriding-header "To See")
+          (org-tags-match-list-sublevels 'indented)))
+        ("R" "To Read" tags "READING"
+         ((org-agenda-overriding-header "To Read")
+          (org-tags-match-list-sublevels 'indented)))
         ("#" "Stuck Projects" tags-todo "-CANCELLED/!-HOLD-WAITING"
          ((org-agenda-overriding-header "Stuck Projects")
           (org-agenda-skip-function
@@ -119,7 +125,7 @@
            '(oh/agenda-skip :subtree-if '(inactive project scheduled deadline)))
           (org-tags-match-list-sublevels t)
           (org-agenda-sorting-strategy '(priority-down todo-state-down effort-up category-keep))))
-        ("R" "Tasks" tags-todo "-CANCELLED/!-NEXT-HOLD-WAITING"
+        ("+" "Tasks" tags-todo "-CANCELLED/!-NEXT-HOLD-WAITING"
          ((org-agenda-overriding-header "Available Tasks")
           (org-agenda-skip-function
            '(oh/agenda-skip :headline-if '(project)
