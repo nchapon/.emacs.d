@@ -203,7 +203,9 @@
          "%[~/notes/templates/fishlog.org]"
          )
         ("n" "note" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
-               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+         "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+        ("m" "Meeting" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+               "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
         ("j" "Journal" entry (file+datetree (nc/expand-org-notes-path "GTD/journal.org"))
          "* %?\nEntered on %U\n  %i\n  %a")))
 
