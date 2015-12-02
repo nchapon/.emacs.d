@@ -2,7 +2,8 @@
 (require 'ox-publish)
 (require 'ox-odt)
 
-
+;; Automatically resetting the check boxes to unchecked when marking the repeated task DONE
+(require 'org-checklist)
 
 ;;; Start agenda on current day
 (setq org-agenda-start-on-weekday nil)
