@@ -69,7 +69,7 @@
 
 ;; Custom agenda command definitions
 (setq org-agenda-custom-commands
-      '(("a" "Agenda"
+      '((" " "Agenda"
          ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep user-defined-up))))
           (tags-todo "-CANCELLED/!-HOLD-WAITING"
                      ((org-agenda-overriding-header "Stuck Projects")
