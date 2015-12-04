@@ -13,14 +13,10 @@
 ;; Display deadlines 30
 (setq org-deadline-warning-days 30)
 
-;; TODO keywords
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)" )))
-
 
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))))
+              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "MEETING"))))
 
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "red" :weight bold)
@@ -28,6 +24,7 @@
               ("DONE" :foreground "forest green" :weight bold)
               ("WAITING" :foreground "orange" :weight bold)
               ("HOLD" :foreground "magenta" :weight bold)
+              ("MEETING" :foreground "forest green" :weight bold)
               ("CANCELLED" :foreground "forest green" :weight bold))))
 
 ;; Triggers that automatically assign tags to tasks based on
@@ -193,6 +190,12 @@
 
 ;; Binding journal file
 (global-set-key "\C-cj" 'nc/journal)
+
+
+(defun nc/make-org-scratch ()
+  (interactive)
+  (find-file (nc/expand-org-notes-path "scratch.org")))
+
 
 ;; Capture mode
 (setq org-capture-templates
