@@ -48,7 +48,14 @@
  'org-babel-load-languages
  '(;; other Babel languages
    (plantuml . t)
-   (sql . t)))
+   (sql . t)
+   (sh . t)))
+
+
+; Do not prompt to confirm evaluation
+; This may be dangerous - make sure you understand the consequences
+; of setting this -- see the docstring for details
+(setq org-confirm-babel-evaluate nil)
 
 (setq org-plantuml-jar-path
       (expand-file-name "~/opt/lib/plantuml.jar"))
