@@ -72,6 +72,8 @@
 (global-set-key (kbd "C-c I") 'my-init-file)
 (global-set-key (kbd "C-c P") 'my-prefs-file)
 (global-set-key (kbd "C-c B") 'my-bindings-file)
+(global-set-key (kbd "C-c |") 'nc/split-window-right-and-move-there-dammit)
+(global-set-key (kbd "C-c -") 'nc/toggle-window-split)
 
 ;; Duplicate current line or region
 (global-set-key (kbd "C-c d") 'nc/duplicate-current-line-or-region)
