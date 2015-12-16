@@ -1,9 +1,10 @@
 (require 'use-package)
 
-(setq org-agenda-files (list (nc/expand-org-notes-path "GTD/todo.org")
-                             (nc/expand-org-notes-path "GTD/refile.org")
+(setq org-agenda-files (list (nc/expand-org-notes-path "GTD/personal/")
                              (nc/expand-org-notes-path "GTD/journal.org")
-                             (nc/expand-org-notes-path "GTD/tosee.org")))
+                             (nc/expand-org-notes-path "GTD/refile.org")
+                             (nc/expand-org-notes-path "GTD/weekly-review.org")))
+
 ;;; Org crypt to use GPG
 (require 'org-crypt)
 (org-crypt-use-before-save-magic)
