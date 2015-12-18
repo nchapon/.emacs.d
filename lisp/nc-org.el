@@ -172,11 +172,11 @@
 
 (setq diary-file (nc/expand-org-notes-path "diary"))
 
-;; Edit my todo page
+;; Edit my GTD page
 (defun nc/todo-page ()
   "Edit my todo list page"
   (interactive)
-  (find-file-other-window (nc/expand-org-notes-path "GTD/todo.org")))
+  (find-file-other-window (nc/expand-org-notes-path "GTD/personal/todo.org")))
 
 ;; Binding todo file
 (global-set-key "\C-cT" 'nc/todo-page)
