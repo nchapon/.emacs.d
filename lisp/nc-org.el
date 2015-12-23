@@ -16,7 +16,8 @@
 
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "MEETING"))))
+              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")
+              (sequence "MEETING(m)" "RDV(r)" "|" "DONE(d)"))))
 
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "red" :weight bold)
@@ -25,6 +26,7 @@
               ("WAITING" :foreground "orange" :weight bold)
               ("HOLD" :foreground "magenta" :weight bold)
               ("MEETING" :foreground "forest green" :weight bold)
+              ("RDV" :foreground "forest green" :weight bold)
               ("CANCELLED" :foreground "forest green" :weight bold))))
 
 ;; Triggers that automatically assign tags to tasks based on
@@ -209,7 +211,9 @@
         ("n" "note" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
         ("m" "Meeting" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
-               "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+         "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+        ("a" "RendezVous" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+               "* RDV with %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
         ("j" "Journal" entry (file+datetree (nc/expand-org-notes-path "GTD/journal.org"))
          "* %?\nEntered on %U\n  %i\n  %a")))
 

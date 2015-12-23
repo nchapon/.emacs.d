@@ -47,6 +47,7 @@
                              (nc/expand-org-notes-path "GTD/office/cnp/")
                              (nc/expand-org-notes-path "GTD/refile.org")
                              (nc/expand-org-notes-path "GTD/journal.org")
+                             (nc/expand-org-notes-path "GTD/meetings.org")
                              (nc/expand-org-notes-path "GTD/weekly-review.org")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
