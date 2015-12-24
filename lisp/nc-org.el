@@ -25,8 +25,8 @@
               ("DONE" :foreground "forest green" :weight bold)
               ("WAITING" :foreground "orange" :weight bold)
               ("HOLD" :foreground "magenta" :weight bold)
-              ("MEETING" :foreground "forest green" :weight bold)
-              ("RDV" :foreground "forest green" :weight bold)
+              ("MEETING" :foreground "cyan" :weight bold)
+              ("RDV" :foreground "cyan" :weight bold)
               ("CANCELLED" :foreground "forest green" :weight bold))))
 
 ;; Triggers that automatically assign tags to tasks based on
