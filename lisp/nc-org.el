@@ -10,18 +10,19 @@
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
 
-;; Display deadlines 30
-(setq org-deadline-warning-days 30)
+;; Display deadlines 7
+(setq org-deadline-warning-days 7)
 
 
 (setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+      (quote ((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "|" "DONE(d)")
               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")
               (sequence "MEETING(m)" "RDV(r)" "|" "DONE(d)"))))
 
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "red" :weight bold)
               ("NEXT" :foreground "blue" :weight bold)
+              ("SOMEDAY" :foreground "dark gray" :weight bold)
               ("DONE" :foreground "forest green" :weight bold)
               ("WAITING" :foreground "orange" :weight bold)
               ("HOLD" :foreground "magenta" :weight bold)
@@ -68,6 +69,11 @@
 
 (setq org-agenda-span 'day)
 
+(setq org-agenda-time-grid
+      '((daily today require-timed)
+       "----------------"
+       (800 1000 1200 1400 1600 1800)))
+
 ;; Custom agenda command definitions
 (setq org-agenda-custom-commands
       '((" " "Agenda"
@@ -78,12 +84,12 @@
                        '(oh/agenda-skip :headline-if '(non-project)
                                         :subtree-if '(non-stuck-project inactive-project scheduled deadline)))
                       (org-tags-match-list-sublevels 'intended)))
-          (tags-todo "-WATCHING-READING-WAITING-CANCELLED/!NEXT"
+          (tags-todo "-@watching-@reading-WAITING-CANCELLED/!NEXT"
                      ((org-agenda-overriding-header "Next Tasks")
                       (org-agenda-skip-function
                        '(oh/agenda-skip :subtree-if '(inactive project scheduled deadline)))
                       (org-tags-match-list-sublevels t)
-                      (org-agenda-sorting-strategy '(todo-state-down effort-up category-keep))))
+                      (org-agenda-sorting-strategy '(priority-down todo-state-down effort-up category-keep))))
           (tags-todo "-CANCELLED/!-NEXT-HOLD-WAITING"
                      ((org-agenda-overriding-header "Available Tasks")
                       (org-agenda-skip-function
@@ -91,6 +97,7 @@
                                         :subtree-if '(inactive scheduled deadline)
                                         :subtree-if-unrestricted-and '(subtask)
                                         :subtree-if-restricted-and '(single-task)))
+
                       (org-agenda-sorting-strategy '(priority-down category-keep))
                       (org-tags-match-list-sublevels nil)))
           (tags-todo "-CANCELLED/!WAITING|HOLD"
@@ -110,10 +117,10 @@
         ("r" "Tasks to Refile" tags "REFILE"
          ((org-agenda-overriding-header "Tasks to Refile")
           (org-tags-match-list-sublevels nil)))
-        ("W" "To See" tags "WATCHING"
+        ("W" "To See" tags "@watching"
          ((org-agenda-overriding-header "To See")
           (org-tags-match-list-sublevels 'indented)))
-        ("R" "To Read" tags "READING"
+        ("R" "To Read" tags "@reading"
          ((org-agenda-overriding-header "To Read")
           (org-tags-match-list-sublevels 'indented)))
         ("#" "Stuck Projects" tags-todo "-CANCELLED/!-HOLD-WAITING"
@@ -135,7 +142,7 @@
                             :subtree-if-unrestricted-and '(subtask)
                             :subtree-if-restricted-and '(single-task)))
           (org-agenda-sorting-strategy '(priority-down category-keep))))
-        ("p" "Projects" tags-todo "-CANCELLED/!"
+        ("p" "Projects" tags-todo "-@watching-@reading-CANCELLED/!"
          ((org-agenda-overriding-header "Currently Active Projects")
           (org-agenda-skip-function
            '(oh/agenda-skip :subtree-if '(non-project inactive)))
@@ -143,7 +150,10 @@
           (org-tags-match-list-sublevels 'indented)))
         ("w" "Waiting Tasks" tags-todo "-CANCELLED/!WAITING|HOLD"
          ((org-agenda-overriding-header "Waiting and Postponed Tasks")
-          (org-agenda-skip-function '(oh/agenda-skip :subtree-if '(project)))))))
+          (org-agenda-skip-function '(oh/agenda-skip :subtree-if '(project)))))
+        ("Z" "Weekly review" agenda ""
+           ((org-agenda-span 7)
+            (org-agenda-log-mode 1)))))
 
 
 ;; Some keybindings that should be activated in org-mode
