@@ -43,7 +43,7 @@
 
 
 ;;; Agenda configuration
-(setq org-agenda-files (list (nc/expand-org-notes-path "GTD/office.org")
+(setq org-agenda-files (list (nc/expand-org-notes-path "cnp/gtd.org")
                              (nc/expand-org-notes-path "GTD/refile.org")
                              (nc/expand-org-notes-path "GTD/journal.org")
                              (nc/expand-org-notes-path "GTD/meetings.org")
