@@ -10,8 +10,8 @@
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
 
-;; Display deadlines 7
-(setq org-deadline-warning-days 7)
+;; Display deadlines 10
+(setq org-deadline-warning-days 10)
 
 
 (setq org-todo-keywords
@@ -223,9 +223,9 @@
         ("n" "note" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
         ("m" "Meeting" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
-         "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+         "* MEETING %? :MEETING:\n%U" :clock-in t :clock-resume t)
         ("a" "RendezVous" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
-               "* RDV with %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
+               "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
         ("j" "Journal" entry (file+datetree (nc/expand-org-notes-path "GTD/journal.org"))
          "* %?\nEntered on %U\n  %i\n  %a")))
 
