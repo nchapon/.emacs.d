@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# contributor: Nicolas Chapon
+# name: <scope>...</scope>
+# key: scope
+# --
+<scope>${1:$$(yas-choose-value '("compile" "test" "runtime" "provided"))}</scope>

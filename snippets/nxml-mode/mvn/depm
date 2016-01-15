@@ -1,0 +1,9 @@
+# contributor: Nicolas Chapon
+# name: <dependencyManagement>...</dependencyManagement>
+# key: depm
+# --
+<dependencyManagement>
+    <dependencies>
+        $0
+    </dependencies>
+</dependencyManagement>
