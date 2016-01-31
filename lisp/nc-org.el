@@ -205,6 +205,14 @@
 ;; Binding journal file
 (global-set-key "\C-cj" 'nc/journal)
 
+;; Edit my GTD page
+(defun nc/gtd-office-page ()
+  "Edit my todo list page"
+  (interactive)
+  (find-file-other-window (nc/expand-org-notes-path "cnp/gtd.org")))
+
+;; Binding todo file
+(global-set-key "\C-cO" 'nc/gtd-office-page)
 
 (defun nc/make-org-scratch ()
   (interactive)
