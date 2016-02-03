@@ -65,6 +65,13 @@
 (setq org-archive-mark-done nil)
 (setq org-archive-location "%s_archive::* Archived Tasks")
 
+;;; Clocking and estimating tasks
+;; Agenda clock report parameters
+
+(setq org-columns-default-format "%80ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
+
+(setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00"))))
+
 (require 'org-helpers)
 
 (setq org-agenda-span 'day)
@@ -205,14 +212,14 @@
 ;; Binding journal file
 (global-set-key "\C-cj" 'nc/journal)
 
-;; Edit my GTD page
+;; Edit work GTD page
 (defun nc/gtd-office-page ()
   "Edit my todo list page"
   (interactive)
   (find-file-other-window (nc/expand-org-notes-path "cnp/gtd.org")))
 
 ;; Binding todo file
-(global-set-key "\C-cO" 'nc/gtd-office-page)
+(global-set-key "\C-cW" 'nc/gtd-office-page)
 
 (defun nc/make-org-scratch ()
   (interactive)
