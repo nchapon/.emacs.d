@@ -230,19 +230,19 @@
 (setq org-capture-templates
       '(("t" "todo" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
          "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-        ("r" "respond" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
-               "* NEXT Repondre mail %? :MAIL:\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
         ("f" "FishLog" plain (file+datetree+prompt (nc/expand-org-notes-path "private/fishlog.org"))
-         "%[~/notes/templates/fishlog.org]"
-         )
-        ("n" "note" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+         "%[~/notes/templates/fishlog.org]")
+        ("n" "Note" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
         ("m" "Meeting" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
          "* MEETING %? :MEETING:\n%U" :clock-in t :clock-resume t)
         ("a" "RendezVous" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
                "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
         ("j" "Journal" entry (file+datetree (nc/expand-org-notes-path "GTD/journal.org"))
-         "* %?\nEntered on %U\n  %i\n  %a")))
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("w" "WeeklyReview" entry (file+datetree+prompt (nc/expand-org-notes-path "GTD/journal.org"))
+         "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
+        ))
 
 
 ;; Refile
