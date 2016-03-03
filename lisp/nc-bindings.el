@@ -13,12 +13,6 @@
 (when (fboundp 'ibuffer)
   (global-set-key (kbd "C-x C-b") 'ibuffer))   ;; prefer ibuffer
 
-;; Orgmode keys
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
-
 ;; Set help shortcut by default
 (global-set-key (kbd "C-h") 'help-command)
 
@@ -99,12 +93,19 @@
 (global-set-key (kbd "<f2>") 'rgrep)
 (global-set-key (kbd "<f6>") 'magit-status)
 
-;; Org agenda
+;; Org mode keys
 (global-set-key (kbd "<f12>") 'org-agenda)
+(global-set-key (kbd "<f8>") 'org-cycle-agenda-files)
 (global-set-key (kbd "<f9>") 'calendar)
+
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
 
 
 (require 'key-chord)
+
 
 (key-chord-define-global "jj" 'ace-jump-word-mode)
 (key-chord-define-global "jl" 'ace-jump-line-mode)
@@ -116,7 +117,7 @@
 (key-chord-define-global "DD" 'delete-region)
 (key-chord-define-global "OO" 'helm-occur)
 (key-chord-define-global "??" 'nc/helm-do-grep-notes)
-(key-chord-define-global "^^" 'beginning-of-buffer)
+(key-chord-define-global "BB" 'beginning-of-buffer)
 (key-chord-define-global "$$" 'end-of-buffer)
 (key-chord-define-global "uu" 'undo-tree-visualize)
 (key-chord-define-global "xx" 'execute-extended-command)
