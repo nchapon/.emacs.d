@@ -45,10 +45,13 @@
 ;;;
 (require 'package)
 
+(defconst *is-win* (eq system-type 'windows-nt))
+
 
 (defvar gnu '("gnu" . "http://elpa.gnu.org/packages/"))
-(defvar melpa '("melpa" . "https://melpa.org/packages/"))
-(defvar melpa-stable '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(defvar melpa '("melpa" . "http://melpa.org/packages/"))
+(defvar melpa-stable '("melpa-stable" . "http://stable.melpa.org/packages/"))
+
 
 
 (add-to-list 'package-archives melpa t)
