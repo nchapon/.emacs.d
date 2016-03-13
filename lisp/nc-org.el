@@ -17,7 +17,7 @@
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "|" "DONE(d)")
               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")
-              (sequence "MEETING(m)" "RDV(r)" "|" "DONE(d)"))))
+              (sequence "MEETING(m)" "RDV(r)" "FORMATION(f)" "|" "DONE(d)"))))
 
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "red" :weight bold)
@@ -28,6 +28,7 @@
               ("HOLD" :foreground "magenta" :weight bold)
               ("MEETING" :foreground "cyan" :weight bold)
               ("RDV" :foreground "cyan" :weight bold)
+              ("FORMATION" :foreground "khaki" :weight bold)
               ("CANCELLED" :foreground "forest green" :weight bold))))
 
 ;; Triggers that automatically assign tags to tasks based on
