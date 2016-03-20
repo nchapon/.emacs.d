@@ -75,11 +75,11 @@
 ;;; Join lines
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
 
-;;; Start playing with multiple cursors
+
 ;;; Multiple cursors
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C-$") 'mc/edit-ends-of-lines)
-(global-set-key (kbd "C-^") 'mc/edit-beginnings-of-lines)
+(global-set-key (kbd "C-S-b") 'mc/edit-beginnings-of-lines)
 (global-set-key (kbd "C-<") 'mc/mark-previous-word-like-this)
 (global-set-key (kbd "C->") 'mc/mark-next-word-like-this)
 (global-set-key (kbd "C-*") 'mc/mark-next-like-this)
