@@ -10,7 +10,9 @@
       helm-buffers-fuzzy-matching t
       helm-move-to-line-cycle-in-source t
       helm-ff-search-library-in-sexp t
-      helm-ff-file-name-history-use-recentf t)
+      helm-ff-file-name-history-use-recentf t
+      helm-ff-skip-boring-files t
+      helm-for-files-preferred-list (quote (helm-source-files-in-current-dir helm-source-recentf helm-source-bookmarks helm-source-file-cache helm-source-buffers-list helm-source-locate helm-source-ls-git)))
 
 ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
 ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we

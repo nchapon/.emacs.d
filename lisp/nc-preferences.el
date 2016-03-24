@@ -19,6 +19,11 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
+;; Dired configuration
+(setq dired-recursive-copies (quote always))
+(setq dired-recursive-deletes (quote always))
+
+
 ;; Increase emacs GC
 (setq gc-cons-threshold 20000000)
 
