@@ -24,7 +24,7 @@
 (setq org-deadline-warning-days 10)
 
 (setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "|" "DONE(d)")
+      (quote ((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "|" "DONE(d!)")
               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")
               (sequence "MEETING(m)" "RDV(r)" "FORMATION(f)" "|" "DONE(d)"))))
 
@@ -40,16 +40,9 @@
               ("FORMATION" :foreground "khaki" :weight bold)
               ("CANCELLED" :foreground "forest green" :weight bold))))
 
-;; Triggers that automatically assign tags to tasks based on
-;; state changes.
-(setq org-todo-state-tags-triggers
-      (quote (("CANCELLED" ("CANCELLED" . t))
-              ("WAITING" ("WAITING" . t))
-              ("HOLD" ("WAITING") ("HOLD" . t))
-              (done ("WAITING") ("HOLD"))
-              ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-              ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
-              ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+
+(setq org-log-into-drawer "LOGBOOK")
+(setq org-clock-into-drawer 1)
 
 (setq org-tags-exclude-from-inheritance '("PROJECT"))
 
@@ -84,7 +77,8 @@
 
 (require 'org-helpers)
 
-(setq org-agenda-span 'day)
+;; Agenda on two days
+(setq org-agenda-span 2)
 
 (setq org-agenda-time-grid
       '((daily today require-timed)
