@@ -90,7 +90,7 @@ directory to make multiple eshell windows easier."
     (mapconcat 'identity lines "\n")))
 
 
-(add-to-list 'eshell-preoutput-filter-functions #'my-eshell-color-filter)
+;;(add-to-list 'eshell-preoutput-filter-functions #'my-eshell-color-filter)
 
 
 
