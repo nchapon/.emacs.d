@@ -126,7 +126,8 @@
  'org-babel-load-languages
  '(;; other Babel languages
    (plantuml . t)
-   (sql . t)))
+   (sql . t)
+   (sh . t)))
 
 (setq org-plantuml-jar-path
       (expand-file-name "~/opt/lib/plantuml.jar"))
