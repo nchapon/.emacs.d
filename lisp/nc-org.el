@@ -252,10 +252,9 @@
 ;; Refile
 ;; Targets include this file and any file contributing to the agenda - up to 2 levels deep
 (setq org-reverse-note-order t)
-(setq nc/someday-file (nc/expand-org-notes-path "GTD/someday.org"))
+
 (setq org-refile-targets (quote ((nil :maxlevel . 2)
-                                 (org-agenda-files :maxlevel . 2)
-                                 (nc/someday-file :maxlevel . 1))))
+                                 (org-agenda-files :maxlevel . 2))))
 
 (setq org-blank-before-new-entry nil)
 
