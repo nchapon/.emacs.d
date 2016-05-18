@@ -87,21 +87,6 @@
 (setq nxml-child-indent 4)
 
 
-;;; Fix magit problem
-(defun magit-git-insert-quote-curlies (args)
-  (mapcar (lambda (arg)
-            (if (stringp arg)
-                (replace-regexp-in-string "{\\(commit\\|tree\\)}"
-                                          "\\\\{\\1\\\\}"
-                                          arg)
-              arg))
-          args))
-
-(advice-add 'magit-git-insert
-            :filter-args
-            #'magit-git-insert-quote-curlies)
-
-
 ;;; Active org-babel languages
 (org-babel-do-load-languages
  'org-babel-load-languages
