@@ -41,13 +41,6 @@
   :config
   (setq passthword-password-file "C:/PROGRAMJAVA/nchapon/passthword.gpg"))
 
-
-
-;; (use-package ox-reveal
-;;   :ensure t
-;;   :config
-;;   (setq org-reveal-root "C:/PROGRAMJAVA/nchapon/reveal.js-3.1.0/js/reveal.js"))
-
 (require 'ox-reveal)
 (setq org-reveal-root ".")
 
