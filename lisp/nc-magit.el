@@ -7,6 +7,7 @@
 
 (global-set-key (kbd "C-x g") 'magit-status)
 
+(setq magit-file-mode t)
 
 (add-hook 'magit-log-edit-mode-hook
           (lambda ()
