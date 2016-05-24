@@ -5,6 +5,7 @@
 (add-to-list 'auto-mode-alist '("\\.tag$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.ftl$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jsp$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.php$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 
