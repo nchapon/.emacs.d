@@ -97,6 +97,7 @@
 (global-set-key (kbd "<f12>") 'org-agenda)
 (global-set-key (kbd "<f8>") 'org-cycle-agenda-files)
 (global-set-key (kbd "<f9>") 'calendar)
+(global-set-key (kbd "<f11>") 'org-clock-goto)
 
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
