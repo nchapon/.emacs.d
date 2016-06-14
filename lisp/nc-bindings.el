@@ -112,7 +112,7 @@
 (key-chord-define-global "jl" 'ace-jump-line-mode)
 (key-chord-define-global "jk" 'ace-jump-char-mode)
 (key-chord-define-global "FF" 'projectile-find-file)
-(key-chord-define-global "GG" 'helm-do-ag-project-root)
+(key-chord-define-global "GG" 'helm-projectile-ag)
 (key-chord-define-global "HH" 'helm-git-grep)
 (key-chord-define-global "JJ" 'nc/switch-to-previous-buffer)
 (key-chord-define-global "DD" 'delete-region)
