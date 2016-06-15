@@ -92,6 +92,7 @@
 (global-set-key (kbd "<f1>") 'shell)
 (global-set-key (kbd "<f2>") 'rgrep)
 (global-set-key (kbd "<f6>") 'magit-status)
+(global-set-key (kbd "C-<f6>") 'speedbar)
 
 ;; Org mode keys
 (global-set-key (kbd "<f12>") 'org-agenda)
