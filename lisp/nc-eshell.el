@@ -24,7 +24,7 @@ directory to make multiple eshell windows easier."
     (eshell-send-input)))
 
 
-(global-set-key (kbd "C-!") 'eshell-here)
+(global-set-key (kbd "C-<f1>") 'eshell-here)
 
 (setq eshell-prompt-function
       (lambda ()
