@@ -1,10 +1,10 @@
 (require 'use-package)
 
-
-
-
 ;;; Force projectile to use of external indexing in Windows
 (setq projectile-indexing-method 'alien)
+
+(custom-set-variables
+ '(helm-ag-base-command "C:/PROGRAMJAVA/tools/pt -e --nocolor --nogroup"))
 
 
 (defadvice grep-compute-defaults (around grep-compute-defaults-advice-null-device)
