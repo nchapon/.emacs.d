@@ -89,6 +89,9 @@
 (setq org-agenda-custom-commands
       '((" " "Agenda"
          ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep user-defined-up))))
+          (tags "REFILE"
+                      ((org-agenda-overriding-header "Tasks to Refile")
+                       (org-tags-match-list-sublevels nil)))
           (tags-todo "-CANCELLED/!-HOLD-WAITING"
                      ((org-agenda-overriding-header "Stuck Projects")
                       (org-agenda-skip-function
