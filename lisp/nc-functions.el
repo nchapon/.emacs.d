@@ -264,4 +264,12 @@ Repeated invocations toggle between the two most recently open buffers."
       (end (format-time-string current-hour-format (time-add (current-time) (seconds-to-time 3600)))))
   (insert (concat begin "-" end))))
 
+;; From emacs wiki
+(defun nc/insert-todays-date (arg)
+  (interactive "P")
+  (insert (if arg
+              (format-time-string "%Y-%m-%d")
+            (format-time-string "%d/%m/%Y"))))
+
+
 (provide 'nc-functions)
