@@ -223,7 +223,7 @@
 (defun nc/gtd-office-page ()
   "Edit my todo list page"
   (interactive)
-  (find-file-other-window (nc/expand-org-notes-path "cnp/gtd.org")))
+  (find-file-other-window (nc/expand-org-notes-path "cnp/GTD/gtd.org")))
 
 ;; Binding todo file
 (global-set-key "\C-cW" 'nc/gtd-office-page)
@@ -265,9 +265,9 @@
          day-numbers)
     (setq params (plist-put params :tstart nil))
     (setq params (plist-put params :end nil))
-    (while (<= start end)
+    (while (< start end)
       (save-excursion
-        (insert "\n\n"
+        (insert "\n\n***"
                 (format-time-string (car org-time-stamp-formats)
                                     (seconds-to-time start))
                 "----------------\n")

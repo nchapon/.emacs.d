@@ -24,7 +24,7 @@
 
 
 ;;; Agenda configuration
-(setq org-agenda-files (list (nc/expand-org-notes-path "cnp/gtd.org")
+(setq org-agenda-files (list (nc/expand-org-notes-path "cnp/GTD")
                              (nc/expand-org-notes-path "GTD/todo.org")
                              (nc/expand-org-notes-path "GTD/learning.org")
                              (nc/expand-org-notes-path "GTD/journal.org")
