@@ -1,13 +1,7 @@
 (require 'use-package)
 
-(setq org-agenda-files (list (nc/expand-org-notes-path "GTD/todo.org")
-                             (nc/expand-org-notes-path "cnp/GTD")
-                             (nc/expand-org-notes-path "GTD/journal.org")
-                             (nc/expand-org-notes-path "GTD/watching.org")
-                             (nc/expand-org-notes-path "GTD/books.org")
-                             (nc/expand-org-notes-path "GTD/learning.org")
-                             (nc/expand-org-notes-path "GTD/refile.org")
-                             (nc/expand-org-notes-path "GTD/weekly-review.org")))
+(setq org-agenda-files (list (nc/expand-org-notes-path "GTD")
+                             (nc/expand-org-notes-path "cnp/GTD")))
 
 ;;; Org crypt to use GPG
 (require 'org-crypt)
