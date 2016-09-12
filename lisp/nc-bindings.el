@@ -82,8 +82,9 @@
 (global-set-key (kbd "C-S-b") 'mc/edit-beginnings-of-lines)
 (global-set-key (kbd "C-<") 'mc/mark-previous-word-like-this)
 (global-set-key (kbd "C->") 'mc/mark-next-word-like-this)
-(global-set-key (kbd "C-*") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-%") 'mc/mark-all-dwim)
+(global-set-key (kbd "C-S-n") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-S-p") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-*") 'mc/mark-all-dwim)
 
 
 
