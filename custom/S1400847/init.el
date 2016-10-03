@@ -80,10 +80,15 @@
  '(;; other Babel languages
    (plantuml . t)
    (sql . t)
+   (ditaa . t)
    (sh . t)))
 
 (setq org-plantuml-jar-path
       (expand-file-name "~/opt/lib/plantuml.jar"))
+
+(setq org-ditaa-jar-path
+      (expand-file-name "~/opt/lib/ditaa0_9.jar"))
+
 
 ; Do not prompt to confirm evaluation
 ; This may be dangerous - make sure you understand the consequences
@@ -92,3 +97,13 @@
 
 ; Use fundamental mode when editing plantuml blocks with C-c '
 (add-to-list 'org-src-lang-modes (quote ("plantuml" . fundamental)))
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Which key mode  ;;
+;;;;;;;;;;;;;;;;;;;;;
+
+(use-package which-key-mode
+  :load-path "C:/PROGRAMJAVA/nchapon/lisp/emacs-which-key")
+
+(require 'which-key)
+(which-key-mode)
