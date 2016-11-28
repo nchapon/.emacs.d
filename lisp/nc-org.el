@@ -251,7 +251,9 @@
          "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
         ))
 
+(setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
 
+(setq org-clock-into-drawer t)
 
 ;;; Org time report day by day
 (defun org-dblock-write:rangereport (params)
