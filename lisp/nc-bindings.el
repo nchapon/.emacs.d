@@ -45,6 +45,7 @@
 
 ;;; Hippie expand
 (global-set-key "\M- " 'hippie-expand)
+(global-set-key (kbd "M-/") #'hippie-expand)
 
 ;;; Rotate Window
 (global-set-key (kbd "C-c w r") 'rotate-windows)
