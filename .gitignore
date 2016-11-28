@@ -30,3 +30,4 @@ session.*
 /abbrev_defs
 /org-clock-save.el
 /data/
+/.org-id-locations

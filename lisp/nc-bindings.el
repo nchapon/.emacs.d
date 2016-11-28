@@ -90,18 +90,20 @@
 
 ;; Gobal keys for usefuls functions
 
-(global-set-key (kbd "<f1>") 'shell)
 (global-set-key (kbd "<f2>") 'rgrep)
 (global-set-key (kbd "C-<f2>") 'helm-do-ag)
 
 (global-set-key (kbd "<f6>") 'magit-status)
-(global-set-key (kbd "C-<f6>") 'speedbar)
+
 
 ;; Org mode keys
-(global-set-key (kbd "<f12>") 'org-agenda)
 (global-set-key (kbd "<f8>") 'org-cycle-agenda-files)
-(global-set-key (kbd "<f9>") 'calendar)
 (global-set-key (kbd "<f11>") 'org-clock-goto)
+(global-set-key (kbd "<f12>") 'org-agenda)
+
+;;
+(global-set-key (kbd "M-<f12>") 'shell)
+(global-set-key (kbd "C-<f12>") 'helm-semantic-or-imenu)
 
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
@@ -118,6 +120,7 @@
 (key-chord-define-global "FF" 'projectile-find-file)
 (key-chord-define-global "GG" 'helm-projectile-ag)
 (key-chord-define-global "HH" 'helm-git-grep)
+(key-chord-define-global "KK" 'kill-whole-line)
 (key-chord-define-global "JJ" 'nc/switch-to-previous-buffer)
 (key-chord-define-global "DD" 'delete-region)
 (key-chord-define-global "OO" 'helm-occur)
@@ -127,7 +130,6 @@
 (key-chord-define-global "uu" 'undo-tree-visualize)
 (key-chord-define-global "xx" 'execute-extended-command)
 (key-chord-define-global "qq" 'nc/cleanup-buffer-or-region)
-(key-chord-define-global "qs" 'helm-semantic-or-imenu)
 (key-chord-define-global "yy" 'browse-kill-ring)
 
 (key-chord-mode +1)
