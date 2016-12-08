@@ -107,3 +107,43 @@
 
 (require 'which-key)
 (which-key-mode)
+
+
+
+;;
+
+(setq org-html-head "<link rel='stylesheet' type='text/css' href='styles/readtheorg/css/htmlize.css'/>
+ <link rel='stylesheet' type='text/css' href='styles/readtheorg/css/readtheorg.css'/>
+ <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+ <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js'></script>
+ <script type='text/javascript' src='styles/lib/js/jquery.stickytableheaders.min.js'></script>
+ <script type='text/javascript' src='styles/readtheorg/js/readtheorg.js'></script>")
+
+
+(setq org-publish-project-alist
+      '(
+
+        ;; ... add all the components here (see below)...
+
+        ("org-notes"
+         :base-directory "c:/PROGRAMJAVA/nchapon/notes/cnp"
+         :base-extension "org"
+         :publishing-directory "c:/PROGRAMJAVA/nchapon/public_html/"
+         :recursive t
+         :publishing-function org-html-publish-to-html
+         :headline-levels 4       ; Just the default for this project.
+         :auto-preamble t
+         :section-numbers nil
+         :table-of-contents nil
+         )
+
+        ;; These are static files (images, pdf, etc)
+        ("org-static"
+         :base-directory "c:/PROGRAMJAVA/nchapon/notes" ;; Change this to your local dir
+         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|txt\\|asc\\|svg"
+         :publishing-directory "c:/PROGRAMJAVA/nchapon/public_html/"
+         :recursive t
+         :publishing-function org-publish-attachment
+         )
+
+        ("org" :components ("org-notes" "org-static"))))
