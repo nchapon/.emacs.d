@@ -95,6 +95,7 @@
 (global-set-key (kbd "C-<f2>") 'helm-do-ag)
 
 (global-set-key (kbd "<f6>") 'magit-status)
+(global-set-key (kbd "C-<f6>") 'magit-log-buffer-file)
 
 
 ;; Org mode keys
