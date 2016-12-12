@@ -123,7 +123,7 @@
 (key-chord-define-global "GG" 'helm-projectile-ag)
 (key-chord-define-global "HH" 'helm-git-grep)
 (key-chord-define-global "KK" 'kill-whole-line)
-(key-chord-define-global "JJ" 'nc/switch-to-previous-buffer)
+(key-chord-define-global "JJ" 'jump-to-register)
 (key-chord-define-global "DD" 'delete-region)
 (key-chord-define-global "OO" 'helm-occur)
 (key-chord-define-global "??" 'nc/helm-do-grep-notes)
