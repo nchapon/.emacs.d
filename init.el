@@ -183,6 +183,16 @@
 (require 'nc-bindings)
 
 
+;;; Emacs Registers
+(dolist (r `((?i (file . ,(concat user-emacs-directory "init.el")))
+             (?b (file . ,(concat user-emacs-directory "lisp/nc-bindings.el")))
+             (?x (file . ,(concat user-emacs-directory "custom/xps13/init.el")))
+             (?p (file . ,(concat user-emacs-directory "lisp/nc-preferences.el")))
+             (?r (file . ,(nc/expand-org-notes-path "GTD/refile.org")))
+             (?t (file . ,(nc/expand-org-notes-path "GTD/todo.org")))
+             (?w (file . ,(nc/expand-org-notes-path "cnp/GTD/gtd.org")))))
+  (set-register (car r) (cadr r)))
+
 ;;; Be sure path is correctly initialized : need by cider and javax !
 (require 'exec-path-from-shell)
 (when (string-equal system-type "gnu/linux")

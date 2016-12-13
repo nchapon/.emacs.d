@@ -185,16 +185,4 @@
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
-
-;;; Emacs Registers
-(dolist (r `((?i (file . ,(concat user-emacs-directory "init.el")))
-             (?b (file . ,(concat user-emacs-directory "lisp/nc-bindings.el")))
-             (?x (file . ,(concat user-emacs-directory "custom/xps13/init.el")))
-             (?p (file . ,(concat user-emacs-directory "lisp/nc-preferences.el")))
-             (?r (file . ,(nc/expand-org-notes-path "GTD/refile.org")))
-             (?t (file . ,(nc/expand-org-notes-path "GTD/todo.org")))
-             (?w (file . ,(nc/expand-org-notes-path "cnp/GTD/gtd.org")))))
-  (set-register (car r) (cadr r)))
-
-
 (provide 'nc-preferences)
