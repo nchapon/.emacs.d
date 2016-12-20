@@ -108,6 +108,12 @@
 (require 'which-key)
 (which-key-mode)
 
+;;;;;;;;;;;;;;;;;;;;;
+;; Dockerfile mode ;;
+;;;;;;;;;;;;;;;;;;;;;
+(use-package dockerfile-mode
+  :load-path "C:/PROGRAMJAVA/nchapon/lisp/dockerfile-mode"
+  :mode (("Dockerfile\\'" . dockerfile-mode )))
 
 
 ;;
