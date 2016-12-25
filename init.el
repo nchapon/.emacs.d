@@ -188,9 +188,10 @@
              (?b (file . ,(concat user-emacs-directory "lisp/nc-bindings.el")))
              (?x (file . ,(concat user-emacs-directory "custom/xps13/init.el")))
              (?p (file . ,(concat user-emacs-directory "lisp/nc-preferences.el")))
+             (?g (file . ,(nc/expand-org-notes-path "cnp/GTD/gtd.org")))
              (?r (file . ,(nc/expand-org-notes-path "GTD/refile.org")))
              (?t (file . ,(nc/expand-org-notes-path "GTD/todo.org")))
-             (?w (file . ,(nc/expand-org-notes-path "cnp/GTD/gtd.org")))))
+             (?w (file . ,(nc/expand-org-notes-path "GTD/watching.org")))))
   (set-register (car r) (cadr r)))
 
 ;;; Be sure path is correctly initialized : need by cider and javax !
