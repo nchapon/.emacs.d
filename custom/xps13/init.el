@@ -48,6 +48,7 @@
  '(;; other Babel languages
    (plantuml . t)
    (sql . t)
+   (python .t)
    (sh . t)))
 
 
