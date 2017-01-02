@@ -247,7 +247,7 @@
                "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
         ("j" "Journal" entry (file+datetree (nc/expand-org-notes-path "GTD/journal.org"))
          "* %?\nEntered on %U\n  %i\n  %a")
-        ("w" "WeeklyReview" entry (file+datetree+prompt (nc/expand-org-notes-path "GTD/journal.org"))
+        ("w" "WeeklyReview" entry (file+datetree+prompt (nc/expand-org-notes-path "GTD/weekly-review.org"))
          "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
         ))
 
