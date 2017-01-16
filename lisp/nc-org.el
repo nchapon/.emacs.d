@@ -20,13 +20,13 @@
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
 
-;; Display deadlines 10
-(setq org-deadline-warning-days 10)
+;; Display deadlines 5
+(setq org-deadline-warning-days 5)
 
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "|" "DONE(d!)")
               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")
-              (sequence "MEETING(m)" "RDV(r)" "FORMATION(f)" "|" "DONE(d)"))))
+              (sequence "MEETING(m)" "RDV(r)" "FORMATION(f)" "PHONE(p)" "|" "DONE(d)"))))
 
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "red" :weight bold)
@@ -247,6 +247,8 @@
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
         ("m" "Meeting" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
          "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
+        ("p" "Phone call" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
         ("a" "RendezVous" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
                "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
         ("j" "Journal" entry (file+datetree (nc/expand-org-notes-path "GTD/journal.org"))
