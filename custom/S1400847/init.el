@@ -81,6 +81,7 @@
    (plantuml . t)
    (sql . t)
    (ditaa . t)
+   (python . t)
    (sh . t)))
 
 (setq org-plantuml-jar-path
