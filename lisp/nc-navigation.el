@@ -8,5 +8,8 @@
 (global-set-key (kbd "C-x o") 'ace-window)
 (setq aw-keys '(?q ?s ?d ?f ?g ?h ?j ?k ?l))
 
+(custom-set-faces
+ '(aw-leading-char-face
+   ((t (:inherit ace-jump-face-foreground :height 3.0)))))
 
 (provide 'nc-navigation)
