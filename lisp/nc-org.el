@@ -302,6 +302,21 @@
 
 (setq org-blank-before-new-entry nil)
 
+;; Fix time report indent
+(defun my-org-clocktable-indent-string (level)
+  (if (= level 1)
+      ""
+    (let ((str "^"))
+      (while (> level 2)
+        (setq level (1- level)
+              str (concat str "--")))
+      (concat str "-> "))))
+
+(advice-add 'org-clocktable-indent-string :override #'my-org-clocktable-indent-string)
+
+
+
+
 ;;; Org crypt
 (require 'org-crypt)
 (org-crypt-use-before-save-magic)
