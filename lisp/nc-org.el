@@ -306,11 +306,11 @@
 (defun my-org-clocktable-indent-string (level)
   (if (= level 1)
       ""
-    (let ((str "^"))
+    (let ((str "\\"))
       (while (> level 2)
         (setq level (1- level)
-              str (concat str "--")))
-      (concat str "-> "))))
+              str (concat str "_")))
+      (concat str "_ "))))
 
 (advice-add 'org-clocktable-indent-string :override #'my-org-clocktable-indent-string)
 
