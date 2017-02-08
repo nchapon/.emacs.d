@@ -1,7 +1,6 @@
 (require 'use-package)
 
-(setq org-agenda-files (list (nc/expand-org-notes-path "GTD")
-                             (nc/expand-org-notes-path "cnp/GTD")))
+
 
 ;;; Org crypt to use GPG
 (require 'org-crypt)

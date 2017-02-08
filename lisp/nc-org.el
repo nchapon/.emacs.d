@@ -51,6 +51,9 @@
         (66 :foreground "#ffa060" :weight bold)
         (67 :foreground "#ffcca8" :weight bold)))
 
+;; Agenda files
+
+
 ;; Diary
 (setq org-agenda-include-diary t)
 
@@ -198,7 +201,14 @@
     "Expand org-notes-directory with PATH"
     (expand-file-name (concat nc/org-notes-directory "/" path)))
 
+
+
 (setq diary-file (nc/expand-org-notes-path "diary"))
+
+
+(setq org-agenda-files (list (nc/expand-org-notes-path "GTD")))
+
+
 
 ;; Edit my GTD page
 (defun nc/todo-page ()
@@ -223,7 +233,7 @@
 (defun nc/gtd-office-page ()
   "Edit my todo list page"
   (interactive)
-  (find-file-other-window (nc/expand-org-notes-path "cnp/GTD/gtd.org")))
+  (find-file-other-window (nc/expand-org-notes-path "GTD/office.org")))
 
 ;; Binding todo file
 (global-set-key "\C-cW" 'nc/gtd-office-page)

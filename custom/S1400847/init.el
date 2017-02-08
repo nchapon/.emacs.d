@@ -23,10 +23,6 @@
              :config (cygwin-mount-activate))
 
 
-;;; Agenda configuration
-(setq org-agenda-files (list (nc/expand-org-notes-path "cnp/GTD")
-                             (nc/expand-org-notes-path "GTD")))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Password management ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
