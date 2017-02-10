@@ -201,3 +201,4 @@
 
 (when (file-exists-p user-settings-dir)
   (load (concat user-settings-dir "/" "init.el")))
+(put 'magit-clean 'disabled nil)
