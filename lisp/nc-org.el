@@ -34,11 +34,10 @@
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "red" :weight bold)
               ("NEXT" :foreground "blue" :weight bold)
-              ("STARTED" :foreground "blue" :weight bold)
+              ("STARTED" :foreground "orange" :weight bold)
               ("SOMEDAY" :foreground "dark gray" :weight bold)
               ("DONE" :foreground "forest green" :weight bold)
-              ("WAITING" :foreground "orange" :weight bold)
-              ("HOLD" :foreground "magenta" :weight bold)
+              ("WAITING" :foreground "magenta" :weight bold)
               ("MEETING" :foreground "cyan" :weight bold)
               ("RDV" :foreground "cyan" :weight bold)
               ("FORMATION" :foreground "khaki" :weight bold)
@@ -172,6 +171,7 @@
         ("w" "Waiting Tasks" tags-todo "-CANCELLED/!WAITING|HOLD"
          ((org-agenda-overriding-header "Waiting and Postponed Tasks")
           (org-agenda-skip-function '(oh/agenda-skip :subtree-if '(project)))))
+        ("S" tags-todo "TODO=\"STARTED\"")
         ("Z" "Weekly review" agenda ""
            ((org-agenda-span 7)
             (org-agenda-log-mode 1)))))
@@ -211,6 +211,7 @@
 
 
 (setq org-agenda-files (list (nc/expand-org-notes-path "GTD")))
+
 
 
 
@@ -260,9 +261,9 @@
         ("N" "Note" entry (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Notes")
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
         ("i" "Interrupting task" entry
-           (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Inbox")
-           "* STARTED %^{Task}"
-           :clock-in :clock-resume)
+           (file+datetree (nc/expand-org-notes-path "GTD/diary.org"))
+           "* %^{Task}"
+           :clock-in t :clock-resume t)
         ("m" "Meeting" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
          "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
         ("p" "Phone call" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
@@ -278,6 +279,18 @@
 (setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
 
 (setq org-clock-into-drawer t)
+
+
+(defun my/capture-interruption-task ()
+    "Interrupted Task"
+    (interactive)
+    (org-capture 4 "i"))
+
+;; Override the key definition
+(global-set-key (kbd "<f9>") 'my/capture-interruption-task)
+
+
+
 
 ;;; Org time report day by day
 (defun org-dblock-write:rangereport (params)
