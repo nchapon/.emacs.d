@@ -24,13 +24,17 @@
 (setq org-deadline-warning-days 5)
 
 (setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "|" "DONE(d!)")
-              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")
+      (quote ((sequence "TODO(t)"
+                        "NEXT(n)"
+                        "STARTED(s)"
+                        "WAITING(w@/!)"
+                        "SOMEDAY(.)" "|" "DONE(d!)" "CANCELLED(c@/!)")
               (sequence "MEETING(m)" "RDV(r)" "FORMATION(f)" "PHONE(p)" "|" "DONE(d)"))))
 
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "red" :weight bold)
               ("NEXT" :foreground "blue" :weight bold)
+              ("STARTED" :foreground "blue" :weight bold)
               ("SOMEDAY" :foreground "dark gray" :weight bold)
               ("DONE" :foreground "forest green" :weight bold)
               ("WAITING" :foreground "orange" :weight bold)
@@ -255,6 +259,10 @@
          "%[~/notes/templates/fishlog.org]")
         ("N" "Note" entry (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Notes")
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+        ("i" "Interrupting task" entry
+           (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Inbox")
+           "* STARTED %^{Task}"
+           :clock-in :clock-resume)
         ("m" "Meeting" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
          "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
         ("p" "Phone call" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
