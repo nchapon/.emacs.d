@@ -258,6 +258,16 @@
           "* %? :IDEA: \n%u" :clock-in t :clock-resume t)
         ("f" "FishLog" plain (file+datetree+prompt (nc/expand-org-notes-path "GTD/fishlog.org"))
          "%[~/notes/templates/fishlog.org]")
+        ("F" "Film" entry (file+headline (nc/expand-org-notes-path "GTD/watching.org") "Films à voir")
+             "* NEXT %^{Titre}
+     %i
+     - *Réalisateur:* %^{Auteur}
+     - *Année:* %^{année}
+     - *Genre:* %^{genre}
+
+    %?
+
+    %U" :prepend t)
         ("N" "Note" entry (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Notes")
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
         ("i" "Interrupting task" entry
