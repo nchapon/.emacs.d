@@ -255,7 +255,7 @@
         ("n" "Next Task" entry (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Tasks")
          "** NEXT %? \nDEADLINE: %t")
         ("s" "Someday / Maybe" entry (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Someday / Maybe")
-          "* %? :IDEA: \n%u" :clock-in t :clock-resume t)
+          "* SOMEDAY %? :IDEA:\n%u" :clock-in t :clock-resume t)
         ("f" "FishLog" plain (file+datetree+prompt (nc/expand-org-notes-path "GTD/fishlog.org"))
          "%[~/notes/templates/fishlog.org]")
         ("F" "Film" entry (file+headline (nc/expand-org-notes-path "GTD/watching.org") "Films à voir")
