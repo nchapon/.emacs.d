@@ -154,6 +154,13 @@ point reaches the beginning or end of the buffer, stop there."
 
 * Reading
 * Writing
+** Markdown mode
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode
+    :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode)
+    :config)
+#+END_SRC
+
 * Org 
 ** Bullet Module
 #+BEGIN_SRC emacs-lisp

@@ -96,6 +96,10 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key [remap move-beginning-of-line]
                 'smarter-move-beginning-of-line)
 
+(use-package markdown-mode
+  :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode)
+  :config)
+
 (use-package org-bullets    
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
