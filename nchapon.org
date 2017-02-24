@@ -1,0 +1,140 @@
+
+
+
+
+* Personal information
+
+#+BEGIN_SRC emacs-lisp
+(setq user-full-name "Nicolas Chapon"
+      user-mail-address "nchapon@gmail.com")
+#+END_SRC
+
+* Packages
+
+#+BEGIN_SRC emacs-lisp
+(setq use-package-verbose t)
+(setq use-package-always-ensure t)
+(require 'use-package)
+(use-package auto-compile
+  :config (auto-compile-on-load-mode))
+#+END_SRC
+
+* General configuration
+
+** Windows configuration
+*** No menu and toolbar
+
+#+BEGIN_SRC emacs-lisp
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+#+END_SRC
+
+*** No welcome screen
+
+#+BEGIN_SRC emacs-lisp
+(setq  inhibit-startup-message t)
+#+END_SRC
+
+** Backups
+** History
+** Answering just 'y' or 'n'
+
+#+BEGIN_SRC emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+** Transparently open compressed files
+
+#+BEGIN_SRC emacs-lisp
+(auto-compression-mode t)
+#+END_SRC
+
+** Sane settings
+
+#+BEGIN_SRC emacs-lisp
+
+(setq initial-major-mode 'lisp-interaction-mode
+      redisplay-dont-pause t
+      column-number-mode t
+      echo-keystrokes 0.02
+      transient-mark-mode t
+      shift-select-mode nil
+      require-final-newline t
+      truncate-partial-width-windows nil
+      delete-by-moving-to-trash nil
+      confirm-nonexistent-file-or-buffer nil
+      query-replace-highlight t)
+#+END_SRC
+
+** Helm 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm
+    :diminish helm-mode
+    :init
+    (progn
+      (require 'helm-config)
+      (setq helm-candidate-number-limit 100)
+      
+      (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
+            helm-input-idle-delay 0.01  ; this actually updates things
+                                          ; reeeelatively quickly.
+            helm-yas-display-key-on-candidate t
+            helm-quick-update t
+            helm-split-window-in-side-p t
+            helm-buffers-fuzzy-matching t
+            helm-move-to-line-cycle-in-source t
+            helm-ff-search-library-in-sexp t
+            helm-ff-file-name-history-use-recentf t
+            helm-M-x-requires-pattern nil
+            helm-ff-skip-boring-files t)
+      (helm-mode))
+    :bind (("C-x b" . helm-mini)
+           ("M-x" . helm-M-x)
+           ("C-x C-f" . helm-find-files) 
+           ("C-h f" . helm-apropos)
+           ("C-x C-b" . helm-buffers-list)         
+           ("M-y" . helm-show-kill-ring)
+           ("M-x" . helm-M-x)
+           ("C-x c o" . helm-occur)
+           ("C-x c s" . helm-swoop)
+           ("C-x c y" . helm-yas-complete)
+           ("C-x c Y" . helm-yas-create-snippet-on-region)         
+           ("C-x c SPC" . helm-all-mark-rings)))
+#+END_SRC
+
+
+* Navigation
+** Recent files
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
+* Reading
+* Writing
+* Org 
+** Bullet Module
+#+BEGIN_SRC emacs-lisp
+(use-package org-bullets    
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+#+END_SRC
+
+
+* Coding
+
+** Expand region
+#+BEGIN_SRC emacs-lisp
+(use-package expand-region
+  :bind
+  ("C-=" . er/expand-region))
+#+END_SRC
+
+** Lua
+#+BEGIN_SRC emacs-lisp
+(use-package lua-mode
+  :ensure t
+  :mode "\\.lua\\'")
+#+END_SRC 
+** Magit
+** Yasnippet
