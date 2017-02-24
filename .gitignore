@@ -31,3 +31,4 @@ session.*
 /org-clock-save.el
 /data/
 /.org-id-locations
+/recentf~
