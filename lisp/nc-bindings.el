@@ -1,14 +1,10 @@
 ;; Bindings here.
 
-;; Increase or decrease text scale:
-(define-key global-map (kbd "C-+") 'text-scale-increase)
-(define-key global-map (kbd "C--") 'text-scale-decrease)
 
 ;; Global key bindings
 ;;(global-set-key (kbd "RET")         'newline-and-indent)
-(global-set-key (kbd "C-<f4>")      'kill-buffer-and-window)
 (global-set-key (kbd "<delete>")    'delete-char)  ; delete == delete
-(global-set-key (kbd "M-g")         'goto-line)
+
 
 (when (fboundp 'ibuffer)
   (global-set-key (kbd "C-x C-b") 'ibuffer))   ;; prefer ibuffer
@@ -19,17 +15,9 @@
 ;; Navigation betweeen buffers with ALT+ARROWS
 (windmove-default-keybindings 'meta)
 
-;; Prefer backward-kill-word over Backspace
-;; https://sites.google.com/site/steveyegge2/effective-emacs
-(global-set-key "\C-w" 'backward-kill-word)
-(global-set-key "\C-x\C-k" 'kill-region)
-(global-set-key "\C-c\C-k" 'kill-region)
-
-(global-set-key (kbd "M-y") 'browse-kill-ring)
 
 
-;; Find Recent File
-(global-set-key (kbd "C-x C-r")   'helm-recentf)
+
 
 ;; Occurences in a file
 (global-set-key "\C-co" 'occur)
@@ -54,14 +42,7 @@
 (global-set-key [(control shift up)]  'move-line-up)
 (global-set-key [(control shift down)]  'move-line-down)
 
-;;; Ace Jump Mode key binding
-(define-key global-map (kbd "C-c /") 'ace-jump-mode)
-(define-key global-map (kbd "C-c k") 'ace-jump-mode-pop-mark)
 
-;;; Expand Region
-(global-set-key (kbd "C-=") 'er/expand-region)
-
-;; Binding for custom functions
 
 ;;; Emacs Configuration File Shortcuts
 (global-set-key (kbd "C-c I") 'my-init-file)
@@ -74,7 +55,9 @@
 (global-set-key (kbd "C-c d") 'nc/duplicate-current-line-or-region)
 
 ;;; Join lines
-(global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
+
+
+
 
 
 ;;; Multiple cursors
@@ -88,24 +71,6 @@
 (global-set-key (kbd "C-*") 'mc/mark-all-dwim)
 
 
-
-;; Gobal keys for usefuls functions
-
-(global-set-key (kbd "<f2>") 'rgrep)
-(global-set-key (kbd "C-<f2>") 'helm-do-ag)
-
-(global-set-key (kbd "<f6>") 'magit-status)
-(global-set-key (kbd "C-<f6>") 'magit-log-buffer-file)
-
-
-;; Org mode keys
-(global-set-key (kbd "<f8>") 'org-cycle-agenda-files)
-(global-set-key (kbd "<f11>") 'org-clock-goto)
-(global-set-key (kbd "<f12>") 'org-agenda)
-
-;;
-(global-set-key (kbd "M-<f12>") 'shell)
-(global-set-key (kbd "C-<f12>") 'helm-semantic-or-imenu)
 
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)

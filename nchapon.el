@@ -8,15 +8,37 @@
 (use-package auto-compile
   :config (auto-compile-on-load-mode))
 
+(cond
+ ((find-font (font-spec :name "Source Code Pro"))
+   (set-frame-font "Source Code Pro-14" nil t)))
+
+(use-package smart-mode-line)
+
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+(auto-compression-mode t)
+
+(setq line-number-mode t)
+(setq column-number-mode t)
+
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
 (setq  inhibit-startup-message t)
 
-(defalias 'yes-or-no-p 'y-or-n-p)
+(setq
+tmp-dir      (file-name-as-directory (concat user-emacs-directory "tmp"))
+autosaves-dir(file-name-as-directory (concat tmp-dir  "autosaves"))
+backups-dir  (file-name-as-directory (concat tmp-dir  "backups")))
 
-(auto-compression-mode t)
+(setq backup-directory-alist
+      `(("." . ,(expand-file-name backups-dir))))
+
+(setq delete-old-versions t
+  kept-new-versions 6
+  kept-old-versions 2
+  version-control t)
 
 (setq initial-major-mode 'lisp-interaction-mode
       redisplay-dont-pause t
@@ -26,9 +48,56 @@
       shift-select-mode nil
       require-final-newline t
       truncate-partial-width-windows nil
-      delete-by-moving-to-trash nil
+      delete-by-moving-to-trash t
       confirm-nonexistent-file-or-buffer nil
       query-replace-highlight t)
+
+(setq dired-recursive-delete 'always)
+(setq dired-recursive-copy 'always)
+
+(add-hook 'dired-load-hook
+            (function (lambda () (load "dired-x"))))
+
+(use-package undo-tree
+  :diminish undo-tree-mode
+  :config
+  (progn
+    (global-undo-tree-mode)
+    (setq undo-tree-visualizer-timestamps t)
+    (setq undo-tree-visualizer-diff t)))
+
+(prefer-coding-system 'utf-8-unix)
+(set-clipboard-coding-system 'utf-8-unix)
+(set-default-coding-systems 'utf-8-unix)
+(set-keyboard-coding-system 'utf-8-unix)
+(set-language-environment 'utf-8)
+(set-selection-coding-system 'utf-8-unix)
+(set-terminal-coding-system 'utf-8-unix)
+(setq locale-coding-system 'utf-8-unix)
+(setq coding-system-for-write 'utf-8-unix)
+(setq default-buffer-file-coding-system 'utf-8-unix)
+(setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+(setq file-name-coding-system  'utf-8)
+(add-to-list 'auto-coding-alist '("." . utf-8))
+
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+
+(define-key global-map (kbd "RET") 'newline-and-indent)
+
+(add-hook 'before-save-hook 'whitespace-cleanup)
+
+(setq fill-column 80)
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-separator "/")
+(setq uniquify-after-kill-buffer-p t)
+(setq uniquify-ignore-buffers-re "^\\*")
+
+(global-auto-revert-mode 1)
+
+(setq global-auto-revert-non-file-buffers t)
 
 (use-package helm
   :diminish helm-mode
@@ -36,7 +105,7 @@
   (progn
     (require 'helm-config)
     (setq helm-candidate-number-limit 100)
-    
+
     (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
           helm-input-idle-delay 0.01  ; this actually updates things
                                         ; reeeelatively quickly.
@@ -52,23 +121,17 @@
     (helm-mode))
   :bind (("C-x b" . helm-mini)
          ("M-x" . helm-M-x)
-         ("C-x C-f" . helm-find-files) 
+         ("C-x C-f" . helm-find-files)
          ("C-h f" . helm-apropos)
-         ("C-x C-b" . helm-buffers-list)         
+         ("C-x C-b" . helm-buffers-list)
          ("M-y" . helm-show-kill-ring)
          ("M-x" . helm-M-x)
          ("C-x c o" . helm-occur)
          ("C-x c s" . helm-swoop)
          ("C-x C-r" . helm-recentf)
          ("C-x c y" . helm-yas-complete)
-         ("C-x c Y" . helm-yas-create-snippet-on-region)         
+         ("C-x c Y" . helm-yas-create-snippet-on-region)
          ("C-x c SPC" . helm-all-mark-rings)))
-
-(cond
- ((find-font (font-spec :name "Source Code Pro"))
-   (set-frame-font "Source Code Pro-14" nil t)))
-
-(use-package smart-mode-line)
 
 (defun smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
@@ -96,11 +159,12 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key [remap move-beginning-of-line]
                 'smarter-move-beginning-of-line)
 
-(use-package markdown-mode
-  :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode)
-  :config)
+(use-package ace-jump-mode
+  :bind
+  (("C-c /" . ace-jump-mode)
+   ("C-c k". ace-jump-mode-pop-mark)))
 
-(use-package org-bullets    
+(use-package org-bullets
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
@@ -114,3 +178,31 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package magit
   :bind (("C-x g" . magit-status)))
+
+(use-package markdown-mode
+  :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode)
+  :config)
+
+(global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
+
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+
+(global-set-key "\C-w" 'backward-kill-word)
+(global-set-key "\C-x\C-k" 'kill-region)
+
+(global-set-key (kbd "<f2>") 'rgrep)
+(global-set-key (kbd "C-<f2>") 'helm-do-ag)
+
+(global-set-key (kbd "<f6>") 'magit-status)
+(global-set-key (kbd "C-<f6>") 'magit-log-buffer-file)
+
+;; Org mode keys
+(global-set-key (kbd "<f8>") 'org-cycle-agenda-files)
+(global-set-key (kbd "<f11>") 'org-clock-goto)
+(global-set-key (kbd "<f12>") 'org-agenda)
+
+(global-set-key (kbd "M-<f12>") 'shell)
+(global-set-key (kbd "C-<f12>") 'helm-semantic-or-imenu)
+
+(global-set-key (kbd "M-g")         'goto-line)
