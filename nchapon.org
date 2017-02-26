@@ -64,6 +64,13 @@ Use Source code Pro font if present
 (setq  inhibit-startup-message t)
 #+END_SRC
 
+** Which key
+
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+    :config
+    (which-key-mode))
+#+END_SRC
 * General configuration
 ** Backups
 Autosaves and backups are in =<emacs-directory>/tmp=
@@ -234,6 +241,27 @@ Also auto refresh dired, but be quiet about it
            ("C-x c SPC" . helm-all-mark-rings)))
 #+END_SRC
 
+
+** Hippie expand
+Configuration
+#+BEGIN_SRC emacs-lisp
+(setq hippie-expand-try-functions-list
+  '(try-complete-file-name-partially
+    try-complete-file-name
+    try-expand-all-abbrevs
+    try-expand-dabbrev
+    try-expand-dabbrev-visible
+    try-expand-dabbrev-all-buffers
+    try-expand-dabbrev-from-kill
+    try-complete-lisp-symbol-partially
+    try-complete-lisp-symbol))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(bind-key "M-/" 'hippie-expand)
+#+END_SRC
+
+
 * Navigation
 ** Move to beginning of file
 From  [[https://github.com/bbatsov/prelude]]
@@ -277,6 +305,15 @@ point reaches the beginning or end of the buffer, stop there."
      ("C-c k". ace-jump-mode-pop-mark)))
 #+END_SRC
 * Org
+** Org global keys
+
+#+BEGIN_SRC emacs-lisp
+(bind-key "\C-cl" 'org-store-link)
+(bind-key "\C-cc" 'org-capture)
+(bind-key "\C-ca" 'org-agenda)
+(bind-key "\C-cb" 'org-iswitchb)
+#+END_SRC
+
 ** Bullet Module
 #+BEGIN_SRC emacs-lisp
 (use-package org-bullets
@@ -284,7 +321,47 @@ point reaches the beginning or end of the buffer, stop there."
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+END_SRC
 
+** Tasks
+*** Todo states
+ - parentheses indicate keyboard shortcuts
+ - =@= prompts for a note
+ - =!= logs the timestamp of the state change
 
+#+BEGIN_SRC emacs-lisp
+(setq org-todo-keywords
+      (quote ((sequence "TODO(t)"
+                        "NEXT(n)"
+                        "STARTED(s)"
+                        "WAITING(w@/!)"
+                        "SOMEDAY(.)" "|" "DONE(d!)" "CANCELLED(c@/!)")
+              (sequence "MEETING(m)" "RDV(r)" "FORMATION(f)" "PHONE(p)" "|" "DONE(d)"))))
+
+#+END_SRC
+
+*** Todo faces
+#+BEGIN_SRC emacs-lisp
+(setq org-todo-keyword-faces
+      (quote (("TODO" :foreground "red" :weight bold)
+              ("NEXT" :foreground "blue" :weight bold)
+              ("STARTED" :foreground "orange" :weight bold)
+              ("SOMEDAY" :foreground "dark gray" :weight bold)
+              ("DONE" :foreground "forest green" :weight bold)
+              ("WAITING" :foreground "magenta" :weight bold)
+              ("MEETING" :foreground "cyan" :weight bold)
+              ("RDV" :foreground "cyan" :weight bold)
+              ("FORMATION" :foreground "khaki" :weight bold)
+              ("CANCELLED" :foreground "forest green" :weight bold))))
+#+END_SRC
+
+** Agenda
+*** Agenda files
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-files (list "~/notes/GTD"))
+#+END_SRC
+*** Diary
+#+BEGIN_SRC
+(setq diary-file "~/notes/diary")
+#+END_SRC
 * Coding
 
 ** Expand region
@@ -311,7 +388,35 @@ point reaches the beginning or end of the buffer, stop there."
     :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode)
     :config)
 #+END_SRC
-** TODO Projectile
+** TODO Multiple Cursors
+** Projectile
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+  :diminish projectile-mode
+  :config
+  (progn
+    (setq projectile-keymap-prefix (kbd "C-c p"))
+    (setq projectile-enable-caching t)
+    (add-to-list 'projectile-globally-ignored-directories "elpa")
+    (add-to-list 'projectile-globally-ignored-directories ".cache")
+    (add-to-list 'projectile-globally-ignored-directories "image-dired")
+    (add-to-list 'projectile-globally-ignored-files "node_modules"))
+  :config
+  (projectile-global-mode))
+
+#+END_SRC
+
+*** Custom mode line indicator
+
+#+BEGIN_SRC emacs-lisp
+(setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
+#+END_SRC
+
+*** Helm-projectile
+#+BEGIN_SRC emacs-lisp
+(use-package helm-projectile)
+#+END_SRC
+
 ** TODO Clojure
 ** TODO Web
 ** TODO Yasnippet

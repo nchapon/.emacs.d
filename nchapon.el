@@ -27,6 +27,10 @@
 
 (setq  inhibit-startup-message t)
 
+(use-package which-key
+    :config
+    (which-key-mode))
+
 (setq
 tmp-dir      (file-name-as-directory (concat user-emacs-directory "tmp"))
 autosaves-dir(file-name-as-directory (concat tmp-dir  "autosaves"))
@@ -133,6 +137,19 @@ backups-dir  (file-name-as-directory (concat tmp-dir  "backups")))
          ("C-x c Y" . helm-yas-create-snippet-on-region)
          ("C-x c SPC" . helm-all-mark-rings)))
 
+(setq hippie-expand-try-functions-list
+  '(try-complete-file-name-partially
+    try-complete-file-name
+    try-expand-all-abbrevs
+    try-expand-dabbrev
+    try-expand-dabbrev-visible
+    try-expand-dabbrev-all-buffers
+    try-expand-dabbrev-from-kill
+    try-complete-lisp-symbol-partially
+    try-complete-lisp-symbol))
+
+(bind-key "M-/" 'hippie-expand)
+
 (defun smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
 
@@ -164,9 +181,36 @@ point reaches the beginning or end of the buffer, stop there."
   (("C-c /" . ace-jump-mode)
    ("C-c k". ace-jump-mode-pop-mark)))
 
+(bind-key "\C-cl" 'org-store-link)
+(bind-key "\C-cc" 'org-capture)
+(bind-key "\C-ca" 'org-agenda)
+(bind-key "\C-cb" 'org-iswitchb)
+
 (use-package org-bullets
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+(setq org-todo-keywords
+      (quote ((sequence "TODO(t)"
+                        "NEXT(n)"
+                        "STARTED(s)"
+                        "WAITING(w@/!)"
+                        "SOMEDAY(.)" "|" "DONE(d!)" "CANCELLED(c@/!)")
+              (sequence "MEETING(m)" "RDV(r)" "FORMATION(f)" "PHONE(p)" "|" "DONE(d)"))))
+
+(setq org-todo-keyword-faces
+      (quote (("TODO" :foreground "red" :weight bold)
+              ("NEXT" :foreground "blue" :weight bold)
+              ("STARTED" :foreground "orange" :weight bold)
+              ("SOMEDAY" :foreground "dark gray" :weight bold)
+              ("DONE" :foreground "forest green" :weight bold)
+              ("WAITING" :foreground "magenta" :weight bold)
+              ("MEETING" :foreground "cyan" :weight bold)
+              ("RDV" :foreground "cyan" :weight bold)
+              ("FORMATION" :foreground "khaki" :weight bold)
+              ("CANCELLED" :foreground "forest green" :weight bold))))
+
+(setq org-agenda-files (list "~/notes/GTD"))
 
 (use-package expand-region
   :bind
@@ -182,6 +226,23 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package markdown-mode
   :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode)
   :config)
+
+(use-package projectile
+  :diminish projectile-mode
+  :config
+  (progn
+    (setq projectile-keymap-prefix (kbd "C-c p"))
+    (setq projectile-enable-caching t)
+    (add-to-list 'projectile-globally-ignored-directories "elpa")
+    (add-to-list 'projectile-globally-ignored-directories ".cache")
+    (add-to-list 'projectile-globally-ignored-directories "image-dired")
+    (add-to-list 'projectile-globally-ignored-files "node_modules"))
+  :config
+  (projectile-global-mode))
+
+(setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
+
+(use-package helm-projectile)
 
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
 

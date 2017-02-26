@@ -31,9 +31,6 @@
 ;; defines shortcut for the loccur of the previously found word
 (define-key global-map [(control shift o)] 'loccur-previous-match)
 
-;;; Hippie expand
-(global-set-key "\M- " 'hippie-expand)
-(global-set-key (kbd "M-/") #'hippie-expand)
 
 ;;; Rotate Window
 (global-set-key (kbd "C-c w r") 'rotate-windows)
@@ -70,12 +67,6 @@
 (global-set-key (kbd "C-S-p") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-*") 'mc/mark-all-dwim)
 
-
-
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
 
 
 (require 'key-chord)
