@@ -315,8 +315,19 @@ there's a region, all lines that region covers will be duplicated."
 (use-package key-chord
   :init
   (key-chord-mode 1)
+  (key-chord-define-global "jj" 'ace-jump-word-mode)
+  (key-chord-define-global "jl" 'ace-jump-line-mode)
+  (key-chord-define-global "jk" 'ace-jump-char-mode)
   (key-chord-define-global "FF" 'projectile-find-file)
   (key-chord-define-global "GG" 'helm-projectile-ag)
-
-
-)
+  (key-chord-define-global "KK" 'kill-whole-line)
+  (key-chord-define-global "JJ" 'jump-to-register)
+  (key-chord-define-global "DD" 'delete-region)
+  (key-chord-define-global "OO" 'helm-occur)
+  (key-chord-define-global "??" 'nc/helm-do-grep-notes)
+  (key-chord-define-global "BB" 'beginning-of-buffer)
+  (key-chord-define-global "$$" 'end-of-buffer)
+  (key-chord-define-global "xx" 'execute-extended-command)
+  (key-chord-define-global "qq" 'nc/cleanup-buffer-or-region)
+  (key-chord-define-global "yy" 'browse-kill-ring)
+  )
