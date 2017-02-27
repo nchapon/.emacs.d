@@ -295,7 +295,6 @@ Configuration
 (bind-key "M-/" 'hippie-expand)
 #+END_SRC
 
-
 * Navigation
 ** Move to beginning of file
 From  [[https://github.com/bbatsov/prelude]]
@@ -398,7 +397,6 @@ Should I try avy ?
 (setq diary-file "~/notes/diary")
 #+END_SRC
 * Programming
-
 ** Expand region
 #+BEGIN_SRC emacs-lisp
 (use-package expand-region
@@ -503,7 +501,34 @@ there's a region, all lines that region covers will be duplicated."
 (bind-key "C-c d" 'nc/duplicate-current-line-or-region)
 #+END_SRC
 
-** TODO Move Line
+** Move Line
+*** Move line Up
+Move line Up is bound to =C-S-UpArrow=
+#+BEGIN_SRC emacs-lisp
+(defun nc/move-line-up ()
+  "Move up the current line."
+  (interactive)
+  (transpose-lines 1)
+  (forward-line -2)
+  (indent-according-to-mode))
+
+(global-set-key [(control shift up)]  'nc/move-line-up)
+#+END_SRC
+*** Move line down
+Move line down is bound to =C-S-DownArrow=
+
+#+BEGIN_SRC emacs-lisp
+(defun move-line-down ()
+  "Move down the current line."
+  (interactive)
+  (forward-line 1)
+  (transpose-lines 1)
+  (forward-line -1)
+  (indent-according-to-mode))
+
+(global-set-key [(control shift down)]  'move-line-down)
+#+END_SRC
+
 ** Join lines
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
@@ -542,6 +567,49 @@ https://sites.google.com/site/steveyegge2/effective-emacs
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-g")         'goto-line)
 #+END_SRC
+** Split Windows
+*** Toggle window split
+Bound to =C-c -=.
+#+BEGIN_SRC emacs-lisp
+  (defun nc/toggle-window-split ()
+    (interactive)
+    (if (= (count-windows) 2)
+        (let* ((this-win-buffer (window-buffer))
+               (next-win-buffer (window-buffer (next-window)))
+               (this-win-edges (window-edges (selected-window)))
+               (next-win-edges (window-edges (next-window)))
+               (this-win-2nd (not (and (<= (car this-win-edges)
+                                           (car next-win-edges))
+                                       (<= (cadr this-win-edges)
+                                           (cadr next-win-edges)))))
+               (splitter
+                (if (= (car this-win-edges)
+                       (car (window-edges (next-window))))
+                    'split-window-horizontally
+                  'split-window-vertically)))
+          (delete-other-windows)
+          (let ((first-win (selected-window)))
+            (funcall splitter)
+            (if this-win-2nd (other-window 1))
+            (set-window-buffer (selected-window) this-win-buffer)
+            (set-window-buffer (next-window) next-win-buffer)
+            (select-window first-win)
+            (if this-win-2nd (other-window 1))))))
+
+  (bind-key "C-c -" 'nc/toggle-window-split)
+#+END_SRC
+*** Split window right
+Split window right with =C-c |= and move there
+
+#+BEGIN_SRC emacs-lisp
+(defun nc/split-window-right-and-move-there-dammit ()
+  (interactive)
+  (split-window-right)
+  (windmove-right))
+
+(bind-key "C-c |" 'nc/split-window-right-and-move-there-dammit)
+#+END_SRC
+
 ** Key Chords
 #+BEGIN_SRC emacs-lisp
   (use-package key-chord

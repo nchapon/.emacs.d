@@ -288,6 +288,25 @@ there's a region, all lines that region covers will be duplicated."
 
 (bind-key "C-c d" 'nc/duplicate-current-line-or-region)
 
+(defun nc/move-line-up ()
+  "Move up the current line."
+  (interactive)
+  (transpose-lines 1)
+  (forward-line -2)
+  (indent-according-to-mode))
+
+(global-set-key [(control shift up)]  'nc/move-line-up)
+
+(defun move-line-down ()
+  "Move down the current line."
+  (interactive)
+  (forward-line 1)
+  (transpose-lines 1)
+  (forward-line -1)
+  (indent-according-to-mode))
+
+(global-set-key [(control shift down)]  'move-line-down)
+
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
 
 (global-set-key (kbd "C-+") 'text-scale-increase)
@@ -311,6 +330,40 @@ there's a region, all lines that region covers will be duplicated."
 (global-set-key (kbd "C-<f12>") 'helm-semantic-or-imenu)
 
 (global-set-key (kbd "M-g")         'goto-line)
+
+(defun nc/toggle-window-split ()
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+             (next-win-buffer (window-buffer (next-window)))
+             (this-win-edges (window-edges (selected-window)))
+             (next-win-edges (window-edges (next-window)))
+             (this-win-2nd (not (and (<= (car this-win-edges)
+                                         (car next-win-edges))
+                                     (<= (cadr this-win-edges)
+                                         (cadr next-win-edges)))))
+             (splitter
+              (if (= (car this-win-edges)
+                     (car (window-edges (next-window))))
+                  'split-window-horizontally
+                'split-window-vertically)))
+        (delete-other-windows)
+        (let ((first-win (selected-window)))
+          (funcall splitter)
+          (if this-win-2nd (other-window 1))
+          (set-window-buffer (selected-window) this-win-buffer)
+          (set-window-buffer (next-window) next-win-buffer)
+          (select-window first-win)
+          (if this-win-2nd (other-window 1))))))
+
+(bind-key "C-c -" 'nc/toggle-window-split)
+
+(defun nc/split-window-right-and-move-there-dammit ()
+  (interactive)
+  (split-window-right)
+  (windmove-right))
+
+(bind-key "C-c |" 'nc/split-window-right-and-move-there-dammit)
 
 (use-package key-chord
   :init
