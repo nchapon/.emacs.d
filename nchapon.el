@@ -103,26 +103,44 @@ backups-dir  (file-name-as-directory (concat tmp-dir  "backups")))
 
 (setq global-auto-revert-non-file-buffers t)
 
+(use-package projectile
+  :diminish projectile-mode
+  :config
+  (progn
+    (setq projectile-keymap-prefix (kbd "C-c p"))
+    (setq projectile-enable-caching t)
+    (add-to-list 'projectile-globally-ignored-directories "elpa")
+    (add-to-list 'projectile-globally-ignored-directories ".cache")
+    (add-to-list 'projectile-globally-ignored-directories "image-dired")
+    (add-to-list 'projectile-globally-ignored-files "node_modules"))
+  :config
+  (projectile-global-mode))
+
+(setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
+
 (use-package helm
   :diminish helm-mode
-  :init
-  (progn
-    (require 'helm-config)
-    (setq helm-candidate-number-limit 100)
 
-    (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
-          helm-input-idle-delay 0.01  ; this actually updates things
+  :config (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
+                helm-input-idle-delay 0.01  ; this actually updates things
                                         ; reeeelatively quickly.
-          helm-yas-display-key-on-candidate t
-          helm-quick-update t
-          helm-split-window-in-side-p t
-          helm-buffers-fuzzy-matching t
-          helm-move-to-line-cycle-in-source t
-          helm-ff-search-library-in-sexp t
-          helm-ff-file-name-history-use-recentf t
-          helm-M-x-requires-pattern nil
-          helm-ff-skip-boring-files t)
-    (helm-mode))
+                helm-yas-display-key-on-candidate t
+                helm-quick-update t
+                helm-split-window-in-side-p t
+                helm-buffers-fuzzy-matching t
+                helm-move-to-line-cycle-in-source t
+                helm-ff-search-library-in-sexp t
+                helm-ff-file-name-history-use-recentf t
+                helm-M-x-requires-pattern nil
+                helm-ff-skip-boring-files t)
+
+  :init (progn
+          (require 'helm-config)
+          (helm-mode t)
+          (use-package helm-ag)
+
+          (use-package helm-projectile))
+
   :bind (("C-x b" . helm-mini)
          ("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
@@ -243,23 +261,6 @@ point reaches the beginning or end of the buffer, stop there."
    ("C-S-p" .  mc/mark-previous-like-this)
    ("C-*" .  mc/mark-all-dwim)))
 
-(use-package projectile
-  :diminish projectile-mode
-  :config
-  (progn
-    (setq projectile-keymap-prefix (kbd "C-c p"))
-    (setq projectile-enable-caching t)
-    (add-to-list 'projectile-globally-ignored-directories "elpa")
-    (add-to-list 'projectile-globally-ignored-directories ".cache")
-    (add-to-list 'projectile-globally-ignored-directories "image-dired")
-    (add-to-list 'projectile-globally-ignored-files "node_modules"))
-  :config
-  (projectile-global-mode))
-
-(setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
-
-(use-package helm-projectile)
-
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
 
 (global-set-key (kbd "C-+") 'text-scale-increase)
@@ -283,3 +284,5 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key (kbd "C-<f12>") 'helm-semantic-or-imenu)
 
 (global-set-key (kbd "M-g")         'goto-line)
+
+

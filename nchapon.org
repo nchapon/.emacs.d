@@ -201,31 +201,57 @@ Also auto refresh dired, but be quiet about it
 
 *** TODO Rename file and buffer
 
-* Completion front ends
+* Project management
+** Projectile
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+  :diminish projectile-mode
+  :config
+  (progn
+    (setq projectile-keymap-prefix (kbd "C-c p"))
+    (setq projectile-enable-caching t)
+    (add-to-list 'projectile-globally-ignored-directories "elpa")
+    (add-to-list 'projectile-globally-ignored-directories ".cache")
+    (add-to-list 'projectile-globally-ignored-directories "image-dired")
+    (add-to-list 'projectile-globally-ignored-files "node_modules"))
+  :config
+  (projectile-global-mode))
+
+#+END_SRC
+
+** Custom mode line indicator
+
+#+BEGIN_SRC emacs-lisp
+(setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
+#+END_SRC
+* Completion, matching and suggestions
 ** TODO Company
 ** Helm
 
 #+BEGIN_SRC emacs-lisp
   (use-package helm
     :diminish helm-mode
-    :init
-    (progn
-      (require 'helm-config)
-      (setq helm-candidate-number-limit 100)
 
-      (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
-            helm-input-idle-delay 0.01  ; this actually updates things
+    :config (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
+                  helm-input-idle-delay 0.01  ; this actually updates things
                                           ; reeeelatively quickly.
-            helm-yas-display-key-on-candidate t
-            helm-quick-update t
-            helm-split-window-in-side-p t
-            helm-buffers-fuzzy-matching t
-            helm-move-to-line-cycle-in-source t
-            helm-ff-search-library-in-sexp t
-            helm-ff-file-name-history-use-recentf t
-            helm-M-x-requires-pattern nil
-            helm-ff-skip-boring-files t)
-      (helm-mode))
+                  helm-yas-display-key-on-candidate t
+                  helm-quick-update t
+                  helm-split-window-in-side-p t
+                  helm-buffers-fuzzy-matching t
+                  helm-move-to-line-cycle-in-source t
+                  helm-ff-search-library-in-sexp t
+                  helm-ff-file-name-history-use-recentf t
+                  helm-M-x-requires-pattern nil
+                  helm-ff-skip-boring-files t)
+
+    :init (progn
+            (require 'helm-config)
+            (helm-mode t)
+            (use-package helm-ag)
+
+            (use-package helm-projectile))
+
     :bind (("C-x b" . helm-mini)
            ("M-x" . helm-M-x)
            ("C-x C-f" . helm-find-files)
@@ -240,7 +266,6 @@ Also auto refresh dired, but be quiet about it
            ("C-x c Y" . helm-yas-create-snippet-on-region)
            ("C-x c SPC" . helm-all-mark-rings)))
 #+END_SRC
-
 
 ** Hippie expand
 Configuration
@@ -362,7 +387,7 @@ point reaches the beginning or end of the buffer, stop there."
 #+BEGIN_SRC
 (setq diary-file "~/notes/diary")
 #+END_SRC
-* Coding
+* Programming
 
 ** Expand region
 #+BEGIN_SRC emacs-lisp
@@ -429,33 +454,9 @@ This package can create several cursors to all do the same things.
      ("C-S-p" .  mc/mark-previous-like-this)
      ("C-*" .  mc/mark-all-dwim)))
 #+END_SRC
-** Projectile
-#+BEGIN_SRC emacs-lisp
-(use-package projectile
-  :diminish projectile-mode
-  :config
-  (progn
-    (setq projectile-keymap-prefix (kbd "C-c p"))
-    (setq projectile-enable-caching t)
-    (add-to-list 'projectile-globally-ignored-directories "elpa")
-    (add-to-list 'projectile-globally-ignored-directories ".cache")
-    (add-to-list 'projectile-globally-ignored-directories "image-dired")
-    (add-to-list 'projectile-globally-ignored-files "node_modules"))
-  :config
-  (projectile-global-mode))
 
-#+END_SRC
 
-*** Custom mode line indicator
 
-#+BEGIN_SRC emacs-lisp
-(setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
-#+END_SRC
-
-*** Helm-projectile
-#+BEGIN_SRC emacs-lisp
-(use-package helm-projectile)
-#+END_SRC
 
 ** TODO Clojure
 ** TODO Web
@@ -504,3 +505,6 @@ https://sites.google.com/site/steveyegge2/effective-emacs
 (global-set-key (kbd "M-g")         'goto-line)
 #+END_SRC
 ** Key Chords
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
