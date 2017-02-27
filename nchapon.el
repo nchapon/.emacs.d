@@ -216,6 +216,11 @@ point reaches the beginning or end of the buffer, stop there."
   :bind
   ("C-=" . er/expand-region))
 
+(setq ediff-diff-options "-w")
+
+(setq ediff-split-window-function 'split-window-horizontally)
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
 (use-package lua-mode
   :ensure t
   :mode "\\.lua\\'")
