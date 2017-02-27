@@ -474,7 +474,35 @@ This package can create several cursors to all do the same things.
 
 * Global keymap
 
-** TODO Duplicate line
+** Duplicate line
+Duplicate line with =C-c d=
+#+BEGIN_SRC emacs-lisp
+(defun nc/duplicate-current-line-or-region (arg)
+  "Duplicates the current line or region ARG times.
+If there's no region, the current line will be duplicated.  However, if
+there's a region, all lines that region covers will be duplicated."
+  (interactive "p")
+  (let (beg end (origin (point)))
+    (if (and mark-active (> (point) (mark)))
+        (exchange-point-and-mark))
+    (setq beg (line-beginning-position))
+    (if mark-active
+        (exchange-point-and-mark))
+    (setq end (line-end-position))
+    (let ((region (buffer-substring-no-properties beg end)))
+      (-dotimes arg
+                (lambda (n)
+                  (goto-char end)
+                  (newline)
+                  (insert region)
+                  (setq end (point))))
+      (goto-char (+ origin (* (length region) arg) arg)))))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(bind-key "C-c d" 'nc/duplicate-current-line-or-region)
+#+END_SRC
+
 ** TODO Move Line
 ** Join lines
 #+BEGIN_SRC emacs-lisp
@@ -517,8 +545,11 @@ https://sites.google.com/site/steveyegge2/effective-emacs
 ** Key Chords
 #+BEGIN_SRC emacs-lisp
   (use-package key-chord
-    :init (progn
-            (key-chord-mode 1)
-            (key-chord-define-global "FF" 'projectile-find-file)
-            (key-chord-define-global "GG" 'helm-projectile-ag)))
+    :init
+    (key-chord-mode 1)
+    (key-chord-define-global "FF" 'projectile-find-file)
+    (key-chord-define-global "GG" 'helm-projectile-ag)
+
+
+  )
 #+END_SRC

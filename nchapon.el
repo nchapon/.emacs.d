@@ -265,6 +265,29 @@ point reaches the beginning or end of the buffer, stop there."
    ("C-S-p" .  mc/mark-previous-like-this)
    ("C-*" .  mc/mark-all-dwim)))
 
+(defun nc/duplicate-current-line-or-region (arg)
+  "Duplicates the current line or region ARG times.
+If there's no region, the current line will be duplicated.  However, if
+there's a region, all lines that region covers will be duplicated."
+  (interactive "p")
+  (let (beg end (origin (point)))
+    (if (and mark-active (> (point) (mark)))
+        (exchange-point-and-mark))
+    (setq beg (line-beginning-position))
+    (if mark-active
+        (exchange-point-and-mark))
+    (setq end (line-end-position))
+    (let ((region (buffer-substring-no-properties beg end)))
+      (-dotimes arg
+                (lambda (n)
+                  (goto-char end)
+                  (newline)
+                  (insert region)
+                  (setq end (point))))
+      (goto-char (+ origin (* (length region) arg) arg)))))
+
+(bind-key "C-c d" 'nc/duplicate-current-line-or-region)
+
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
 
 (global-set-key (kbd "C-+") 'text-scale-increase)
@@ -290,7 +313,10 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key (kbd "M-g")         'goto-line)
 
 (use-package key-chord
-  :init (progn
-          (key-chord-mode 1)
-          (key-chord-define-global "FF" 'projectile-find-file)
-          (key-chord-define-global "GG" 'helm-projectile-ag)))
+  :init
+  (key-chord-mode 1)
+  (key-chord-define-global "FF" 'projectile-find-file)
+  (key-chord-define-global "GG" 'helm-projectile-ag)
+
+
+)

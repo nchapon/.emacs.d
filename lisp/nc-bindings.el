@@ -48,8 +48,7 @@
 (global-set-key (kbd "C-c |") 'nc/split-window-right-and-move-there-dammit)
 (global-set-key (kbd "C-c -") 'nc/toggle-window-split)
 
-;; Duplicate current line or region
-(global-set-key (kbd "C-c d") 'nc/duplicate-current-line-or-region)
+
 
 ;;; Join lines
 
