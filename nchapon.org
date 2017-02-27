@@ -204,18 +204,19 @@ Also auto refresh dired, but be quiet about it
 * Project management
 ** Projectile
 #+BEGIN_SRC emacs-lisp
-(use-package projectile
-  :diminish projectile-mode
-  :config
-  (progn
-    (setq projectile-keymap-prefix (kbd "C-c p"))
-    (setq projectile-enable-caching t)
+  (use-package projectile
+    :diminish projectile-mode
+    :init (progn
+            (setq projectile-keymap-prefix (kbd "C-c p"))
+            (setq projectile-enable-caching t))
+
+    :config
     (add-to-list 'projectile-globally-ignored-directories "elpa")
+    (add-to-list 'projectile-globally-ignored-directories "target")
     (add-to-list 'projectile-globally-ignored-directories ".cache")
     (add-to-list 'projectile-globally-ignored-directories "image-dired")
-    (add-to-list 'projectile-globally-ignored-files "node_modules"))
-  :config
-  (projectile-global-mode))
+    (add-to-list 'projectile-globally-ignored-files "node_modules")
+    (projectile-global-mode))
 
 #+END_SRC
 
@@ -227,7 +228,7 @@ Also auto refresh dired, but be quiet about it
 * Completion, matching and suggestions
 ** TODO Company
 ** Helm
-
+*** Helm core configuration
 #+BEGIN_SRC emacs-lisp
   (use-package helm
     :diminish helm-mode
@@ -243,14 +244,15 @@ Also auto refresh dired, but be quiet about it
                   helm-ff-search-library-in-sexp t
                   helm-ff-file-name-history-use-recentf t
                   helm-M-x-requires-pattern nil
-                  helm-ff-skip-boring-files t)
+                  helm-ff-skip-boring-files t
+                  helm-for-files-preferred-list (quote (helm-source-files-in-current-dir helm-source-recentf helm-source-bookmarks helm-source-file-cache helm-source-buffers-list helm-source-locate helm-source-ls-git)))
 
     :init (progn
             (require 'helm-config)
             (helm-mode t)
-            (use-package helm-ag)
 
-            (use-package helm-projectile))
+            (use-package helm-projectile)
+            (helm-projectile-on))
 
     :bind (("C-x b" . helm-mini)
            ("M-x" . helm-M-x)
@@ -265,6 +267,13 @@ Also auto refresh dired, but be quiet about it
            ("C-x c y" . helm-yas-complete)
            ("C-x c Y" . helm-yas-create-snippet-on-region)
            ("C-x c SPC" . helm-all-mark-rings)))
+#+END_SRC
+*** helm-ag
+Can integrate Helm with [[https://github.com/ggreer/the_silver_searcher][The Silver Searcher]] (ag A code searching tool similar to ack, with a focus on speed.)
+
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-ag)
 #+END_SRC
 
 ** Hippie expand
@@ -320,6 +329,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 #+END_SRC
 ** Ace jump mode
+Should I try avy ?
    :PROPERTIES:
    :ORDERED:  t
    :END:
@@ -508,6 +518,7 @@ https://sites.google.com/site/steveyegge2/effective-emacs
 #+BEGIN_SRC emacs-lisp
   (use-package key-chord
     :init (progn
+            (key-chord-mode 1)
             (key-chord-define-global "FF" 'projectile-find-file)
             (key-chord-define-global "GG" 'helm-projectile-ag)))
 #+END_SRC

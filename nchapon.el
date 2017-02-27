@@ -105,15 +105,16 @@ backups-dir  (file-name-as-directory (concat tmp-dir  "backups")))
 
 (use-package projectile
   :diminish projectile-mode
+  :init (progn
+          (setq projectile-keymap-prefix (kbd "C-c p"))
+          (setq projectile-enable-caching t))
+
   :config
-  (progn
-    (setq projectile-keymap-prefix (kbd "C-c p"))
-    (setq projectile-enable-caching t)
-    (add-to-list 'projectile-globally-ignored-directories "elpa")
-    (add-to-list 'projectile-globally-ignored-directories ".cache")
-    (add-to-list 'projectile-globally-ignored-directories "image-dired")
-    (add-to-list 'projectile-globally-ignored-files "node_modules"))
-  :config
+  (add-to-list 'projectile-globally-ignored-directories "elpa")
+  (add-to-list 'projectile-globally-ignored-directories "target")
+  (add-to-list 'projectile-globally-ignored-directories ".cache")
+  (add-to-list 'projectile-globally-ignored-directories "image-dired")
+  (add-to-list 'projectile-globally-ignored-files "node_modules")
   (projectile-global-mode))
 
 (setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
@@ -132,14 +133,15 @@ backups-dir  (file-name-as-directory (concat tmp-dir  "backups")))
                 helm-ff-search-library-in-sexp t
                 helm-ff-file-name-history-use-recentf t
                 helm-M-x-requires-pattern nil
-                helm-ff-skip-boring-files t)
+                helm-ff-skip-boring-files t
+                helm-for-files-preferred-list (quote (helm-source-files-in-current-dir helm-source-recentf helm-source-bookmarks helm-source-file-cache helm-source-buffers-list helm-source-locate helm-source-ls-git)))
 
   :init (progn
           (require 'helm-config)
           (helm-mode t)
-          (use-package helm-ag)
 
-          (use-package helm-projectile))
+          (use-package helm-projectile)
+          (helm-projectile-on))
 
   :bind (("C-x b" . helm-mini)
          ("M-x" . helm-M-x)
@@ -154,6 +156,8 @@ backups-dir  (file-name-as-directory (concat tmp-dir  "backups")))
          ("C-x c y" . helm-yas-complete)
          ("C-x c Y" . helm-yas-create-snippet-on-region)
          ("C-x c SPC" . helm-all-mark-rings)))
+
+(use-package helm-ag)
 
 (setq hippie-expand-try-functions-list
   '(try-complete-file-name-partially
@@ -287,5 +291,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package key-chord
   :init (progn
+          (key-chord-mode 1)
           (key-chord-define-global "FF" 'projectile-find-file)
           (key-chord-define-global "GG" 'helm-projectile-ag)))
