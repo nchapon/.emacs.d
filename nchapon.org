@@ -506,5 +506,8 @@ https://sites.google.com/site/steveyegge2/effective-emacs
 #+END_SRC
 ** Key Chords
 #+BEGIN_SRC emacs-lisp
-
+  (use-package key-chord
+    :init (progn
+            (key-chord-define-global "FF" 'projectile-find-file)
+            (key-chord-define-global "GG" 'helm-projectile-ag)))
 #+END_SRC

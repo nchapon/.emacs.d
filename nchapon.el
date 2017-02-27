@@ -285,4 +285,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (global-set-key (kbd "M-g")         'goto-line)
 
-
+(use-package key-chord
+  :init (progn
+          (key-chord-define-global "FF" 'projectile-find-file)
+          (key-chord-define-global "GG" 'helm-projectile-ag)))
