@@ -227,6 +227,17 @@ point reaches the beginning or end of the buffer, stop there."
   :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode)
   :config)
 
+(use-package multiple-cursors
+  :bind
+  (("C-S-c C-S-c" .  mc/edit-lines)
+   ("C-$" .  mc/edit-ends-of-lines)
+   ("C-S-b" .  mc/edit-beginnings-of-lines)
+   ("C-<" .  mc/mark-previous-word-like-this)
+   ("C->" .  mc/mark-next-word-like-this)
+   ("C-S-n" .  mc/mark-next-like-this)
+   ("C-S-p" .  mc/mark-previous-like-this)
+   ("C-*" .  mc/mark-all-dwim)))
+
 (use-package projectile
   :diminish projectile-mode
   :config
