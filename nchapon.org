@@ -525,7 +525,28 @@ This package can create several cursors to all do the same things.
 
 ** TODO Clojure
 ** TODO Web
-** TODO Yasnippet
+** Yasnippet
+
+Snippets for programming.
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+  :defer t
+  :diminish yas-minor-mode
+  :init (progn
+          (yas-global-mode 1)
+          (yas-reload-all)))
+#+END_SRC
+
+Allow with =M_== to choosing a snippet using helm.
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-c-yasnippet           ; Helm source for Yasnippet
+  :ensure t
+  :after yasnippet
+  :init (bind-key "M-=" #'helm-yas-complete)
+  :config (setq helm-yas-space-match-any-greedy t))
+#+END_SRC
+
 
 * Global keymap
 
@@ -701,3 +722,7 @@ Split window right with =C-c |= and move there
     (key-chord-define-global "yy" 'browse-kill-ring)
     )
 #+END_SRC
+
+Inspiration configs
+https://writequit.org/org/settings.html
+https://github.com/yveszoundi/emacs.d/blob/master/bootstrap/startup.org

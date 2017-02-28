@@ -311,6 +311,19 @@ point reaches the beginning or end of the buffer, stop there."
    ("C-S-p" .  mc/mark-previous-like-this)
    ("C-*" .  mc/mark-all-dwim)))
 
+(use-package yasnippet
+  :defer t
+  :diminish yas-minor-mode
+  :init (progn
+          (yas-global-mode 1)
+          (yas-reload-all)))
+
+(use-package helm-c-yasnippet           ; Helm source for Yasnippet
+  :ensure t
+  :after yasnippet
+  :init (bind-key "M-=" #'helm-yas-complete)
+  :config (setq helm-yas-space-match-any-greedy t))
+
 (defun nc/duplicate-current-line-or-region (arg)
   "Duplicates the current line or region ARG times.
 If there's no region, the current line will be duplicated.  However, if
