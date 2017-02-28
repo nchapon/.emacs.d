@@ -398,6 +398,8 @@ Should I try avy ?
 #+END_SRC
 * Programming
 ** Expand region
+    - expand selection with =C-==
+    - contract with negative argument =M--= then =C-==
 #+BEGIN_SRC emacs-lisp
 (use-package expand-region
   :bind
