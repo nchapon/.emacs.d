@@ -257,7 +257,31 @@ Also auto refresh dired, but be quiet about it
 (setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
 #+END_SRC
 * Completion, matching and suggestions
-** TODO Company
+** Company
+Standard auto completion mode.
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :defer t
+    :diminish ""
+    :bind ("C-." . company-complete)
+    :init (global-company-mode)
+    :config
+    (progn
+      (setq company-idle-delay 0.1
+            ;; min prefix of 1 chars
+            company-minimum-prefix-length 1
+            company-selection-wrap-around t
+            company-show-numbers t
+            company-dabbrev-downcase nil
+            company-dabbrev-code-everywhere t
+            company-transformers '(company-sort-by-occurrence))
+      (bind-keys :map company-active-map
+                 ("C-n" . company-select-next)
+                 ("C-p" . company-select-previous)
+                 ("C-d" . company-show-doc-buffer)
+                 ("<tab>" . company-complete))))
+
+#+END_SRC
 ** Helm
 *** Helm core configuration
 #+BEGIN_SRC emacs-lisp
