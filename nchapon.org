@@ -537,10 +537,10 @@ Snippets for programming.
           (yas-reload-all)))
 #+END_SRC
 
-Allow with =M_== to choosing a snippet using helm.
+Allow with =M_== to choosing a snippet using helm (helm source for yasnippet)
 
 #+BEGIN_SRC emacs-lisp
-(use-package helm-c-yasnippet           ; Helm source for Yasnippet
+(use-package helm-c-yasnippet
   :ensure t
   :after yasnippet
   :init (bind-key "M-=" #'helm-yas-complete)
