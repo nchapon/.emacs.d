@@ -311,6 +311,49 @@ point reaches the beginning or end of the buffer, stop there."
    ("C-S-p" .  mc/mark-previous-like-this)
    ("C-*" .  mc/mark-all-dwim)))
 
+(use-package smartparens
+  :defer t
+  :diminish ""
+  :init
+  (progn
+    (add-hook 'prog-mode-hook #'turn-on-smartparens-mode)
+    ;; turn on showing the match for clojure and elisp
+    (add-hook 'clojure-mode-hook #'turn-on-show-smartparens-mode)
+    (add-hook 'emacs-lisp-mode-hook #'turn-on-show-smartparens-mode)
+    (add-hook 'java-mode-hook #'turn-on-show-smartparens-mode)
+    (add-hook 'c-mode-hook #'turn-on-show-smartparens-mode))
+  :config
+  (setq-default sp-hybrid-kill-entire-symbol nil)
+
+  (setq sp-highlight-pair-overlay nil)
+
+  (define-key sp-keymap (kbd "<delete>") 'sp-delete-char)
+  (define-key sp-keymap (kbd "C-<right>") 'sp-forward-slurp-sexp)
+  (define-key sp-keymap (kbd "C-<left>") 'sp-forward-barf-sexp)
+  (define-key sp-keymap (kbd "C-S-<right>") 'sp-backward-barf-sexp)
+  (define-key sp-keymap (kbd "C-S-<left>") 'sp-backward-slurp-sexp)
+  (define-key sp-keymap (kbd "M-s") 'sp-unwrap-sexp)
+  (define-key sp-keymap (kbd "M-S-s") 'sp-raise-sexp)
+  (define-key sp-keymap (kbd "M-i") 'sp-split-sexp)
+  (define-key sp-keymap (kbd "M-S-i") 'sp-join-sexp)
+  (define-key sp-keymap (kbd "M-t") 'sp-transpose-sexp)
+  (define-key sp-keymap (kbd "M-S-<left>") 'sp-backward-sexp)
+  (define-key sp-keymap (kbd "M-S-<right>") 'sp-forward-sexp)
+
+
+
+  (defun sp--my-create-newline-and-enter-sexp (&rest _ignored)
+    "Open a new brace or bracket expression, with relevant newlines and indent. "
+    (newline)
+    (indent-according-to-mode)
+    (forward-line -1)
+    (indent-according-to-mode))
+
+  (sp-with-modes '(c-mode c++-mode js-mode js2-mode java-mode
+                          typescript-mode perl-mode)
+    (sp-local-pair "{" nil :post-handlers
+                   '((sp--my-create-newline-and-enter-sexp "RET")))))
+
 (use-package yasnippet
   :defer t
   :diminish yas-minor-mode
@@ -318,7 +361,7 @@ point reaches the beginning or end of the buffer, stop there."
           (yas-global-mode 1)
           (yas-reload-all)))
 
-(use-package helm-c-yasnippet           ; Helm source for Yasnippet
+(use-package helm-c-yasnippet
   :ensure t
   :after yasnippet
   :init (bind-key "M-=" #'helm-yas-complete)
