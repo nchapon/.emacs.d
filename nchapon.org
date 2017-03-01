@@ -393,6 +393,18 @@ Should I try avy ?
     (("C-c /" . ace-jump-mode)
      ("C-c k". ace-jump-mode-pop-mark)))
 #+END_SRC
+** Ace window
+#+BEGIN_SRC emacs-lisp
+  (use-package ace-window
+    :bind (([remap other-window] . ace-window))
+    :config
+    (setq aw-keys '(?q ?s ?d ?f ?g ?h ?j ?k ?l))
+    ;; increase size face
+    (custom-set-faces
+     '(aw-leading-char-face
+       ((t (:inherit ace-jump-face-foreground :height 3.0))))))
+#+END_SRC
+
 * Org
 ** Org global keys
 

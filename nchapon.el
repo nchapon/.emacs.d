@@ -249,6 +249,15 @@ point reaches the beginning or end of the buffer, stop there."
   (("C-c /" . ace-jump-mode)
    ("C-c k". ace-jump-mode-pop-mark)))
 
+(use-package ace-window
+  :bind (([remap other-window] . ace-window))
+  :config
+  (setq aw-keys '(?q ?s ?d ?f ?g ?h ?j ?k ?l))
+  ;; increase size face
+  (custom-set-faces
+   '(aw-leading-char-face
+     ((t (:inherit ace-jump-face-foreground :height 3.0))))))
+
 (bind-key "\C-cl" 'org-store-link)
 (bind-key "\C-cc" 'org-capture)
 (bind-key "\C-ca" 'org-agenda)
