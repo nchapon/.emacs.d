@@ -41,15 +41,22 @@ Use Source code Pro font if present
 #+END_SRC
 
 ** Theme
-Using leuven theme by default.
+Using moe theme light in the day and dark in the night..
    #+BEGIN_SRC emacs-lisp
-     (use-package color-theme
-       :init
+     (use-package color-theme)
+     (use-package moe-theme
+       :config
        (progn
-         (use-package leuven-theme)
-         (load-theme 'leuven t))
-       :config (set-background-color "#f0f0f0"))
+         (setq moe-light-pure-white-background-in-terminal t)
 
+         (moe-light)
+
+         (use-package moe-theme-switcher
+             :ensure moe-theme)
+
+         (use-package powerline
+           :config
+           (powerline-moe-theme))))
 
    #+END_SRC
 ** Answering just 'y' or 'n'

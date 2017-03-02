@@ -23,12 +23,26 @@
 
 (use-package smart-mode-line)
 
-(use-package color-theme
-  :init
+;; (use-package color-theme
+;;   :init
+;;   (progn
+;;     (use-package leuven-theme)
+;;     (load-theme 'leuven t))
+;;   :config (set-background-color "#f0f0f0"))
+(use-package color-theme)
+(use-package moe-theme
+  :config
   (progn
-    (use-package leuven-theme)
-    (load-theme 'leuven t))
-  :config (set-background-color "#f0f0f0"))
+    (setq moe-light-pure-white-background-in-terminal t)
+
+    (moe-light)
+
+    (use-package moe-theme-switcher
+        :ensure moe-theme)
+
+    (use-package powerline
+      :config
+      (powerline-moe-theme))))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
