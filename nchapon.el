@@ -10,9 +10,29 @@
 
 (cond
  ((find-font (font-spec :name "Source Code Pro"))
-   (set-frame-font "Source Code Pro-14" nil t)))
+  (set-frame-font "Source Code Pro-14" nil t)))
+
+
+(defun my/setup-x11-fonts ()
+  (interactive)
+  (when (eq window-system 'x)
+    ;; Font family
+    (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-12"))
+    ;; Font size
+    ;;(set-face-attribute 'default nil :height 90)
+    ))
+
+(when (eq window-system 'x)
+     (add-hook 'after-init-hook #'my/setup-x11-fonts))
 
 (use-package smart-mode-line)
+
+(use-package color-theme
+  :init
+  (progn
+    (use-package leuven-theme)
+    (load-theme 'leuven t))
+  :config (set-background-color "#f0f0f0"))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
