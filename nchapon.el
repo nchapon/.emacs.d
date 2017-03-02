@@ -8,22 +8,18 @@
 (use-package auto-compile
   :config (auto-compile-on-load-mode))
 
-(cond
- ((find-font (font-spec :name "Source Code Pro"))
-  (set-frame-font "Source Code Pro-14" nil t)))
-
-
 (defun my/setup-x11-fonts ()
   (interactive)
   (when (eq window-system 'x)
-    ;; Font family
-    (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-12"))
-    ;; Font size
-    ;;(set-face-attribute 'default nil :height 90)
+    (cond
+     ((find-font (font-spec :name "Source Code Pro"))
+      (set-frame-font "Source Code Pro-14" nil t))
+     ((find-font (font-spec :name "DejaVu Sans Mono-12"))
+      (set-frame-font "DejaVu Sans Mono-12" nil t)))
     ))
 
 (when (eq window-system 'x)
-     (add-hook 'after-init-hook #'my/setup-x11-fonts))
+  (add-hook 'after-init-hook #'my/setup-x11-fonts))
 
 (use-package smart-mode-line)
 
