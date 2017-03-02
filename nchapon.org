@@ -95,6 +95,15 @@ Using leuven theme by default.
     :config
     (which-key-mode))
 #+END_SRC
+
+** Make fringe smaller
+
+#+BEGIN_SRC emacs-lisp
+(if (fboundp 'fringe-mode)
+    (fringe-mode 4))
+#+END_SRC
+
+
 * General configuration
 ** Backups
 Autosaves and backups are in =<emacs-directory>/tmp=

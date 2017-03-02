@@ -61,10 +61,6 @@
  ((find-font (font-spec :name "Source Code Pro"))
    (set-frame-font "Source Code Pro-14" nil t)))
 
-;;; make fringe smaller
-(if (fboundp 'fringe-mode)
-    (fringe-mode 4))
-
 ;; Smart mode line
 (require 'smart-mode-line)
 

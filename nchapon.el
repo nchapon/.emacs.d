@@ -51,6 +51,9 @@
     :config
     (which-key-mode))
 
+(if (fboundp 'fringe-mode)
+    (fringe-mode 4))
+
 (setq
 tmp-dir      (file-name-as-directory (concat user-emacs-directory "tmp"))
 autosaves-dir(file-name-as-directory (concat tmp-dir  "autosaves"))
