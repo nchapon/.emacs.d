@@ -23,12 +23,6 @@
 
 (use-package smart-mode-line)
 
-;; (use-package color-theme
-;;   :init
-;;   (progn
-;;     (use-package leuven-theme)
-;;     (load-theme 'leuven t))
-;;   :config (set-background-color "#f0f0f0"))
 (use-package color-theme)
 (use-package moe-theme
   :config
@@ -320,7 +314,42 @@ point reaches the beginning or end of the buffer, stop there."
               ("FORMATION" :foreground "khaki" :weight bold)
               ("CANCELLED" :foreground "forest green" :weight bold))))
 
-(setq org-agenda-files (list "~/notes/GTD"))
+(setq org-agenda-files (list "~/notes/GTD")
+      org-agenda-span 2
+      org-agenda-start-on-weekday nil
+      org-agenda-skip-deadline-if-done t
+      org-agenda-skip-scheduled-if-done t)
+
+(setq org-agenda-custom-commands
+      '((" " "Agenda"
+         ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep user-defined-up))))
+          (tags "REFILE"
+                ((org-agenda-overriding-header "Tasks to Refile")
+                 (org-tags-match-list-sublevels nil)))
+          )
+         nil)
+        ("r" "Tasks to Refile" tags "REFILE"
+         ((org-agenda-overriding-header "Tasks to Refile")
+          (org-tags-match-list-sublevels nil)))
+        ("W" "To See" tags "@watching"
+         ((org-agenda-overriding-header "To See")
+          (org-tags-match-list-sublevels 'indented)))
+        ("R" "To Read" tags "@reading"
+         ((org-agenda-overriding-header "To Read")
+          (org-tags-match-list-sublevels 'indented)))
+        ("w" "Waiting Tasks" tags-todo "-CANCELLED/!WAITING|HOLD"
+         ((org-agenda-overriding-header "Waiting and Postponed Tasks")
+          (org-agenda-skip-function '(oh/agenda-skip :subtree-if '(project)))))
+        ("S" tags-todo "TODO=\"STARTED\"")
+        ("Z" "Weekly review" agenda ""
+         ((org-agenda-span 7)
+          (org-agenda-log-mode 1)))))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((sh . t)))
+
+(setq org-src-window-setup 'current-window)
 
 (use-package expand-region
   :bind

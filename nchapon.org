@@ -530,6 +530,20 @@ Should I try avy ?
                ((org-agenda-span 7)
                 (org-agenda-log-mode 1)))))
     #+END_SRC
+** Literate Programming
+*** Babel
+#+begin_src emacs-lisp :tangle yes
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((sh . t)))
+
+#+end_src
+*** Editing source code
+ I don't want to get distracted by the same code in the other window, so I want org src to use the current window.
+
+ #+begin_src emacs-lisp
+   (setq org-src-window-setup 'current-window)
+ #+end_src
 * Programming
 ** Expand region
     - expand selection with =C-==
