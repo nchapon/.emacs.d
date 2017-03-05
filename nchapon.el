@@ -320,6 +320,9 @@ point reaches the beginning or end of the buffer, stop there."
       org-agenda-skip-deadline-if-done t
       org-agenda-skip-scheduled-if-done t)
 
+(setq diary-file "~/notes/diary"
+      org-agenda-include-diary t)
+
 (setq org-agenda-custom-commands
       '((" " "Agenda"
          ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep user-defined-up))))
@@ -347,9 +350,55 @@ point reaches the beginning or end of the buffer, stop there."
 
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((sh . t)))
+ '((sh . t)
+   (python . t)))
 
 (setq org-src-window-setup 'current-window)
+
+(setq org-confirm-babel-evaluate nil)
+
+(defvar nc/org-notes-directory "~/notes")
+
+(defun nc/expand-org-notes-path (path)
+    "Expand org-notes-directory with PATH"
+    (expand-file-name (concat nc/org-notes-directory "/" path)))
+
+(setq org-capture-templates
+      '(("t" "todo" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+         "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+        ("n" "Next Task" entry (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Tasks")
+         "** NEXT %? \nDEADLINE: %t")
+        ("s" "Someday / Maybe" entry (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Someday / Maybe")
+          "* SOMEDAY %? :IDEA:\n%u" :clock-in t :clock-resume t)
+        ("f" "FishLog" plain (file+datetree+prompt (nc/expand-org-notes-path "GTD/fishlog.org"))
+         "%[~/notes/templates/fishlog.org]")
+        ("F" "Film" entry (file+headline (nc/expand-org-notes-path "GTD/watching.org") "Films à voir")
+             "* NEXT %^{Titre}
+     %i
+     - *Réalisateur:* %^{Auteur}
+     - *Année:* %^{année}
+     - *Genre:* %^{genre}
+
+    %?
+
+    %U" :prepend t)
+        ("N" "Note" entry (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Notes")
+         "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+        ("i" "Interrupting task" entry
+           (file+datetree (nc/expand-org-notes-path "GTD/diary.org"))
+           "* %^{Task}"
+           :clock-in t :clock-resume t)
+        ("m" "Meeting" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+         "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
+        ("p" "Phone call" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+        ("a" "RendezVous" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+               "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
+        ("j" "Journal" entry (file+datetree (nc/expand-org-notes-path "GTD/journal.org"))
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("w" "WeeklyReview" entry (file+datetree+prompt (nc/expand-org-notes-path "GTD/weekly-review.org"))
+         "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
+        ))
 
 (use-package expand-region
   :bind

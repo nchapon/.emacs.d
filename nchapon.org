@@ -550,7 +550,7 @@ Should I try avy ?
   (setq org-confirm-babel-evaluate nil)
 #+end_src
 ** Org notes files
-
+*** Base directory
 #+begin_src emacs-lisp
   (defvar nc/org-notes-directory "~/notes")
 
@@ -559,7 +559,21 @@ Should I try avy ?
       (expand-file-name (concat nc/org-notes-directory "/" path)))
 #+end_src
 
+*** Edit my journal file
+
+#+begin_src emacs-lisp :tangle yes
+(defun nc/journal ()
+  "Edit my journal"
+  (interactive)
+  (find-file-other-window (nc/expand-org-notes-path "GTD/journal.org")))
+
+;; Binding journal file
+(global-set-key "\C-cj" 'nc/journal)
+#+end_src
+
 ** Templates
+
+My templates
 
 #+begin_src emacs-lisp
   (setq org-capture-templates
