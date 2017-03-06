@@ -39,8 +39,7 @@
 ;; Handling blank lines
 (setq org-cycle-separator-lines 0)
 
-(setq org-blank-before-new-entry (quote ((heading)
-                                         (plain-list-item . auto))))
+
 
 ;; Line in agenda is selected
 (add-hook 'org-agenda-mode-hook 'hl-line-mode)
@@ -146,7 +145,8 @@
           (org-agenda-skip-function '(oh/agenda-skip :subtree-if '(project)))))
         ("S" tags-todo "TODO=\"STARTED\"")
         ("Z" "Weekly review" agenda ""
-           ((org-agenda-span 7)
+
+         ((org-agenda-span 7)
             (org-agenda-log-mode 1)))))
 
 ;;; Org crypt
