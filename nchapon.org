@@ -451,18 +451,6 @@ Should I try avy ?
       "Expand org-notes-directory with PATH"
       (expand-file-name (concat nc/org-notes-directory "/" path)))
 #+end_src
-
-*** Edit my journal file
-
-#+begin_src emacs-lisp :tangle yes
-(defun nc/journal ()
-  "Edit my journal"
-  (interactive)
-  (find-file-other-window (nc/expand-org-notes-path "GTD/journal.org")))
-
-;; Binding journal file
-(global-set-key "\C-cj" 'nc/journal)
-#+end_src
 ** Org global keys
 
 #+BEGIN_SRC emacs-lisp
@@ -641,7 +629,26 @@ Key =F9= capture interruption task
 (global-set-key (kbd "<f9>") 'my/capture-interruption-task)
 #+end_src
 
-*** TODO Refiling
+*** Refiling
+Targets include this file and any file contributing to the agenda - up to 2 levels deep
+#+begin_src emacs-lisp
+  (setq org-reverse-note-order t)
+  (setq org-refile-targets (quote ((nil :maxlevel . 2)
+                                   (org-agenda-files :maxlevel . 2))))
+  (setq org-blank-before-new-entry nil)
+#+end_src
+
+*** My journal file
+
+#+begin_src emacs-lisp :tangle yes
+(defun nc/journal ()
+  "Edit my journal"
+  (interactive)
+  (find-file-other-window (nc/expand-org-notes-path "GTD/journal.org")))
+
+;; Binding journal file
+(global-set-key "\C-cj" 'nc/journal)
+#+end_src
 ** Babel (Literate Programming)
 *** Babel languages
 #+begin_src emacs-lisp :tangle yes
