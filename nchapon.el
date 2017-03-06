@@ -363,6 +363,14 @@ point reaches the beginning or end of the buffer, stop there."
     "Expand org-notes-directory with PATH"
     (expand-file-name (concat nc/org-notes-directory "/" path)))
 
+(defun nc/journal ()
+  "Edit my journal"
+  (interactive)
+  (find-file-other-window (nc/expand-org-notes-path "GTD/journal.org")))
+
+;; Binding journal file
+(global-set-key "\C-cj" 'nc/journal)
+
 (setq org-capture-templates
       '(("t" "todo" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
          "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)

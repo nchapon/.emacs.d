@@ -442,6 +442,27 @@ Should I try avy ?
 #+END_SRC
 
 * Org
+** My files
+*** Base directory
+#+begin_src emacs-lisp
+  (defvar nc/org-notes-directory "~/notes")
+
+  (defun nc/expand-org-notes-path (path)
+      "Expand org-notes-directory with PATH"
+      (expand-file-name (concat nc/org-notes-directory "/" path)))
+#+end_src
+
+*** Edit my journal file
+
+#+begin_src emacs-lisp :tangle yes
+(defun nc/journal ()
+  "Edit my journal"
+  (interactive)
+  (find-file-other-window (nc/expand-org-notes-path "GTD/journal.org")))
+
+;; Binding journal file
+(global-set-key "\C-cj" 'nc/journal)
+#+end_src
 ** Org global keys
 
 #+BEGIN_SRC emacs-lisp
@@ -451,7 +472,8 @@ Should I try avy ?
 (bind-key "\C-cb" 'org-iswitchb)
 #+END_SRC
 
-** Bullet Module
+** Modules
+*** Bullet Module
 #+BEGIN_SRC emacs-lisp
 (use-package org-bullets
     :config
@@ -491,7 +513,7 @@ Should I try avy ?
 #+END_SRC
 
 ** Agenda
-*** Agenda configuration
+*** TODO Agenda configuration
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-files (list "~/notes/GTD")
         org-agenda-span 2
@@ -514,13 +536,16 @@ Should I try avy ?
                        (org-tags-match-list-sublevels nil)))
                 )
                nil)
+              ("o" todo ""
+               ((org-agenda-files '("~/notes/GTD/office.org"))))
+              ("tw" tags-todo "@cnp")
               ("r" "Tasks to Refile" tags "REFILE"
                ((org-agenda-overriding-header "Tasks to Refile")
                 (org-tags-match-list-sublevels nil)))
               ("W" "To See" tags "@watching"
                ((org-agenda-overriding-header "To See")
                 (org-tags-match-list-sublevels 'indented)))
-              ("R" "To Read" tags "@reading"
+              ("R" "To Read" tags-todo "@reading"
                ((org-agenda-overriding-header "To Read")
                 (org-tags-match-list-sublevels 'indented)))
               ("w" "Waiting Tasks" tags-todo "-CANCELLED/!WAITING|HOLD"
@@ -531,50 +556,9 @@ Should I try avy ?
                ((org-agenda-span 7)
                 (org-agenda-log-mode 1)))))
     #+END_SRC
-** Babel (Literate Programming)
-*** Babel languages
-#+begin_src emacs-lisp :tangle yes
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((sh . t)
-       (python . t)))
-#+end_src
-*** Editing source code
- I don't want to get distracted by the same code in the other window, so I want org src to use the current window.
 
- #+begin_src emacs-lisp
-   (setq org-src-window-setup 'current-window)
- #+end_src
-*** Evaluate code blocks without prompting
-#+begin_src emacs-lisp
-  (setq org-confirm-babel-evaluate nil)
-#+end_src
-** Org notes files
-*** Base directory
-#+begin_src emacs-lisp
-  (defvar nc/org-notes-directory "~/notes")
-
-  (defun nc/expand-org-notes-path (path)
-      "Expand org-notes-directory with PATH"
-      (expand-file-name (concat nc/org-notes-directory "/" path)))
-#+end_src
-
-*** Edit my journal file
-
-#+begin_src emacs-lisp :tangle yes
-(defun nc/journal ()
-  "Edit my journal"
-  (interactive)
-  (find-file-other-window (nc/expand-org-notes-path "GTD/journal.org")))
-
-;; Binding journal file
-(global-set-key "\C-cj" 'nc/journal)
-#+end_src
-
-** Templates
-
-My templates
-
+** Taking notes
+*** My templates
 #+begin_src emacs-lisp
   (setq org-capture-templates
         '(("t" "todo" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
@@ -612,6 +596,25 @@ My templates
           ("w" "WeeklyReview" entry (file+datetree+prompt (nc/expand-org-notes-path "GTD/weekly-review.org"))
            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
           ))
+#+end_src
+*** TODO Refiling
+** Babel (Literate Programming)
+*** Babel languages
+#+begin_src emacs-lisp :tangle yes
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((sh . t)
+       (python . t)))
+#+end_src
+*** Editing source code
+ I don't want to get distracted by the same code in the other window, so I want org src to use the current window.
+
+ #+begin_src emacs-lisp
+   (setq org-src-window-setup 'current-window)
+ #+end_src
+*** Evaluate code blocks without prompting
+#+begin_src emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
 #+end_src
 
 * Programming
