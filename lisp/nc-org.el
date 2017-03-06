@@ -15,37 +15,15 @@
       org-habit-show-all-today t)
 
 
-;;; Start agenda on current day
-(setq org-agenda-start-on-weekday nil)
-(setq org-agenda-skip-deadline-if-done t)
-(setq org-agenda-skip-scheduled-if-done t)
+
 
 ;; Display deadlines 5
 (setq org-deadline-warning-days 5)
 
-(setq org-todo-keywords
-      (quote ((sequence "TODO(t)"
-                        "NEXT(n)"
-                        "STARTED(s)"
-                        "WAITING(w@/!)"
-                        "SOMEDAY(.)" "|" "DONE(d!)" "CANCELLED(c@/!)")
-              (sequence "MEETING(m)" "RDV(r)" "FORMATION(f)" "PHONE(p)" "|" "DONE(d)"))))
-
-(setq org-todo-keyword-faces
-      (quote (("TODO" :foreground "red" :weight bold)
-              ("NEXT" :foreground "blue" :weight bold)
-              ("STARTED" :foreground "orange" :weight bold)
-              ("SOMEDAY" :foreground "dark gray" :weight bold)
-              ("DONE" :foreground "forest green" :weight bold)
-              ("WAITING" :foreground "magenta" :weight bold)
-              ("MEETING" :foreground "cyan" :weight bold)
-              ("RDV" :foreground "cyan" :weight bold)
-              ("FORMATION" :foreground "khaki" :weight bold)
-              ("CANCELLED" :foreground "forest green" :weight bold))))
 
 
-(setq org-log-into-drawer "LOGBOOK")
-(setq org-clock-into-drawer 1)
+
+
 
 (setq org-tags-exclude-from-inheritance '("PROJECT"))
 
@@ -57,8 +35,6 @@
 ;; Agenda files
 
 
-;; Diary
-(setq org-agenda-include-diary t)
 
 ;; Handling blank lines
 (setq org-cycle-separator-lines 0)
@@ -82,9 +58,6 @@
 (setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00"))))
 
 (require 'org-helpers)
-
-;; Agenda on two days
-(setq org-agenda-span 2)
 
 (setq org-agenda-time-grid
       '((daily today require-timed)
@@ -175,122 +148,6 @@
         ("Z" "Weekly review" agenda ""
            ((org-agenda-span 7)
             (org-agenda-log-mode 1)))))
-
-
-;; Some keybindings that should be activated in org-mode
-(defun custom-org-agenda-mode-defaults ()
-  "Executed as org-agenda-mode-hook."
-  (org-defkey org-agenda-mode-map "W" 'oh/agenda-remove-restriction)
-  (org-defkey org-agenda-mode-map "N" 'oh/agenda-restrict-to-subtree)
-  (org-defkey org-agenda-mode-map "P" 'oh/agenda-restrict-to-project)
-  (org-defkey org-agenda-mode-map "q" 'bury-buffer))
-
-(add-hook 'org-agenda-mode-hook 'custom-org-agenda-mode-defaults 'append)
-
-
-;;; Customize org notes directory
-;;; customize this variable if necessary (M-x customize-variable)
-(defcustom nc/org-notes-directory "~/notes"
-  "Org notes directory. By defaut in user Home directory"
-  :group 'nc-emacs
-  :type 'string
-  :safe 'stringp)
-
-(defun nc/helm-do-grep-notes ()
-  "Search in all my org notes."
-  (interactive)
-  (helm-do-grep-1 (list nc/org-notes-directory) t nil (list "*.org")))
-
-(defun nc/expand-org-notes-path (path)
-    "Expand org-notes-directory with PATH"
-    (expand-file-name (concat nc/org-notes-directory "/" path)))
-
-
-
-(setq diary-file (nc/expand-org-notes-path "diary"))
-
-
-(setq org-agenda-files (list (nc/expand-org-notes-path "GTD")))
-
-
-
-
-;; Edit my GTD page
-(defun nc/todo-page ()
-  "Edit my todo list page"
-  (interactive)
-  (find-file-other-window (nc/expand-org-notes-path "GTD/todo.org")))
-
-;; Binding todo file
-(global-set-key "\C-cT" 'nc/todo-page)
-
-
-;; Edit my journal file
-(defun nc/journal ()
-  "Edit my journal"
-  (interactive)
-  (find-file-other-window (nc/expand-org-notes-path "GTD/journal.org")))
-
-;; Binding journal file
-(global-set-key "\C-cj" 'nc/journal)
-
-;; Edit work GTD page
-(defun nc/gtd-office-page ()
-  "Edit my todo list page"
-  (interactive)
-  (find-file-other-window (nc/expand-org-notes-path "GTD/office.org")))
-
-;; Binding todo file
-(global-set-key "\C-cW" 'nc/gtd-office-page)
-
-(defun nc/make-org-scratch ()
-  (interactive)
-  (find-file (nc/expand-org-notes-path "scratch.org")))
-
-
-;;; Org time report day by day
-(defun org-dblock-write:rangereport (params)
-  "Display day-by-day time reports."
-  (let* ((ts (plist-get params :tstart))
-         (te (plist-get params :tend))
-         (start (time-to-seconds
-                 (apply 'encode-time (org-parse-time-string ts))))
-         (end (time-to-seconds
-               (apply 'encode-time (org-parse-time-string te))))
-         day-numbers)
-    (setq params (plist-put params :tstart nil))
-    (setq params (plist-put params :end nil))
-    (while (< start end)
-      (save-excursion
-        (insert "\n\n***"
-                (format-time-string (car org-time-stamp-formats)
-                                    (seconds-to-time start))
-                "----------------\n")
-        (org-dblock-write:clocktable
-         (plist-put
-          (plist-put
-           params
-           :tstart
-           (format-time-string (car org-time-stamp-formats)
-                               (seconds-to-time start)))
-          :tend
-          (format-time-string (car org-time-stamp-formats)
-                              (seconds-to-time end))))
-        (setq start (+ 86400 start))))))
-
-
-
-;; Refile
-;; Targets include this file and any file contributing to the agenda - up to 2 levels deep
-(setq org-reverse-note-order t)
-
-(setq org-refile-targets (quote ((nil :maxlevel . 2)
-                                 (org-agenda-files :maxlevel . 2))))
-
-(setq org-blank-before-new-entry nil)
-
-
-
 
 ;;; Org crypt
 (require 'org-crypt)
