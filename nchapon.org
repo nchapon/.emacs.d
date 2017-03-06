@@ -481,7 +481,8 @@ Should I try avy ?
 #+END_SRC
 
 ** Tasks
-*** Todo states
+*** Todo tasks
+**** Todo states
  - parentheses indicate keyboard shortcuts
  - =@= prompts for a note
  - =!= logs the timestamp of the state change
@@ -497,7 +498,7 @@ Should I try avy ?
 
 #+END_SRC
 
-*** Todo faces
+**** Todo faces
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "red" :weight bold)
@@ -511,6 +512,37 @@ Should I try avy ?
               ("FORMATION" :foreground "khaki" :weight bold)
               ("CANCELLED" :foreground "forest green" :weight bold))))
 #+END_SRC
+
+** Clocking
+*** Configuration
+Switch to state Started on clock in
+
+#+begin_src emacs-lisp
+(setq org-clock-in-switch-to-state "STARTED")
+#+end_src
+
+Too many clock entries clutter up a heading.
+
+#+begin_src emacs-lisp
+(setq org-log-into-drawer "LOGBOOK")
+(setq org-clock-into-drawer 1)
+#+end_src
+
+*** Timereport indentation
+Fix timereport indentation
+
+#+begin_src emacs-lisp
+(defun my-org-clocktable-indent-string (level)
+  (if (= level 1)
+      ""
+    (let ((str "\\"))
+      (while (> level 2)
+        (setq level (1- level)
+              str (concat str "_")))
+      (concat str "_ "))))
+
+(advice-add 'org-clocktable-indent-string :override #'my-org-clocktable-indent-string)
+#+end_src
 
 ** Agenda
 *** TODO Agenda configuration
@@ -597,6 +629,18 @@ Should I try avy ?
            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
           ))
 #+end_src
+**** Speed Key for interruption task
+Key =F9= capture interruption task
+#+begin_src emacs-lisp
+(defun my/capture-interruption-task ()
+    "Interrupted Task"
+    (interactive)
+    (org-capture 4 "i"))
+
+;; Override the key definition
+(global-set-key (kbd "<f9>") 'my/capture-interruption-task)
+#+end_src
+
 *** TODO Refiling
 ** Babel (Literate Programming)
 *** Babel languages

@@ -248,60 +248,6 @@
   (find-file (nc/expand-org-notes-path "scratch.org")))
 
 
-;; Capture mode
-(setq org-capture-templates
-      '(("t" "todo" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
-         "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-        ("n" "Next Task" entry (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Tasks")
-         "** NEXT %? \nDEADLINE: %t")
-        ("s" "Someday / Maybe" entry (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Someday / Maybe")
-          "* SOMEDAY %? :IDEA:\n%u" :clock-in t :clock-resume t)
-        ("f" "FishLog" plain (file+datetree+prompt (nc/expand-org-notes-path "GTD/fishlog.org"))
-         "%[~/notes/templates/fishlog.org]")
-        ("F" "Film" entry (file+headline (nc/expand-org-notes-path "GTD/watching.org") "Films à voir")
-             "* NEXT %^{Titre}
-     %i
-     - *Réalisateur:* %^{Auteur}
-     - *Année:* %^{année}
-     - *Genre:* %^{genre}
-
-    %?
-
-    %U" :prepend t)
-        ("N" "Note" entry (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Notes")
-         "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-        ("i" "Interrupting task" entry
-           (file+datetree (nc/expand-org-notes-path "GTD/diary.org"))
-           "* %^{Task}"
-           :clock-in t :clock-resume t)
-        ("m" "Meeting" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
-         "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-        ("p" "Phone call" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
-               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-        ("a" "RendezVous" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
-               "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-        ("j" "Journal" entry (file+datetree (nc/expand-org-notes-path "GTD/journal.org"))
-         "* %?\nEntered on %U\n  %i\n  %a")
-        ("w" "WeeklyReview" entry (file+datetree+prompt (nc/expand-org-notes-path "GTD/weekly-review.org"))
-         "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
-        ))
-
-(setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
-
-(setq org-clock-into-drawer t)
-
-
-(defun my/capture-interruption-task ()
-    "Interrupted Task"
-    (interactive)
-    (org-capture 4 "i"))
-
-;; Override the key definition
-(global-set-key (kbd "<f9>") 'my/capture-interruption-task)
-
-
-
-
 ;;; Org time report day by day
 (defun org-dblock-write:rangereport (params)
   "Display day-by-day time reports."
@@ -342,18 +288,6 @@
                                  (org-agenda-files :maxlevel . 2))))
 
 (setq org-blank-before-new-entry nil)
-
-;; Fix time report indent
-(defun my-org-clocktable-indent-string (level)
-  (if (= level 1)
-      ""
-    (let ((str "\\"))
-      (while (> level 2)
-        (setq level (1- level)
-              str (concat str "_")))
-      (concat str "_ "))))
-
-(advice-add 'org-clocktable-indent-string :override #'my-org-clocktable-indent-string)
 
 
 
