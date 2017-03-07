@@ -500,14 +500,13 @@ Should I try avy ?
               ("FORMATION" :foreground "khaki" :weight bold)
               ("CANCELLED" :foreground "forest green" :weight bold))))
 #+END_SRC
-
-** Clocking
-*** Configuration
-Switch to state Started on clock in
+*** Projects
 
 #+begin_src emacs-lisp
-(setq org-clock-in-switch-to-state "STARTED")
+(setq org-tags-exclude-from-inheritance '("PROJECT"))
 #+end_src
+** Clocking
+*** Configuration
 
 Too many clock entries clutter up a heading.
 
@@ -556,9 +555,9 @@ Fix timereport indentation
                        (org-tags-match-list-sublevels nil)))
                 )
                nil)
-              ("o" todo ""
-               ((org-agenda-files '("~/notes/GTD/office.org"))))
-              ("tw" tags-todo "@cnp")
+              ("o" tags-todo "@cnp-PROJECT-MEETING"
+               ((org-agenda-overriding-header "Office tasks")
+                (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
               ("r" "Tasks to Refile" tags "REFILE"
                ((org-agenda-overriding-header "Tasks to Refile")
                 (org-tags-match-list-sublevels nil)))
