@@ -684,6 +684,15 @@ Targets include this file and any file contributing to the agenda - up to 2 leve
       org-habit-show-habits-only-for-today t
       org-habit-show-all-today t)
 #+end_src
+** Org Crypt
+#+begin_src emacs-lisp
+  (require 'org-crypt)
+  (org-crypt-use-before-save-magic)
+  (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+  ;; GPG key to use for encryption
+  ;; Either the Key ID or set to nil to use symmetric encryption.
+  (setq org-crypt-key nil)
+#+end_src
 * Programming
 ** Expand region
     - expand selection with =C-==
