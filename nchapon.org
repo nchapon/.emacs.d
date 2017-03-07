@@ -802,6 +802,10 @@ Smart parens for all modes.
 #+END_SRC
 
 ** TODO Web
+*** Rest Client
+#+begin_src emacs-lisp
+  (use-package restclient)
+#+end_src
 ** Yasnippet
 
 Snippets for programming.
