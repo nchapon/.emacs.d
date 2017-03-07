@@ -553,10 +553,14 @@ Fix timereport indentation
                 (tags "REFILE"
                       ((org-agenda-overriding-header "Tasks to Refile")
                        (org-tags-match-list-sublevels nil)))
+                (tags-todo "TODO=\"STARTED\""
+                           ((org-agenda-overriding-header "Started tasks")
+                            (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                 )
                nil)
-              ("o" tags-todo "@cnp-PROJECT-MEETING"
+              ("o" tags-todo "@cnp-MEETING"
                ((org-agenda-overriding-header "Office tasks")
+                (org-tags-exclude-from-inheritance '("PROJECT"))
                 (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
               ("r" "Tasks to Refile" tags "REFILE"
                ((org-agenda-overriding-header "Tasks to Refile")
@@ -568,9 +572,10 @@ Fix timereport indentation
                ((org-agenda-overriding-header "To Read")
                 (org-tags-match-list-sublevels 'indented)))
               ("w" "Waiting Tasks" tags-todo "-CANCELLED/!WAITING|HOLD"
-               ((org-agenda-overriding-header "Waiting and Postponed Tasks")
-                (org-agenda-skip-function '(oh/agenda-skip :subtree-if '(project)))))
-              ("S" tags-todo "TODO=\"STARTED\"")
+               ((org-agenda-overriding-header "Waiting and Postponed Tasks")))
+              ("S" tags-todo "TODO=\"STARTED\""
+               ((org-agenda-overriding-header "Started tasks")
+                (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
               ("Z" "Weekly review" agenda ""
                ((org-agenda-span 7)
                 (org-agenda-log-mode 1)))))
