@@ -124,14 +124,7 @@ Repeated invocations toggle between the two most recently open buffers."
     (insert "```\n")))
 
 
-(defvar current-hour-format "%H:00")
 
-(defun nc/insert-time-slot ()
-    "Insert Time Slot"
-    (interactive)
-    (let ((begin (format-time-string current-hour-format (current-time)))
-      (end (format-time-string current-hour-format (time-add (current-time) (seconds-to-time 3600)))))
-  (insert (concat begin "-" end))))
 
 ;; From emacs wiki
 (defun nc/insert-todays-date (arg)
