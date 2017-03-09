@@ -546,10 +546,20 @@ Fix timereport indentation
         org-agenda-include-diary t)
 #+END_SRC
 *** Agenda commands
+Function to skip headline tagged with =:PROJECT:=
+
+#+begin_src emacs-lisp
+(defun my/org-agenda-skip-project ()
+    (org-agenda-skip-entry-if 'regexp ":PROJECT:"))
+#+end_src
+
+
+My commands
+
     #+BEGIN_SRC emacs-lisp
       (setq org-agenda-custom-commands
             '((" " "Agenda"
-               ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep user-defined-up))))
+               ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep))))
                 (tags "REFILE"
                       ((org-agenda-overriding-header "Tasks to Refile")
                        (org-tags-match-list-sublevels nil)))
@@ -561,6 +571,7 @@ Fix timereport indentation
               ("o" tags-todo "@cnp-MEETING"
                ((org-agenda-overriding-header "Office tasks")
                 (org-tags-exclude-from-inheritance '("PROJECT"))
+                (org-agenda-skip-function 'my/org-agenda-skip-project)
                 (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
               ("r" "Tasks to Refile" tags "REFILE"
                ((org-agenda-overriding-header "Tasks to Refile")
