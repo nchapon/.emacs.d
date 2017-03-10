@@ -844,7 +844,7 @@ Smart parens for all modes.
                        '((sp--my-create-newline-and-enter-sexp "RET")))))
 #+END_SRC
 
-** TODO Web
+** Web
 *** Rest Client
 #+begin_src emacs-lisp
   (use-package restclient)
@@ -864,6 +864,19 @@ Smart parens for all modes.
                                (setq web-mode-code-indent-offset 4))))
 #+end_src
 *** Javascript
+#+begin_src emacs-lisp
+  (use-package js2-mode
+    :init
+    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+    (defalias 'javascript-generic-mode 'js2-mode)
+    :config
+    (js2-imenu-extras-setup)
+    (setq-default js-auto-indent-flag nil
+                  js-indent-level 2)
+    ;; Don't override global M-j keybinding (join lines)
+    (define-key js2-mode-map (kbd "M-j") nil))
+#+end_src
+
 ** Yasnippet
 
 Snippets for programming.
