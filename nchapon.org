@@ -106,7 +106,6 @@ Using moe theme light in the day and dark in the night..
     (fringe-mode 4))
 #+END_SRC
 
-
 * General configuration
 ** Backups
 Autosaves and backups are in =<emacs-directory>/tmp=
@@ -266,7 +265,6 @@ Also auto refresh dired, but be quiet about it
           (message "Deleted file %s" filename)
           (kill-buffer))))))
 #+END_SRC
-
 
 * Project management
 ** Projectile
@@ -677,7 +675,7 @@ Insert time slot mainly used when I schedule meeting or appointment.
 #+end_src
 *** My journal file
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (defun nc/journal ()
   "Edit my journal"
   (interactive)
@@ -696,7 +694,7 @@ Insert time slot mainly used when I schedule meeting or appointment.
 
 ** Babel (Literate Programming)
 *** Babel languages
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((sh . t)
@@ -740,8 +738,6 @@ Insert time slot mainly used when I schedule meeting or appointment.
   :bind
   ("C-=" . er/expand-region))
 #+END_SRC
-
-
 ** TODO Clojure
 ** Ediff
 *** Ignore white space
@@ -853,6 +849,21 @@ Smart parens for all modes.
 #+begin_src emacs-lisp
   (use-package restclient)
 #+end_src
+*** Web Mode
+#+begin_src emacs-lisp
+  (use-package web-mode
+    :ensure t
+    :config
+    (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.tag$" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.ftl$" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.jsp$" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.php$" . web-mode))
+    (add-hook 'web-mode-hook (lambda ()
+                               (setq web-mode-markup-indent-offset 4)
+                               (setq web-mode-code-indent-offset 4))))
+#+end_src
+*** Javascript
 ** Yasnippet
 
 Snippets for programming.
@@ -1081,9 +1092,7 @@ Rotate windows with =C-c r=
     )
 #+END_SRC
 
-
 * Notes
-
 ** Inspiration configs
 https://writequit.org/org/settings.html
 https://github.com/yveszoundi/emacs.d/blob/master/bootstrap/startup.org
