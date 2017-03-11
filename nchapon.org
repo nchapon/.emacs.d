@@ -710,6 +710,10 @@ Insert time slot mainly used when I schedule meeting or appointment.
 #+begin_src emacs-lisp
   (setq org-confirm-babel-evaluate nil)
 #+end_src
+*** Syntax highlight in source blocks
+#+begin_src emacs-lisp
+  (setq org-src-fontify-natively t)
+#+end_src
 ** Habits
 #+begin_src emacs-lisp
 (require 'org-habit)
@@ -1079,7 +1083,6 @@ Rotate windows with =C-c r=
 
   (bind-key "C-c r" 'nc/rotate-windows)
 #+end_src
-
 
 
 ** Key Chords
