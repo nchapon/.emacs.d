@@ -10,9 +10,6 @@
 
 
 
-;; Display deadlines 5
-(setq org-deadline-warning-days 5)
-
 
 
 (setq org-priority-faces

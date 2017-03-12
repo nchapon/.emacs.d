@@ -162,38 +162,6 @@
    (init--install-packages)))
 
 
-;;;
-;;; custom configuration
-;;;
-(require 'nc-functions)
-(require 'nc-appearence)
-(require 'nc-preferences)
-(require 'nc-navigation)
-(require 'nc-company)
-(require 'nc-clojure)
-(require 'nc-eshell)
-(require 'nc-projectile)
-(require 'nc-html)
-(require 'nc-helm)
-(require 'nc-magit)
-(require 'nc-markdown)
-(require 'nc-org)
-(require 'nc-paredit)
-(require 'nc-yasnippet)
-(require 'nc-bindings)
-
-
-;;; Emacs Registers
-(dolist (r `((?i (file . ,(concat user-emacs-directory "init.el")))
-             (?b (file . ,(concat user-emacs-directory "lisp/nc-bindings.el")))
-             (?x (file . ,(concat user-emacs-directory "custom/xps13/init.el")))
-             (?p (file . ,(concat user-emacs-directory "lisp/nc-preferences.el")))
-             (?g (file . ,(nc/expand-org-notes-path "cnp/GTD/gtd.org")))
-             (?r (file . ,(nc/expand-org-notes-path "GTD/refile.org")))
-             (?t (file . ,(nc/expand-org-notes-path "GTD/todo.org")))
-             (?w (file . ,(nc/expand-org-notes-path "GTD/watching.org")))))
-  (set-register (car r) (cadr r)))
-
 ;;; Be sure path is correctly initialized : need by cider and javax !
 (require 'exec-path-from-shell)
 (when (string-equal system-type "gnu/linux")
