@@ -772,6 +772,11 @@ Ediff should be opened in selected frame and split window horizontally
   :ensure t
   :mode "\\.lua\\'")
 #+END_SRC
+** Docker Files
+#+begin_src emacs-lisp
+  (use-package dockerfile-mode
+    :mode "Dockerfile.*\\'")
+#+end_src
 ** Magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
