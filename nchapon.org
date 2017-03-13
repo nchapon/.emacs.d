@@ -502,14 +502,49 @@ Should I try avy ?
 #+begin_src emacs-lisp
 (setq org-tags-exclude-from-inheritance '("PROJECT"))
 #+end_src
-** Clocking
+** Org-clock
+*** Function for clocking in
+#+begin_src emacs-lisp
+(defun my/org-clock-in ()
+  (interactive)
+  (org-clock-in '(4)))
+
+(global-set-key (kbd "<f11>") #'my/org-clock-in)
+(global-set-key (kbd "C-<f11>") 'org-clock-out)
+#+end_src
 *** Configuration
 
 Too many clock entries clutter up a heading.
 
 #+begin_src emacs-lisp
-(setq org-log-into-drawer "LOGBOOK")
-(setq org-clock-into-drawer 1)
+  (use-package org
+    :bind (("C-c C-x C-i" . my/org-clock-in)
+           ("C-c C-x C-o" . org-clock-out))
+    :config
+    (progn
+      ;; Insinuate it everywhere
+      (org-clock-persistence-insinuate)
+      ;; Show lot of clocking history so it's easy to pick items off the C-F11 list
+      (setq org-clock-history-length 23
+            ;; Resume clocking task on clock-in if the clock is open
+            org-clock-in-resume t
+            ;; Separate drawers for clocking and logs
+            org-drawers '("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "HIDDEN")
+            ;; Save clock data and state changes and notes in the LOGBOOK drawer
+            org-clock-into-drawer t
+            ;; Sometimes I change tasks I'm clocking quickly -
+            ;; this removes clocked tasks with 0:00 duration
+            org-clock-out-remove-zero-time-clocks t
+            ;; Clock out when moving task to a done state
+            org-clock-out-when-done t
+            ;; Save the running clock and all clock history when exiting Emacs, load it on startup
+            org-clock-persist t
+            ;; Prompt to resume an active clock
+            org-clock-persist-query-resume t
+            ;; Enable auto clock resolution for finding open clocks
+            org-clock-auto-clock-resolution #'when-no-clock-is-running
+            ;; Include current clocking task in clock reports
+            org-clock-report-include-clocking-task t)))
 #+end_src
 
 *** Timereport indentation
@@ -1005,8 +1040,6 @@ https://sites.google.com/site/steveyegge2/effective-emacs
 (global-set-key (kbd "C-<f6>") 'magit-log-buffer-file)
 
 ;; Org mode keys
-(global-set-key (kbd "<f8>") 'org-cycle-agenda-files)
-(global-set-key (kbd "<f11>") 'org-clock-goto)
 (global-set-key (kbd "<f12>") 'org-agenda)
 
 (global-set-key (kbd "M-<f12>") 'shell)
