@@ -465,6 +465,12 @@ Should I try avy ?
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+END_SRC
 
+Hiding leading bullets in headers
+
+#+begin_src emacs-lisp
+  (setq org-hide-leading-stars t)
+#+end_src
+
 ** Tasks
 *** Todo tasks
 **** Todo states
