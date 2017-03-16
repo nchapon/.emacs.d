@@ -568,6 +568,22 @@ Fix timereport indentation
 
 (advice-add 'org-clocktable-indent-string :override #'my-org-clocktable-indent-string)
 #+end_src
+*** Clock in organization task as default
+Organization task ID
+#+begin_src emacs-lisp
+(defvar my/organization-task-id "93905237-907b-42a6-bdb1-11832c4d59d5")
+#+end_src
+
+This clocks in a predefined task by org-id that is the default task to clock in
+#+begin_src emacs-lisp :tangle yes
+  (use-package org-id
+    :ensure org
+    :config
+    (defun my/clock-in-organization-task-as-default ()
+      (interactive)
+      (org-with-point-at (org-id-find my/organization-task-id 'marker)
+        (org-clock-in '(16)))))
+#+end_src
 
 ** Agenda
 *** TODO Agenda configuration
