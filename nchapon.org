@@ -609,6 +609,10 @@ My commands
                            ((org-agenda-overriding-header "Next tasks @office")
                             (org-tags-exclude-from-inheritance '("PROJECT"))
                             (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
+                (tags-todo "TODO=\"TODO\"+tasks"
+                           ((org-agenda-overriding-header "Other tasks")
+                            (org-tags-exclude-from-inheritance '("PROJECT"))
+                            (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                 )
                nil)
               ("o" tags-todo "@cnp-MEETING"
