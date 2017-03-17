@@ -364,6 +364,11 @@ Can integrate Helm with [[https://github.com/ggreer/the_silver_searcher][The Sil
 #+BEGIN_SRC emacs-lisp
 (use-package helm-ag)
 #+END_SRC
+*** helm-tramp
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package helm-tramp)
+#+end_src
 
 ** Hippie expand
 Configuration
