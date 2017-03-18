@@ -370,6 +370,12 @@ Can integrate Helm with [[https://github.com/ggreer/the_silver_searcher][The Sil
   (use-package helm-tramp)
 #+end_src
 
+Set tramp default method to ssh
+
+#+begin_src emacs-lisp
+(setq tramp-default-method "ssh")
+#+end_src
+
 ** Hippie expand
 Configuration
 #+BEGIN_SRC emacs-lisp
