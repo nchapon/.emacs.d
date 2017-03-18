@@ -365,7 +365,7 @@ Can integrate Helm with [[https://github.com/ggreer/the_silver_searcher][The Sil
 (use-package helm-ag)
 #+END_SRC
 *** helm-tramp
-
+Display server list from your =~/.ssh/config= with helm interface
 #+begin_src emacs-lisp :tangle yes
   (use-package helm-tramp)
 #+end_src
