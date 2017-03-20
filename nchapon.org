@@ -596,6 +596,12 @@ This clocks in a predefined task by org-id that is the default task to clock in
         (org-clock-in '(16)))))
 #+end_src
 
+
+#+begin_src emacs-lisp
+  (bind-key "C-<f9>" 'my/clock-in-organization-task-as-default)
+#+end_src
+
+
 ** Agenda
 *** TODO Agenda configuration
 #+BEGIN_SRC emacs-lisp
