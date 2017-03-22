@@ -1114,6 +1114,7 @@ https://sites.google.com/site/steveyegge2/effective-emacs
 (global-set-key (kbd "C-<f6>") 'magit-log-buffer-file)
 
 ;; Org mode keys
+(global-set-key (kbd "M-<f11>") 'org-clock-goto)
 (global-set-key (kbd "<f12>") 'org-agenda)
 
 (global-set-key (kbd "M-<f12>") 'shell)
