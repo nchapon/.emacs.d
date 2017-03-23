@@ -349,7 +349,6 @@ Standard auto completion mode.
            ("C-h f" . helm-apropos)
            ("C-x C-b" . helm-buffers-list)
            ("M-y" . helm-show-kill-ring)
-           ("M-x" . helm-M-x)
            ("C-x c o" . helm-occur)
            ("C-x c s" . helm-swoop)
            ("C-x C-r" . helm-recentf)
@@ -374,6 +373,21 @@ Set tramp default method to ssh
 
 #+begin_src emacs-lisp
 (setq tramp-default-method "ssh")
+#+end_src
+*** helm-eshell-history
+Using Helm with =C-c C-l= to browse eshell history
+#+begin_src emacs-lisp
+  (require 'helm-eshell)
+
+  (add-hook 'eshell-mode-hook
+            #'(lambda ()
+                (define-key eshell-mode-map (kbd "C-c C-l")  'helm-eshell-history)))
+#+end_src
+*** helm-comint-input-ring
+Similar to =helm-eshell-history=, but used for =M-x shell=.
+
+#+begin_src emacs-lisp
+  (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring)
 #+end_src
 
 ** Hippie expand
