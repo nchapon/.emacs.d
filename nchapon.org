@@ -850,7 +850,10 @@ Commands lisetd below are run in a term buffer
 #+begin_src emacs-lisp
 (setq eshell-list-files-after-cd t)
 #+end_src
-
+**** Aliases
+#+begin_src emacs-lisp
+(setq eshell-aliases-file (concat user-emacs-directory ".eshell-aliases"))
+#+end_src
 **** Clear terminal
 
 #+begin_src emacs-lisp
@@ -863,6 +866,50 @@ Commands lisetd below are run in a term buffer
   (add-hook 'eshell-mode-hook
           '(lambda()
              (local-set-key (kbd "C-l") 'my/eshell-clear-buffer)))
+#+end_src
+**** eshell-here
+
+#+begin_src emacs-lisp
+  (defun my/eshell-here ()
+    "Opens up a new shell in the directory associated with the
+  current buffer's file. The eshell is renamed to match that
+  directory to make multiple eshell windows easier."
+    (interactive)
+    (let* ((parent (if (buffer-file-name)
+                       (file-name-directory (buffer-file-name))
+                     default-directory))
+           (name   (car (last (split-string parent "/" t)))))
+      (eshell "new")
+      (rename-buffer (concat "*eshell: " name "*"))
+
+      (insert (concat "ls"))
+      (eshell-send-input)))
+
+
+  (global-set-key (kbd "C-<f1>") 'my/eshell-here)
+#+end_src
+**** Customize eshell prompt
+Add git status in prompt
+#+begin_src emacs-lisp
+(setq eshell-prompt-function
+      (lambda ()
+        (concat (propertize (abbreviate-file-name (eshell/pwd)) 'face 'eshell-prompt)
+                (when (fboundp #'vc-git-branches)
+                  (let ((branch (car (vc-git-branches))))
+                    (when branch
+                      (concat
+                       (propertize " [" 'face 'font-lock-keyword-face)
+                       (propertize branch 'face 'font-lock-function-name-face)
+                       (let* ((status (shell-command-to-string "git status --porcelain"))
+                              (parts (split-string status "\n" t " "))
+                              (states (mapcar #'string-to-char parts))
+                              (added (count-if (lambda (char) (= char ?A)) states))
+                              (modified (count-if (lambda (char) (= char ?M)) states))
+                              (deleted (count-if (lambda (char) (= char ?D)) states)))
+                         (when (> (+ added modified deleted) 0)
+                           (propertize (format " +%d ~%d -%d" added modified deleted) 'face 'font-lock-comment-face)))
+                       (propertize "]" 'face 'font-lock-keyword-face)))))
+                (propertize " $ " 'face 'font-lock-constant-face))))
 #+end_src
 
 
