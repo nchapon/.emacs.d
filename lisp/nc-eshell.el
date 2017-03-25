@@ -8,43 +8,7 @@
 (setq eshell-scroll-to-bottom-on-input 'this)
 (setq eshell-buffer-shorthand t)
 
-(defun eshell-here ()
-  "Opens up a new shell in the directory associated with the
-current buffer's file. The eshell is renamed to match that
-directory to make multiple eshell windows easier."
-  (interactive)
-  (let* ((parent (if (buffer-file-name)
-                     (file-name-directory (buffer-file-name))
-                   default-directory))
-         (name   (car (last (split-string parent "/" t)))))
-    (eshell "new")
-    (rename-buffer (concat "*eshell: " name "*"))
 
-    (insert (concat "ls"))
-    (eshell-send-input)))
-
-
-(global-set-key (kbd "C-<f1>") 'eshell-here)
-
-(setq eshell-prompt-function
-      (lambda ()
-        (concat (propertize (abbreviate-file-name (eshell/pwd)) 'face 'eshell-prompt)
-                (when (fboundp #'vc-git-branches)
-                  (let ((branch (car (vc-git-branches))))
-                    (when branch
-                      (concat
-                       (propertize " [" 'face 'font-lock-keyword-face)
-                       (propertize branch 'face 'font-lock-function-name-face)
-                       (let* ((status (shell-command-to-string "git status --porcelain"))
-                              (parts (split-string status "\n" t " "))
-                              (states (mapcar #'string-to-char parts))
-                              (added (count-if (lambda (char) (= char ?A)) states))
-                              (modified (count-if (lambda (char) (= char ?M)) states))
-                              (deleted (count-if (lambda (char) (= char ?D)) states)))
-                         (when (> (+ added modified deleted) 0)
-                           (propertize (format " +%d ~%d -%d" added modified deleted) 'face 'font-lock-comment-face)))
-                       (propertize "]" 'face 'font-lock-keyword-face)))))
-                (propertize " $ " 'face 'font-lock-constant-face))))
 
 
 
