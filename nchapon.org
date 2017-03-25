@@ -504,29 +504,31 @@ Hiding leading bullets in headers
  - =!= logs the timestamp of the state change
 
 #+BEGIN_SRC emacs-lisp
-(setq org-todo-keywords
-      (quote ((sequence "TODO(t)"
-                        "NEXT(n)"
-                        "STARTED(s)"
-                        "WAITING(w@/!)"
-                        "SOMEDAY(.)" "|" "DONE(d!)" "CANCELLED(c@/!)")
-              (sequence "MEETING(m)" "RDV(r)" "FORMATION(f)" "PHONE(p)" "|" "DONE(d)"))))
+  (setq org-todo-keywords
+        (quote ((sequence "TODO(t)"
+                          "NEXT(n)"
+                          "STARTED(s)"
+                          "WAITING(w@/!)"
+                          "INACTIVE(i@/!)"
+                          "SOMEDAY(.)" "|" "DONE(d!)" "CANCELLED(c@/!)")
+                (sequence "MEETING(m)" "RDV(r)" "FORMATION(f)" "PHONE(p)" "|" "DONE(d)"))))
 
 #+END_SRC
 
 **** Todo faces
 #+BEGIN_SRC emacs-lisp
-(setq org-todo-keyword-faces
-      (quote (("TODO" :foreground "red" :weight bold)
-              ("NEXT" :foreground "blue" :weight bold)
-              ("STARTED" :foreground "orange" :weight bold)
-              ("SOMEDAY" :foreground "dark gray" :weight bold)
-              ("DONE" :foreground "forest green" :weight bold)
-              ("WAITING" :foreground "magenta" :weight bold)
-              ("MEETING" :foreground "cyan" :weight bold)
-              ("RDV" :foreground "cyan" :weight bold)
-              ("FORMATION" :foreground "khaki" :weight bold)
-              ("CANCELLED" :foreground "forest green" :weight bold))))
+  (setq org-todo-keyword-faces
+        (quote (("TODO" :foreground "red" :weight bold)
+                ("NEXT" :foreground "blue" :weight bold)
+                ("STARTED" :foreground "orange" :weight bold)
+                ("SOMEDAY" :foreground "dark gray" :weight bold)
+                ("DONE" :foreground "forest green" :weight bold)
+                ("WAITING" :foreground "magenta" :weight bold)
+                ("INACTIVE" :foreground "chocolate" :weight bold)
+                ("MEETING" :foreground "cyan" :weight bold)
+                ("RDV" :foreground "cyan" :weight bold)
+                ("FORMATION" :foreground "khaki" :weight bold)
+                ("CANCELLED" :foreground "forest green" :weight bold))))
 #+END_SRC
 *** Projects
 
@@ -617,7 +619,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
 
 
 ** Agenda
-*** TODO Agenda configuration
+*** Agenda configuration
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-files (list "~/notes/GTD")
         org-agenda-span 2
