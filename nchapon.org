@@ -107,14 +107,21 @@ Using moe theme light in the day and dark in the night..
 #+END_SRC
 
 * General configuration
+** Let emacs.d clean
+#+begin_src emacs-lisp
+
+#+end_src
+
 ** Backups
 Autosaves and backups are in =<emacs-directory>/tmp=
-   #+BEGIN_SRC emacs-lisp
+
+Not sure this config is used...
+#+BEGIN_SRC emacs-lisp
    (setq
  tmp-dir      (file-name-as-directory (concat user-emacs-directory "tmp"))
  autosaves-dir(file-name-as-directory (concat tmp-dir  "autosaves"))
  backups-dir  (file-name-as-directory (concat tmp-dir  "backups")))
-   #+END_SRC
+#+END_SRC
 
 Write backup file to own directory
 
