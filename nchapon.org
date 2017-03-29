@@ -109,27 +109,8 @@ Using moe theme light in the day and dark in the night..
 * General configuration
 ** Let emacs.d clean
 #+begin_src emacs-lisp
-
+(use-package no-littering)
 #+end_src
-
-** Backups
-Autosaves and backups are in =<emacs-directory>/tmp=
-
-Not sure this config is used...
-#+BEGIN_SRC emacs-lisp
-   (setq
- tmp-dir      (file-name-as-directory (concat user-emacs-directory "tmp"))
- autosaves-dir(file-name-as-directory (concat tmp-dir  "autosaves"))
- backups-dir  (file-name-as-directory (concat tmp-dir  "backups")))
-#+END_SRC
-
-Write backup file to own directory
-
-#+BEGIN_SRC emacs-lisp
-(setq backup-directory-alist
-      `(("." . ,(expand-file-name backups-dir))))
-#+END_SRC
-
 ** History
 Delete old versions
 
@@ -861,7 +842,7 @@ Commands lisetd below are run in a term buffer
 #+end_src
 **** Aliases
 #+begin_src emacs-lisp
-(setq eshell-aliases-file (concat user-emacs-directory ".eshell-aliases"))
+  (setq eshell-aliases-file (concat no-littering-etc-directory ".eshell-aliases"))
 #+end_src
 **** Clear terminal
 
