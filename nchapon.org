@@ -504,19 +504,21 @@ Hiding leading bullets in headers
 #+END_SRC
 
 **** Todo faces
+Colors from https://flatuicolors.com/
+
 #+BEGIN_SRC emacs-lisp
   (setq org-todo-keyword-faces
-        (quote (("TODO" :foreground "red" :weight bold)
-                ("NEXT" :foreground "blue" :weight bold)
-                ("STARTED" :foreground "orange" :weight bold)
-                ("SOMEDAY" :foreground "dark gray" :weight bold)
-                ("DONE" :foreground "forest green" :weight bold)
-                ("WAITING" :foreground "magenta" :weight bold)
-                ("INACTIVE" :foreground "chocolate" :weight bold)
-                ("MEETING" :foreground "cyan" :weight bold)
-                ("RDV" :foreground "cyan" :weight bold)
-                ("FORMATION" :foreground "khaki" :weight bold)
-                ("CANCELLED" :foreground "forest green" :weight bold))))
+        (quote (("TODO" :foreground "#c0392b" :weight bold)
+                ("NEXT" :foreground "#d35400" :weight bold)
+                ("STARTED" :foreground "#f39c12" :weight bold)
+                ("SOMEDAY" :foreground "#3498db" :weight bold)
+                ("DONE" :foreground "#27ae60" :weight bold)
+                ("WAITING" :foreground "#e74c3c" :weight bold)
+                ("INACTIVE" :foreground "#bdc3c7" :weight bold)
+                ("MEETING" :foreground "#8e44ad" :weight bold)
+                ("RDV" :foreground "#9b59b6" :weight bold)
+                ("FORMATION" :foreground "#34495e" :weight bold)
+                ("CANCELLED" :foreground "#7f8c8d" :weight bold))))
 #+END_SRC
 *** Projects
 
