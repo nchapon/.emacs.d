@@ -1016,6 +1016,10 @@ Smart parens for all modes.
 #+END_SRC
 
 ** Web
+*** Yaml modes
+#+BEGIN_SRC emacs-lisp
+(use-package yaml-mode)
+#+END_SRC
 *** Rest Client
 #+begin_src emacs-lisp
   (use-package restclient)
