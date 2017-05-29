@@ -107,6 +107,16 @@ Using moe theme light in the day and dark in the night..
 #+END_SRC
 
 * General configuration
+** Exec Path From Shell
+Usefull to initialize PATH from shell
+#+BEGIN_SRC emacs-lisp
+  (use-package exec-path-from-shell
+    :config
+    (when (memq window-system '(mac ns x))
+      (progn
+        (exec-path-from-shell-initialize)
+        (exec-path-from-shell-copy-env "GOPATH"))))
+#+END_SRC
 ** Let emacs.d clean
 #+begin_src emacs-lisp
 (use-package no-littering)
@@ -904,7 +914,6 @@ Add git status in prompt
                 (propertize " $ " 'face 'font-lock-constant-face))))
 #+end_src
 
-
 ** Ediff
 *** Ignore white space
 From : [[https://www.emacswiki.org/emacs/EdiffMode]] :
@@ -1015,6 +1024,23 @@ Smart parens for all modes.
                        '((sp--my-create-newline-and-enter-sexp "RET")))))
 #+END_SRC
 ** Go
+Go mode needs some go tools
+*** Go Imports
+    #+BEGIN_EXAMPLE
+    go get golang.org/x/tools/cmd/goimports
+    #+END_EXAMPLE
+*** Gocode
+    For completion
+#+BEGIN_EXAMPLE
+go get -u github.com/nsf/gocode
+#+END_EXAMPLE
+*** Godef
+    #+BEGIN_EXAMPLE
+    go get github.com/rogpeppe/godef
+    #+END_EXAMPLE
+*** Go mode setup
+
+Then we can setup Emacs go mode
 
 #+begin_src emacs-lisp
   (use-package go-mode
