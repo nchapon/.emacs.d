@@ -827,6 +827,18 @@ Insert time slot mainly used when I schedule meeting or appointment.
   ;; Either the Key ID or set to nil to use symmetric encryption.
   (setq org-crypt-key nil)
 #+end_src
+* Misc
+*** PDF Tools
+#+begin_src emacs-lisp :tangle yes
+  (use-package pdf-tools
+      :ensure t
+      :config
+      (pdf-tools-install)
+      (setq-default pdf-view-display-size 'fit-page)
+       (use-package org-pdfview
+         :ensure t))
+#+end_src
+
 * Programming
 ** Expand region
     - expand selection with =C-==
