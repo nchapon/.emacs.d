@@ -42,7 +42,7 @@ Use Source code Pro font if present
 
 ** Theme
 Using moe theme light in the day and dark in the night..
-   #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
      (use-package color-theme)
      (use-package moe-theme
        :config
@@ -58,7 +58,7 @@ Using moe theme light in the day and dark in the night..
            :config
            (powerline-moe-theme))))
 
-   #+END_SRC
+#+END_SRC
 ** Answering just 'y' or 'n'
 
 #+BEGIN_SRC emacs-lisp
@@ -363,7 +363,7 @@ Can integrate Helm with [[https://github.com/ggreer/the_silver_searcher][The Sil
 #+END_SRC
 *** helm-tramp
 Display server list from your =~/.ssh/config= with helm interface
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package helm-tramp)
 #+end_src
 
@@ -602,7 +602,7 @@ Organization task ID
 #+end_src
 
 This clocks in a predefined task by org-id that is the default task to clock in
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package org-id
     :ensure org
     :config
@@ -829,7 +829,7 @@ Insert time slot mainly used when I schedule meeting or appointment.
 #+end_src
 * Misc
 *** PDF Tools
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package pdf-tools
       :ensure t
       :config
@@ -866,7 +866,7 @@ Commands lisetd below are run in a term buffer
 #+end_src
 **** Aliases
 #+begin_src emacs-lisp
-  (setq eshell-aliases-file (concat no-littering-etc-directory ".eshell-aliases"))
+(setq eshell-aliases-file (concat no-littering-etc-directory ".eshell-aliases"))
 #+end_src
 **** Clear terminal
 
@@ -1317,7 +1317,7 @@ Split window right with =C-c |= and move there
 
 *** Rotate windows
 Rotate windows with =C-c r=
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defun nc/rotate-windows ()
     "Rotate your windows"
     (interactive)
