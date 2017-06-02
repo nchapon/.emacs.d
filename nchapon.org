@@ -791,7 +791,7 @@ Insert time slot mainly used when I schedule meeting or appointment.
 #+begin_src emacs-lisp
     (org-babel-do-load-languages
      'org-babel-load-languages
-     '((sh . t)
+     '((shell . t)
        (python . t)))
 #+end_src
 *** Editing source code
