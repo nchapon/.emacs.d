@@ -387,6 +387,11 @@ Similar to =helm-eshell-history=, but used for =M-x shell=.
 #+begin_src emacs-lisp
   (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring)
 #+end_src
+*** helm-org-rifle
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-org-rifle :ensure t :defer t)
+#+END_SRC
 
 ** Hippie expand
 Configuration
