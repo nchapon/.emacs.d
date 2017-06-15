@@ -348,7 +348,6 @@ Standard auto completion mode.
            ("C-x C-b" . helm-buffers-list)
            ("M-y" . helm-show-kill-ring)
            ("C-x c o" . helm-occur)
-           ("C-x c s" . helm-swoop)
            ("C-x C-r" . helm-recentf)
            ("C-x c y" . helm-yas-complete)
            ("C-x c Y" . helm-yas-create-snippet-on-region)
