@@ -122,14 +122,22 @@ Usefull to initialize PATH from shell
 (use-package no-littering)
 #+end_src
 ** History
-Delete old versions
+*** Delete old versions
+
+ #+BEGIN_SRC emacs-lisp
+ (setq delete-old-versions t
+   kept-new-versions 6
+   kept-old-versions 2
+   version-control t)
+ #+END_SRC
+*** Recent Files
 
 #+BEGIN_SRC emacs-lisp
-(setq delete-old-versions t
-  kept-new-versions 6
-  kept-old-versions 2
-  version-control t)
+  (use-package recentf
+    :config  (progn
+               (setq recentf-max-saved-items 100)))
 #+END_SRC
+
 
 ** Sane settings
 
