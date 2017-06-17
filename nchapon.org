@@ -26,10 +26,9 @@ Use Source code Pro font if present
     (when (eq window-system 'x)
       (cond
        ((find-font (font-spec :name "Source Code Pro"))
-        (set-frame-font "Source Code Pro-14" nil t))
+        (set-frame-font "Source Code Pro-13" nil t))
        ((find-font (font-spec :name "DejaVu Sans Mono-12"))
-        (set-frame-font "DejaVu Sans Mono-12" nil t)))
-      ))
+        (set-frame-font "DejaVu Sans Mono-12" nil t)))))
 
   (when (eq window-system 'x)
     (add-hook 'after-init-hook #'my/setup-x11-fonts))
