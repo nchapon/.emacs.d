@@ -396,7 +396,17 @@ Similar to =helm-eshell-history=, but used for =M-x shell=.
 *** helm-org-rifle
 
 #+BEGIN_SRC emacs-lisp
-  (use-package helm-org-rifle :ensure t :defer t)
+  (use-package helm-org-rifle
+    :ensure t
+    :defer t
+    :config (progn
+              (defun nc/helm-org-rifle-agenda-files (arg)
+                (interactive "p")
+                (let ((current-prefix-arg nil))
+                  (cond
+                   ((equal arg 4) (call-interactively #'helm-org-rifle-agenda-files nil))
+                   ((equal arg 16) (helm-org-rifle-occur-agenda-files))
+                   (t (helm-org-agenda-files-headings)))))))
 #+END_SRC
 
 ** Hippie expand
@@ -1375,6 +1385,7 @@ Used by key chord =JJ=
     (key-chord-define-global "jk" 'ace-jump-char-mode)
     (key-chord-define-global "FF" 'projectile-find-file)
     (key-chord-define-global "GG" 'helm-projectile-ag)
+    (key-chord-define-global "HH" 'nc/helm-org-rifle-agenda-files)
     (key-chord-define-global "KK" 'kill-whole-line)
     (key-chord-define-global "JJ" 'jump-to-register)
     (key-chord-define-global "DD" 'delete-region)
