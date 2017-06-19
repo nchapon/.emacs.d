@@ -394,7 +394,7 @@ Similar to =helm-eshell-history=, but used for =M-x shell=.
   (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring)
 #+end_src
 *** helm-org-rifle
-
+Search in org headings / content like Google
 #+BEGIN_SRC emacs-lisp
   (use-package helm-org-rifle
     :ensure t
