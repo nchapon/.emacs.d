@@ -137,7 +137,6 @@ Usefull to initialize PATH from shell
                (setq recentf-max-saved-items 100)))
 #+END_SRC
 
-
 ** Sane settings
 
 #+BEGIN_SRC emacs-lisp
@@ -269,6 +268,15 @@ Also auto refresh dired, but be quiet about it
           (delete-file filename)
           (message "Deleted file %s" filename)
           (kill-buffer))))))
+#+END_SRC
+** Setup french calendar
+#+BEGIN_SRC emacs-lisp
+  (setq calendar-week-start-day 1
+        calendar-day-name-array ["Dimanche" "Lundi" "Mardi" "Mercredi"
+                                 "Jeudi" "Vendredi" "Samedi"]
+        calendar-month-name-array ["Janvier" "Fevrier" "Mars" "Avril" "Mai"
+                                   "Juin" "Juillet" "Aout" "Septembre"
+                                   "Octobre" "Novembre" "Decembre"])
 #+END_SRC
 
 * Project management
@@ -848,6 +856,7 @@ Insert time slot mainly used when I schedule meeting or appointment.
   ;; Either the Key ID or set to nil to use symmetric encryption.
   (setq org-crypt-key nil)
 #+end_src
+
 * Misc
 *** PDF Tools
 #+begin_src emacs-lisp
