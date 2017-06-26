@@ -755,7 +755,7 @@ My commands
            "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
           ("p" "Phone call" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
                  "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-          ("a" "RendezVous" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+          ("a" "RendezVous" entry (file+datetree+prompt (nc/expand-org-notes-path "GTD/diary.org"))
                  "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
           ("j" "Journal" entry (file+datetree (nc/expand-org-notes-path "GTD/journal.org"))
            "* %?\nEntered on %U\n  %i\n  %a")
