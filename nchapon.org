@@ -761,6 +761,10 @@ My commands
            "* %?\nEntered on %U\n  %i\n  %a")
           ("w" "WeeklyReview" entry (file+datetree+prompt (nc/expand-org-notes-path "GTD/weekly-review.org"))
            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
+           ("d" "Daily Meeting" entry
+             (file+headline (nc/expand-org-notes-path "GTD/office.org") "Daily Meetings")
+             "* DONE %^{Task}"
+             :clock-in t :clock-resume t)
           ))
 #+end_src
 **** Speed Key for interruption task
