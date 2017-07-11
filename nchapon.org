@@ -685,15 +685,25 @@ This clocks in a predefined task by org-id that is the default task to clock in
         org-agenda-include-diary t)
 #+END_SRC
 *** Agenda commands
-Function to skip headline tagged with =:PROJECT:=
+**** Function to skip headline tagged with =:PROJECT:=
 
 #+begin_src emacs-lisp
 (defun my/org-agenda-skip-project ()
     (org-agenda-skip-entry-if 'regexp ":PROJECT:"))
 #+end_src
 
+**** Display Header parent
 
-My commands
+#+BEGIN_SRC emacs-lisp
+(defun org-agenda-format-parent (n)
+  ;; (s-truncate n (org-format-outline-path (org-get-outline-path)))
+  (save-excursion
+    (save-restriction
+      (widen)
+      (org-up-heading-safe)
+      (s-truncate n (org-get-heading t t)))))
+#+END_SRC
+**** My commands
 
     #+BEGIN_SRC emacs-lisp
       (setq org-agenda-custom-commands
@@ -708,6 +718,7 @@ My commands
                 (tags-todo "TODO=\"NEXT\"+@cnp"
                            ((org-agenda-overriding-header "Next tasks @office")
                             (org-tags-exclude-from-inheritance '("PROJECT"))
+                            (org-agenda-prefix-format "%-32:(org-agenda-format-parent 30)")
                             (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                 (tags-todo "TODO=\"TODO\"+tasks"
                            ((org-agenda-overriding-header "Other tasks")
@@ -744,7 +755,6 @@ My commands
                ((org-agenda-span 7)
                 (org-agenda-log-mode 1)))))
     #+END_SRC
-
 ** Taking notes
 *** My templates
 #+begin_src emacs-lisp
