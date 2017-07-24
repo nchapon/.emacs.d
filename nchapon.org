@@ -734,6 +734,11 @@ This clocks in a predefined task by org-id that is the default task to clock in
                             (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                 )
                nil)
+              ("e" tags-todo "@computer+EMACS"
+               ((org-agenda-overriding-header "Emacs Tweak Session")
+                (org-tags-exclude-from-inheritance '("PROJECT"))
+                (org-agenda-skip-function 'my/org-agenda-skip-project)
+                (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
               ("o" tags-todo "@cnp-MEETING"
                ((org-agenda-overriding-header "Office tasks")
                 (org-tags-exclude-from-inheritance '("PROJECT"))
