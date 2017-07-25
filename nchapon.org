@@ -1481,7 +1481,6 @@ Used by key chord =JJ=
     (key-chord-define-global "??" 'nc/helm-do-grep-notes)
     (key-chord-define-global "BB" 'beginning-of-buffer)
     (key-chord-define-global "$$" 'end-of-buffer)
-    (key-chord-define-global "xx" 'execute-extended-command)
     (key-chord-define-global "qq" 'nc/cleanup-buffer-or-region))
 #+END_SRC
 
