@@ -962,6 +962,8 @@ Commands lisetd below are run in a term buffer
 #+end_src
 **** eshell-here
 
+From http://www.howardism.org/Technical/Emacs/eshell-fun.html
+
 #+begin_src emacs-lisp
   (defun my/eshell-here ()
     "Opens up a new shell in the directory associated with the
@@ -971,16 +973,31 @@ Commands lisetd below are run in a term buffer
     (let* ((parent (if (buffer-file-name)
                        (file-name-directory (buffer-file-name))
                      default-directory))
+           (height (/ (window-total-height) 3))
            (name   (car (last (split-string parent "/" t)))))
+
+      (split-window-vertically (- height))
+      (other-window 1)
+
       (eshell "new")
       (rename-buffer (concat "*eshell: " name "*"))
 
       (insert (concat "ls"))
       (eshell-send-input)))
 
-
   (global-set-key (kbd "C-<f1>") 'my/eshell-here)
 #+end_src
+
+My function x exits that shell and closes that windows
+
+#+BEGIN_SRC emacs-lisp
+  (defun eshell/x ()
+    (insert "exit")
+    (eshell-send-input)
+    (delete-window))
+#+END_SRC
+
+
 **** Customize eshell prompt
 Add git status in prompt
 #+begin_src emacs-lisp
@@ -1333,18 +1350,18 @@ https://sites.google.com/site/steveyegge2/effective-emacs
 #+END_SRC
 ** Global keys for usefuls functions
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<f2>") 'rgrep)
-(global-set-key (kbd "C-<f2>") 'helm-do-ag)
+  (global-set-key (kbd "<f2>") 'rgrep)
+  (global-set-key (kbd "C-<f2>") 'helm-do-ag)
 
-(global-set-key (kbd "<f6>") 'magit-status)
-(global-set-key (kbd "C-<f6>") 'magit-log-buffer-file)
+  (global-set-key (kbd "<f6>") 'magit-status)
+  (global-set-key (kbd "C-<f6>") 'magit-log-buffer-file)
 
-;; Org mode keys
-(global-set-key (kbd "M-<f11>") 'org-clock-goto)
-(global-set-key (kbd "<f12>") 'org-agenda)
+  ;; Org mode keys
+  (global-set-key (kbd "M-<f11>") 'org-clock-goto)
+  (global-set-key (kbd "<f12>") 'org-agenda)
 
-(global-set-key (kbd "M-<f12>") 'shell)
-(global-set-key (kbd "C-<f12>") 'helm-semantic-or-imenu)
+  (global-set-key (kbd "M-<f12>") 'shell)
+  (global-set-key (kbd "C-<f12>") 'helm-semantic-or-imenu)
 
 #+END_SRC
 ** Goto line
