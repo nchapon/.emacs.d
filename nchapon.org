@@ -747,9 +747,15 @@ This clocks in a predefined task by org-id that is the default task to clock in
                             (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                 )
                nil)
-              ("e" tags-todo "@computer+EMACS"
+              ("e" "Emacs Tasks" tags-todo "@computer+EMACS"
                ((org-agenda-overriding-header "Emacs Tweak Session")
                 (org-tags-exclude-from-inheritance '("PROJECT"))
+                (org-agenda-skip-function 'my/org-agenda-skip-project)
+                (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
+              ("l" "TO LEARN" tags-todo "@computer+TO_LEARN"
+               ((org-agenda-overriding-header "TO LEARN")
+                (org-tags-exclude-from-inheritance '("PROJECT"))
+                (org-agenda-prefix-format "%-32:(org-agenda-format-parent 30)")
                 (org-agenda-skip-function 'my/org-agenda-skip-project)
                 (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
               ("o" tags-todo "@cnp-MEETING"
@@ -950,6 +956,8 @@ Commands lisetd below are run in a term buffer
                                  "ncftp" "pine" "tin" "trn" "elm" "htop"))
 
   (setq eshell-visual-subcommands '(("git" "log" "diff" "show")))
+
+
 #+end_src
 
 **** Call =ls= after cd command
