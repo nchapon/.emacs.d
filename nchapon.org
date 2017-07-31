@@ -1083,9 +1083,12 @@ Ediff should be opened in selected frame and split window horizontally
     :bind (("C-x g" . magit-status)))
 #+END_SRC
 ** Markdown
+   GitHub Flavored Markdown by default for README.md files.
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
-    :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode)
+    :mode (("README\\.md\\'" . gfm-mode)
+           ("\\.md\\'"       . markdown-mode)
+           ("\\.markdown\\'" . markdown-mode))
     :config)
 #+END_SRC
 ** Multiple Cursors
