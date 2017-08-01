@@ -21,7 +21,7 @@ Use package default configuration
 Use Source code Pro font if present
 
 #+BEGIN_SRC emacs-lisp
-  (defun my/setup-x11-fonts ()
+  (defun nc/setup-x11-fonts ()
     (interactive)
     (when (eq window-system 'x)
       (cond
@@ -31,7 +31,7 @@ Use Source code Pro font if present
         (set-frame-font "DejaVu Sans Mono-12" nil t)))))
 
   (when (eq window-system 'x)
-    (add-hook 'after-init-hook #'my/setup-x11-fonts))
+    (add-hook 'after-init-hook #'nc/setup-x11-fonts))
 #+END_SRC
 
 ** Mode line
@@ -484,7 +484,7 @@ Configuration
 From  [[https://github.com/bbatsov/prelude]]
 See article [[http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/]]
 #+BEGIN_SRC emacs-lisp
-(defun smarter-move-beginning-of-line (arg)
+(defun nc/smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
 
 Move point to the first non-whitespace character on this line.
@@ -508,7 +508,7 @@ point reaches the beginning or end of the buffer, stop there."
       (move-beginning-of-line 1))))
 
 (global-set-key [remap move-beginning-of-line]
-                'smarter-move-beginning-of-line)
+                'nc/smarter-move-beginning-of-line)
 
 #+END_SRC
 ** Ace jump mode
@@ -539,7 +539,7 @@ Should I try avy ?
 #+begin_src emacs-lisp
   (defvar nc/org-notes-directory "~/notes")
 
-  (defun nc/expand-org-notes-path (path)
+  (defun nc--expand-org-notes-path (path)
       "Expand org-notes-directory with PATH"
       (expand-file-name (concat nc/org-notes-directory "/" path)))
 #+end_src
@@ -610,11 +610,11 @@ Colors from https://flatuicolors.com/
 ** Org-clock
 *** Function for clocking in
 #+begin_src emacs-lisp
-(defun my/org-clock-in ()
+(defun nc/org-clock-in ()
   (interactive)
   (org-clock-in '(4)))
 
-(global-set-key (kbd "<f11>") #'my/org-clock-in)
+(global-set-key (kbd "<f11>") #'nc/org-clock-in)
 (global-set-key (kbd "C-<f11>") 'org-clock-out)
 #+end_src
 *** Configuration
@@ -623,7 +623,7 @@ Too many clock entries clutter up a heading.
 
 #+begin_src emacs-lisp
   (use-package org
-    :bind (("C-c C-x C-i" . my/org-clock-in)
+    :bind (("C-c C-x C-i" . nc/org-clock-in)
            ("C-c C-x C-o" . org-clock-out))
     :config
     (progn
@@ -656,7 +656,7 @@ Too many clock entries clutter up a heading.
 Fix timereport indentation
 
 #+begin_src emacs-lisp
-(defun my-org-clocktable-indent-string (level)
+(defun nc--org-clocktable-indent-string (level)
   (if (= level 1)
       ""
     (let ((str "\\"))
@@ -665,12 +665,12 @@ Fix timereport indentation
               str (concat str "_")))
       (concat str "_ "))))
 
-(advice-add 'org-clocktable-indent-string :override #'my-org-clocktable-indent-string)
+(advice-add 'org-clocktable-indent-string :override #'nc--org-clocktable-indent-string)
 #+end_src
 *** Clock in organization task as default
 Organization task ID
 #+begin_src emacs-lisp
-(defvar my/organization-task-id "93905237-907b-42a6-bdb1-11832c4d59d5")
+(defvar nc/organization-task-id "93905237-907b-42a6-bdb1-11832c4d59d5")
 #+end_src
 
 This clocks in a predefined task by org-id that is the default task to clock in
@@ -678,15 +678,15 @@ This clocks in a predefined task by org-id that is the default task to clock in
   (use-package org-id
     :ensure org
     :config
-    (defun my/clock-in-organization-task-as-default ()
+    (defun nc/clock-in-organization-task-as-default ()
       (interactive)
-      (org-with-point-at (org-id-find my/organization-task-id 'marker)
+      (org-with-point-at (org-id-find nc/organization-task-id 'marker)
         (org-clock-in '(16)))))
 #+end_src
 
 
 #+begin_src emacs-lisp
-  (bind-key "C-<f9>" 'my/clock-in-organization-task-as-default)
+  (bind-key "C-<f9>" 'nc/clock-in-organization-task-as-default)
 #+end_src
 
 
@@ -709,14 +709,14 @@ This clocks in a predefined task by org-id that is the default task to clock in
 **** Function to skip headline tagged with =:PROJECT:=
 
 #+begin_src emacs-lisp
-(defun my/org-agenda-skip-project ()
+(defun nc--org-agenda-skip-project ()
     (org-agenda-skip-entry-if 'regexp ":PROJECT:"))
 #+end_src
 
 **** Display Header parent
 
 #+BEGIN_SRC emacs-lisp
-(defun org-agenda-format-parent (n)
+(defun nc--org-agenda-format-parent (n)
   ;; (s-truncate n (org-format-outline-path (org-get-outline-path)))
   (save-excursion
     (save-restriction
@@ -739,7 +739,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
                 (tags-todo "TODO=\"NEXT\"+@cnp"
                            ((org-agenda-overriding-header "Next tasks @office")
                             (org-tags-exclude-from-inheritance '("PROJECT"))
-                            (org-agenda-prefix-format "%-32:(org-agenda-format-parent 30)")
+                            (org-agenda-prefix-format "%-32:(nc--org-agenda-format-parent 30)")
                             (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                 (tags-todo "TODO=\"TODO\"+tasks"
                            ((org-agenda-overriding-header "Other tasks")
@@ -750,18 +750,18 @@ This clocks in a predefined task by org-id that is the default task to clock in
               ("e" "Emacs Tasks" tags-todo "@computer+EMACS"
                ((org-agenda-overriding-header "Emacs Tweak Session")
                 (org-tags-exclude-from-inheritance '("PROJECT"))
-                (org-agenda-skip-function 'my/org-agenda-skip-project)
+                (org-agenda-skip-function 'nc--org-agenda-skip-project)
                 (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
               ("l" "TO LEARN" tags-todo "@computer+TO_LEARN"
                ((org-agenda-overriding-header "TO LEARN")
                 (org-tags-exclude-from-inheritance '("PROJECT"))
-                (org-agenda-prefix-format "%-32:(org-agenda-format-parent 30)")
-                (org-agenda-skip-function 'my/org-agenda-skip-project)
+                (org-agenda-prefix-format "%-32:(nc--org-agenda-format-parent 30)")
+                (org-agenda-skip-function 'nc--org-agenda-skip-project)
                 (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
               ("o" tags-todo "@cnp-MEETING"
                ((org-agenda-overriding-header "Office tasks")
                 (org-tags-exclude-from-inheritance '("PROJECT"))
-                (org-agenda-skip-function 'my/org-agenda-skip-project)
+                (org-agenda-skip-function 'nc--org-agenda-skip-project)
                 (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
               ("r" "Tasks to Refile" tags "REFILE"
                ((org-agenda-overriding-header "Tasks to Refile")
@@ -791,15 +791,15 @@ This clocks in a predefined task by org-id that is the default task to clock in
 *** My templates
 #+begin_src emacs-lisp
   (setq org-capture-templates
-        '(("t" "todo" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+        '(("t" "todo" entry (file (nc--expand-org-notes-path "GTD/refile.org"))
            "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-          ("n" "Next Task" entry (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Tasks")
+          ("n" "Next Task" entry (file+headline (nc--expand-org-notes-path "GTD/refile.org") "Tasks")
            "** NEXT %? \nDEADLINE: %t")
-          ("s" "Someday / Maybe" entry (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Someday / Maybe")
+          ("s" "Someday / Maybe" entry (file+headline (nc--expand-org-notes-path "GTD/refile.org") "Someday / Maybe")
             "* SOMEDAY %? :IDEA:\n%u" :clock-in t :clock-resume t)
-          ("f" "FishLog" plain (file+datetree+prompt (nc/expand-org-notes-path "GTD/fishlog.org"))
+          ("f" "FishLog" plain (file+datetree+prompt (nc--expand-org-notes-path "GTD/fishlog.org"))
            "%[~/notes/templates/fishlog.org]")
-          ("F" "Film" entry (file+headline (nc/expand-org-notes-path "GTD/watching.org") "Films à voir")
+          ("F" "Film" entry (file+headline (nc--expand-org-notes-path "GTD/watching.org") "Films à voir")
                "* NEXT %^{Titre}
        %i
        - *Réalisateur:* %^{Auteur}
@@ -809,24 +809,24 @@ This clocks in a predefined task by org-id that is the default task to clock in
       %?
 
       %U" :prepend t)
-          ("N" "Note" entry (file+headline (nc/expand-org-notes-path "GTD/refile.org") "Notes")
+          ("N" "Note" entry (file+headline (nc--expand-org-notes-path "GTD/refile.org") "Notes")
            "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
           ("i" "Interrupting task" entry
-             (file+datetree (nc/expand-org-notes-path "GTD/diary.org"))
+             (file+datetree (nc--expand-org-notes-path "GTD/diary.org"))
              "* %^{Task}"
              :clock-in t :clock-resume t)
-          ("m" "Meeting" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+          ("m" "Meeting" entry (file (nc--expand-org-notes-path "GTD/refile.org"))
            "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-          ("p" "Phone call" entry (file (nc/expand-org-notes-path "GTD/refile.org"))
+          ("p" "Phone call" entry (file (nc--expand-org-notes-path "GTD/refile.org"))
                  "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-          ("a" "RendezVous" entry (file+datetree+prompt (nc/expand-org-notes-path "GTD/diary.org"))
+          ("a" "RendezVous" entry (file+datetree+prompt (nc--expand-org-notes-path "GTD/diary.org"))
                  "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-          ("j" "Journal" entry (file+datetree (nc/expand-org-notes-path "GTD/journal.org"))
+          ("j" "Journal" entry (file+datetree (nc--expand-org-notes-path "GTD/journal.org"))
            "* %?\nEntered on %U\n  %i\n  %a")
-          ("w" "WeeklyReview" entry (file+datetree+prompt (nc/expand-org-notes-path "GTD/weekly-review.org"))
+          ("w" "WeeklyReview" entry (file+datetree+prompt (nc--expand-org-notes-path "GTD/weekly-review.org"))
            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
            ("d" "Daily Meeting" entry
-             (file+headline (nc/expand-org-notes-path "GTD/office.org") "Daily Meetings")
+             (file+headline (nc--expand-org-notes-path "GTD/office.org") "Daily Meetings")
              "* DONE %^{Task}"
              :clock-in t :clock-resume t)
           ))
@@ -870,7 +870,7 @@ Insert time slot mainly used when I schedule meeting or appointment.
 (defun nc/journal ()
   "Edit my journal"
   (interactive)
-  (find-file-other-window (nc/expand-org-notes-path "GTD/journal.org")))
+  (find-file-other-window (nc--expand-org-notes-path "GTD/journal.org")))
 
 ;; Binding journal file
 (global-set-key "\C-cj" 'nc/journal)
@@ -971,7 +971,7 @@ Commands lisetd below are run in a term buffer
 **** Clear terminal
 
 #+begin_src emacs-lisp
-  (defun my/eshell-clear-buffer ()
+  (defun nc/eshell-clear-buffer ()
     "Clear terminal"
     (interactive)
     (let ((inhibit-read-only t))
@@ -979,14 +979,14 @@ Commands lisetd below are run in a term buffer
       (eshell-send-input)))
   (add-hook 'eshell-mode-hook
           '(lambda()
-             (local-set-key (kbd "C-l") 'my/eshell-clear-buffer)))
+             (local-set-key (kbd "C-l") 'nc/eshell-clear-buffer)))
 #+end_src
 **** eshell-here
 
 From http://www.howardism.org/Technical/Emacs/eshell-fun.html
 
 #+begin_src emacs-lisp
-  (defun my/eshell-here ()
+  (defun nc/eshell-here ()
     "Opens up a new shell in the directory associated with the
   current buffer's file. The eshell is renamed to match that
   directory to make multiple eshell windows easier."
@@ -1006,7 +1006,7 @@ From http://www.howardism.org/Technical/Emacs/eshell-fun.html
       (insert (concat "ls"))
       (eshell-send-input)))
 
-  (global-set-key (kbd "C-<f1>") 'my/eshell-here)
+  (global-set-key (kbd "C-<f1>") 'nc/eshell-here)
 #+end_src
 
 My function x exits that shell and closes that windows
@@ -1143,7 +1143,7 @@ Smart parens for all modes.
 
 
 
-      (defun sp--my-create-newline-and-enter-sexp (&rest _ignored)
+      (defun nc--create-newline-and-enter-sexp (&rest _ignored)
         "Open a new brace or bracket expression, with relevant newlines and indent. "
         (newline)
         (indent-according-to-mode)
@@ -1153,7 +1153,7 @@ Smart parens for all modes.
       (sp-with-modes '(c-mode c++-mode js-mode js2-mode java-mode
                               typescript-mode perl-mode)
         (sp-local-pair "{" nil :post-handlers
-                       '((sp--my-create-newline-and-enter-sexp "RET")))))
+                       '((nc--create-newline-and-enter-sexp "RET")))))
 #+END_SRC
 ** Go
 Go mode needs some go tools
@@ -1182,7 +1182,7 @@ Then we can setup Emacs go mode
     (add-hook 'go-mode-hook 'company-mode)
     ;; Call Gofmt before saving
     (add-hook 'before-save-hook 'gofmt-before-save)
-    (add-hook 'go-mode-hook 'setup-go-mode-compile)
+    (add-hook 'go-mode-hook 'nc--setup-go-mode-compile)
     (add-hook 'go-mode-hook #'smartparens-mode)
     (add-hook 'go-mode-hook '(lambda ()
                    (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)))
@@ -1207,14 +1207,14 @@ Then we can setup Emacs go mode
     :config
     (add-hook 'go-mode-hook 'go-eldoc-setup))
 
-  (defun setup-go-mode-compile ()
+  (defun nc--setup-go-mode-compile ()
     ; Customize compile command to run go build
     (if (not (string-match "go" compile-command))
         (set (make-local-variable 'compile-command)
              "go build -v && go test -v && go vet")))
 
 
-  (defun go-run()
+  (defun nc/go-run()
     "Compile and run my program"
     (interactive)
     (save-some-buffers t)
@@ -1332,7 +1332,7 @@ Move line Up is bound to =C-S-UpArrow=
 Move line down is bound to =C-S-DownArrow=
 
 #+BEGIN_SRC emacs-lisp
-(defun move-line-down ()
+(defun nc/move-line-down ()
   "Move down the current line."
   (interactive)
   (forward-line 1)
@@ -1340,7 +1340,7 @@ Move line down is bound to =C-S-DownArrow=
   (forward-line -1)
   (indent-according-to-mode))
 
-(global-set-key [(control shift down)]  'move-line-down)
+(global-set-key [(control shift down)]  'nc/move-line-down)
 #+END_SRC
 
 ** Join lines
@@ -1468,10 +1468,10 @@ Rotate windows with =C-c r=
 Used by key chord =JJ=
 #+begin_src emacs-lisp
   (dolist (r `((?i (file . ,(concat user-emacs-directory "nchapon.org")))
-               (?o (file . ,(nc/expand-org-notes-path "GTD/office.org")))
-               (?r (file . ,(nc/expand-org-notes-path "GTD/refile.org")))
-               (?t (file . ,(nc/expand-org-notes-path "GTD/todo.org")))
-               (?w (file . ,(nc/expand-org-notes-path "GTD/watching.org")))))
+               (?o (file . ,(nc--expand-org-notes-path "GTD/office.org")))
+               (?r (file . ,(nc--expand-org-notes-path "GTD/refile.org")))
+               (?t (file . ,(nc--expand-org-notes-path "GTD/todo.org")))
+               (?w (file . ,(nc--expand-org-notes-path "GTD/watching.org")))))
     (set-register (car r) (cadr r)))
 #+end_src
 ** Key Chords
