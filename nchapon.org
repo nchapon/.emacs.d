@@ -1393,7 +1393,6 @@ https://sites.google.com/site/steveyegge2/effective-emacs
 (global-set-key (kbd "M-g")         'goto-line)
 #+END_SRC
 ** Windows
-Move or create
 *** Toggle window split
 Bound to =C-c -=.
 #+BEGIN_SRC emacs-lisp
@@ -1463,7 +1462,15 @@ Rotate windows with =C-c r=
 
   (bind-key "C-c r" 'nc/rotate-windows)
 #+end_src
-
+*** Swap windows
+    From https://github.com/zamansky/using-emacs/blob/master/myinit.org
+#+begin_src emacs-lisp
+  (defun nc/swap-windows ()
+    "Swap windows"
+    (interactive)
+    (ace-swap-window)
+    (aw-flip-window))
+#+end_src
 ** Registers
 Used by key chord =JJ=
 #+begin_src emacs-lisp
@@ -1491,6 +1498,7 @@ Used by key chord =JJ=
     (key-chord-define-global "OO" 'helm-occur)
     (key-chord-define-global "??" 'nc/helm-do-grep-notes)
     (key-chord-define-global "BB" 'beginning-of-buffer)
+    (key-chord-define-global "WW" 'nc/swap-windows)
     (key-chord-define-global "$$" 'end-of-buffer)
     (key-chord-define-global "qq" 'nc/cleanup-buffer-or-region))
 #+END_SRC
