@@ -1382,7 +1382,7 @@ Snippets for programming.
           (yas-reload-all)))
 #+END_SRC
 
-Allow with =M_== to choosing a snippet using helm (helm source for yasnippet)
+Allow =M-== to choosing a snippet using helm (helm source for yasnippet)
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm-c-yasnippet
