@@ -745,7 +745,6 @@ This clocks in a predefined task by org-id that is the default task to clock in
   (bind-key "C-<f9>" 'nc/clock-in-organization-task-as-default)
 #+end_src
 
-
 ** Agenda
 *** Agenda configuration
 #+BEGIN_SRC emacs-lisp
@@ -1096,6 +1095,15 @@ Add git status in prompt
                            (propertize (format " +%d ~%d -%d" added modified deleted) 'face 'font-lock-comment-face)))
                        (propertize "]" 'face 'font-lock-keyword-face)))))
                 (propertize " $ " 'face 'font-lock-constant-face))))
+#+end_src
+*** better shell
+Simplifies shell management
+#+begin_src emacs-lisp
+  (use-package better-shell
+      :ensure t
+      :bind (("C-'" . better-shell-shell)
+             ("C-;" . better-shell-remote-open)
+             ("M-<f12>" . better-shell-for-current-dir)))
 #+end_src
 
 ** Ediff
@@ -1492,7 +1500,6 @@ https://sites.google.com/site/steveyegge2/effective-emacs
   (global-set-key (kbd "M-<f11>") 'org-clock-goto)
   (global-set-key (kbd "<f12>") 'org-agenda)
 
-  (global-set-key (kbd "M-<f12>") 'shell)
   (global-set-key (kbd "C-<f12>") 'nc/helm-in-buffer)
 
 #+END_SRC
@@ -1626,7 +1633,6 @@ Generate a 32 random pseudo uuid
     (dotimes (i 32) (insert (nc--random-alnum))))
 
 #+end_src
-
 
 * Notes
 ** Inspiration configs
