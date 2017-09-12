@@ -353,7 +353,14 @@ Standard auto completion mode.
   (use-package company
     :defer t
     :diminish ""
-    :bind ("C-." . company-complete)
+    :bind (("M-/" . company-complete)
+           ("C-c C-y" . company-yasnippet)
+           :map company-active-map
+           ("C-p" . company-select-previous)
+           ("C-n" . company-select-next)
+           ("TAB" . company-complete-common-or-cycle)
+           ("<tab>" . company-complete-common-or-cycle)
+           ("C-d" . company-show-doc-buffer))
     :init (global-company-mode)
     :config
     (progn
@@ -364,12 +371,7 @@ Standard auto completion mode.
             company-show-numbers t
             company-dabbrev-downcase nil
             company-dabbrev-code-everywhere t
-            company-transformers '(company-sort-by-occurrence))
-      (bind-keys :map company-active-map
-                 ("C-n" . company-select-next)
-                 ("C-p" . company-select-previous)
-                 ("C-d" . company-show-doc-buffer)
-                 ("<tab>" . company-complete))))
+            company-transformers '(company-sort-by-occurrence))))
 
 #+END_SRC
 ** Helm
