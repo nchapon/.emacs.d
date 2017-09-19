@@ -18,13 +18,15 @@ Use package default configuration
 * Appearence & behavior
 
 ** Font
-Use Source code Pro font if present
+Use Input Font (http://input.fontbureau.com/)  or Source code Pro font if present
 
 #+BEGIN_SRC emacs-lisp
   (defun nc/setup-x11-fonts ()
     (interactive)
     (when (eq window-system 'x)
       (cond
+       ((find-font (font-spec :name "Input Mono"))
+        (set-frame-font "Input Mono-12" nil t))
        ((find-font (font-spec :name "Source Code Pro"))
         (set-frame-font "Source Code Pro-13" nil t))
        ((find-font (font-spec :name "DejaVu Sans Mono-12"))
@@ -32,6 +34,7 @@ Use Source code Pro font if present
 
   (when (eq window-system 'x)
     (add-hook 'after-init-hook #'nc/setup-x11-fonts))
+
 #+END_SRC
 
 ** Mode line
