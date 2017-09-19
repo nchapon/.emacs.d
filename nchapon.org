@@ -872,7 +872,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
           ("N" "Note" entry (file+headline (nc--expand-org-notes-path "GTD/refile.org") "Notes")
            "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
           ("i" "Interrupting task" entry
-             (file+datetree (nc--expand-org-notes-path "GTD/refile.org"))
+             (file+datetree (nc--expand-org-notes-path "GTD/diary.org"))
              "* %^{Task}"
              :clock-in t :clock-resume t)
           ("m" "Meeting" entry (file (nc--expand-org-notes-path "GTD/refile.org"))
@@ -885,8 +885,8 @@ This clocks in a predefined task by org-id that is the default task to clock in
            "* %?\nEntered on %U\n  %i\n  %a")
           ("w" "WeeklyReview" entry (file+datetree+prompt (nc--expand-org-notes-path "GTD/weekly-review.org"))
            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
-           ("d" "Daily Meeting" entry
-             (file+headline (nc--expand-org-notes-path "GTD/office.org") "Daily Meetings")
+           ("D" "Done Business Task" entry
+             (file+headline (nc--expand-org-notes-path "GTD/office.org") "Tâches")
              "* DONE %^{Task}"
              :clock-in t :clock-resume t)
           ))
