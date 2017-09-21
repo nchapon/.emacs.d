@@ -176,6 +176,11 @@ Enable C-x C-j
 (add-hook 'dired-load-hook
             (function (lambda () (load "dired-x"))))
 #+END_SRC
+*** dwim target copy
+
+#+begin_src emacs-lisp
+  (setq dired-dwim-target t)
+#+end_src
 
 ** Undo Tree
 This lets you use =C-x u= (=undo-tree-visualize=)
