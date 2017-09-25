@@ -886,7 +886,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
           ("w" "WeeklyReview" entry (file+datetree+prompt (nc--expand-org-notes-path "GTD/weekly-review.org"))
            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
            ("D" "Done Business Task" entry
-             (file+headline (nc--expand-org-notes-path "GTD/office.org") "Tâches")
+             (file+headline (nc--expand-org-notes-path "GTD/office.org") "Done Tasks")
              "* DONE %^{Task}"
              :clock-in t :clock-resume t)
           ))
