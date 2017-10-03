@@ -45,20 +45,20 @@ Use Input Font (http://input.fontbureau.com/)  or Source code Pro font if presen
 ** Theme
 Using moe theme light in the day and dark in the night..
 #+BEGIN_SRC emacs-lisp
-  (use-package color-theme)
-  (use-package moe-theme
-    :config
-    (progn
-      ;; (setq moe-light-pure-white-background-in-terminal t)
+     (use-package color-theme)
+     (use-package moe-theme
+       :config
+       (progn
+         (setq moe-light-pure-white-background-in-terminal t)
 
-      (moe-dark)
+         (moe-light)
 
-      (use-package moe-theme-switcher
-          :ensure moe-theme)
+         (use-package moe-theme-switcher
+             :ensure moe-theme)
 
-      (use-package powerline
-        :config
-        (powerline-moe-theme))))
+         (use-package powerline
+           :config
+           (powerline-moe-theme))))
 
 #+END_SRC
 ** Answering just 'y' or 'n'
