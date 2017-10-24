@@ -1333,9 +1333,8 @@ Then we can setup Emacs go mode
 *** Rest Client
 #+begin_src emacs-lisp
   (use-package restclient
-    :config
-    (add-to-list 'auto-mode-alist '("\\.restclient$\\'" . restclient-mode))
-    (add-to-list 'auto-mode-alist '("\\.http$\\'" . restclient-mode)))
+    :mode (("\\.restclient\\'" . restclient-mode)
+           ("\\.http\\'" . restclient-mode)))
 #+end_src
 *** Web Mode
 #+begin_src emacs-lisp
