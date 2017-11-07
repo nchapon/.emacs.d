@@ -209,7 +209,6 @@ Set all coding systems to utf-8
 (setq default-buffer-file-coding-system 'utf-8-unix)
 (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
 (setq file-name-coding-system  'utf-8)
-(add-to-list 'auto-coding-alist '("." . utf-8))
 #+END_SRC
 ** Indentation & Tabs
 *** Default indentation
