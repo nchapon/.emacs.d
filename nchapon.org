@@ -954,10 +954,12 @@ Insert time slot mainly used when I schedule meeting or appointment.
 ** Babel (Literate Programming)
 *** Babel languages
 #+begin_src emacs-lisp
+  ;;(require 'ob-js)
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((shell . t)
      (python . t)
+     (js . t)
      (dot .t)))
 #+end_src
 *** Editing source code
