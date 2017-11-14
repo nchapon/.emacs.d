@@ -608,19 +608,25 @@ Should I try avy ?
       "Expand org-notes-directory with PATH"
       (expand-file-name (concat nc/org-notes-directory "/" path)))
 #+end_src
-** Org global keys
-
+** Global preferences
+*** Global keys
+ #+BEGIN_SRC emacs-lisp
+ (bind-key "\C-cl" 'org-store-link)
+ (bind-key "\C-cc" 'org-capture)
+ (bind-key "\C-ca" 'org-agenda)
+ (bind-key "\C-cb" 'org-iswitchb)
+ #+END_SRC
+*** Custom ellipsis
 #+BEGIN_SRC emacs-lisp
-(bind-key "\C-cl" 'org-store-link)
-(bind-key "\C-cc" 'org-capture)
-(bind-key "\C-ca" 'org-agenda)
-(bind-key "\C-cb" 'org-iswitchb)
+(setq org-ellipsis " ⬎") ;; ⤵ ↴ ⬎ ⤷
+(set-face-attribute 'org-ellipsis nil :underline nil)
 #+END_SRC
-
 ** Modules
 *** Bullet Module
 #+BEGIN_SRC emacs-lisp
-(use-package org-bullets
+  (use-package org-bullets
+    :init
+    (setq org-bullets-bullet-list '("⊢" "⋮" "⋱" "⋱" "⋱"))
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+END_SRC
