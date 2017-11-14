@@ -960,13 +960,15 @@ Insert time slot mainly used when I schedule meeting or appointment.
 ** Babel (Literate Programming)
 *** Babel languages
 #+begin_src emacs-lisp
-  ;;(require 'ob-js)
+  (use-package ob-restclient)
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((shell . t)
      (python . t)
      (js . t)
-     (dot .t)))
+     (dot . t)
+     (restclient . t)))
 #+end_src
 *** Editing source code
  I don't want to get distracted by the same code in the other window, so I want org src to use the current window.
