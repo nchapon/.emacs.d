@@ -604,10 +604,44 @@ Should I try avy ?
 #+begin_src emacs-lisp
   (defvar nc/org-notes-directory "~/notes")
 
+  (setq org-directory "~/notes/")
+
+  (setq org-files (append (file-expand-wildcards (concat org-directory "*/*.org"))
+                          (file-expand-wildcards (concat org-directory "*/*/*.org"))))
+
   (defun nc--expand-org-notes-path (path)
-      "Expand org-notes-directory with PATH"
-      (expand-file-name (concat nc/org-notes-directory "/" path)))
+    "Expand org-notes-directory with PATH"
+    (expand-file-name (concat nc/org-notes-directory "/" path)))
 #+end_src
+*** Notes
+
+#+begin_src emacs-lisp
+  (defun nc--org-current-month-notes-file ()
+      "Get the path of the org file for the current month."
+      (concat org-directory "dates/"
+              (downcase (format-time-string "%Y-%B.org"))))
+
+  (setq org-default-notes-file (nc--org-current-month-notes-file))
+
+  (defvar nc/current-month-notes-last-visited nil
+  "The last date the org file for the current month was opened.")
+
+  (defun nc/find-current-month-notes-file ()
+      "Find the org file for the current month"
+      (interactive)
+      (setq nc/current-month-notes-last-visited (format-time-string "%D"))
+      (find-file org-default-notes-file))
+
+  (defun nc--check-current-month-notes-reminder ()
+      "Show a reminder message if the current notes file hasn't been visited today."
+      (if (not (equal nc/current-month-notes-last-visited (format-time-string "%D")))
+          (message (format "Check your notes for today, %s" (format-time-string "%A %e of %B")))))
+
+  (add-hook 'find-file-hook 'nc--check-current-month-notes-reminder)
+
+#+end_src
+
+
 ** Global preferences
 *** Global keys
  #+BEGIN_SRC emacs-lisp
@@ -862,7 +896,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
                 (org-agenda-log-mode 1)))))
     #+END_SRC
 ** Taking notes
-*** My templates
+*** Capture templates
 #+begin_src emacs-lisp
   (setq org-capture-templates
         '(("t" "todo" entry (file+headline (nc--expand-org-notes-path "GTD/todo.org") "Inbox" )
@@ -883,10 +917,10 @@ This clocks in a predefined task by org-id that is the default task to clock in
       %?
 
       %U" :prepend t)
-          ("N" "Note" entry (file+headline (nc--expand-org-notes-path "GTD/refile.org") "Notes")
+          ("N" "Note" entry (file+headline org-default-notes-file "Notes")
            "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
           ("i" "Interrupting task" entry
-             (file+datetree (nc--expand-org-notes-path "GTD/diary.org"))
+             (file+datetree org-default-notes-file)
              "* %^{Task}"
              :clock-in t :clock-resume t)
           ("m" "Meeting" entry (file+headline (nc--expand-org-notes-path "GTD/office.org") "Calendrier")
@@ -925,6 +959,21 @@ Targets include this file and any file contributing to the agenda - up to 2 leve
                                    (org-agenda-files :maxlevel . 2))))
   (setq org-blank-before-new-entry nil)
 #+end_src
+
+  Choose first an org file and then refile
+
+#+begin_src emacs-lisp
+  (defun nc/org-refile-files-first ()
+    "Choose an org file to file in, then pick the node. This prevents
+    emacs opening all of the refile targets at once."
+    (interactive)
+    (let ((file (list (completing-read "Refile to: " org-files nil t))))
+      (let ((org-refile-targets `((,file :maxlevel . 2))))
+        (org-refile)))
+    (org-save-all-org-buffers))
+#+end_src
+
+
 *** Insert time slot
 Insert time slot mainly used when I schedule meeting or appointment.
 
