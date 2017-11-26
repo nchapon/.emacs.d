@@ -485,21 +485,6 @@ Set tramp default method to ssh
 #+begin_src emacs-lisp
 (setq tramp-default-method "ssh")
 #+end_src
-*** helm-eshell-history
-Using Helm with =C-c C-l= to browse eshell history
-#+begin_src emacs-lisp
-  (require 'helm-eshell)
-
-  (add-hook 'eshell-mode-hook
-            #'(lambda ()
-                (define-key eshell-mode-map (kbd "C-c C-l")  'helm-eshell-history)))
-#+end_src
-*** helm-comint-input-ring
-Similar to =helm-eshell-history=, but used for =M-x shell=.
-
-#+begin_src emacs-lisp
-  (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring)
-#+end_src
 *** helm-org-rifle
 Search in org headings / content like Google
 #+BEGIN_SRC emacs-lisp
@@ -1067,9 +1052,9 @@ Insert time slot mainly used when I schedule meeting or appointment.
   :bind
   ("C-=" . er/expand-region))
 #+END_SRC
-** Shell
-*** eshell
-**** Visual commands
+** Eshell
+
+*** Visual commands
 Commands lisetd below are run in a term buffer
 #+begin_src emacs-lisp
   (setq eshell-visual-commands '("vi" "screen" "top" "less" "more" "lynx"
@@ -1080,15 +1065,15 @@ Commands lisetd below are run in a term buffer
 
 #+end_src
 
-**** Call =ls= after cd command
+*** Call =ls= after cd command
 #+begin_src emacs-lisp
 (setq eshell-list-files-after-cd t)
 #+end_src
-**** Aliases
+*** Aliases
 #+begin_src emacs-lisp
 (setq eshell-aliases-file (concat no-littering-etc-directory ".eshell-aliases"))
 #+end_src
-**** Clear terminal
+*** Clear terminal
 
 #+begin_src emacs-lisp
   (defun nc/eshell-clear-buffer ()
@@ -1101,7 +1086,7 @@ Commands lisetd below are run in a term buffer
           '(lambda()
              (local-set-key (kbd "C-l") 'nc/eshell-clear-buffer)))
 #+end_src
-**** eshell-here
+*** eshell-here
 
 From http://www.howardism.org/Technical/Emacs/eshell-fun.html
 
@@ -1139,7 +1124,7 @@ My function x exits that shell and closes that windows
 #+END_SRC
 
 
-**** Customize eshell prompt
+*** Customize eshell prompt
 Add git status in prompt
 #+begin_src emacs-lisp
 (setq eshell-prompt-function
@@ -1162,7 +1147,24 @@ Add git status in prompt
                        (propertize "]" 'face 'font-lock-keyword-face)))))
                 (propertize " $ " 'face 'font-lock-constant-face))))
 #+end_src
+*** helm-eshell-history
+Using Helm with =C-c C-l= to browse eshell history
+#+begin_src emacs-lisp
+  (require 'helm-eshell)
+
+  (add-hook 'eshell-mode-hook
+            #'(lambda ()
+                (define-key eshell-mode-map (kbd "C-c C-l")  'helm-eshell-history)))
+#+end_src
+** Shell
+*** helm-comint-input-ring
+Similar to =helm-eshell-history=, but used for =M-x shell=.
+
+#+begin_src emacs-lisp
+  (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring)
+#+end_src
 *** better shell
+
 Simplifies shell management
 #+begin_src emacs-lisp
   (use-package better-shell
@@ -1442,7 +1444,6 @@ npn install -g tern
     :ensure t
     :mode ("\\.ts\\'" . typescript-mode))
 #+end_src
-
 
 ** Yasnippet
 
