@@ -901,7 +901,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
              (file+datetree org-default-notes-file)
              "* %^{Task}"
              :clock-in t :clock-resume t)
-          ("m" "Meeting" entry (file+headline (nc--expand-org-notes-path "GTD/office.org") "Calendrier")
+          ("m" "Meeting" entry (file+headline (concat org-directory "agenda.org") "Réunions")
            "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
           ("p" "Phone call" entry (file (nc--expand-org-notes-path "GTD/refile.org"))
                  "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
@@ -909,7 +909,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
                  "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
           ("j" "Journal" entry (file+datetree (nc--expand-org-notes-path "GTD/journal.org"))
            "* %?\nEntered on %U\n  %i\n  %a")
-          ("w" "WeeklyReview" entry (file+datetree+prompt (nc--expand-org-notes-path "GTD/weekly-review.org"))
+          ("w" "WeeklyReview" entry (file+datetree+prompt org-default-notes-file)
            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
            ("D" "Done Business Task" entry
              (file+headline (nc--expand-org-notes-path "GTD/office.org") "Done Tasks")
