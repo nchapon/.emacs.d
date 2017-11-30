@@ -592,7 +592,8 @@ Should I try avy ?
   (setq org-directory "~/notes/")
 
   (setq org-files (append (file-expand-wildcards (concat org-directory "*/*.org"))
-                          (file-expand-wildcards (concat org-directory "*/*/*.org"))))
+                          (file-expand-wildcards (concat org-directory "*/*/*.org"))
+                          (file-expand-wildcards (concat org-directory "*/*/*/*.org"))))
 
   (defun nc--expand-org-notes-path (path)
     "Expand org-notes-directory with PATH"
@@ -625,6 +626,8 @@ Should I try avy ?
           (message (format "Check your notes for today, %s" (format-time-string "%A %e of %B")))))
 
   (add-hook 'find-file-hook 'nc--check-current-month-notes-reminder)
+
+  (global-set-key (kbd "C-c o") 'nc/find-current-month-notes-file)
 
 #+end_src
 
@@ -951,6 +954,8 @@ Targets include this file and any file contributing to the agenda - up to 2 leve
       (let ((org-refile-targets `((,file :maxlevel . 2))))
         (org-refile)))
     (org-save-all-org-buffers))
+
+  (define-key org-mode-map (kbd "C-c C-r") 'nc/org-refile-files-first)
 #+end_src
 
 
