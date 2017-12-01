@@ -627,9 +627,7 @@ Should I try avy ?
 
   (add-hook 'find-file-hook 'nc--check-current-month-notes-reminder)
 
-  (global-set-key (kbd "C-c o") 'nc/find-current-month-notes-file)
-
-
+  (global-set-key (kbd "C-c j") 'nc/find-current-month-notes-file)
 #+end_src
 
 ** Global preferences
@@ -791,7 +789,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
 ** Agenda
 *** Agenda configuration
 #+BEGIN_SRC emacs-lisp
-  (setq org-agenda-files (list "~/notes/GTD" "~/notes/projects")
+  (setq org-agenda-files (list "~/notes/GTD" "~/notes/GTD/journal" "~/notes/projects")
         org-agenda-span 2
         org-agenda-start-on-weekday nil
         org-agenda-skip-deadline-if-done t
@@ -909,7 +907,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
              :clock-in t :clock-resume t)
           ("m" "Meeting" entry (file+headline (concat org-directory "GTD/mygtd.org") "Réunions")
            "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-          ("p" "Phone call" entry (file+datetree (file+datetree org-default-notes-file))
+          ("p" "Phone call" entry (file+datetree org-default-notes-file)
                  "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
           ("a" "RendezVous" entry (file+datetree+prompt (nc--expand-org-notes-path "GTD/diary.org"))
                  "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
@@ -972,17 +970,6 @@ Insert time slot mainly used when I schedule meeting or appointment.
     (let ((begin (format-time-string current-hour-format (current-time)))
           (end (format-time-string current-hour-format (time-add (current-time) (seconds-to-time 3600)))))
       (insert (concat begin "-" end))))
-#+end_src
-*** My journal file
-
-#+begin_src emacs-lisp
-(defun nc/journal ()
-  "Edit my journal"
-  (interactive)
-  (find-file-other-window (nc--expand-org-notes-path "GTD/journal.org")))
-
-;; Binding journal file
-(global-set-key "\C-cj" 'nc/journal)
 #+end_src
 *** Searching in my notes
 #+begin_src emacs-lisp
