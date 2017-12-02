@@ -606,8 +606,8 @@ Should I try avy ?
 #+begin_src emacs-lisp
   (defun nc--org-current-month-notes-file ()
       "Get the path of the org file for the current month."
-      (concat org-directory "dates/"
-              (downcase (format-time-string "%Y-%B.org"))))
+      (concat org-directory "GTD/journal/"
+              (downcase (format-time-string "%Y-%m.org"))))
 
   (setq org-default-notes-file (nc--org-current-month-notes-file))
 
@@ -628,6 +628,7 @@ Should I try avy ?
   (add-hook 'find-file-hook 'nc--check-current-month-notes-reminder)
 
   (global-set-key (kbd "C-c o") 'nc/find-current-month-notes-file)
+
 
 #+end_src
 
@@ -790,7 +791,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
 ** Agenda
 *** Agenda configuration
 #+BEGIN_SRC emacs-lisp
-  (setq org-agenda-files (list "~/notes/dates" "~/notes/projects" "~/notes/agenda.org")
+  (setq org-agenda-files (list "~/notes/GTD" "~/notes/projects")
         org-agenda-span 2
         org-agenda-start-on-weekday nil
         org-agenda-skip-deadline-if-done t
@@ -882,13 +883,13 @@ This clocks in a predefined task by org-id that is the default task to clock in
 *** Capture templates
 #+begin_src emacs-lisp
   (setq org-capture-templates
-        '(("t" "todo" entry (file+headline org-default-notes-file "Tasks" )
+        '(("t" "todo" entry (file+headline (concat org-directory "GTD/inbox.org") "Tasks" )
            "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-          ("n" "Next Task" entry (file+headline (nc--expand-org-notes-path "GTD/refile.org") "Tasks")
+          ("n" "Next Task" entry (file+headline (concat org-directory "GTD/inbox.org") "Tasks")
            "** NEXT %?")
-          ("s" "Someday / Maybe" entry (file+headline (nc--expand-org-notes-path "GTD/todo.org") "Someday / Maybe")
+          ("s" "Someday / Maybe" entry (file+headline (concat org-directory "GTD/inbox.org") "Someday / Maybe")
             "* SOMEDAY %? :IDEA:\n%u" :clock-in t :clock-resume t)
-          ("f" "FishLog" plain (file+datetree+prompt (concat org-directory "topics/sports/fishing.org"))
+          ("f" "FishLog" plain (file+datetree+prompt (concat org-directory "projects/fishing.org"))
            "%[~/notes/templates/fishlog.org]")
           ("F" "Film" entry (file+headline (nc--expand-org-notes-path "GTD/watching.org") "Films à voir")
                "* NEXT %^{Titre}
@@ -906,18 +907,18 @@ This clocks in a predefined task by org-id that is the default task to clock in
              (file+datetree org-default-notes-file)
              "* %^{Task}"
              :clock-in t :clock-resume t)
-          ("m" "Meeting" entry (file+headline (concat org-directory "agenda.org") "Réunions")
+          ("m" "Meeting" entry (file+headline (concat org-directory "GTD/mygtd.org") "Réunions")
            "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-          ("p" "Phone call" entry (file (nc--expand-org-notes-path "GTD/refile.org"))
+          ("p" "Phone call" entry (file+datetree (file+datetree org-default-notes-file))
                  "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
           ("a" "RendezVous" entry (file+datetree+prompt (nc--expand-org-notes-path "GTD/diary.org"))
                  "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-          ("j" "Journal" entry (file+datetree (nc--expand-org-notes-path "GTD/journal.org"))
+          ("j" "Journal" entry (file+datetree org-default-notes-fil)
            "* %?\nEntered on %U\n  %i\n  %a")
           ("w" "WeeklyReview" entry (file+datetree+prompt org-default-notes-file)
            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
            ("D" "Done Business Task" entry
-             (file+headline (nc--expand-org-notes-path "GTD/office.org") "Done Tasks")
+             (file+headline (concat org-directory "GTD/mygtd.org") "Done Tasks")
              "* DONE %^{Task}"
              :clock-in t :clock-resume t)
           ))
