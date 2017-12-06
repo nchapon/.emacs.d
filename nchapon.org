@@ -867,10 +867,10 @@ This clocks in a predefined task by org-id that is the default task to clock in
               ("w" "Waiting Tasks" tags-todo "-CANCELLED/!WAITING|HOLD"
                ((org-agenda-overriding-header "Waiting and Postponed Tasks")))
               ("d" "Timeline for today" ((agenda "" ))
-               ((org-agenda-ndays 1)
+               ((org-agenda-span 1)
+                (org-agenda-ndays 1)
                 (org-agenda-show-log t)
                 (org-agenda-log-mode-items '(clock closed))
-                (org-agenda-clockreport-mode t)
                 (org-agenda-entry-types '())))
               ("S" tags-todo "TODO=\"STARTED\""
                ((org-agenda-overriding-header "All started tasks")
