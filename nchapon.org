@@ -834,8 +834,10 @@ This clocks in a predefined task by org-id that is the default task to clock in
                             (org-tags-exclude-from-inheritance '("PROJECT"))
                             (org-agenda-prefix-format "%-32:(nc--org-agenda-format-parent 30)")
                             (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-                (tags-todo "TODO=\"TODO\"+tasks"
+                (tags-todo "inbox|@home|@cnp+TODO=\"TODO\""
                            ((org-agenda-overriding-header "Other tasks")
+                            (org-agenda-skip-function
+                             '(org-agenda-skip-entry-if 'scheduled 'deadline))
                             (org-tags-exclude-from-inheritance '("PROJECT"))
                             (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                 )
@@ -881,9 +883,9 @@ This clocks in a predefined task by org-id that is the default task to clock in
 *** Capture templates
 #+begin_src emacs-lisp
   (setq org-capture-templates
-        '(("t" "todo" entry (file+headline (concat org-directory "GTD/inbox.org") "Tasks" )
+        '(("t" "todo" entry (file+headline (concat org-directory "GTD/inbox.org") "Inbox" )
            "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-          ("n" "Next Task" entry (file+headline (concat org-directory "GTD/inbox.org") "Tasks")
+          ("n" "Next Task" entry (file+headline (concat org-directory "GTD/inbox.org") "Inbox")
            "** NEXT %?")
           ("s" "Someday / Maybe" entry (file+headline (concat org-directory "GTD/inbox.org") "Someday / Maybe")
             "* SOMEDAY %? :IDEA:\n%u" :clock-in t :clock-resume t)
