@@ -587,19 +587,11 @@ Should I try avy ?
 ** My files
 *** Base directory
 #+begin_src emacs-lisp
-  (defvar nc/org-notes-directory "~/notes")
-
   (setq org-directory "~/notes/")
 
   (setq org-files (append (file-expand-wildcards (concat org-directory "*/*.org"))
                           (file-expand-wildcards (concat org-directory "*/*/*.org"))
                           (file-expand-wildcards (concat org-directory "*/*/*/*.org"))))
-
-  (defun nc--expand-org-notes-path (path)
-    "Expand org-notes-directory with PATH"
-    (expand-file-name (concat nc/org-notes-directory "/" path)))
-
-
 #+end_src
 *** Notes
 
@@ -891,7 +883,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
             "* SOMEDAY %? :IDEA:\n%u" :clock-in t :clock-resume t)
           ("f" "FishLog" plain (file+datetree+prompt (concat org-directory "projects/fishing.org"))
            "%[~/notes/templates/fishlog.org]")
-          ("F" "Film" entry (file+headline (nc--expand-org-notes-path "GTD/watching.org") "Films à voir")
+          ("F" "Film" entry (file+headline (concat org-directory "GTD/watching.org") "Films à voir")
                "* NEXT %^{Titre}
        %i
        - *Réalisateur:* %^{Auteur}
@@ -911,7 +903,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
            "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
           ("p" "Phone call" entry (file+datetree org-default-notes-file)
                  "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-          ("a" "RendezVous" entry (file+datetree+prompt (nc--expand-org-notes-path "GTD/diary.org"))
+          ("a" "RendezVous" entry (file+headline (concat org-directory "GTD/mygtd.org") "RendezVous")
                  "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
           ("j" "Journal" entry (file+datetree org-default-notes-fil)
            "* %?\nEntered on %U\n  %i\n  %a")
@@ -1653,11 +1645,10 @@ Rotate windows with =C-c r=
 ** Registers
 Used by key chord =JJ=
 #+begin_src emacs-lisp
-  (dolist (r `((?i (file . ,(concat user-emacs-directory "nchapon.org")))
-               (?o (file . ,(nc--expand-org-notes-path "GTD/office.org")))
-               (?r (file . ,(nc--expand-org-notes-path "GTD/refile.org")))
-               (?t (file . ,(nc--expand-org-notes-path "GTD/todo.org")))
-               (?w (file . ,(nc--expand-org-notes-path "GTD/watching.org")))))
+  (dolist (r `((?n (file . ,(concat user-emacs-directory "nchapon.org")))
+               (?i (file . ,(concat org-directory "GTD/office.org")))
+               (?t (file . ,(concat org-directory "GTD/todo.org")))
+               (?w (file . ,(concat org-directory "GTD/watching.org")))))
     (set-register (car r) (cadr r)))
 #+end_src
 ** Key Chords
