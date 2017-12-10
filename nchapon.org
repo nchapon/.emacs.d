@@ -907,7 +907,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
                  "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
           ("j" "Journal" entry (file+datetree org-default-notes-fil)
            "* %?\nEntered on %U\n  %i\n  %a")
-          ("w" "WeeklyReview" entry (file+datetree+prompt org-default-notes-file)
+          ("w" "WeeklyReview" entry (file+datetree+prompt (concat org-directory "GTD/weekly-review.org"))
            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
            ("D" "Done Business Task" entry
              (file+headline (concat org-directory "GTD/mygtd.org") "Done Tasks")
