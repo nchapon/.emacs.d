@@ -612,13 +612,6 @@ Should I try avy ?
       (setq nc/current-month-notes-last-visited (format-time-string "%D"))
       (find-file org-default-notes-file))
 
-  (defun nc--check-current-month-notes-reminder ()
-      "Show a reminder message if the current notes file hasn't been visited today."
-      (if (not (equal nc/current-month-notes-last-visited (format-time-string "%D")))
-          (message (format "Check your notes for today, %s" (format-time-string "%A %e of %B")))))
-
-  (add-hook 'find-file-hook 'nc--check-current-month-notes-reminder)
-
   (global-set-key (kbd "C-c j") 'nc/find-current-month-notes-file)
 #+end_src
 
