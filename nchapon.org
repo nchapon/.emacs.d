@@ -43,22 +43,21 @@ Use Input Font (http://input.fontbureau.com/)  or Source code Pro font if presen
 #+END_SRC
 
 ** Theme
-Using moe theme light in the day and dark in the night..
+Using moe theme dark all the day
 #+BEGIN_SRC emacs-lisp
-     (use-package color-theme)
-     (use-package moe-theme
-       :config
-       (progn
-         (setq moe-light-pure-white-background-in-terminal t)
+  (use-package color-theme)
+  (use-package moe-theme
+    :config
+    (progn
 
-         (moe-light)
+      (moe-dark)
 
-         (use-package moe-theme-switcher
-             :ensure moe-theme)
+      ;; (use-package moe-theme-switcher
+      ;;     :ensure moe-theme)
 
-         (use-package powerline
-           :config
-           (powerline-moe-theme))))
+      (use-package powerline
+        :config
+        (powerline-moe-theme))))
 
 #+END_SRC
 ** Answering just 'y' or 'n'
@@ -594,7 +593,9 @@ Should I try avy ?
                           (file-expand-wildcards (concat org-directory "*/*/*/*.org"))))
 #+end_src
 *** Notes
-
+**** Org default notes file
+      - one default notes files by month in *GTD/journal/* folder
+      - global key *C-c j* to access to this file
 #+begin_src emacs-lisp
   (defun nc--org-current-month-notes-file ()
       "Get the path of the org file for the current month."
@@ -603,16 +604,45 @@ Should I try avy ?
 
   (setq org-default-notes-file (nc--org-current-month-notes-file))
 
-  (defvar nc/current-month-notes-last-visited nil
-  "The last date the org file for the current month was opened.")
-
-  (defun nc/find-current-month-notes-file ()
+  (defun nc/org-find-current-month-notes-file ()
       "Find the org file for the current month"
       (interactive)
       (setq nc/current-month-notes-last-visited (format-time-string "%D"))
       (find-file org-default-notes-file))
 
-  (global-set-key (kbd "C-c j") 'nc/find-current-month-notes-file)
+  (global-set-key (kbd "C-c j") 'nc/org-find-current-month-notes-file)
+#+end_src
+**** Journal naivgation
+
+#+begin_src emacs-lisp
+
+  (defvar nc/org-months '("01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12"))
+
+  (defun nc--org-calculate-month-file-offset (filename offset)
+    "Calculate the name of the neighbouring month file to FILENAME.
+  FILENAME is expected to be of the form <year>-<monthname>, e.g. 2016-november.
+  OFFSET is t for next month, or nil for previous month."
+    (let* ((pieces (split-string filename "-"))
+           (year (string-to-number (car pieces)))
+           (month (cadr pieces))
+           (month-number (position month nc/org-months :test 'equal)))
+      (if offset
+          (if (eq month-number 11)
+              (concat (number-to-string (+ year 1)) "-01")
+            (concat (number-to-string year) "-" (nth (+ month-number 1) nc/org-months)))
+        (if (eq month-number 0)
+            (concat (number-to-string (- year 1)) "-12")
+          (concat (number-to-string year) "-" (nth (- month-number 1) nc/org-months))))))
+
+  (defun nc/org-go-to-next-month ()
+    "Go to the next month org file."
+    (interactive)
+    (find-file (concat org-directory "GTD/journal/" (nc--org-calculate-month-file-offset (file-name-base) t) ".org")))
+
+  (defun nc/org-go-to-previous-month ()
+    "Go to the previous month org file."
+    (interactive)
+    (find-file (concat org-directory "GTD/journal/" (nc--org-calculate-month-file-offset (file-name-base) nil) ".org")))
 #+end_src
 
 ** Global preferences
