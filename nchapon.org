@@ -993,7 +993,7 @@ Insert time slot mainly used when I schedule meeting or appointment.
 (defun nc/helm-do-grep-notes ()
   "Search in all my org notes."
   (interactive)
-  (helm-do-grep-1 (list nc/org-notes-directory) t nil (list "*.org")))
+  (helm-do-grep-1 (list org-directory) t nil (list "*.org")))
 #+end_src
 
 ** Babel (Literate Programming)
