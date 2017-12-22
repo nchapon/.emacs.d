@@ -677,6 +677,19 @@ Hiding leading bullets in headers
 #+begin_src emacs-lisp
   (use-package org-mind-map)
 #+end_src
+*** ox-pandoc
+Export Org documents via Pandoc
+#+begin_src emacs-lisp
+(use-package ox-pandoc
+  :ensure t
+  :config
+  ;; Use external css for html5
+  (let ((stylesheet (expand-file-name
+                     (locate-user-emacs-file "etc/pandoc.css"))))
+    (setq org-pandoc-options-for-html5
+`((css . ,(concat "file://" stylesheet))))))
+#+end_src
+
 
 ** Tasks
 *** Todo tasks
@@ -1232,8 +1245,20 @@ Ediff should be opened in selected frame and split window horizontally
     :mode (("README\\.md\\'" . gfm-mode)
            ("\\.md\\'"       . markdown-mode)
            ("\\.markdown\\'" . markdown-mode))
-    :config)
+    :config
+    ;; Process Markdown with Pandoc, using GitHub stylesheet for nice output
+    (let ((stylesheet (expand-file-name
+                       (locate-user-emacs-file "etc/pandoc.css"))))
+      (setq markdown-command
+            (mapconcat #'shell-quote-argument
+                       `("pandoc" "--toc" "--section-divs"
+                         "--css" ,(concat "file://" stylesheet)
+                         "--standalone" "-f" "markdown" "-t" "html5")
+                       " "))))
 #+END_SRC
+
+#+RESULTS:
+
 ** Multiple Cursors
 
 This package can create several cursors to all do the same things.
