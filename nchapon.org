@@ -1426,7 +1426,14 @@ Then we can setup Emacs go mode
     :mode (("\\.restclient\\'" . restclient-mode)
            ("\\.http\\'" . restclient-mode)))
 #+end_src
+*** Vue mode
+    Major mode for vue.js development
+#+BEGIN_SRC emacs-lisp
+  (use-package vue-mode)
+#+END_SRC
+
 *** Web Mode
+
 #+begin_src emacs-lisp
   (use-package web-mode
     :ensure t
