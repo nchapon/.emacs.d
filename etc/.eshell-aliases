@@ -13,6 +13,7 @@ alias gs git stash
 alias gst git status
 alias la ls -lah
 alias ll ls -lh
-alias mci mvn clean install
-alias mcist mvn clean install -DskipTests
-alias mist mvn install -DskipTests
+alias mvnci mvn clean install
+alias mvncist mvn clean install -DskipTests
+alias mvnist mvn install -DskipTests
+alias dpsa docker ps -a --format "{{.Names}} {{.Size}} : {{.Command}}" --no-trunc

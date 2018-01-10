@@ -690,7 +690,6 @@ Export Org documents via Pandoc
 `((css . ,(concat "file://" stylesheet))))))
 #+end_src
 
-
 ** Tasks
 *** Todo tasks
 **** Todo states
@@ -1086,8 +1085,6 @@ Commands lisetd below are run in a term buffer
                                  "ncftp" "pine" "tin" "trn" "elm" "htop" "node" "npm"))
 
   (setq eshell-visual-subcommands '(("git" "log" "diff" "show")))
-
-
 #+end_src
 
 *** Call =ls= after cd command
