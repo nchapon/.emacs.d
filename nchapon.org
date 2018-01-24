@@ -21,19 +21,22 @@ Use package default configuration
 Use Input Font (http://input.fontbureau.com/)  or Source code Pro font if present
 
 #+BEGIN_SRC emacs-lisp
-  (defun nc/setup-x11-fonts ()
-    (interactive)
-    (when (eq window-system 'x)
-      (cond
-       ((find-font (font-spec :name "Input Mono"))
-        (set-frame-font "Input Mono-12" nil t))
-       ((find-font (font-spec :name "Source Code Pro"))
-        (set-frame-font "Source Code Pro-13" nil t))
-       ((find-font (font-spec :name "DejaVu Sans Mono-12"))
-        (set-frame-font "DejaVu Sans Mono-12" nil t)))))
+    (defun nc/setup-x11-fonts ()
+      (interactive)
+      (when (eq window-system 'x)
+        (cond
+         ((find-font (font-spec :name "Input Mono"))
+          (set-frame-font "Input Mono-12" nil t))
+         ((find-font (font-spec :name "Source Code Pro"))
+          (set-frame-font "Source Code Pro-13" nil t))
+         ((find-font (font-spec :name "DejaVu Sans Mono-12"))
+          (set-frame-font "DejaVu Sans Mono-12" nil t)))))
 
-  (when (eq window-system 'x)
-    (add-hook 'after-init-hook #'nc/setup-x11-fonts))
+    (when (eq window-system 'x)
+      (add-hook 'after-init-hook #'nc/setup-x11-fonts))
+
+  (when (string= system-name "xps13")
+    (set-face-attribute 'default nil :height 130))
 
 #+END_SRC
 
