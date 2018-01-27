@@ -26,8 +26,8 @@ Use Input Font (http://input.fontbureau.com/)  or Source code Pro font if presen
     (interactive)
     (when (string= system-name "vagrant")
       (set-frame-font "Input Mono-12" nil t))
-    (when (string= system-name "xp13")
-      (set-frame-font "Input Mono-14" nil t)))
+    (when (string= system-name "xps13")
+      (set-frame-font "Input Mono-12" nil t)))
 
   (when (eq window-system 'x)
     (add-hook 'after-init-hook #'nc/setup-font))
