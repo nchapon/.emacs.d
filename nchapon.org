@@ -1073,13 +1073,20 @@ Insert time slot mainly used when I schedule meeting or appointment.
   ("C-=" . er/expand-region))
 #+END_SRC
 ** Eshell
-*** eshell
+*** Configuration
 
 #+begin_src emacs-lisp
   (use-package eshell
     :bind (("C-c e" . nc/eshell-here))
     :config
 
+    (defun nc--new-eshell(name)
+        (other-window 1)
+        (eshell "new")
+        (rename-buffer name)
+
+        (insert (concat "ls"))
+        (eshell-send-input))
 
     (defun nc/eshell-here ()
       "Opens up a new shell in the directory associated with the
@@ -1090,16 +1097,13 @@ Insert time slot mainly used when I schedule meeting or appointment.
                          (file-name-directory (buffer-file-name))
                        default-directory))
              (p-lst (split-string parent "/"))
-             (name   (mapconcat (lambda (elm) elm) (last p-lst 3) "/")))
+             (name  (mapconcat (lambda (elm) elm) (last p-lst 3) "/"))
+             (b-name (concat "*eshell: " name "*")))
 
-
-        (other-window 1)
-
-        (eshell "new")
-        (rename-buffer (concat "*eshell: " name "*"))
-
-        (insert (concat "ls"))
-        (eshell-send-input)))
+        (cond ((get-buffer b-name)
+               (switch-to-buffer-other-window b-name))
+              (t (nc--new-eshell b-name)))
+        ))
 
 
     (setq eshell-visual-commands '("vi" "screen" "top" "less" "more" "lynx"
@@ -1109,32 +1113,26 @@ Insert time slot mainly used when I schedule meeting or appointment.
 #+end_src
 
 
-*** Clear terminal
-
-#+begin_src emacs-lisp
-  (defun nc/eshell-clear-buffer ()
-    "Clear terminal"
-    (interactive)
-    (let ((inhibit-read-only t))
-      (erase-buffer)
-      (eshell-send-input)))
-  (add-hook 'eshell-mode-hook
-          '(lambda()
-             (local-set-key (kbd "C-l") 'nc/eshell-clear-buffer)))
-#+end_src
-*** eshell-here
-
-From http://www.howardism.org/Technical/Emacs/eshell-fun.html
-
-
-My function x exits that shell and closes that windows
-
-#+BEGIN_SRC emacs-lisp
-  (defun eshell/x ()
-    (insert "exit")
-    (eshell-send-input)
-    (delete-window))
-#+END_SRC
+*** Eshell functions
+**** Clear buffer
+ #+begin_src emacs-lisp
+   (defun nc/eshell-clear-buffer ()
+     "Clear terminal"
+     (interactive)
+     (let ((inhibit-read-only t))
+       (erase-buffer)
+       (eshell-send-input)))
+   (add-hook 'eshell-mode-hook
+           '(lambda()
+              (local-set-key (kbd "C-l") 'nc/eshell-clear-buffer)))
+ #+end_src
+**** Exit
+ #+BEGIN_SRC emacs-lisp
+   (defun eshell/x ()
+     (insert "exit")
+     (eshell-send-input)
+     (delete-window))
+ #+END_SRC
 
 
 *** Customize eshell prompt
@@ -1738,3 +1736,4 @@ Generate a 32 random pseudo uuid
 ** Inspiration configs
 https://writequit.org/org/settings.html
 https://github.com/yveszoundi/emacs.d/blob/master/bootstrap/startup.org
+W
