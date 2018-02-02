@@ -1078,15 +1078,32 @@ Insert time slot mainly used when I schedule meeting or appointment.
 #+begin_src emacs-lisp
   (use-package eshell
     :bind (("C-c e" . nc/eshell-here))
+    :init
+    (setq eshell-scroll-to-bottom-on-input 'all
+          eshell-error-if-no-glob t
+          eshell-hist-ignoredups t
+          eshell-save-history-on-exit t
+          ;;eshell-prefer-lisp-functions nil
+          eshell-destroy-buffer-when-process-dies t)
+
     :config
 
-    (defun nc--new-eshell(name)
+    (defun nc--eshell-buffer-name (parent)
+        "Create eshell buffer name from PARENT directory."
+
+        (let* ((p-lst (split-string parent "/"))
+               (name  (mapconcat (lambda (elm) elm) (last p-lst 3) "/")))
+        (concat "*eshell: " name "*")))
+
+    (defun nc--eshell-chdir(parent)
+      (let ((b-name (nc--eshell-buffer-name parent)))
+
         (other-window 1)
         (eshell "new")
-        (rename-buffer name)
-
-        (insert (concat "ls"))
-        (eshell-send-input))
+        (rename-buffer b-name)
+        (with-current-buffer b-name
+          (cd parent)
+          (eshell-emit-prompt))))
 
     (defun nc/eshell-here ()
       "Opens up a new shell in the directory associated with the
@@ -1096,16 +1113,13 @@ Insert time slot mainly used when I schedule meeting or appointment.
       (let* ((parent (if (buffer-file-name)
                          (file-name-directory (buffer-file-name))
                        default-directory))
-             (p-lst (split-string parent "/"))
-             (name  (mapconcat (lambda (elm) elm) (last p-lst 3) "/"))
-             (b-name (concat "*eshell: " name "*")))
+             (b-name (nc--eshell-buffer-name parent)))
 
         (cond ((get-buffer b-name)
                (switch-to-buffer-other-window b-name))
-              (t (nc--new-eshell b-name)))
-        ))
+              (t (nc--eshell-chdir parent)))))
 
-
+    (require 'em-term)
     (setq eshell-visual-commands '("vi" "screen" "top" "less" "more" "lynx"
                                    "ncftp" "pine" "tin" "trn" "elm" "htop" "node" "npm")
           eshell-visual-subcommands '(("git" "log" "diff" "show"))
