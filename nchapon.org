@@ -1073,6 +1073,7 @@ Insert time slot mainly used when I schedule meeting or appointment.
   ("C-=" . er/expand-region))
 #+END_SRC
 ** Eshell
+   Mainly come from [[https://github.com/howardabrams/dot-files/blob/master/emacs-eshell.org]]
 *** Configuration
 
 #+begin_src emacs-lisp
@@ -1141,7 +1142,28 @@ Insert time slot mainly used when I schedule meeting or appointment.
      (eshell-send-input)
      (delete-window))
  #+END_SRC
+**** Exit
+     Exit eshell with  =C-d=
+#+BEGIN_SRC emacs-lisp
+(use-package eshell
+  :config
+  (defun nc/eshell-quit-or-delete-char (arg)
+    (interactive "p")
+    (if (and (eolp) (looking-back eshell-prompt-regexp))
+        (progn
+          (eshell-life-is-too-much) ; Why not? (eshell/exit)
+          (ignore-errors
+            (delete-window)))
+      (delete-forward-char arg)))
+  :init
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (bind-keys :map eshell-mode-map
+                         ("C-d" . nc/eshell-quit-or-delete-char)))))
+#+END_SRC
+
 *** Eshell here
+
 Opens up a new shell in the directory associated with the
 current buffer's file. The eshell is renamed to match that
 directory to make multiple eshell windows easier.
@@ -1179,7 +1201,6 @@ directory to make multiple eshell windows easier.
 
   (bind-key "C-c e" 'nc/eshell-here)
 #+end_src
-
 
 *** Customize eshell prompt
 Add git status in prompt
