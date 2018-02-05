@@ -1234,6 +1234,13 @@ Using Helm with =C-c C-l= to browse eshell history
             #'(lambda ()
                 (define-key eshell-mode-map (kbd "C-c C-l")  'helm-eshell-history)))
 #+end_src
+*** Fish like auto completion
+    Provides a company backend that implements functionality similar to
+    fish shell history autosuggestions.
+#+begin_src emacs-lisp
+  (use-package esh-autosuggest
+    :config (add-hook 'eshell-mode-hook #'esh-autosuggest-mode))
+#+end_src
 ** Shell
 *** helm-comint-input-ring
 Similar to =helm-eshell-history=, but used for =M-x shell=.
