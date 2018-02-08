@@ -1168,36 +1168,24 @@ Opens up a new shell in the directory associated with the
 current buffer's file. The eshell is renamed to match that
 directory to make multiple eshell windows easier.
 #+begin_src emacs-lisp
-  (defun nc--eshell-buffer-name (parent)
-    "Create eshell buffer name from PARENT directory."
-
-    (let* ((p-lst (split-string parent "/"))
+  (defun nc--eshell-buffer-id ()
+    "Next eshell buffer id."
+    (let* ((p-lst (split-string (nc--eshell-path-of-current-dir) "/"))
            (name  (mapconcat (lambda (elm) elm) (last p-lst 3) "/")))
       (concat "*eshell: " name "*")))
 
-  (defun nc--eshell-chdir(parent)
-    (let ((b-name (nc--eshell-buffer-name parent)))
-
-      (other-window 1)
-      (eshell "new")
-      (rename-buffer b-name)
-      (with-current-buffer b-name
-        (cd parent)
-        (eshell-emit-prompt))))
+  (defun nc--eshell-path-of-current-dir ()
+    (file-name-directory (or (buffer-file-name) default-directory)))
 
   (defun nc/eshell-here ()
-    "Opens up a new shell in the directory associated with the
-  current buffer's file. The eshell is renamed to match that
-  directory to make multiple eshell windows easier."
+    "Start, or switch to, `eshell' in the current working directory."
     (interactive)
-    (let* ((parent (if (buffer-file-name)
-                       (file-name-directory (buffer-file-name))
-                     default-directory))
-           (b-name (nc--eshell-buffer-name parent)))
-
-      (cond ((get-buffer b-name)
-             (switch-to-buffer-other-window b-name))
-            (t (nc--eshell-chdir parent)))))
+    (let ((buffer-id (nc--eshell-buffer-id)))
+      (cond ((get-buffer buffer-id)
+             (switch-to-buffer-other-window buffer-id))
+            (t (progn
+                 (eshell buffer-id)
+                 (rename-buffer buffer-id))))))
 
   (bind-key "C-c e" 'nc/eshell-here)
 #+end_src
