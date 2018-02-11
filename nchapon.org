@@ -17,32 +17,9 @@ Use package default configuration
 
 * Appearence & behavior
 
-** Font
-Use Input Font (http://input.fontbureau.com/)  or Source code Pro font if present
-
-#+BEGIN_SRC emacs-lisp
-  (defun nc/setup-font ()
-    "Set up font height"
-    (interactive)
-    (when (string= system-name "vagrant")
-      (set-frame-font "Input Mono-12" nil t))
-    (when (string= system-name "xps13")
-      (set-frame-font "Input Mono-12" nil t)))
-
-  (when (eq window-system 'x)
-    (add-hook 'after-init-hook #'nc/setup-font))
-
-#+END_SRC
-
-** Mode line
-#+BEGIN_SRC emacs-lisp
-(use-package smart-mode-line)
-#+END_SRC
-
 ** Theme
 Using moe theme dark all the day
 #+BEGIN_SRC emacs-lisp
-  (use-package color-theme)
   (use-package moe-theme
     :config
     (progn
@@ -56,6 +33,29 @@ Using moe theme dark all the day
         :config
         (powerline-moe-theme))))
 #+END_SRC
+** Mode line
+#+BEGIN_SRC emacs-lisp
+(use-package smart-mode-line)
+#+END_SRC
+
+** Font
+Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
+
+#+BEGIN_SRC emacs-lisp
+  (defun nc/setup-font ()
+    "Set up font height"
+    (interactive)
+    (when (string= system-name "vagrant")
+      (set-frame-font "Input Mono-12" nil t))
+    (when (string= system-name "xps13")
+      (set-frame-font "Input Mono-12" nil t))
+    (when (string= system-type "darwin")
+      (set-frame-font "Monaco 15" nil t)))
+
+  (when (or (eq window-system 'x) (eq window-system 'ns))
+    (add-hook 'after-init-hook #'nc/setup-font))
+#+END_SRC
+
 ** Answering just 'y' or 'n'
 
 #+BEGIN_SRC emacs-lisp
@@ -671,7 +671,8 @@ Hiding leading bullets in headers
 #+end_src
 *** Mind Map
 #+begin_src emacs-lisp
-  (use-package org-mind-map)
+  ;; Error with emacs 25
+  ;;(use-package org-mind-map)
 #+end_src
 *** ox-pandoc
 Export Org documents via Pandoc
