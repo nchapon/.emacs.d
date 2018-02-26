@@ -1130,7 +1130,8 @@ Insert time slot mainly used when I schedule meeting or appointment.
       ;; alias dpsa docker ps -a --format "{{.Names}} {{.Size}} : {{.Command}}" --no-trunc
 
       ;; The 'ls' executable requires the Gnu version on the Mac
-      (eshell/alias "ll" " ls -AlohG --color=always")))
+      ;; (eshell/alias "ll" " ls -AlohG")
+      ))
 #+end_src
 
 *** Functions
