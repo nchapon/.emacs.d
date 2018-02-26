@@ -1140,19 +1140,13 @@ Insert time slot mainly used when I schedule meeting or appointment.
      "Clear terminal"
      (interactive)
      (let ((inhibit-read-only t))
-     xs  (erase-buffer)
+       (erase-buffer)
        (eshell-send-input)))
+
    (add-hook 'eshell-mode-hook
-           '(lambda()
-              (local-set-key (kbd "C-l") 'nc/eshell-clear-buffer)))
+             '(lambda()
+                (local-set-key (kbd "C-l") 'nc/eshell-clear-buffer)))
  #+end_src
-**** Exit
- #+BEGIN_SRC emacs-lisp
-   (defun eshell/x ()
-     (insert "exit")
-     (eshell-send-input)
-     (delete-window))
- #+END_SRC
 **** Exit
      Exit eshell with  =C-d=
 #+BEGIN_SRC emacs-lisp
