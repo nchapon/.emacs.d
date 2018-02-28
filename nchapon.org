@@ -165,6 +165,14 @@ Usefull to initialize PATH from shell
 (setq dired-recursive-delete 'always)
 (setq dired-recursive-copy 'always)
 #+END_SRC
+*** Dired for OS X
+
+#+BEGIN_SRC emacs-lisp
+  (let ((gls "/usr/local/bin/gls"))
+    (if (file-exists-p gls)
+        (setq insert-directory-program gls)))
+#+END_SRC
+
 *** Human readable size
 
 #+begin_src emacs-lisp
@@ -176,8 +184,7 @@ To sort by file size change sort value we can use =C-u s=
 *** Dired-x
 Enable C-x C-j
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'dired-load-hook
-              (function (lambda () (load "dired-x"))))
+(require 'dired-x)
 #+END_SRC
 *** dwim target copy
 
