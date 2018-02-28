@@ -176,8 +176,8 @@ To sort by file size change sort value we can use =C-u s=
 *** Dired-x
 Enable C-x C-j
 #+BEGIN_SRC emacs-lisp
-(add-hook 'dired-load-hook
-            (function (lambda () (load "dired-x"))))
+  (add-hook 'dired-load-hook
+              (function (lambda () (load "dired-x"))))
 #+END_SRC
 *** dwim target copy
 
@@ -913,17 +913,31 @@ This clocks in a predefined task by org-id that is the default task to clock in
     #+END_SRC
 ** Taking notes
 *** Capture templates
+My destination files :
+
+#+begin_src emacs-lisp
+  (defconst nc/gtd-file (concat org-directory "GTD/mygtd.org"))
+  (defconst nc/watching-file (concat org-directory "GTD/watching.org"))
+  (defconst nc/fishing-file (concat org-directory "projects/fishing.org"))
+  (defconst nc/diary-file (concat org-directory "GTD/diary-log.org"))
+  (defconst nc/calendar-file (concat org-directory "GTD/calendar.org"))
+  (defconst nc/office-file (concat org-directory "GTD/office.org"))
+  (defconst nc/weekly-review-file (concat org-directory "GTD/weekly-review.org"))
+#+end_src
+
+My templates :
+
 #+begin_src emacs-lisp
   (setq org-capture-templates
-        '(("t" "todo" entry (file+headline (concat org-directory "GTD/mygtd.org") "Inbox" )
+        '(("t" "todo" entry (file+headline nc/gtd-file "Inbox" )
            "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-          ("n" "Next Task" entry (file+headline (concat org-directory "GTD/mygtd.org") "Inbox")
+          ("n" "Next Task" entry (file+headline nc/gtd-file "Inbox")
            "** NEXT %?")
-          ("s" "Someday / Maybe" entry (file+headline (concat org-directory "GTD/mygtd.org") "Someday / Maybe")
+          ("s" "Someday / Maybe" entry (file+headline nc/gtd-file "Someday / Maybe")
             "* SOMEDAY %? :IDEA:\n%u" :clock-in t :clock-resume t)
-          ("f" "FishLog" plain (file+datetree+prompt (concat org-directory "projects/fishing.org"))
+          ("f" "FishLog" plain (file+datetree+prompt nc/fishing-file)
            "%[~/notes/templates/fishlog.org]")
-          ("F" "Film" entry (file+headline (concat org-directory "GTD/watching.org") "Films à voir")
+          ("F" "Film" entry (file+headline nc/watching-file "Films à voir")
                "* NEXT %^{Titre}
        %i
        - *Réalisateur:* %^{Auteur}
@@ -936,21 +950,19 @@ This clocks in a predefined task by org-id that is the default task to clock in
           ("N" "Note" entry (file+datetree org-default-notes-file)
            "* %? :TO_TAG:\n%a\n")
           ("i" "Interrupting task" entry
-             (file+datetree (concat org-directory "GTD/diary-log.org"))
+             (file+datetree nc/diary-file)
              "* %^{Task}"
              :clock-in t :clock-resume t)
-          ("m" "Meeting" entry (file+headline (concat org-directory "GTD/calendar.org") "Réunions")
+          ("m" "Meeting" entry (file+headline nc/calendar-file "Réunions")
            "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-          ("p" "Phone call" entry (file+datetree (concat org-directory "GTD/diary-log.org"))
-                 "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-          ("a" "RendezVous" entry (file+headline (concat org-directory "GTD/calendar.org") "RendezVous")
+          ("a" "RendezVous" entry (file+headline nc/calendar-file "RendezVous")
                  "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
           ("j" "Journal" entry (file+datetree org-default-notes-file)
            "* %?\nEntered on %U\n  %i\n  %a")
-          ("w" "WeeklyReview" entry (file+datetree+prompt (concat org-directory "GTD/weekly-review.org"))
+          ("w" "WeeklyReview" entry (file+datetree+prompt nc/weekly-review-file)
            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
            ("D" "Done Business Task" entry
-             (file+headline (concat org-directory "GTD/office.org") "Done Tasks")
+             (file+headline nc/office-file "Done Tasks")
              "* DONE %^{Task}"
              :clock-in t :clock-resume t)
           ))
