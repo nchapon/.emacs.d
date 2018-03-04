@@ -144,7 +144,6 @@ Usefull to initialize PATH from shell
 #+END_SRC
 
 ** Sane settings
-
 #+BEGIN_SRC emacs-lisp
 (setq initial-major-mode 'lisp-interaction-mode
       redisplay-dont-pause t
@@ -158,7 +157,10 @@ Usefull to initialize PATH from shell
       confirm-nonexistent-file-or-buffer nil
       query-replace-highlight t)
 #+END_SRC
-
+** Disable annoying audio notifications
+#+BEGIN_SRC emacs-lisp
+(setq ring-bell-function 'ignore)
+#+END_SRC
 ** Dired
 *** Always delete and copy recursively
 #+BEGIN_SRC emacs-lisp
