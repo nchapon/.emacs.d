@@ -142,7 +142,13 @@ Usefull to initialize PATH from shell
     :config  (progn
                (setq recentf-max-saved-items 100)))
 #+END_SRC
-
+** MacOS
+This will allow you to use the right ~⌥~ key to write symbols ={[]}=. The left ~⌥~ key can be used as the Meta
+key.
+#+BEGIN_SRC emacs-lisp
+  (when is-mac
+    (setq-default mac-right-option-modifier nil))
+#+END_SRC
 ** Sane settings
 #+BEGIN_SRC emacs-lisp
 (setq initial-major-mode 'lisp-interaction-mode
