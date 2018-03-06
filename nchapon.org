@@ -143,11 +143,17 @@ Usefull to initialize PATH from shell
                (setq recentf-max-saved-items 100)))
 #+END_SRC
 ** MacOS
-This will allow you to use the right ~⌥~ key to write symbols ={[]}=. The left ~⌥~ key can be used as the Meta
-key.
+*** Mac right option
+ This will allow you to use the right ~⌥~ key to write symbols ={[]}=. The left ~⌥~ key can be used as the Meta
+ key.
+ #+BEGIN_SRC emacs-lisp
+   (when is-mac
+     (setq-default mac-right-option-modifier nil))
+ #+END_SRC
+*** GPG
 #+BEGIN_SRC emacs-lisp
   (when is-mac
-    (setq-default mac-right-option-modifier nil))
+    (setf epa-pinentry-mode 'loopback))
 #+END_SRC
 ** Sane settings
 #+BEGIN_SRC emacs-lisp
