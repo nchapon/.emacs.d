@@ -1018,7 +1018,6 @@ Targets include this file and any file contributing to the agenda - up to 3 leve
   (define-key org-mode-map (kbd "C-c C-r") 'nc/org-refile-files-first)
 #+end_src
 
-
 *** Insert time slot
 Insert time slot mainly used when I schedule meeting or appointment.
 
@@ -1039,7 +1038,24 @@ Insert time slot mainly used when I schedule meeting or appointment.
   (interactive)
   (helm-do-grep-1 (list org-directory) t nil (list "*.org")))
 #+end_src
-
+*** Deft
+#+BEGIN_SRC emacs-lisp
+  (use-package deft
+    :bind
+    (("C-c n" . deft))
+    :config
+    (setq deft-directory "~/notes/topics")
+    (setq deft-recursive t)
+    (setq deft-extensions '("org"))
+    (setq deft-default-extension "org")
+    (setq deft-text-mode 'org-mode)
+    (setq deft-use-filter-string-for-filename t)
+    (setq deft-auto-save-interval 0)
+    (setq deft-file-naming-rules
+        '((noslash . "-")
+          (nospace . "-")
+          (case-fn . downcase))))
+#+END_SRC
 ** Babel (Literate Programming)
 *** Babel languages
 #+begin_src emacs-lisp
