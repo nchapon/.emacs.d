@@ -1051,6 +1051,12 @@ Insert time slot mainly used when I schedule meeting or appointment.
     (setq deft-text-mode 'org-mode)
     (setq deft-use-filter-string-for-filename t)
     (setq deft-auto-save-interval 0)
+    (setq deft-recursive-ignore-dir-regexp
+            (concat "\\(?:"
+                    "\\."
+                    "\\|\\.\\."
+                    "\\\|valtech"
+                    "\\)$"))
     (setq deft-file-naming-rules
         '((noslash . "-")
           (nospace . "-")
