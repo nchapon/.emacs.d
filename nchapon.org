@@ -607,7 +607,7 @@ Should I try avy ?
      '(aw-leading-char-face
        ((t (:inherit ace-jump-face-foreground :height 3.0))))))
 #+END_SRC
-* Org
+* Org Mode
 ** My files
 *** Base directory
 #+begin_src emacs-lisp
@@ -1052,23 +1052,24 @@ Insert time slot mainly used when I schedule meeting or appointment.
     :bind
     (("C-c n" . deft))
     :config
-    (setq deft-directory "~/notes/topics")
-    (setq deft-recursive t)
-    (setq deft-extensions '("org"))
-    (setq deft-default-extension "org")
-    (setq deft-text-mode 'org-mode)
-    (setq deft-use-filter-string-for-filename t)
-    (setq deft-auto-save-interval 0)
-    (setq deft-recursive-ignore-dir-regexp
+    (setq deft-directory "~/notes/topics"
+          deft-recursive t
+          deft-extensions '("org")
+          deft-default-extension "org"
+          deft-text-mode 'org-mode
+          deft-org-mode-title-prefix t
+          deft-use-filter-string-for-filename t
+          deft-auto-save-interval 0
+          deft-recursive-ignore-dir-regexp
             (concat "\\(?:"
                     "\\."
                     "\\|\\.\\."
                     "\\\|valtech"
-                    "\\)$"))
-    (setq deft-file-naming-rules
-        '((noslash . "-")
-          (nospace . "-")
-          (case-fn . downcase))))
+                    "\\)$")
+          deft-file-naming-rules
+            '((noslash . "-")
+              (nospace . "-")
+              (case-fn . downcase))))
 #+END_SRC
 ** Babel (Literate Programming)
 *** Babel languages
