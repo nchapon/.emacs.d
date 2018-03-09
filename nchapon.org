@@ -725,14 +725,9 @@ Export Org documents via Pandoc
 
 #+BEGIN_SRC emacs-lisp
   (setq org-todo-keywords
-        (quote ((sequence "TODO(t)"
-                          "NEXT(n)"
-                          "STARTED(s)"
-                          "WAITING(w@/!)"
-                          "INACTIVE(i@/!)"
-                          "SOMEDAY(.)" "|" "DONE(d!)" "CANCELLED(c@/!)")
-                (sequence "MEETING(m)" "RDV(r)" "FORMATION(f)" "PHONE(p)" "|" "DONE(d)"))))
-
+   '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+     (sequence "STARTED(s)" "WAITING(w@/!)" "|" "CANCELLED(c@/!)" "INACTIVE(i@/!)")
+     (sequence "MEETING(m)" "RDV(r)"  "|" "DONE(d)")))
 #+END_SRC
 
 **** Todo faces
