@@ -749,6 +749,22 @@ Colors from https://flatuicolors.com/
 #+END_SRC
 *** Projects
 
+**** Contexts
+#+BEGIN_SRC emacs-lisp
+  (setq org-tag-alist (quote (("@computer" . ?c)
+                              ("@office" . ?o)
+                              ("@home" . ?h)
+                              ("@reading" . ?s)
+                              (:newline)
+                              ("WAITING" . ?w)
+                              ("HOLD" . ?H)
+                              ("CANCELLED" . ?c))))
+
+  ;;(setq org-fast-tag-selection-single-key nil)
+
+#+END_SRC
+
+
 #+begin_src emacs-lisp
 (setq org-tags-exclude-from-inheritance '("PROJECT"))
 #+end_src
@@ -873,18 +889,18 @@ This clocks in a predefined task by org-id that is the default task to clock in
 **** My commands
 
     #+BEGIN_SRC emacs-lisp
-      (setq org-agenda-custom-commands
+    (setq org-agenda-custom-commands
             '((" " "Agenda"
                ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep))))
-                (tags-todo "TODO=\"STARTED\"+@cnp|TODO=\"WAITING\"+@cnp"
+                (tags-todo "TODO=\"STARTED\"+@office|TODO=\"WAITING\"+@office"
                            ((org-agenda-overriding-header "Started / waiting tasks @office")
                             (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-                (tags-todo "TODO=\"NEXT\"+@cnp"
+                (tags-todo "TODO=\"NEXT\"+@office"
                            ((org-agenda-overriding-header "Next tasks @office")
                             (org-tags-exclude-from-inheritance '("PROJECT"))
                             (org-agenda-prefix-format "%-32:(nc--org-agenda-format-parent 30)")
                             (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-                (tags-todo "inbox|@home|@cnp+TODO=\"TODO\""
+                (tags-todo "inbox|@home|@office+TODO=\"TODO\""
                            ((org-agenda-overriding-header "Other tasks")
                             (org-agenda-skip-function
                              '(org-agenda-skip-entry-if 'scheduled 'deadline))
@@ -903,7 +919,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
                 (org-agenda-prefix-format "%-32:(nc--org-agenda-format-parent 30)")
                 (org-agenda-skip-function 'nc--org-agenda-skip-project)
                 (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-              ("o" tags-todo "@cnp-MEETING"
+              ("o" tags-todo "@office-MEETING"
                ((org-agenda-overriding-header "Office tasks")
                 (org-tags-exclude-from-inheritance '("PROJECT"))
                 (org-agenda-skip-function 'nc--org-agenda-skip-project)
