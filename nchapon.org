@@ -1,5 +1,4 @@
 * Personal information
-
 #+BEGIN_SRC emacs-lisp
   (setq user-full-name "Nicolas Chapon"
         user-mail-address "nchapon@gmail.com")
@@ -896,64 +895,95 @@ This clocks in a predefined task by org-id that is the default task to clock in
       (org-up-heading-safe)
       (s-truncate n (org-get-heading t t)))))
 #+END_SRC
-**** My commands
+**** Agenda Commands
 
     #+BEGIN_SRC emacs-lisp
-    (setq org-agenda-custom-commands
-            '((" " "Agenda"
-               ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep))))
-                (tags-todo "TODO=\"STARTED\"+@office|TODO=\"WAITING\"+@office"
-                           ((org-agenda-overriding-header "Started / waiting tasks @office")
-                            (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-                (tags-todo "TODO=\"NEXT\"+@office"
-                           ((org-agenda-overriding-header "Next tasks @office")
-                            (org-tags-exclude-from-inheritance '("PROJECT"))
-                            (org-agenda-prefix-format "%-32:(nc--org-agenda-format-parent 30)")
-                            (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-                (tags-todo "inbox|@home|@office+TODO=\"TODO\""
-                           ((org-agenda-overriding-header "Other tasks")
-                            (org-agenda-skip-function
-                             '(org-agenda-skip-entry-if 'scheduled 'deadline))
-                            (org-tags-exclude-from-inheritance '("PROJECT"))
-                            (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-                )
-               nil)
-              ("e" "Emacs Tasks" tags-todo "@computer+EMACS"
-               ((org-agenda-overriding-header "Emacs Tweak Session")
-                (org-tags-exclude-from-inheritance '("PROJECT"))
-                (org-agenda-skip-function 'nc--org-agenda-skip-project)
-                (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-              ("l" "TO LEARN" tags-todo "@computer+TO_LEARN"
-               ((org-agenda-overriding-header "TO LEARN")
-                (org-tags-exclude-from-inheritance '("PROJECT"))
-                (org-agenda-prefix-format "%-32:(nc--org-agenda-format-parent 30)")
-                (org-agenda-skip-function 'nc--org-agenda-skip-project)
-                (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-              ("o" tags-todo "@office-MEETING"
-               ((org-agenda-overriding-header "Office tasks")
-                (org-tags-exclude-from-inheritance '("PROJECT"))
-                (org-agenda-skip-function 'nc--org-agenda-skip-project)
-                (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-              ("W" "To See" tags "@watching"
-               ((org-agenda-overriding-header "To See")
-                (org-tags-match-list-sublevels 'indented)))
-              ("R" "To Read" tags-todo "@reading"
-               ((org-agenda-overriding-header "To Read")
-                (org-tags-match-list-sublevels 'indented)))
-              ("w" "Waiting Tasks" tags-todo "-CANCELLED/!WAITING|HOLD"
-               ((org-agenda-overriding-header "Waiting and Postponed Tasks")))
-              ("d" "Timeline for today" ((agenda "" ))
-               ((org-agenda-span 1)
-                (org-agenda-ndays 1)
-                (org-agenda-show-log t)
-                (org-agenda-log-mode-items '(clock closed))
-                (org-agenda-entry-types '())))
-              ("S" tags-todo "TODO=\"STARTED\""
-               ((org-agenda-overriding-header "All started tasks")
-                (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-              ("Z" "Weekly review" agenda ""
-               ((org-agenda-span 7)
-                (org-agenda-log-mode 1)))))
+      (defun org-current-is-todo ()
+             (string= "NEXT" (org-get-todo-state)))
+
+      (defun org-agenda-skip-all-siblings-but-first ()
+             "Skip all but the first non-done entry."
+             (let (should-skip-entry)
+               (unless (org-current-is-todo)
+                 (setq should-skip-entry t))
+               (save-excursion
+                 (while (and (not should-skip-entry) (org-goto-sibling t))
+                   (when (org-current-is-todo)
+                     (setq should-skip-entry t))))
+               (when should-skip-entry
+                 (or (outline-next-heading)
+                     (goto-char (point-max))))))
+
+      (require 'org-agenda)
+      (setq nc/org-agenda-inbox-view
+            `("i" "Inbox" todo ""
+              ((org-agenda-files '("~/notes/GTD/inbox.org")))))
+
+
+      (setq nc/org-agenda-todo-view
+            `(" " "Agenda"
+              ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep))))
+               (tags-todo "TODO=\"STARTED\"+@office|TODO=\"WAITING\"+@office"
+                          ((org-agenda-overriding-header "Started / waiting tasks @office")
+                           (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
+               (tags-todo "TODO=\"NEXT\"+@office-HOLD"
+                          ((org-agenda-overriding-header "Next tasks @office")
+                           (org-tags-exclude-from-inheritance '("PROJECT"))
+                           (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 25)")
+                           (org-agenda-skip-function
+                            (quote
+                             (org-agenda-skip-all-siblings-but-first)))
+
+                           (org-agenda-todo-keyword-format "%-4s")))
+               (tags-todo "TODO=\"TODO\"-HOLD"
+                          ((org-agenda-overriding-header "Other tasks")
+                           (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 30)")
+                           (org-agenda-skip-function
+                            '(org-agenda-skip-entry-if 'scheduled 'deadline))
+                           (org-agenda-files '("~/notes/GTD/inbox.org"))
+                           (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
+               )
+              nil))
+
+      (setq nc/org-agenda-context-view
+            `("@" "Contexts"
+              ((todo "STARTED"
+                     ((org-agenda-overriding-header "All started tasks")))
+
+               (todo "WAITING"
+                     ((org-agenda-overriding-header "All waiting tasks")))
+               (tags-todo "@office"
+                          ((org-agenda-skip-function
+                            (quote
+                             (org-agenda-skip-all-siblings-but-first)))
+                           (org-agenda-overriding-header "@office")))
+               (tags "emacs"
+                     ((org-agenda-overriding-header "Emacs next actions")
+                      (org-agenda-skip-function
+                       (quote
+                        (org-agenda-skip-all-siblings-but-first)))))
+
+               (tags-todo "@reading"
+                          ((org-agenda-overriding-header "To Read")
+                           (org-agenda-skip-function
+                            (quote
+                             (org-agenda-skip-all-siblings-but-first)))))
+
+               (tags-todo "TO_LEARN"
+                          ((org-agenda-overriding-header "To Learn")
+                           (org-agenda-skip-function
+                            (quote
+                             (org-agenda-skip-all-siblings-but-first)))))
+               (tags-todo "@home"
+                          ((org-agenda-overriding-header "@Home")
+                           )))
+              nil nil))
+
+
+      (setq org-agenda-custom-commands
+            `(,nc/org-agenda-inbox-view
+              ,nc/org-agenda-todo-view
+              ,nc/org-agenda-context-view))
     #+END_SRC
 ** Taking notes
 *** Capture templates
