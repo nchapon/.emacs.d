@@ -5,7 +5,18 @@
         user-mail-address "nchapon@gmail.com")
 #+END_SRC
 
-* Init
+* Setup
+** Make It Easy to edit this files
+
+#+begin_src emacs-lisp
+  (defun nc/find-config ()
+      "Edit nchapon.org"
+      (interactive)
+      (find-file "~/.emacs.d/nchapon.org"))
+
+    (global-set-key (kbd "C-c I") 'nc/find-config)
+#+end_src
+
 ** Globals
 
 #+BEGIN_SRC emacs-lisp
@@ -13,7 +24,6 @@
   (defconst is-linux (equal system-type 'gnu/linux))
   (defconst has-gui (display-graphic-p))
 #+END_SRC
-
 
 ** Packages
  Use package default configuration
@@ -853,7 +863,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
 ** Agenda
 *** Agenda configuration
 #+BEGIN_SRC emacs-lisp
-  (setq org-agenda-files (list "~/notes/GTD" "~/notes/projects")
+  (setq org-agenda-files (list "~/notes/GTD")
         org-agenda-span 'day
         org-agenda-start-on-weekday nil
         org-agenda-skip-deadline-if-done t
