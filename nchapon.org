@@ -990,12 +990,12 @@ This clocks in a predefined task by org-id that is the default task to clock in
 My destination files :
 
 #+begin_src emacs-lisp
-  (defconst nc/gtd-file (concat org-directory "GTD/mygtd.org"))
+  (defconst nc/inbox-file (concat org-directory "GTD/inbox.org"))
   (defconst nc/watching-file (concat org-directory "GTD/watching.org"))
   (defconst nc/fishing-file (concat org-directory "projects/fishing.org"))
   (defconst nc/diary-file (concat org-directory "GTD/diary-log.org"))
+  (defconst nc/someday-file (concat org-directory "GTD/someday.org"))
   (defconst nc/calendar-file (concat org-directory "GTD/calendar.org"))
-  (defconst nc/office-file (concat org-directory "GTD/office.org"))
   (defconst nc/weekly-review-file (concat org-directory "GTD/weekly-review.org"))
 #+end_src
 
@@ -1007,7 +1007,7 @@ My templates :
            "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
           ("n" "Next Task" entry (file+headline nc/gtd-file "Inbox")
            "** NEXT %?")
-          ("s" "Someday / Maybe" entry (file+headline nc/gtd-file "Someday / Maybe")
+          ("s" "Someday / Maybe" entry (file+headline nc/someday-file "Someday")
             "* SOMEDAY %? :IDEA:\n%u" :clock-in t :clock-resume t)
           ("f" "FishLog" plain (file+datetree+prompt nc/fishing-file)
            "%[~/notes/templates/fishlog.org]")
@@ -1036,7 +1036,7 @@ My templates :
           ("w" "WeeklyReview" entry (file+datetree+prompt nc/weekly-review-file)
            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
            ("D" "Done Business Task" entry
-             (file+headline nc/office-file "Done Tasks")
+             (file+headline nc/gtd-file "Done Tasks")
              "* DONE %^{Task}"
              :clock-in t :clock-resume t)
           ))
