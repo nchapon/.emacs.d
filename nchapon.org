@@ -1190,177 +1190,210 @@ Insert time slot mainly used when I schedule meeting or appointment.
   :bind
   ("C-=" . er/expand-region))
 #+END_SRC
-** Eshell
-   Mainly come from [[https://github.com/howardabrams/dot-files/blob/master/emacs-eshell.org]]
-*** Configuration
+** Shells
+*** Eshell
+    Mainly come from [[https://github.com/howardabrams/dot-files/blob/master/emacs-eshell.org]]
+**** Configuration
 
-#+begin_src emacs-lisp
-  (use-package eshell
-    :init
-    (setq eshell-scroll-to-bottom-on-input 'all
-          eshell-error-if-no-glob t
-          eshell-hist-ignoredups t
-          eshell-save-history-on-exit t
-          ;;eshell-prefer-lisp-functions nil
-          eshell-destroy-buffer-when-process-dies t)
-
-    )
-#+end_src
-*** Visual commands
-
-#+begin_src emacs-lisp
-  (use-package eshell
-    :init
-    (require 'em-term)
-    (setq eshell-visual-commands '("vi" "screen" "top" "less" "more" "lynx"
-                                   "ncftp" "pine" "tin" "trn" "elm" "htop" "node" "npm")
-          eshell-visual-subcommands '(("git" "log" "diff" "show"))))
-#+end_src
-
-*** Aliases
-
-#+begin_src emacs-lisp
-  (add-hook 'eshell-mode-hook (lambda ()
-      (eshell/alias "e" "find-file $1")
-      (eshell/alias "f" "helm-find-files $1")
-      (eshell/alias "p" "helm-projectile")
-      (eshell/alias "esudo" "find-file /sudo::/$1")
-      (eshell/alias "emacs" "find-file $1")
-      (eshell/alias "ee" "find-file-other-window $1")
-
-      (eshell/alias "gd" "magit-diff-unstaged")
-      (eshell/alias "gds" "magit-diff-staged")
-      (eshell/alias "d" "dired $1")
-
-      (eshell/alias "mvnci" "mvn clean install")
-      (eshell/alias "mvncist" "mvn clean install -DskipTests")
-      (eshell/alias "mvnist" "mvn install -DskipTests")
-
-      ;; alias dpsa docker ps -a --format "{{.Names}} {{.Size}} : {{.Command}}" --no-trunc
-
-      ;; The 'ls' executable requires the Gnu version on the Mac
-      ;; (eshell/alias "ll" " ls -AlohG")
-      ))
-#+end_src
-
-*** Functions
-**** Clear buffer
  #+begin_src emacs-lisp
-   (defun nc/eshell-clear-buffer ()
-     "Clear terminal"
+   (use-package eshell
+     :init
+     (setq eshell-scroll-to-bottom-on-input 'all
+           eshell-error-if-no-glob t
+           eshell-hist-ignoredups t
+           eshell-save-history-on-exit t
+           ;;eshell-prefer-lisp-functions nil
+           eshell-destroy-buffer-when-process-dies t)
+
+     )
+ #+end_src
+**** Visual commands
+
+ #+begin_src emacs-lisp
+   (use-package eshell
+     :init
+     (require 'em-term)
+     (setq eshell-visual-commands '("vi" "screen" "top" "less" "more" "lynx"
+                                    "ncftp" "pine" "tin" "trn" "elm" "htop" "node" "npm")
+           eshell-visual-subcommands '(("git" "log" "diff" "show"))))
+ #+end_src
+
+**** Aliases
+
+ #+begin_src emacs-lisp
+   (add-hook 'eshell-mode-hook (lambda ()
+       (eshell/alias "e" "find-file $1")
+       (eshell/alias "f" "helm-find-files $1")
+       (eshell/alias "p" "helm-projectile")
+       (eshell/alias "esudo" "find-file /sudo::/$1")
+       (eshell/alias "emacs" "find-file $1")
+       (eshell/alias "ee" "find-file-other-window $1")
+
+       (eshell/alias "gd" "magit-diff-unstaged")
+       (eshell/alias "gds" "magit-diff-staged")
+       (eshell/alias "d" "dired $1")
+
+       (eshell/alias "mvnci" "mvn clean install")
+       (eshell/alias "mvncist" "mvn clean install -DskipTests")
+       (eshell/alias "mvnist" "mvn install -DskipTests")
+
+       ;; alias dpsa docker ps -a --format "{{.Names}} {{.Size}} : {{.Command}}" --no-trunc
+
+       ;; The 'ls' executable requires the Gnu version on the Mac
+       ;; (eshell/alias "ll" " ls -AlohG")
+       ))
+ #+end_src
+
+**** Functions
+***** Clear buffer
+  #+begin_src emacs-lisp
+    (defun nc/eshell-clear-buffer ()
+      "Clear terminal"
+      (interactive)
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (eshell-send-input)))
+
+    (add-hook 'eshell-mode-hook
+              '(lambda()
+                 (local-set-key (kbd "C-l") 'nc/eshell-clear-buffer)))
+  #+end_src
+***** Exit
+      Exit eshell with  =C-d=
+ #+BEGIN_SRC emacs-lisp
+ (use-package eshell
+   :config
+   (defun nc/eshell-quit-or-delete-char (arg)
+     (interactive "p")
+     (if (and (eolp) (looking-back eshell-prompt-regexp))
+         (progn
+           (eshell-life-is-too-much) ; Why not? (eshell/exit)
+           (ignore-errors
+             (delete-window)))
+       (delete-forward-char arg)))
+   :init
+   (add-hook 'eshell-mode-hook
+             (lambda ()
+               (bind-keys :map eshell-mode-map
+                          ("C-d" . nc/eshell-quit-or-delete-char)))))
+ #+END_SRC
+
+**** Eshell here
+
+ Opens up a new shell in the directory associated with the
+ current buffer's file. The eshell is renamed to match that
+ directory to make multiple eshell windows easier.
+ #+begin_src emacs-lisp
+   (defun nc--eshell-buffer-id ()
+     "Next eshell buffer id."
+     (let* ((p-lst (split-string (nc--eshell-path-of-current-dir) "/"))
+            (name  (mapconcat (lambda (elm) elm) (last p-lst 3) "/")))
+       (concat "*eshell: " name "*")))
+
+   (defun nc--eshell-path-of-current-dir ()
+     (file-name-directory (or (buffer-file-name) default-directory)))
+
+   (defun nc/eshell-here ()
+     "Start, or switch to, `eshell' in the current working directory."
      (interactive)
-     (let ((inhibit-read-only t))
-       (erase-buffer)
-       (eshell-send-input)))
+     (let ((buffer-id (nc--eshell-buffer-id)))
+       (cond ((get-buffer buffer-id)
+              (switch-to-buffer-other-window buffer-id))
+             (t (progn
+                  (eshell buffer-id)
+                  (rename-buffer buffer-id))))))
+
+   (bind-key "C-c e" 'nc/eshell-here)
+ #+end_src
+
+**** Customize eshell prompt
+ Add git status in prompt
+ #+begin_src emacs-lisp
+ (setq eshell-prompt-function
+       (lambda ()
+         (concat (propertize (abbreviate-file-name (eshell/pwd)) 'face 'eshell-prompt)
+                 (when (fboundp #'vc-git-branches)
+                   (let ((branch (car (vc-git-branches))))
+                     (when branch
+                       (concat
+                        (propertize " [" 'face 'font-lock-keyword-face)
+                        (propertize branch 'face 'font-lock-function-name-face)
+                        (let* ((status (shell-command-to-string "git status --porcelain"))
+                               (parts (split-string status "\n" t " "))
+                               (states (mapcar #'string-to-char parts))
+                               (added (count-if (lambda (char) (= char ?A)) states))
+                               (modified (count-if (lambda (char) (= char ?M)) states))
+                               (deleted (count-if (lambda (char) (= char ?D)) states)))
+                          (when (> (+ added modified deleted) 0)
+                            (propertize (format " +%d ~%d -%d" added modified deleted) 'face 'font-lock-comment-face)))
+                        (propertize "]" 'face 'font-lock-keyword-face)))))
+                 (propertize " $ " 'face 'font-lock-constant-face))))
+ #+end_src
+**** helm-eshell-history
+ Using Helm with =C-c C-l= to browse eshell history
+ #+begin_src emacs-lisp
+   (require 'helm-eshell)
 
    (add-hook 'eshell-mode-hook
-             '(lambda()
-                (local-set-key (kbd "C-l") 'nc/eshell-clear-buffer)))
+             #'(lambda ()
+                 (define-key eshell-mode-map (kbd "C-c C-l")  'helm-eshell-history)))
  #+end_src
-**** Exit
-     Exit eshell with  =C-d=
+**** Fish like auto completion
+     Provides a company backend that implements functionality similar to
+     fish shell history autosuggestions.
+ #+begin_src emacs-lisp
+   (use-package esh-autosuggest
+     :config (add-hook 'eshell-mode-hook #'esh-autosuggest-mode))
+ #+end_src
+*** Shell
+**** helm-comint-input-ring
+ Similar to =helm-eshell-history=, but used for =M-x shell=.
+
+ #+begin_src emacs-lisp
+   (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring)
+ #+end_src
+**** Better Shell
+
+ Simplifies shell management
+ #+begin_src emacs-lisp
+   (use-package better-shell
+       :ensure t
+       :bind (("C-'" . better-shell-shell)
+              ("C-;" . better-shell-remote-open)
+              ("M-<f12>" . better-shell-for-current-dir)))
+ #+end_src
+*** Ansi Terminal Emulator
+Sometimes I need an Ansi Term...
+**** Force Bash
 #+BEGIN_SRC emacs-lisp
-(use-package eshell
-  :config
-  (defun nc/eshell-quit-or-delete-char (arg)
-    (interactive "p")
-    (if (and (eolp) (looking-back eshell-prompt-regexp))
-        (progn
-          (eshell-life-is-too-much) ; Why not? (eshell/exit)
-          (ignore-errors
-            (delete-window)))
-      (delete-forward-char arg)))
-  :init
-  (add-hook 'eshell-mode-hook
-            (lambda ()
-              (bind-keys :map eshell-mode-map
-                         ("C-d" . nc/eshell-quit-or-delete-char)))))
+  (defconst t-term-name "/bin/bash")
+
+  (defadvice ansi-term (before force-bash)
+        (interactive (list t-term-name)))
+
+  (ad-activate 'ansi-term)
+#+END_SRC
+**** Kill buffer on exit
+#+BEGIN_SRC emacs-lisp
+  (defun nc--ansi-term-mode-hook ()
+    "Close current term buffer when `exit' or c-d from term buffer."
+    (goto-address-mode)
+
+    (when (ignore-errors (get-buffer-process (current-buffer)))
+      (set-process-sentinel
+       (get-buffer-process (current-buffer))
+       (lambda (proc change)
+         (message change)
+         (when (string-match "\\(finished\\|exited\\)" change)
+           (kill-buffer (process-buffer proc)))))))
+
+  (add-hook 'term-mode-hook #'nc--ansi-term-mode-hook)
 #+END_SRC
 
-*** Eshell here
-
-Opens up a new shell in the directory associated with the
-current buffer's file. The eshell is renamed to match that
-directory to make multiple eshell windows easier.
-#+begin_src emacs-lisp
-  (defun nc--eshell-buffer-id ()
-    "Next eshell buffer id."
-    (let* ((p-lst (split-string (nc--eshell-path-of-current-dir) "/"))
-           (name  (mapconcat (lambda (elm) elm) (last p-lst 3) "/")))
-      (concat "*eshell: " name "*")))
-
-  (defun nc--eshell-path-of-current-dir ()
-    (file-name-directory (or (buffer-file-name) default-directory)))
-
-  (defun nc/eshell-here ()
-    "Start, or switch to, `eshell' in the current working directory."
-    (interactive)
-    (let ((buffer-id (nc--eshell-buffer-id)))
-      (cond ((get-buffer buffer-id)
-             (switch-to-buffer-other-window buffer-id))
-            (t (progn
-                 (eshell buffer-id)
-                 (rename-buffer buffer-id))))))
-
-  (bind-key "C-c e" 'nc/eshell-here)
-#+end_src
-
-*** Customize eshell prompt
-Add git status in prompt
-#+begin_src emacs-lisp
-(setq eshell-prompt-function
-      (lambda ()
-        (concat (propertize (abbreviate-file-name (eshell/pwd)) 'face 'eshell-prompt)
-                (when (fboundp #'vc-git-branches)
-                  (let ((branch (car (vc-git-branches))))
-                    (when branch
-                      (concat
-                       (propertize " [" 'face 'font-lock-keyword-face)
-                       (propertize branch 'face 'font-lock-function-name-face)
-                       (let* ((status (shell-command-to-string "git status --porcelain"))
-                              (parts (split-string status "\n" t " "))
-                              (states (mapcar #'string-to-char parts))
-                              (added (count-if (lambda (char) (= char ?A)) states))
-                              (modified (count-if (lambda (char) (= char ?M)) states))
-                              (deleted (count-if (lambda (char) (= char ?D)) states)))
-                         (when (> (+ added modified deleted) 0)
-                           (propertize (format " +%d ~%d -%d" added modified deleted) 'face 'font-lock-comment-face)))
-                       (propertize "]" 'face 'font-lock-keyword-face)))))
-                (propertize " $ " 'face 'font-lock-constant-face))))
-#+end_src
-*** helm-eshell-history
-Using Helm with =C-c C-l= to browse eshell history
-#+begin_src emacs-lisp
-  (require 'helm-eshell)
-
-  (add-hook 'eshell-mode-hook
-            #'(lambda ()
-                (define-key eshell-mode-map (kbd "C-c C-l")  'helm-eshell-history)))
-#+end_src
-*** Fish like auto completion
-    Provides a company backend that implements functionality similar to
-    fish shell history autosuggestions.
-#+begin_src emacs-lisp
-  (use-package esh-autosuggest
-    :config (add-hook 'eshell-mode-hook #'esh-autosuggest-mode))
-#+end_src
-** Shell
-*** helm-comint-input-ring
-Similar to =helm-eshell-history=, but used for =M-x shell=.
-
-#+begin_src emacs-lisp
-  (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring)
-#+end_src
-*** better shell
-
-Simplifies shell management
-#+begin_src emacs-lisp
-  (use-package better-shell
-      :ensure t
-      :bind (("C-'" . better-shell-shell)
-             ("C-;" . better-shell-remote-open)
-             ("M-<f12>" . better-shell-for-current-dir)))
-#+end_src
+**** Bind Key
+#+BEGIN_SRC emacs-lisp
+(bind-key "C-c t" 'ansi-term)
+#+END_SRC
 
 ** Ediff
 *** Ignore white space
