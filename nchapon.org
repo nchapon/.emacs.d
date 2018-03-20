@@ -1181,7 +1181,7 @@ Insert time slot mainly used when I schedule meeting or appointment.
          :ensure t))
 #+end_src
 
-* Programming
+* Coding
 ** Expand region
     - expand selection with =C-==
     - contract with negative argument =M--= then =C-==
@@ -1471,6 +1471,13 @@ This package can create several cursors to all do the same things.
      ("C-S-p" .  mc/mark-previous-like-this)
      ("C-*" .  mc/mark-all-dwim)))
 #+END_SRC
+** Smart Comments
+Smarter commenting for emacs
+#+BEGIN_SRC emacs-lisp
+(use-package smart-comment
+  :bind ("M-;" . smart-comment))
+#+END_SRC
+
 ** Smartparens
 
 Smart parens for all modes.
