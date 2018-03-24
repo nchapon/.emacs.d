@@ -861,8 +861,11 @@ This clocks in a predefined task by org-id that is the default task to clock in
 
 ** Agenda
 *** Agenda configuration
+By default all files in GTD and journal folder will be in my agenda, to be searchable
+
+My custom agends commands are restricted to some files.
 #+BEGIN_SRC emacs-lisp
-  (setq org-agenda-files (list "~/notes/GTD")
+  (setq org-agenda-files (list "~/notes/GTD/" "~/notes/GTD/journal/")
         org-agenda-span 'day
         org-agenda-start-on-weekday nil
         org-agenda-skip-deadline-if-done t
@@ -876,7 +879,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
   (setq diary-file "~/notes/diary"
         org-agenda-include-diary t)
 #+END_SRC
-*** Agenda commands
+*** Custom Agenda commands
 **** Function to skip headline tagged with =:PROJECT:=
 
 #+begin_src emacs-lisp
