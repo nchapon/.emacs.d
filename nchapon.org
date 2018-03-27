@@ -1025,7 +1025,7 @@ My templates :
 
       %U" :prepend t)
           ("N" "Note" entry (file+datetree org-default-notes-file)
-           "* %? :TO_TAG:\n%a\n")
+           "* %? %^G \n%i\n")
           ("i" "Interrupting task" entry
              (file+datetree nc/diary-file)
              "* %^{Task}"
@@ -1035,7 +1035,7 @@ My templates :
           ("a" "RendezVous" entry (file+headline nc/calendar-file "RendezVous")
                  "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
           ("j" "Journal" entry (file+datetree org-default-notes-file)
-           "* %?\nEntered on %U\n  %i\n  %a")
+           "* %?\n %i \n\n%U")
           ("w" "WeeklyReview" entry (file+datetree+prompt nc/weekly-review-file)
            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
            ("D" "Done Business Task" entry
