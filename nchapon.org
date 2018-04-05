@@ -725,6 +725,15 @@ Export Org documents via Pandoc
 `((css . ,(concat "file://" stylesheet))))))
 #+end_src
 
+#+BEGIN_SRC emacs-lisp
+(use-package htmlize
+  :commands (htmlize-buffer
+             htmlize-file
+             htmlize-many-files
+             htmlize-many-files-dired
+             htmlize-region))
+#+END_SRC
+
 ** Tasks
 *** Todo tasks
 **** Todo states
