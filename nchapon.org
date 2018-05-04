@@ -1944,6 +1944,7 @@ Used by key chord =JJ=
     (key-chord-define-global "$$" 'end-of-buffer)
     (key-chord-define-global "qq" 'nc/cleanup-buffer-or-region))
 #+END_SRC
+* Utility functions
 ** Pseudo uuid
 
 Generate a 32 random pseudo uuid
@@ -1960,6 +1961,21 @@ Generate a 32 random pseudo uuid
     (dotimes (i 32) (insert (nc--random-alnum))))
 
 #+end_src
+** Password generator
+Generates a strong password
+
+ #+BEGIN_SRC emacs-lisp
+
+   (defun nc--random-char ()
+       (let* ((alnum "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-/%+*?&#[]()={}_<>!$,;:^µ0123456789")
+              (i (% (abs (random)) (length alnum))))
+         (substring alnum i (1+ i))))
+
+
+   (defun nc/generate-password ()
+       (interactive)
+       (dotimes (i 12) (insert (nc--random-char))))
+ #+END_SRC
 
 * Notes
 ** Inspiration configs
