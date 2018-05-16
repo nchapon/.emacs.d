@@ -116,8 +116,8 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
 ** Make fringe smaller
 
 #+BEGIN_SRC emacs-lisp
-(if (fboundp 'fringe-mode)
-    (fringe-mode 4))
+  (if (fboundp 'fringe-mode)
+      (fringe-mode 2))
 #+END_SRC
 
 * General configuration
