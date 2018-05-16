@@ -119,6 +119,20 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
   (if (fboundp 'fringe-mode)
       (fringe-mode 2))
 #+END_SRC
+** Golden Ratio
+Resize automatically the windows you are working
+
+#+BEGIN_SRC emacs-lisp
+  (use-package golden-ratio
+    :ensure t
+    :diminish t
+    :init
+    (golden-ratio-mode 1)
+    :config
+    (setq golden-ratio-extra-commands
+          (append golden-ratio-extra-commands
+                  '(ace-window))))
+#+END_SRC
 
 * General configuration
 ** Exec Path From Shell
