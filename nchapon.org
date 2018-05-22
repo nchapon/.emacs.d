@@ -166,6 +166,15 @@ Usefull to initialize PATH from shell
                (setq recentf-max-saved-items 100)))
 #+END_SRC
 ** MacOS
+*** Keys for apple keyboard
+#+BEGIN_SRC emacs-lisp
+  (when is-mac
+    (setq mac-command-modifier 'meta)    ; make cmd key do Meta
+    (setq mac-option-modifier 'super)    ; make opt key do Super
+    (setq mac-control-modifier 'control) ; make Control key do Control
+    (setq ns-function-modifier 'hyper)   ; make Fn key do Hyper
+  )
+#+END_SRC
 *** Mac right option
  This will allow you to use the right ~⌥~ key to write symbols ={[]}=. The left ~⌥~ key can be used as the Meta
  key.
