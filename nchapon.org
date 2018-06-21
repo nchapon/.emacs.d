@@ -1200,14 +1200,19 @@ Insert time slot mainly used when I schedule meeting or appointment.
 
 ** Babel (Literate Programming)
 *** Babel languages
+
 #+begin_src emacs-lisp
   (use-package ob-restclient)
+
+  (setq org-plantuml-jar-path
+        (expand-file-name "~/opt/lib/plantuml.jar"))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((shell . t)
      (python . t)
      (js . t)
+     (plantuml . t)
      (dot . t)
      (restclient . t)))
 #+end_src
