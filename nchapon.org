@@ -2013,6 +2013,18 @@ Used by key chord =JJ=
     (key-chord-define-global "$$" 'end-of-buffer)
     (key-chord-define-global "qq" 'nc/cleanup-buffer-or-region))
 #+END_SRC
+* Emacs Server
+
+#+BEGIN_SRC emacs-lisp
+  (server-start)
+
+  (add-hook 'after-make-frame-functions
+            (lambda (frame)
+              (select-frame frame)
+              (nc/setup-font)))
+#+END_SRC
+
+
 * Utility functions
 ** Pseudo uuid
 
