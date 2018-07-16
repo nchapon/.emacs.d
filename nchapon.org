@@ -1058,10 +1058,7 @@ My templates :
       %U" :prepend t)
           ("N" "Note" entry (file+datetree org-default-notes-file)
            "* %? %^G \n%i\n")
-          ("i" "Interrupting task" entry
-             (file+datetree nc/diary-file)
-             "* %^{Task}"
-             :clock-in t :clock-resume t)
+
           ("m" "Meeting" entry (file+headline nc/calendar-file "Réunions")
            "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
           ("a" "RendezVous" entry (file+headline nc/calendar-file "RendezVous")
@@ -1076,16 +1073,25 @@ My templates :
              :clock-in t :clock-resume t)
           ))
 #+end_src
-**** Speed Key for interruption task
-Key =F9= capture interruption task
-#+begin_src emacs-lisp
-(defun my/capture-interruption-task ()
-    "Interrupted Task"
-    (interactive)
-    (org-capture 4 "i"))
 
-;; Override the key definition
-(global-set-key (kbd "<f9>") 'my/capture-interruption-task)
+**** Interruption task
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-capture-templates
+               `("i" "Interrupting task" entry
+                 (file+datetree nc/diary-file)
+                 "* %^{Task}"
+                 :clock-in t :clock-resume t))
+#+END_SRC
+
+
+#+begin_src emacs-lisp
+  (defun my/capture-interruption-task ()
+      "Interrupted Task"
+      (interactive)
+      (org-capture 4 "i"))
+
+  ;; Override the key definition
+  (global-set-key (kbd "<f9>") 'my/capture-interruption-task)
 #+end_src
 
 *** Refiling
@@ -1249,7 +1255,19 @@ Insert time slot mainly used when I schedule meeting or appointment.
   ;; Either the Key ID or set to nil to use symmetric encryption.
   (setq org-crypt-key nil)
 #+end_src
-
+** Weekly Review
+*** Reset checkboxes
+Reset checkbox items when weekly review is done
+#+BEGIN_SRC emacs-lisp
+(defun nc/clean-weekly-review ()
+    "Clean week"
+  (interactive)
+  (org-with-point-at
+    (org-id-find "id-weekly-review" 'marker)
+  (while (re-search-forward "\\[X\\]" nil t)
+    (if (org-at-item-checkbox-p)
+        (org-ctrl-c-ctrl-c)))))
+#+END_SRC
 * Misc
 *** PDF Tools
 #+begin_src emacs-lisp
@@ -2023,7 +2041,6 @@ Used by key chord =JJ=
               (select-frame frame)
               (nc/setup-font)))
 #+END_SRC
-
 
 * Utility functions
 ** Pseudo uuid
