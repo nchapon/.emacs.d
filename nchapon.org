@@ -1443,6 +1443,7 @@ Reset checkbox items when weekly review is done
        (eshell/alias "mvnci" "mvn clean install")
        (eshell/alias "mvncist" "mvn clean install -DskipTests")
        (eshell/alias "mvnist" "mvn install -DskipTests")
+       (eshell/alias "git" "git --no-pager $*")
 
        ;; alias dpsa docker ps -a --format "{{.Names}} {{.Size}} : {{.Command}}" --no-trunc
 
