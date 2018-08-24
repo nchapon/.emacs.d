@@ -210,7 +210,7 @@ Remove all trailing whitespace and trailing blank lines before saving the file
     (progn
       (setq company-idle-delay 0.1
             ;; min prefix of 1 chars
-            company-minimum-prefix-length 1
+            company-minimum-prefix-length 2
             company-selection-wrap-around t
             company-show-numbers t
             company-dabbrev-downcase nil
