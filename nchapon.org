@@ -112,15 +112,6 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
       (fringe-mode 2))
 #+END_SRC
 * General configuration
-** History
-*** Delete old versions
-
- #+BEGIN_SRC emacs-lisp
- (setq delete-old-versions t
-   kept-new-versions 6
-   kept-old-versions 2
-   version-control t)
- #+END_SRC
 ** Sane settings
 #+BEGIN_SRC emacs-lisp
 (setq initial-major-mode 'lisp-interaction-mode
@@ -509,6 +500,13 @@ Looks at the word before point and tries  to expand it.
 (bind-key "M-/" 'hippie-expand)
 #+END_SRC
 
+** History
+*** Backup files
+ #+BEGIN_SRC emacs-lisp
+ (setq delete-old-versions t  ; delete excess backup versions silently
+     version-control t        ; numbered versions
+)
+ #+END_SRC
 ** Mac OS
 MacOS specific configuration
 *** Dired for OS X
@@ -652,6 +650,17 @@ This lets you use =C-x u= (=undo-tree-visualize=)
     (setq undo-tree-visualizer-diff t)))
 #+END_SRC
 
+** Version Control
+#+BEGIN_QUOTE
+Magit a git porcelain inside Emacs !
+
+[[https://github.com/magit/magit]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :bind (("C-x g" . magit-status)))
+#+END_SRC
 ** Which Key
 
 #+BEGIN_QUOTE
@@ -1642,11 +1651,6 @@ Ediff should be opened in selected frame and split window horizontally
   (use-package dockerfile-mode
     :mode "Dockerfile.*\\'")
 #+end_src
-** Magit
-#+BEGIN_SRC emacs-lisp
-  (use-package magit
-    :bind (("C-x g" . magit-status)))
-#+END_SRC
 ** Markdown
    GitHub Flavored Markdown by default for README.md files.
 #+BEGIN_SRC emacs-lisp
@@ -1908,8 +1912,8 @@ npn install -g tern
 #+end_src
 
 ** Yasnippet
-
 Snippets for programming.
+
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :defer t
@@ -2064,7 +2068,7 @@ Used by key chord =JJ=
     (key-chord-define-global "BB" 'beginning-of-buffer)
     (key-chord-define-global "WW" 'nc/swap-windows)
     (key-chord-define-global "$$" 'end-of-buffer)
-    (key-chord-define-global "qq" 'nc/cleanup-buffer-or-region))
+    (key-chord-define-global "kk" 'kill-this-buffer))
 #+END_SRC
 * Emacs Server
 
