@@ -540,6 +540,11 @@ MacOS specific configuration
   (when is-mac
     (setf epa-pinentry-mode 'loopback))
 #+END_SRC
+*** French Locale
+#+BEGIN_SRC emacs-lisp
+  (when is-mac
+    (set-locale-environment "fr_FR.UTF-8"))
+#+END_SRC
 ** Navigation
 *** ace-jump
  #+BEGIN_SRC emacs-lisp
