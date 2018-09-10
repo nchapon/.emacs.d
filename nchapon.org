@@ -33,140 +33,144 @@
  (use-package auto-compile
    :config (auto-compile-on-load-mode))
  #+END_SRC
-
-* Appearence & behavior
-
-** Theme
-Using moe theme dark all the day
-#+BEGIN_SRC emacs-lisp
+* Start Up
+** Visuals
+*** Theme
+ Using moe theme dark all the day
+ #+BEGIN_SRC emacs-lisp
   (use-package moe-theme
-    :config
-    (progn
+     :config
+     (progn
 
-      (moe-dark)
+       (moe-dark)
 
-      ;; (use-package moe-theme-switcher
-      ;;     :ensure moe-theme)
+       ;; (use-package moe-theme-switcher
+       ;;     :ensure moe-theme)
 
-      (use-package powerline
-        :config
-        (powerline-moe-theme))))
-#+END_SRC
-** Mode line
-#+BEGIN_SRC emacs-lisp
-(use-package smart-mode-line)
-#+END_SRC
+       (use-package powerline
+         :config
+         (powerline-moe-theme))))
+ #+END_SRC
+*** Mode line
+ #+BEGIN_SRC emacs-lisp
+ (use-package smart-mode-line)
+ #+END_SRC
 
-** Font
-Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
+*** Font
+ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
 
-#+BEGIN_SRC emacs-lisp
-  (defun nc/setup-font ()
-    "Set up font height"
-    (interactive)
-    (when is-linux
-      (set-frame-font "Input Mono-12" nil t))
-    (when is-mac
-      (set-frame-font "Monaco 15" nil t)))
+ #+BEGIN_SRC emacs-lisp
+   (defun nc/setup-font ()
+     "Set up font height"
+     (interactive)
+     (when is-linux
+       (set-frame-font "Input Mono-12" nil t))
+     (when is-mac
+       (set-frame-font "Monaco 15" nil t)))
 
-  (when has-gui
-    (add-hook 'after-init-hook #'nc/setup-font))
-#+END_SRC
+   (when has-gui
+     (add-hook 'after-init-hook #'nc/setup-font))
+ #+END_SRC
 
-** Answering just 'y' or 'n'
+*** Windows configuration
+**** No menu and toolbar
 
-#+BEGIN_SRC emacs-lisp
-(defalias 'yes-or-no-p 'y-or-n-p)
-#+END_SRC
+ #+BEGIN_SRC emacs-lisp
+ (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+ (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+ (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+ #+END_SRC
 
-** Transparently open compressed files
+**** No welcome screen
 
-#+BEGIN_SRC emacs-lisp
-(auto-compression-mode t)
-#+END_SRC
+ #+BEGIN_SRC emacs-lisp
+ (setq  inhibit-startup-message t)
+ #+END_SRC
 
-** Always display line and column numbers
-#+BEGIN_SRC emacs-lisp
-(setq line-number-mode t)
-(setq column-number-mode t)
-#+END_SRC
-** Windows configuration
-*** No menu and toolbar
+*** Make fringe smaller
 
-#+BEGIN_SRC emacs-lisp
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-#+END_SRC
+ #+BEGIN_SRC emacs-lisp
+   (if (fboundp 'fringe-mode)
+       (fringe-mode 2))
+ #+END_SRC
+** Sane default settings
+*** Miscellaneous
+ #+BEGIN_SRC emacs-lisp
+ (setq initial-major-mode 'lisp-interaction-mode
+       redisplay-dont-pause t
+       column-number-mode t
+       echo-keystrokes 0.02
+       transient-mark-mode t
+       shift-select-mode nil
+       require-final-newline t
+       truncate-partial-width-windows nil
+       delete-by-moving-to-trash t
+       confirm-nonexistent-file-or-buffer nil
+       query-replace-highlight t)
+ #+END_SRC
+*** Indentation & Tabs
+**** Default indentation
+ Always spaces with width of 4
+ #+BEGIN_SRC emacs-lisp
+ (setq-default indent-tabs-mode nil)
+ (setq-default tab-width 4)
+ #+END_SRC
+**** Indent new line if necessary
+ #+BEGIN_SRC emacs-lisp
+ (define-key global-map (kbd "RET") 'newline-and-indent)
+ #+END_SRC
+*** Transparently open compressed files
 
-*** No welcome screen
+ #+BEGIN_SRC emacs-lisp
+ (auto-compression-mode t)
+ #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-(setq  inhibit-startup-message t)
-#+END_SRC
+*** Always display line and column numbers
+ #+BEGIN_SRC emacs-lisp
+ (setq line-number-mode t)
+ (setq column-number-mode t)
+ #+END_SRC
+*** Answering just 'y' or 'n'
 
-** Make fringe smaller
+ #+BEGIN_SRC emacs-lisp
+ (defalias 'yes-or-no-p 'y-or-n-p)
+ #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-  (if (fboundp 'fringe-mode)
-      (fringe-mode 2))
-#+END_SRC
-* General configuration
-** Sane settings
-#+BEGIN_SRC emacs-lisp
-(setq initial-major-mode 'lisp-interaction-mode
-      redisplay-dont-pause t
-      column-number-mode t
-      echo-keystrokes 0.02
-      transient-mark-mode t
-      shift-select-mode nil
-      require-final-newline t
-      truncate-partial-width-windows nil
-      delete-by-moving-to-trash t
-      confirm-nonexistent-file-or-buffer nil
-      query-replace-highlight t)
-#+END_SRC
-** Disable annoying audio notifications
-#+BEGIN_SRC emacs-lisp
-(setq ring-bell-function 'ignore)
-#+END_SRC
-** UTF-8
-Set all coding systems to utf-8
-#+BEGIN_SRC emacs-lisp
-(prefer-coding-system 'utf-8-unix)
-(set-clipboard-coding-system 'utf-8-unix)
-(set-default-coding-systems 'utf-8-unix)
-(set-keyboard-coding-system 'utf-8-unix)
-(set-language-environment 'utf-8)
-(set-selection-coding-system 'utf-8-unix)
-(set-terminal-coding-system 'utf-8-unix)
-(setq locale-coding-system 'utf-8-unix)
-(setq coding-system-for-write 'utf-8-unix)
-(setq default-buffer-file-coding-system 'utf-8-unix)
-(setq default-process-coding-system '(utf-8-unix . utf-8-unix))
-(setq file-name-coding-system  'utf-8)
-#+END_SRC
-** Indentation & Tabs
-*** Default indentation
-Always spaces with width of 4
-#+BEGIN_SRC emacs-lisp
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-#+END_SRC
-*** Indent new line if necessary
-#+BEGIN_SRC emacs-lisp
-(define-key global-map (kbd "RET") 'newline-and-indent)
-#+END_SRC
-** Cleanup before save
-Remove all trailing whitespace and trailing blank lines before saving the file
-#+BEGIN_SRC emacs-lisp
-(add-hook 'before-save-hook 'whitespace-cleanup)
-#+END_SRC
-** Lines should be 80 characters
-#+BEGIN_SRC emacs-lisp
-(setq fill-column 80)
-#+END_SRC
+*** Increase or decrease text scale
+ #+BEGIN_SRC emacs-lisp
+ (global-set-key (kbd "C-+") 'text-scale-increase)
+ (global-set-key (kbd "C--") 'text-scale-decrease)
+ #+END_SRC
+*** Lines should be 80 characters
+ #+BEGIN_SRC emacs-lisp
+ (setq fill-column 80)
+ #+END_SRC
+*** Disable annoying audio notifications
+ #+BEGIN_SRC emacs-lisp
+ (setq ring-bell-function 'ignore)
+ #+END_SRC
+*** UTF-8
+ Set all coding systems to utf-8
+ #+BEGIN_SRC emacs-lisp
+ (prefer-coding-system 'utf-8-unix)
+ (set-clipboard-coding-system 'utf-8-unix)
+ (set-default-coding-systems 'utf-8-unix)
+ (set-keyboard-coding-system 'utf-8-unix)
+ (set-language-environment 'utf-8)
+ (set-selection-coding-system 'utf-8-unix)
+ (set-terminal-coding-system 'utf-8-unix)
+ (setq locale-coding-system 'utf-8-unix)
+ (setq coding-system-for-write 'utf-8-unix)
+ (setq default-buffer-file-coding-system 'utf-8-unix)
+ (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+ (setq file-name-coding-system  'utf-8)
+ #+END_SRC
 ** Hooks
+*** Cleanup before save
+ Remove all trailing whitespace and trailing blank lines before saving the file
+ #+BEGIN_SRC emacs-lisp
+ (add-hook 'before-save-hook 'whitespace-cleanup)
+ #+END_SRC
 *** Copying lines without selecting them
    From http://emacs-fu.blogspot.fr/2009/11/copying-lines-without-selecting-them.html
     - =M-w= will copy current line without selection
@@ -179,7 +183,6 @@ Remove all trailing whitespace and trailing blank lines before saving the file
        (message "Copied line") (list (line-beginning-position) (line-beginning-position 2)))))
 
 #+end_src
-
 
 * Advanced Configuration
 ** Auto-completion
@@ -318,6 +321,95 @@ Enable C-x C-j
 #+begin_src emacs-lisp
   (setq dired-dwim-target t)
 #+end_src
+** Editing
+*** Copy file name to clipboard
+ #+BEGIN_SRC emacs-lisp
+ (defun nc/copy-file-name-to-clipboard ()
+   "Copy the current buffer file name to the clipboard."
+   (interactive)
+   (let ((filename (if (equal major-mode 'dired-mode)
+                       default-directory
+                     (buffer-file-name))))
+     (when filename
+       (kill-new filename)
+       (message "Copied buffer file name '%s' to the clipboard." filename))))
+ #+END_SRC
+
+*** Duplicate line
+ Duplicate line with =C-c d=
+ #+BEGIN_SRC emacs-lisp
+ (defun nc/duplicate-current-line-or-region (arg)
+   "Duplicates the current line or region ARG times.
+ If there's no region, the current line will be duplicated.  However, if
+ there's a region, all lines that region covers will be duplicated."
+   (interactive "p")
+   (let (beg end (origin (point)))
+     (if (and mark-active (> (point) (mark)))
+         (exchange-point-and-mark))
+     (setq beg (line-beginning-position))
+     (if mark-active
+         (exchange-point-and-mark))
+     (setq end (line-end-position))
+     (let ((region (buffer-substring-no-properties beg end)))
+       (-dotimes arg
+                 (lambda (n)
+                   (goto-char end)
+                   (newline)
+                   (insert region)
+                   (setq end (point))))
+       (goto-char (+ origin (* (length region) arg) arg)))))
+ #+END_SRC
+
+ #+BEGIN_SRC emacs-lisp
+ (bind-key "C-c d" 'nc/duplicate-current-line-or-region)
+ #+END_SRC
+
+*** Join lines
+ #+BEGIN_SRC emacs-lisp
+ (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
+ #+END_SRC
+*** Kill
+ Prefer backward-kill-word over Backspace
+ https://sites.google.com/site/steveyegge2/effective-emacs
+
+ #+BEGIN_SRC emacs-lisp
+ (global-set-key "\C-w" 'backward-kill-word)
+ (global-set-key "\C-x\C-k" 'kill-region)
+ #+END_SRC
+**** Kill whole line
+ Kill whole line with
+ #+BEGIN_SRC emacs-lisp
+ (global-set-key (kbd "S-<backspace>") 'kill-whole-line)
+ #+END_SRC
+
+*** Move Line
+**** Move line Up
+ Move line Up is bound to =C-S-UpArrow=
+
+ #+BEGIN_SRC emacs-lisp
+ (defun nc/move-line-up ()
+   "Move up the current line."
+   (interactive)
+   (transpose-lines 1)
+   (forward-line -2)
+   (indent-according-to-mode))
+
+ (global-set-key [(control shift up)]  'nc/move-line-up)
+ #+END_SRC
+**** Move line down
+ Move line down is bound to =C-S-DownArrow=
+
+ #+BEGIN_SRC emacs-lisp
+ (defun nc/move-line-down ()
+   "Move down the current line."
+   (interactive)
+   (forward-line 1)
+   (transpose-lines 1)
+   (forward-line -1)
+   (indent-according-to-mode))
+
+ (global-set-key [(control shift down)]  'nc/move-line-down)
+ #+END_SRC
 
 ** Exec Path From Shell
 
@@ -440,9 +532,10 @@ Expand region increases the selected region by semantic units. Just keep pressin
 *** helm-ag
 Can integrate Helm with [[https://github.com/ggreer/the_silver_searcher][The Silver Searcher]] (ag A code searching tool similar to ack, with a focus on speed.)
 
-
 #+BEGIN_SRC emacs-lisp
 (use-package helm-ag)
+
+(global-set-key (kbd "C-<f2>") 'helm-do-ag)
 #+END_SRC
 *** helm-tramp
 Display server list from your =~/.ssh/config= with helm interface
@@ -479,6 +572,8 @@ Search in org headings / content like Google
     (if (eq major-mode 'org-mode)
         (call-interactively #'helm-org-in-buffer-headings)
       (call-interactively #'helm-semantic-or-imenu)))
+
+  (global-set-key (kbd "C-<f12>") 'nc/helm-in-buffer)
 #+end_src
 ** Hippie expand
 Looks at the word before point and tries  to expand it.
@@ -507,6 +602,26 @@ Looks at the word before point and tries  to expand it.
      version-control t        ; numbered versions
 )
  #+END_SRC
+** Key Chords
+#+BEGIN_SRC emacs-lisp
+  (use-package key-chord
+    :init
+    (key-chord-mode 1)
+    (key-chord-define-global "jj" 'ace-jump-word-mode)
+    (key-chord-define-global "jl" 'ace-jump-line-mode)
+    (key-chord-define-global "jk" 'ace-jump-char-mode)
+    (key-chord-define-global "FF" 'projectile-find-file)
+    (key-chord-define-global "GG" 'helm-projectile-ag)
+    (key-chord-define-global "HH" 'nc/helm-org-rifle-agenda-files)
+    (key-chord-define-global "JJ" 'jump-to-register)
+    (key-chord-define-global "DD" 'delete-region)
+    (key-chord-define-global "OO" 'helm-occur)
+    (key-chord-define-global "??" 'nc/helm-do-grep-notes)
+    (key-chord-define-global "BB" 'beginning-of-buffer)
+    (key-chord-define-global "WW" 'nc/swap-windows)
+    (key-chord-define-global "$$" 'end-of-buffer)
+    (key-chord-define-global "kk" 'kill-this-buffer))
+#+END_SRC
 ** Mac OS
 MacOS specific configuration
 *** Dired for OS X
@@ -543,6 +658,20 @@ MacOS specific configuration
   (when is-mac
     (set-locale-environment "fr_FR.UTF-8"))
 #+END_SRC
+** Magit
+#+BEGIN_QUOTE
+Magit a git porcelain inside Emacs !
+
+[[https://github.com/magit/magit]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :bind (("C-x g" . magit-status)))
+
+  (global-set-key (kbd "<f6>") 'magit-status)
+  (global-set-key (kbd "C-<f6>") 'magit-log-buffer-file)
+#+END_SRC
 ** Navigation
 *** ace-jump
  #+BEGIN_SRC emacs-lisp
@@ -550,6 +679,10 @@ MacOS specific configuration
      :bind
      (("C-c /" . ace-jump-mode)
       ("C-c k". ace-jump-mode-pop-mark)))
+ #+END_SRC
+*** Goto line
+ #+BEGIN_SRC emacs-lisp
+ (global-set-key (kbd "M-g")         'goto-line)
  #+END_SRC
 *** Move to beginning of file
  From  [[https://github.com/bbatsov/prelude]]
@@ -638,6 +771,20 @@ Emacs - you can then access this list through a command or the menu.
                (setq recentf-max-saved-items 100)))
 #+END_SRC
 
+** Registers
+Registers can be used to navigate to specific files, used by key chord =JJ=
+#+begin_src emacs-lisp
+  (dolist (r `((?n (file . ,(concat user-emacs-directory "nchapon.org")))
+               (?i (file . ,(concat org-directory "GTD/office.org")))
+               (?t (file . ,(concat org-directory "GTD/todo.org")))
+               (?w (file . ,(concat org-directory "GTD/watching.org")))))
+    (set-register (car r) (cadr r)))
+#+end_src
+** Search
+*** Rgrep
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<f2>") 'rgrep)
+#+END_SRC
 ** Undo Tree
 This lets you use =C-x u= (=undo-tree-visualize=)
 #+BEGIN_SRC emacs-lisp
@@ -650,17 +797,6 @@ This lets you use =C-x u= (=undo-tree-visualize=)
     (setq undo-tree-visualizer-diff t)))
 #+END_SRC
 
-** Version Control
-#+BEGIN_QUOTE
-Magit a git porcelain inside Emacs !
-
-[[https://github.com/magit/magit]]
-#+END_QUOTE
-
-#+BEGIN_SRC emacs-lisp
-  (use-package magit
-    :bind (("C-x g" . magit-status)))
-#+END_SRC
 ** Which Key
 
 #+BEGIN_QUOTE
@@ -847,10 +983,11 @@ Rotate windows with =C-c r=
 ** Global preferences
 *** Global keys
  #+BEGIN_SRC emacs-lisp
- (bind-key "\C-cl" 'org-store-link)
- (bind-key "\C-cc" 'org-capture)
- (bind-key "\C-ca" 'org-agenda)
- (bind-key "\C-cb" 'org-iswitchb)
+   (bind-key "\C-cl" 'org-store-link)
+   (bind-key "\C-cc" 'org-capture)
+   (bind-key "\C-ca" 'org-agenda)
+   (bind-key "<f12>" 'org-agenda)
+   (bind-key "\C-cb" 'org-iswitchb)
  #+END_SRC
 *** Custom ellipsis
 #+BEGIN_SRC emacs-lisp
@@ -968,7 +1105,8 @@ Too many clock entries clutter up a heading.
 #+begin_src emacs-lisp
   (use-package org
     :bind (("C-c C-x C-i" . nc/org-clock-in)
-           ("C-c C-x C-o" . org-clock-out))
+           ("C-c C-x C-o" . org-clock-out)
+           ("M-<f11>" . org-clock-goto))
     :config
     (progn
       ;; Insinuate it everywhere
@@ -1076,20 +1214,20 @@ My custom agends commands are restricted to some files.
 
     #+BEGIN_SRC emacs-lisp
       (defun org-current-is-todo ()
-             (string= "NEXT" (org-get-todo-state)))
+        (string= "NEXT" (org-get-todo-state)))
 
       (defun org-agenda-skip-all-siblings-but-first ()
-             "Skip all but the first non-done entry."
-             (let (should-skip-entry)
-               (unless (org-current-is-todo)
-                 (setq should-skip-entry t))
-               (save-excursion
-                 (while (and (not should-skip-entry) (org-goto-sibling t))
-                   (when (org-current-is-todo)
-                     (setq should-skip-entry t))))
-               (when should-skip-entry
-                 (or (outline-next-heading)
-                     (goto-char (point-max))))))
+        "Skip all but the first non-done entry."
+        (let (should-skip-entry)
+          (unless (org-current-is-todo)
+            (setq should-skip-entry t))
+          (save-excursion
+            (while (and (not should-skip-entry) (org-goto-sibling t))
+              (when (org-current-is-todo)
+                (setq should-skip-entry t))))
+          (when should-skip-entry
+            (or (outline-next-heading)
+                (goto-char (point-max))))))
 
       (require 'org-agenda)
       (setq nc/org-agenda-inbox-view
@@ -1161,6 +1299,7 @@ My custom agends commands are restricted to some files.
             `(,nc/org-agenda-inbox-view
               ,nc/org-agenda-todo-view
               ,nc/org-agenda-context-view))
+
     #+END_SRC
 ** Taking notes
 *** Capture templates
@@ -1933,143 +2072,6 @@ Allow =M-== to choosing a snippet using helm (helm source for yasnippet)
   :config (setq helm-yas-space-match-any-greedy t))
 #+END_SRC
 
-* Global keymap
-** Duplicate line
-Duplicate line with =C-c d=
-#+BEGIN_SRC emacs-lisp
-(defun nc/duplicate-current-line-or-region (arg)
-  "Duplicates the current line or region ARG times.
-If there's no region, the current line will be duplicated.  However, if
-there's a region, all lines that region covers will be duplicated."
-  (interactive "p")
-  (let (beg end (origin (point)))
-    (if (and mark-active (> (point) (mark)))
-        (exchange-point-and-mark))
-    (setq beg (line-beginning-position))
-    (if mark-active
-        (exchange-point-and-mark))
-    (setq end (line-end-position))
-    (let ((region (buffer-substring-no-properties beg end)))
-      (-dotimes arg
-                (lambda (n)
-                  (goto-char end)
-                  (newline)
-                  (insert region)
-                  (setq end (point))))
-      (goto-char (+ origin (* (length region) arg) arg)))))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(bind-key "C-c d" 'nc/duplicate-current-line-or-region)
-#+END_SRC
-
-** Move Line
-*** Move line Up
-Move line Up is bound to =C-S-UpArrow=
-
-#+BEGIN_SRC emacs-lisp
-(defun nc/move-line-up ()
-  "Move up the current line."
-  (interactive)
-  (transpose-lines 1)
-  (forward-line -2)
-  (indent-according-to-mode))
-
-(global-set-key [(control shift up)]  'nc/move-line-up)
-#+END_SRC
-*** Move line down
-Move line down is bound to =C-S-DownArrow=
-
-#+BEGIN_SRC emacs-lisp
-(defun nc/move-line-down ()
-  "Move down the current line."
-  (interactive)
-  (forward-line 1)
-  (transpose-lines 1)
-  (forward-line -1)
-  (indent-according-to-mode))
-
-(global-set-key [(control shift down)]  'nc/move-line-down)
-#+END_SRC
-
-** Join lines
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
-#+END_SRC
-** Increase or decrease text scale
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-+") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-#+END_SRC
-** Copy file name to clipboard
-#+BEGIN_SRC emacs-lisp
-(defun nc/copy-file-name-to-clipboard ()
-  "Copy the current buffer file name to the clipboard."
-  (interactive)
-  (let ((filename (if (equal major-mode 'dired-mode)
-                      default-directory
-                    (buffer-file-name))))
-    (when filename
-      (kill-new filename)
-      (message "Copied buffer file name '%s' to the clipboard." filename))))
-#+END_SRC
-** Kill
-Prefer backward-kill-word over Backspace
-https://sites.google.com/site/steveyegge2/effective-emacs
-
-#+BEGIN_SRC emacs-lisp
-(global-set-key "\C-w" 'backward-kill-word)
-(global-set-key "\C-x\C-k" 'kill-region)
-#+END_SRC
-** Global keys for usefuls functions
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f2>") 'rgrep)
-  (global-set-key (kbd "C-<f2>") 'helm-do-ag)
-
-  (global-set-key (kbd "<f6>") 'magit-status)
-  (global-set-key (kbd "C-<f6>") 'magit-log-buffer-file)
-
-  ;; Org mode keys
-  (global-set-key (kbd "M-<f11>") 'org-clock-goto)
-  (global-set-key (kbd "<f12>") 'org-agenda)
-
-  (global-set-key (kbd "C-<f12>") 'nc/helm-in-buffer)
-
-#+END_SRC
-** Goto line
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "M-g")         'goto-line)
-#+END_SRC
-** Registers
-Used by key chord =JJ=
-#+begin_src emacs-lisp
-  (dolist (r `((?n (file . ,(concat user-emacs-directory "nchapon.org")))
-               (?i (file . ,(concat org-directory "GTD/office.org")))
-               (?t (file . ,(concat org-directory "GTD/todo.org")))
-               (?w (file . ,(concat org-directory "GTD/watching.org")))))
-    (set-register (car r) (cadr r)))
-#+end_src
-** Key Chords
-#+BEGIN_SRC emacs-lisp
-  (use-package key-chord
-    :init
-    (key-chord-mode 1)
-    (key-chord-define-global "jj" 'ace-jump-word-mode)
-    (key-chord-define-global "jl" 'ace-jump-line-mode)
-    (key-chord-define-global "jk" 'ace-jump-char-mode)
-    (key-chord-define-global "FF" 'projectile-find-file)
-    (key-chord-define-global "GG" 'helm-projectile-ag)
-    (key-chord-define-global "HH" 'nc/helm-org-rifle-agenda-files)
-    (key-chord-define-global "KK" 'kill-whole-line)
-    (key-chord-define-global "JJ" 'jump-to-register)
-    (key-chord-define-global "DD" 'delete-region)
-    (key-chord-define-global "OO" 'helm-occur)
-    (key-chord-define-global "??" 'nc/helm-do-grep-notes)
-    (key-chord-define-global "BB" 'beginning-of-buffer)
-    (key-chord-define-global "WW" 'nc/swap-windows)
-    (key-chord-define-global "$$" 'end-of-buffer)
-    (key-chord-define-global "kk" 'kill-this-buffer))
-#+END_SRC
 * Emacs Server
 
 #+BEGIN_SRC emacs-lisp
@@ -2116,6 +2118,6 @@ Generates a strong password
 
 * Notes
 ** Inspiration configs
-https://writequit.org/org/settings.html
-https://github.com/yveszoundi/emacs.d/blob/master/bootstrap/startup.org
-W
+  - https://writequit.org/org/settings.html
+  - https://github.com/yveszoundi/emacs.d/blob/master/bootstrap/startup.org
+  - https://github.com/rememberYou/.emacs.d
