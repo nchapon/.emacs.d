@@ -667,10 +667,9 @@ Magit a git porcelain inside Emacs !
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :bind (("C-x g" . magit-status)))
-
-  (global-set-key (kbd "<f6>") 'magit-status)
-  (global-set-key (kbd "C-<f6>") 'magit-log-buffer-file)
+    :bind (("C-x g" . magit-status)
+           ("<f6>" . magit-status )
+           ("C-<f6>" . magit-log-buffer-file)))
 #+END_SRC
 ** Navigation
 *** ace-jump
