@@ -672,6 +672,11 @@ Magit a git porcelain inside Emacs !
            ("C-<f6>" . magit-log-buffer-file)))
 #+END_SRC
 ** Navigation
+*** Basic navigation
+#+BEGIN_SRC emacs-lisp
+  (bind-key "s-<up>" 'beginning-of-buffer) ;; first line
+  (bind-key "s-<down>" 'end-of-buffer)     ;; last line
+#+END_SRC
 *** ace-jump
  #+BEGIN_SRC emacs-lisp
    (use-package ace-jump-mode
@@ -683,7 +688,7 @@ Magit a git porcelain inside Emacs !
  #+BEGIN_SRC emacs-lisp
  (global-set-key (kbd "M-g")         'goto-line)
  #+END_SRC
-*** Move to beginning of file
+*** Move to beginning of line
  From  [[https://github.com/bbatsov/prelude]]
  See article [[http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/]]
  #+BEGIN_SRC emacs-lisp
@@ -1484,7 +1489,7 @@ Insert time slot mainly used when I schedule meeting or appointment.
             )))
  #+END_SRC
 
-** Babel (Literate Programming)
+** Babe
 *** Babel languages
 
 #+begin_src emacs-lisp
