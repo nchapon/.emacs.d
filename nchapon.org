@@ -1977,6 +1977,13 @@ Then we can setup Emacs go mode
     (end-of-line-compile))
 
 #+end_src
+** asciidoc
+
+#+BEGIN_SRC emacs-lisp
+  (use-package adoc-mode
+    :ensure t
+    :mode "\\.adoc?\\'")
+#+END_SRC
 
 ** Web
 *** Yaml modes
