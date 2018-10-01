@@ -622,14 +622,16 @@ Looks at the word before point and tries  to expand it.
     (key-chord-define-global "$$" 'end-of-buffer)
     (key-chord-define-global "kk" 'kill-this-buffer))
 #+END_SRC
-** Mac OS
-MacOS specific configuration
-*** Dired for OS X
+** OS Specific Settings
+*** Dired options
 
 #+BEGIN_SRC emacs-lisp
-  (let ((gls "/usr/local/bin/gls"))
-    (if (file-exists-p gls)
-        (setq insert-directory-program gls)))
+   ;; brew install coreutils
+  (if (executable-find "gls")
+      (progn
+        (setq insert-directory-program "gls")
+        (setq dired-listing-switches "-lFaGh1v --group-directories-first"))
+    (setq dired-listing-switches "-ahlF"))
 #+END_SRC
 
 *** Keys for apple keyboard
