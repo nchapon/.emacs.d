@@ -746,13 +746,14 @@ Help keeping =~/.emacs.d= clean
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :diminish projectile-mode
-    :init (progn
-            (setq projectile-keymap-prefix (kbd "C-c p"))
-            (setq projectile-enable-caching t)
-            ;; Custom mode line
-            (setq projectile-mode-line '(:eval (format " Ⓟ[%s]" (projectile-project-name)))))
 
+    :init
+    (setq projectile-enable-caching t)
+    ;; Custom mode line
+    (setq projectile-mode-line '(:eval (format " Ⓟ[%s]" (projectile-project-name))))
+    :bind-keymap ("C-c p" . projectile-command-map)
     :config
+    ;;(setq projectile-keymap-prefix (kbd "C-c p"))
     (add-to-list 'projectile-globally-ignored-directories "elpa")
     (add-to-list 'projectile-globally-ignored-directories "target")
     (add-to-list 'projectile-globally-ignored-directories ".cache")
