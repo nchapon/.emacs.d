@@ -1039,10 +1039,8 @@ Rotate windows with =C-c r=
 *** Bullet Module
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
-    :init
-    (setq org-bullets-bullet-list '("⊢" "⋮" "⋱" "⋱" "⋱"))
-    :config
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+    :hook (org-mode . org-bullets-mode)
+    :custom (org-bullets-bullet-list '("⚫" "◯" "￭" "➤" "○" "○" "○")))
 #+END_SRC
 
 Hiding leading bullets in headers
