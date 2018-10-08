@@ -5,7 +5,35 @@
 #+END_SRC
 
 * Emacs Initialization
-** Make It Easy to edit this files
+** Packages Sources
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'package-archives
+         '("melpa" . "http://melpa.org/packages/"))
+#+END_SRC
+** use-package
+ Use package default configuration
+ #+BEGIN_SRC emacs-lisp
+   (unless (package-installed-p 'use-package)
+       (package-refresh-contents)
+       (package-install 'use-package))
+
+   (setq use-package-verbose t)
+   (setq use-package-always-ensure t)
+   (require 'use-package)
+   (use-package auto-compile
+     :config (auto-compile-on-load-mode))
+
+   (use-package diminish)
+ #+END_SRC
+** Globals
+
+#+BEGIN_SRC emacs-lisp
+  (defconst is-mac (equal system-type 'darwin))
+  (defconst is-linux (equal system-type 'gnu/linux))
+  (defconst has-gui (display-graphic-p))
+#+END_SRC
+
+** Make It Easy to edit this file
 
 #+begin_src emacs-lisp
   (defun nc/find-config ()
@@ -16,25 +44,6 @@
     (global-set-key (kbd "C-c I") 'nc/find-config)
 #+end_src
 
-** Globals
-
-#+BEGIN_SRC emacs-lisp
-  (defconst is-mac (equal system-type 'darwin))
-  (defconst is-linux (equal system-type 'gnu/linux))
-  (defconst has-gui (display-graphic-p))
-#+END_SRC
-
-** use-package
- Use package default configuration
- #+BEGIN_SRC emacs-lisp
-   (setq use-package-verbose t)
-   (setq use-package-always-ensure t)
-   (require 'use-package)
-   (use-package auto-compile
-     :config (auto-compile-on-load-mode))
-
-   (use-package diminish)
- #+END_SRC
 ** Customization
 To avoid overloading the GNU Emacs custormization =init.el= file made by the
 user with the UI, I add the generated code in a separate file.
