@@ -35,26 +35,21 @@
 
    (use-package diminish)
  #+END_SRC
+** Customization
+To avoid overloading the GNU Emacs custormization =init.el= file made by the
+user with the UI, I add the generated code in a separate file.
+
+#+BEGIN_SRC emacs-lisp
+  (setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (when (file-exists-p custom-file)
+    (load custom-file t))
+#+END_SRC
+
 * Start Up
 ** Visuals
 *** Theme
  Using moe theme dark all the day
  #+BEGIN_SRC emacs-lisp
-   ;; (use-package moe-theme
-   ;;    :config
-   ;;    (progn
-
-   ;;      (moe-dark)
-
-   ;;      ;; (use-package moe-theme-switcher
-   ;;      ;;     :ensure moe-theme)
-
-   ;;      (use-package powerline
-   ;;        :config
-   ;;        (powerline-moe-theme))))
-
-
-
    (use-package doom-themes
 
      :config
