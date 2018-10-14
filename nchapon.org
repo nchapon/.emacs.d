@@ -968,8 +968,8 @@ Rotate windows with =C-c r=
                           (file-expand-wildcards (concat org-directory "*/*/*.org"))
                           (file-expand-wildcards (concat org-directory "*/*/*/*.org"))))
 #+end_src
-*** Notes
-**** Org default notes file
+*** Journal
+**** Default journal file
       - one default notes files by month in *GTD/journal/* folder
       - global key *C-c j* to access to this file
 #+begin_src emacs-lisp
@@ -988,7 +988,7 @@ Rotate windows with =C-c r=
 
   (global-set-key (kbd "C-c j") 'nc/org-find-current-month-notes-file)
 #+end_src
-**** Journal naivgation
+**** Journal navigation
 
 #+begin_src emacs-lisp
 
@@ -1040,7 +1040,7 @@ Rotate windows with =C-c r=
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
-    :custom (org-bullets-bullet-list '("⚫" "◯" "￭" "➤" "○" "○" "○")))
+    :custom (org-bullets-bullet-list '("⚫" "◯" "◇" "➤" "○" "○" "○")))
 #+END_SRC
 
 Hiding leading bullets in headers
