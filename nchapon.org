@@ -1020,6 +1020,32 @@ Rotate windows with =C-c r=
     (interactive)
     (find-file (concat org-directory "GTD/journal/" (nc--org-calculate-month-file-offset (file-name-base) nil) ".org")))
 #+end_src
+*** org-journal
+#+BEGIN_SRC emacs-lisp
+  (use-package org-journal
+         :ensure t
+          :init
+          (setq org-journal-dir "~/notes/GTD/journal/")
+          (setq org-journal-date-format "#+TITLE: Journal Entry - %e %b %Y (%A)")
+          (setq org-journal-time-format "")
+          (setq org-journal-file-format "%Y-%m-%d.org"))
+#+END_SRC
+
+**** Function to easily load today
+
+ #+BEGIN_SRC emacs-lisp
+   (defun get-journal-file-today ()
+     "Return filename for today's journal entry."
+     (let ((daily-name (format-time-string "%Y-%m-%d.org")))
+       (expand-file-name (concat org-journal-dir daily-name))))
+
+   (defun journal-file-today ()
+     "Create and load a journal file based on today's date."
+     (interactive)
+     (find-file (get-journal-file-today)))
+
+   (global-set-key (kbd "C-c f j") 'journal-file-today)
+ #+END_SRC
 
 ** Global preferences
 *** Global keys
@@ -1216,7 +1242,7 @@ By default all files in GTD and journal folder will be in my agenda, to be searc
 
 My custom agends commands are restricted to some files.
 #+BEGIN_SRC emacs-lisp
-  (setq org-agenda-files (list "~/notes/GTD/" "~/notes/GTD/journal/")
+  (setq org-agenda-files (list "~/notes/GTD/" "~/notes/GTD/journal/" "~/notes/GTD/journal/emacs/")
         org-agenda-span 'day
         org-agenda-start-on-weekday nil
         org-agenda-skip-deadline-if-done t
