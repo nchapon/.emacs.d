@@ -1026,7 +1026,7 @@ Rotate windows with =C-c r=
          :ensure t
           :init
           (setq org-journal-dir "~/notes/GTD/journal/")
-          (setq org-journal-date-format "#+TITLE: Journal Entry - %e %b %Y (%A)")
+          (setq org-journal-date-format "#+TITLE: %e %b %Y (%A)")
           (setq org-journal-time-format "")
           (setq org-journal-file-format "%Y-%m-%d.org"))
 #+END_SRC
