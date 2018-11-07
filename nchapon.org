@@ -968,68 +968,17 @@ Rotate windows with =C-c r=
                           (file-expand-wildcards (concat org-directory "*/*/*.org"))
                           (file-expand-wildcards (concat org-directory "*/*/*/*.org"))))
 #+end_src
-*** Journal
-**** Default journal file
-      - one default notes files by month in *GTD/journal/* folder
-      - global key *C-c j* to access to this file
-#+begin_src emacs-lisp
-  (defun nc--org-current-month-notes-file ()
-      "Get the path of the org file for the current month."
-      (concat org-directory "GTD/journal/"
-              (downcase (format-time-string "%Y-%m.org"))))
-
-  (setq org-default-notes-file (nc--org-current-month-notes-file))
-
-  (defun nc/org-find-current-month-notes-file ()
-      "Find the org file for the current month"
-      (interactive)
-      (setq nc/current-month-notes-last-visited (format-time-string "%D"))
-      (find-file org-default-notes-file))
-
-  (global-set-key (kbd "C-c j") 'nc/org-find-current-month-notes-file)
-#+end_src
-**** Journal navigation
-
-#+begin_src emacs-lisp
-
-  (defvar nc/org-months '("01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12"))
-
-  (defun nc--org-calculate-month-file-offset (filename offset)
-    "Calculate the name of the neighbouring month file to FILENAME.
-  FILENAME is expected to be of the form <year>-<monthname>, e.g. 2016-november.
-  OFFSET is t for next month, or nil for previous month."
-    (let* ((pieces (split-string filename "-"))
-           (year (string-to-number (car pieces)))
-           (month (cadr pieces))
-           (month-number (position month nc/org-months :test 'equal)))
-      (if offset
-          (if (eq month-number 11)
-              (concat (number-to-string (+ year 1)) "-01")
-            (concat (number-to-string year) "-" (nth (+ month-number 1) nc/org-months)))
-        (if (eq month-number 0)
-            (concat (number-to-string (- year 1)) "-12")
-          (concat (number-to-string year) "-" (nth (- month-number 1) nc/org-months))))))
-
-  (defun nc/org-go-to-next-month ()
-    "Go to the next month org file."
-    (interactive)
-    (find-file (concat org-directory "GTD/journal/" (nc--org-calculate-month-file-offset (file-name-base) t) ".org")))
-
-  (defun nc/org-go-to-previous-month ()
-    "Go to the previous month org file."
-    (interactive)
-    (find-file (concat org-directory "GTD/journal/" (nc--org-calculate-month-file-offset (file-name-base) nil) ".org")))
-#+end_src
-*** org-journal
-#+BEGIN_SRC emacs-lisp
-  (use-package org-journal
-         :ensure t
-          :init
-          (setq org-journal-dir "~/notes/GTD/journal/")
-          (setq org-journal-date-format "#+TITLE: %e %b %Y (%A)")
-          (setq org-journal-time-format "")
-          (setq org-journal-file-format "%Y-%m-%d.org"))
-#+END_SRC
+*** Org Journal
+**** Configuration
+ #+BEGIN_SRC emacs-lisp
+   (use-package org-journal
+          :ensure t
+           :init
+           (setq org-journal-dir "~/notes/GTD/journal/")
+           (setq org-journal-date-format "%e %b %Y (%A)")
+           (setq org-journal-time-format "")
+           (setq org-journal-file-format "%Y-%m-%d.org"))
+ #+END_SRC
 
 **** Function to easily load today
 
@@ -1046,6 +995,7 @@ Rotate windows with =C-c r=
 
    (global-set-key (kbd "C-c f j") 'journal-file-today)
  #+END_SRC
+
 **** Auto Insert
 
    #+BEGIN_SRC emacs-lisp
@@ -1057,7 +1007,7 @@ Rotate windows with =C-c r=
               (day   (string-to-number (substring (buffer-name) 8 10)))
               (datim (encode-time 0 0 0 day month year)))
 
-         (insert (format-time-string org-journal-date-format datim))
+         (insert (format-time-string (concat "#+TITLE:" org-journal-date-format) datim))
          (insert "\n")
 
          ;; Note: The `insert-file-contents' leaves the cursor at the
@@ -1086,7 +1036,11 @@ Rotate windows with =C-c r=
              (yas-expand-snippet contents (point-min) (point-max))))
          ))
    #+END_SRC
-
+*** Default notes file
+One default notes files by day in *GTD/journal/* folder
+#+BEGIN_SRC emacs-lisp
+(setq org-default-notes-file (get-journal-file-today))
+#+END_SRC
 ** Global preferences
 *** Global keys
  #+BEGIN_SRC emacs-lisp
@@ -1443,15 +1397,10 @@ My templates :
       %?
 
       %U" :prepend t)
-          ("N" "Note" entry (file+datetree org-default-notes-file)
-           "* %? %^G \n%i\n")
-
           ("m" "Meeting" entry (file+headline nc/calendar-file "Réunions")
            "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
           ("a" "RendezVous" entry (file+headline nc/calendar-file "RendezVous")
                  "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-          ("j" "Journal" entry (file+datetree org-default-notes-file)
-           "* %?\n %i \n\n%U")
           ("w" "WeeklyReview" entry (file+datetree+prompt nc/weekly-review-file)
            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
            ("D" "Done Business Task" entry
@@ -1591,7 +1540,7 @@ Insert time slot mainly used when I schedule meeting or appointment.
             )))
  #+END_SRC
 
-** Babe
+** Babel
 *** Babel languages
 
 #+begin_src emacs-lisp
