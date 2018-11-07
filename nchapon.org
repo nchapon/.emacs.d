@@ -1068,11 +1068,6 @@ Hiding leading bullets in headers
 #+begin_src emacs-lisp
   (setq org-hide-leading-stars t)
 #+end_src
-*** Mind Map
-#+begin_src emacs-lisp
-  ;; Error with emacs 25
-  ;;(use-package org-mind-map)
-#+end_src
 *** ox-pandoc
 Export Org documents via Pandoc
 #+begin_src emacs-lisp
