@@ -1392,6 +1392,9 @@ My templates :
       %?
 
       %U" :prepend t)
+          ("j" "Journal Note" entry
+           (file org-default-notes-file)
+           "* %?\n\n  %i\n\n  From: %a" :empty-lines 1)
           ("m" "Meeting" entry (file+headline nc/calendar-file "Réunions")
            "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
           ("a" "RendezVous" entry (file+headline nc/calendar-file "RendezVous")
