@@ -1406,7 +1406,7 @@ My templates :
           ))
 #+end_src
 
-**** Journal capture template
+**** Journal entry
 
 Integrate =org-journal= with =org-capture=
 
@@ -1427,7 +1427,7 @@ Integrate =org-journal= with =org-capture=
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'org-capture-templates
                `("i" "Interrupting task" entry
-                 (file+datetree nc/diary-file)
+                 (function org-journal-find-location)
                  "* %^{Task}"
                  :clock-in t :clock-resume t))
 #+END_SRC
