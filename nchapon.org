@@ -1759,7 +1759,7 @@ Reset checkbox items when weekly review is done
                         (propertize "]" 'face 'font-lock-keyword-face)))))
                  (propertize " $ " 'face 'font-lock-constant-face))))
  #+end_src
-**** helm-eshell-history
+**** Eshell History
  Using Helm with =C-c C-l= to browse eshell history
  #+begin_src emacs-lisp
    (require 'helm-eshell)
