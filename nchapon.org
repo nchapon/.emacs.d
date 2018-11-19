@@ -1060,7 +1060,7 @@ One default notes files by day in *GTD/journal/* folder
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
-    :custom (org-bullets-bullet-list '("⚫" "◯" "◇" "➤" "○" "○" "○")))
+    :custom (org-bullets-bullet-list '("◉" "○" "●" "►" "◇" "◎")))
 #+END_SRC
 
 Hiding leading bullets in headers
