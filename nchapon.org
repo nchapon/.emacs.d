@@ -997,9 +997,9 @@ Rotate windows with =C-c r=
  #+END_SRC
 
 **** Auto Insert
-
+     Insert in journal file
    #+BEGIN_SRC emacs-lisp
-     (defun journal-file-insert ()
+     (defun nc/journal-file-insert ()
        "Insert's the journal heading based on the file's name."
        (interactive)
        (let* ((year  (string-to-number (substring (buffer-name) 0 4)))
@@ -1035,6 +1035,9 @@ Rotate windows with =C-c r=
              (delete-region (point-min) (point-max))
              (yas-expand-snippet contents (point-min) (point-max))))
          ))
+
+         ;; bind-key
+         (bind-key "C-c o i" 'nc/journal-file-insert)
    #+END_SRC
 *** Default notes file
 One default notes files by day in *GTD/journal/* folder
