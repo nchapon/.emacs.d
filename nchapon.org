@@ -536,7 +536,7 @@ Expand region increases the selected region by semantic units. Just keep pressin
 
   (use-package helm-swoop
     :ensure t
-    :bind (("C-c o" . helm-multi-swoop-org)
+    :bind (("C-c o s" . helm-multi-swoop-org)
            ("C-s"   . nc/swoop-or-search)
            ("C-M-s" . helm-multi-swoop-all))
     :config (progn
@@ -1042,7 +1042,7 @@ Rotate windows with =C-c r=
 *** Default notes file
 One default notes files by day in *GTD/journal/* folder
 #+BEGIN_SRC emacs-lisp
-(setq org-default-notes-file (get-journal-file-today))
+(setq org-default-notes-file (nc--get-journal-file-today))
 #+END_SRC
 ** Global preferences
 *** Global keys
