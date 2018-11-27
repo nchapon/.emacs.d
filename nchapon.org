@@ -521,31 +521,29 @@ Expand region increases the selected region by semantic units. Just keep pressin
     - Tip :: You can edit helm-swoop buffers by pressing =C-c C-e=.
 
 #+begin_src emacs-lisp
-  (defun nc--helm-swoop-pre-fill ()
-    (thing-at-point 'symbol)) ;; I’m going back and forth what I prefer
-
-  (setq nc/helm-swoop-ignore-major-mode
-        '(dired-mode paradox-menu-mode doc-view-mode pdf-view-mode mu4e-headers-mode latex-mode))
-
-  (defun nc/swoop-or-search ()
-    (interactive)
-    (if (or (> (buffer-size) 1048576) ;; helm-swoop can be slow on big buffers
-            (memq major-mode nc/helm-swoop-ignore-major-mode))
-        (isearch-forward)
-      (helm-swoop)))
-
   (use-package helm-swoop
     :ensure t
     :bind (("C-c o s" . helm-multi-swoop-org)
            ("C-s"   . nc/swoop-or-search)
            ("C-M-s" . helm-multi-swoop-all))
     :config (progn
+              (setq nc/helm-swoop-ignore-major-mode
+                    '(dired-mode
+                      org-mode
+                      paradox-menu-mode
+                      doc-view-mode
+                      pdf-view-mode
+                      mu4e-headers-mode
+                      latex-mode))
 
               (setq helm-swoop-pre-input-function  #'nc--helm-swoop-pre-fill
                     helm-swoop-split-with-multiple-windows nil
                     helm-swoop-split-direction #'split-window-horizontally
                     helm-swoop-split-window-function 'helm-default-display-buffer
                     helm-swoop-speed-or-color t)
+
+              (defun nc--helm-swoop-pre-fill ()
+                (thing-at-point 'symbol))
 
               ;; https://emacs.stackexchange.com/questions/28790/helm-swoop-how-to-make-it-behave-more-like-isearch
               (defun nc/helm-swoop-C-s ()
@@ -556,12 +554,18 @@ Expand region increases the selected region by semantic units. Just keep pressin
                       (helm-next-line))
                   (helm-next-line)))
 
+              (defun nc/swoop-or-search ()
+                (interactive)
+                (if (or (> (buffer-size) 1048576) ;; helm-swoop can be slow on big buffers
+                        (memq major-mode nc/helm-swoop-ignore-major-mode))
+                    (isearch-forward)
+                  (helm-swoop)))
+
               (bind-key "C-S-s" #'helm-swoop-from-isearch isearch-mode-map)
               (bind-key "C-S-s" #'helm-multi-swoop-all-from-helm-swoop helm-swoop-map)
               (bind-key "C-r"   #'helm-previous-line helm-swoop-map)
               (bind-key "C-s"   #'nc/helm-swoop-C-s helm-swoop-map)
-              (bind-key "C-r"   #'helm-previous-line helm-multi-swoop-map)
-              (bind-key "C-s"   #'nc/helm-swoop-C-s helm-multi-swoop-map)))
+              (bind-key "C-r"   #'helm-previous-line helm-multi-swoop-map)))
 #+end_src
 *** helm-ag
 Can integrate Helm with [[https://github.com/ggreer/the_silver_searcher][The Silver Searcher]] (ag A code searching tool similar to ack, with a focus on speed.)
