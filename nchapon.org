@@ -1371,7 +1371,6 @@ My destination files :
   (defconst nc/inbox-file (concat org-directory "GTD/inbox.org"))
   (defconst nc/watching-file (concat org-directory "GTD/watching.org"))
   (defconst nc/fishing-file (concat org-directory "topics/sports/fishing.org"))
-  (defconst nc/diary-file (concat org-directory "GTD/diary-log.org"))
   (defconst nc/someday-file (concat org-directory "GTD/someday.org"))
   (defconst nc/calendar-file (concat org-directory "GTD/calendar.org"))
   (defconst nc/weekly-review-file (concat org-directory "GTD/weekly-review.org"))
