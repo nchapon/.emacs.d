@@ -355,6 +355,12 @@ Enable C-x C-j
 #+begin_src emacs-lisp
   (setq dired-dwim-target t)
 #+end_src
+*** Font Lock Dired
+#+BEGIN_SRC emacs-lisp
+  (use-package diredfl
+    :init (diredfl-global-mode 1))
+#+END_SRC
+
 ** Editing
 *** Copy file name to clipboard
  #+BEGIN_SRC emacs-lisp
