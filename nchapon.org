@@ -56,6 +56,10 @@ user with the UI, I add the generated code in a separate file.
 
 * Start Up
 ** Visuals
+*** All The Icons
+#+BEGIN_SRC emacs-lisp
+(use-package all-the-icons)
+#+END_SRC
 *** Theme
  Using moe theme dark all the day
  #+BEGIN_SRC emacs-lisp
@@ -74,6 +78,8 @@ user with the UI, I add the generated code in a separate file.
      ;; Enable flashing mode-line on errors
      (doom-themes-visual-bell-config)
 
+     (doom-themes-org-config)
+
      ;; Enable custom neotree theme (all-the-icons must be installed!)
      ;;(doom-themes-neotree-config)
      ;; or for treemacs users
@@ -84,10 +90,12 @@ user with the UI, I add the generated code in a separate file.
  #+END_SRC
 *** Mode line
  #+BEGIN_SRC emacs-lisp
-   (use-package smart-mode-line
-     :defer 0.1
-     :custom (sml/theme 'respectful)
-     :config (sml/setup))
+   ;; (use-package smart-mode-line
+   ;;   :defer 0.1
+   ;;   :custom (sml/theme 'respectful)
+   ;;   :config (sml/setup))
+   (use-package doom-modeline
+     :hook (after-init . doom-modeline-init))
  #+END_SRC
 
 *** Font
