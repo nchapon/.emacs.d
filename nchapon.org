@@ -2186,7 +2186,7 @@ Allow =M-== to choosing a snippet using helm (helm source for yasnippet)
               (nc/setup-font)))
 #+END_SRC
 
-* Utility functions
+* Helper Functions
 ** Pseudo uuid
 
 Generate a 32 random pseudo uuid
