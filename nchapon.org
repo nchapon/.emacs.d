@@ -2157,12 +2157,12 @@ npn install -g tern
 Snippets for programming.
 
 #+BEGIN_SRC emacs-lisp
-(use-package yasnippet
-  :defer t
-  :diminish yas-minor-mode
-  :init (progn
-          (yas-global-mode 1)
-          (yas-reload-all)))
+  (use-package yasnippet
+    :ensure t
+    :diminish yas-minor-mode
+    :config
+    (yas-global-mode 1)
+    (yas-reload-all))
 #+END_SRC
 
 Allow =M-== to choosing a snippet using helm (helm source for yasnippet)
