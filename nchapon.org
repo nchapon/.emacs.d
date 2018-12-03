@@ -1076,8 +1076,8 @@ One default notes files by day in *GTD/journal/* folder
 (setq org-ellipsis " ⬎") ;; ⤵ ↴ ⬎ ⤷
 (set-face-attribute 'org-ellipsis nil :underline nil)
 #+END_SRC
-** Modules
-*** Bullet Module
+** Fancy UI
+*** org-bullets
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
@@ -1089,26 +1089,14 @@ Hiding leading bullets in headers
 #+begin_src emacs-lisp
   (setq org-hide-leading-stars t)
 #+end_src
-*** ox-pandoc
-Export Org documents via Pandoc
-#+begin_src emacs-lisp
-(use-package ox-pandoc
-  :ensure t
-  :config
-  ;; Use external css for html5
-  (let ((stylesheet (expand-file-name
-                     (locate-user-emacs-file "etc/pandoc.css"))))
-    (setq org-pandoc-options-for-html5
-`((css . ,(concat "file://" stylesheet))))))
-#+end_src
+*** org-fancy-priorities
 
 #+BEGIN_SRC emacs-lisp
-(use-package htmlize
-  :commands (htmlize-buffer
-             htmlize-file
-             htmlize-many-files
-             htmlize-many-files-dired
-             htmlize-region))
+(use-package org-fancy-priorities
+      :diminish
+      :defines org-fancy-priorities-list
+      :hook (org-mode . org-fancy-priorities-mode)
+      :config (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
 #+END_SRC
 
 ** Tasks
@@ -1622,6 +1610,28 @@ Insert time slot mainly used when I schedule meeting or appointment.
   ;; Either the Key ID or set to nil to use symmetric encryption.
   (setq org-crypt-key nil)
 #+end_src
+** ox-pandoc
+Export Org documents via Pandoc
+#+begin_src emacs-lisp
+(use-package ox-pandoc
+  :ensure t
+  :config
+  ;; Use external css for html5
+  (let ((stylesheet (expand-file-name
+                     (locate-user-emacs-file "etc/pandoc.css"))))
+    (setq org-pandoc-options-for-html5
+`((css . ,(concat "file://" stylesheet))))))
+#+end_src
+
+#+BEGIN_SRC emacs-lisp
+(use-package htmlize
+  :commands (htmlize-buffer
+             htmlize-file
+             htmlize-many-files
+             htmlize-many-files-dired
+             htmlize-region))
+#+END_SRC
+
 ** Weekly Review
 *** Reset checkboxes
 Reset checkbox items when weekly review is done
