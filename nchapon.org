@@ -1099,6 +1099,17 @@ Hiding leading bullets in headers
       :config (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
 #+END_SRC
 
+Set colors for priority faces
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-lowest-priority ?D
+          org-default-priority ?D
+          org-priority-faces '((?A . (:foreground "red" :weight bold))
+                               (?B . (:foreground "orange"))
+                               (?C . (:foreground "yellow"))
+                               (?D . (:foreground "green"))))
+#+END_SRC
+
 ** Tasks
 *** Todo tasks
 **** Todo states
