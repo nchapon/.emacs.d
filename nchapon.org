@@ -1309,10 +1309,10 @@ My custom agends commands are restricted to some files.
                           ((org-agenda-overriding-header "Next tasks @office")
                            (org-tags-exclude-from-inheritance '("PROJECT"))
                            (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 25)")
-                           (org-agenda-skip-function
-                            (quote
-                             (org-agenda-skip-all-siblings-but-first)))
-
+                           ;; (org-agenda-skip-function
+                           ;;  (quote
+                           ;;   (org-agenda-skip-all-siblings-but-first)))
+                           (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))
                            (org-agenda-todo-keyword-format "%-4s")))
                (tags-todo "TODO=\"TODO\"-HOLD"
                           ((org-agenda-overriding-header "Other tasks")
