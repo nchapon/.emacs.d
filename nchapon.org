@@ -2101,6 +2101,7 @@ Then we can setup Emacs go mode
     :ensure t
     :config
     (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.tag$" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.ftl$" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.jsp$" . web-mode))
