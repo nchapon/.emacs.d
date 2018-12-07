@@ -25,6 +25,23 @@
 
    (use-package diminish)
  #+END_SRC
+** Exec Path From Shell
+
+#+BEGIN_QUOTE
+A GNU Emacs library to ensure environment variables inside Emacs look the same as in the user's shell.
+This happens a lot on OS X, where an Emacs instance started from the GUI inherits a default set of environment variables.
+
+[[https://github.com/purcell/exec-path-from-shell][https://github.com/purcell/exec-path-from-shell]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+  (use-package exec-path-from-shell
+    :config
+    (when (memq window-system '(mac ns x))
+      (progn
+        (exec-path-from-shell-initialize)
+        (exec-path-from-shell-copy-env "GOPATH"))))
+#+END_SRC
 ** Globals
 
 #+BEGIN_SRC emacs-lisp
@@ -33,17 +50,16 @@
   (defconst has-gui (display-graphic-p))
 #+END_SRC
 
-** Make It Easy to edit this file
+** no-littering
+#+BEGIN_QUOTE
+Help keeping =~/.emacs.d= clean
+
+[[https://github.com/emacscollective/no-littering][https://github.com/emacscollective/no-littering]]
+#+END_QUOTE
 
 #+begin_src emacs-lisp
-  (defun nc/find-config ()
-      "Edit nchapon.org"
-      (interactive)
-      (find-file "~/.emacs.d/nchapon.org"))
-
-    (global-set-key (kbd "C-c I") 'nc/find-config)
+(use-package no-littering)
 #+end_src
-
 ** Customization
 To avoid overloading the GNU Emacs custormization =init.el= file made by the
 user with the UI, I add the generated code in a separate file.
@@ -266,37 +282,6 @@ Also auto refresh dired, but be quiet about it
 (setq global-auto-revert-non-file-buffers t)
 #+END_SRC
 
-*** Delete file and buffer
-
-#+BEGIN_SRC emacs-lisp
-(defun nc/delete-file-and-buffer ()
-  "Kill the current buffer and deletes the file it is visiting."
-  (interactive)
-  (let ((filename (buffer-file-name)))
-    (when filename
-      (if (vc-backend filename)
-          (vc-delete-file filename)
-        (when (y-or-n-p (format "Are you sure you want to delete %s? " filename))
-          (delete-file filename)
-          (message "Deleted file %s" filename)
-          (kill-buffer))))))
-#+END_SRC
-*** Rename file and buffer
-#+BEGIN_SRC emacs-lisp
-(defun nc/rename-file-and-buffer ()
-  "Renames current buffer and file it is visiting."
-  (interactive)
-  (let ((filename (buffer-file-name)))
-    (if (not (and filename (file-exists-p filename)))
-        (message "Buffer is not visiting a file!")
-      (let ((new-name (read-file-name "New name: " filename)))
-        (cond
-         ((vc-backend filename) (vc-rename-file filename new-name))
-         (t
-          (rename-file filename new-name t)
-          (set-visited-file-name new-name t t)))))))
-#+END_SRC
-
 *** Uniquify
 Use file path to ensure buffer name uniqueness
 
@@ -307,7 +292,6 @@ Use file path to ensure buffer name uniqueness
 (setq uniquify-after-kill-buffer-p t)
 (setq uniquify-ignore-buffers-re "^\\*")
 #+END_SRC
-
 ** Calendar
 *** French Calendar
 #+BEGIN_SRC emacs-lisp
@@ -370,19 +354,6 @@ Enable C-x C-j
 #+END_SRC
 
 ** Editing
-*** Copy file name to clipboard
- #+BEGIN_SRC emacs-lisp
- (defun nc/copy-file-name-to-clipboard ()
-   "Copy the current buffer file name to the clipboard."
-   (interactive)
-   (let ((filename (if (equal major-mode 'dired-mode)
-                       default-directory
-                     (buffer-file-name))))
-     (when filename
-       (kill-new filename)
-       (message "Copied buffer file name '%s' to the clipboard." filename))))
- #+END_SRC
-
 *** Duplicate line
  Duplicate line with =C-c d=
  #+BEGIN_SRC emacs-lisp
@@ -412,6 +383,21 @@ Enable C-x C-j
  (bind-key "C-c d" 'nc/duplicate-current-line-or-region)
  #+END_SRC
 
+*** Expand region
+     - expand selection with =C-==
+     - contract with negative argument =M--= then =C-==
+
+ #+BEGIN_QUOTE
+ Expand region increases the selected region by semantic units. Just keep pressing the key until it selects what you want.
+
+ [[https://github.com/magnars/expand-region.el]]
+ #+END_QUOTE
+
+ #+BEGIN_SRC emacs-lisp
+ (use-package expand-region
+   :bind
+   ("C-=" . er/expand-region))
+ #+END_SRC
 *** Join lines
  #+BEGIN_SRC emacs-lisp
  (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
@@ -458,39 +444,122 @@ Enable C-x C-j
 
  (global-set-key [(control shift down)]  'nc/move-line-down)
  #+END_SRC
-
-** Exec Path From Shell
-
-#+BEGIN_QUOTE
-A GNU Emacs library to ensure environment variables inside Emacs look the same as in the user's shell.
-This happens a lot on OS X, where an Emacs instance started from the GUI inherits a default set of environment variables.
-
-[[https://github.com/purcell/exec-path-from-shell][https://github.com/purcell/exec-path-from-shell]]
-#+END_QUOTE
-
+*** Super Save
+Auto save buffers when buffers loose focus
 #+BEGIN_SRC emacs-lisp
-  (use-package exec-path-from-shell
+  (use-package super-save
+    :ensure t
     :config
-    (when (memq window-system '(mac ns x))
-      (progn
-        (exec-path-from-shell-initialize)
-        (exec-path-from-shell-copy-env "GOPATH"))))
+    (super-save-mode +1)
+    (setq super-save-auto-save-when-idle t))
 #+END_SRC
-** Expand region
-    - expand selection with =C-==
-    - contract with negative argument =M--= then =C-==
 
-#+BEGIN_QUOTE
-Expand region increases the selected region by semantic units. Just keep pressing the key until it selects what you want.
+*** Undo Tree
+ This lets you use =C-x u= (=undo-tree-visualize=)
+ #+BEGIN_SRC emacs-lisp
+ (use-package undo-tree
+   :diminish undo-tree-mode
+   :config
+   (progn
+     (global-undo-tree-mode)
+     (setq undo-tree-visualizer-timestamps t)
+     (setq undo-tree-visualizer-diff t)))
+ #+END_SRC
 
-[[https://github.com/magnars/expand-region.el]]
-#+END_QUOTE
+** Files
+*** Core commands
+    #+BEGIN_SRC emacs-lisp
+      (bind-key "<f5>" 'revert-buffer)
+      (bind-key "C-c f l" 'find-file-literally)
+    #+END_SRC
+*** Recent Files
 
+ #+BEGIN_QUOTE
+ Recentf is a minor mode that builds a list of recently opened
+ files. This list is is automatically saved across sessions on exiting
+ Emacs - you can then access this list through a command or the menu.
+
+ [[https://www.emacswiki.org/emacs/RecentFiles][https://www.emacswiki.org/emacs/RecentFiles]]
+ #+END_QUOTE
+
+ #+BEGIN_SRC emacs-lisp
+   (use-package recentf
+     :config
+     (setq recentf-max-menu-items 15
+           recentf-max-saved-items 200))
+ #+END_SRC
+
+*** PDF
+ #+begin_src emacs-lisp
+   (use-package pdf-tools
+     :ensure t
+     :config
+     (pdf-tools-install)
+     (setq-default pdf-view-display-size 'fit-page)
+     (use-package org-pdfview
+       :ensure t))
+ #+end_src
+
+*** Copy file name to clipboard
+ #+BEGIN_SRC emacs-lisp
+    (defun nc/copy-filename-to-clipboard ()
+      "Copy the current buffer file name to the clipboard."
+      (interactive)
+      (let ((filename (if (equal major-mode 'dired-mode)
+                          default-directory
+                        (buffer-file-name))))
+        (when filename
+          (kill-new filename)
+          (message "Copied buffer file name '%s' to the clipboard." filename))))
+
+   (bind-key "C-c f w" #'nc/copy-filename-to-clipboard)
+ #+END_SRC
+
+*** Delete file
 #+BEGIN_SRC emacs-lisp
-(use-package expand-region
-  :bind
-  ("C-=" . er/expand-region))
+  (defun nc/delete-this-file ()
+    "Kill the current buffer and deletes the file it is visiting."
+    (interactive)
+    (let ((filename (buffer-file-name)))
+      (when filename
+        (if (vc-backend filename)
+            (vc-delete-file filename)
+          (when (y-or-n-p (format "Are you sure you want to delete %s? " filename))
+            (delete-file filename)
+            (message "Deleted file %s" filename)
+            (kill-buffer))))))
+
+  (bind-key "C-c f D" #'nc/delete-this-file)
 #+END_SRC
+*** Rename file
+#+BEGIN_SRC emacs-lisp
+  (defun nc/rename-this-file-and-buffer ()
+    "Renames current buffer and file it is visiting."
+    (interactive)
+    (let ((filename (buffer-file-name)))
+      (if (not (and filename (file-exists-p filename)))
+          (message "Buffer is not visiting a file!")
+        (let ((new-name (read-file-name "New name: " filename)))
+          (cond
+           ((vc-backend filename) (vc-rename-file filename new-name))
+           (t
+            (rename-file filename new-name t)
+            (set-visited-file-name new-name t t)))))))
+
+  (bind-key "C-c f R" #'nc/rename-this-file-and-buffer)
+#+END_SRC
+
+*** Emacs Config File
+
+ #+begin_src emacs-lisp
+   (defun nc/find-config ()
+       "Edit nchapon.org"
+       (interactive)
+       (find-file "~/.emacs.d/nchapon.org"))
+
+     (global-set-key (kbd "C-c f I") 'nc/find-config)
+ #+end_src
+
 ** Helm
 *** Helm core configuration
 #+BEGIN_SRC emacs-lisp
@@ -773,27 +842,6 @@ Magit a git porcelain inside Emacs !
                  'nc/smarter-move-beginning-of-line)
 
  #+END_SRC
-** no-littering
-#+BEGIN_QUOTE
-Help keeping =~/.emacs.d= clean
-
-[[https://github.com/emacscollective/no-littering][https://github.com/emacscollective/no-littering]]
-#+END_QUOTE
-
-#+begin_src emacs-lisp
-(use-package no-littering)
-#+end_src
-** PDF
-#+begin_src emacs-lisp
-  (use-package pdf-tools
-      :ensure t
-      :config
-      (pdf-tools-install)
-      (setq-default pdf-view-display-size 'fit-page)
-       (use-package org-pdfview
-         :ensure t))
-#+end_src
-
 ** Projectile
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
@@ -814,22 +862,6 @@ Help keeping =~/.emacs.d= clean
     (projectile-global-mode))
 #+END_SRC
 
-** Recent Files
-
-#+BEGIN_QUOTE
-Recentf is a minor mode that builds a list of recently opened
-files. This list is is automatically saved across sessions on exiting
-Emacs - you can then access this list through a command or the menu.
-
-[[https://www.emacswiki.org/emacs/RecentFiles][https://www.emacswiki.org/emacs/RecentFiles]]
-#+END_QUOTE
-
-#+BEGIN_SRC emacs-lisp
-  (use-package recentf
-    :config  (progn
-               (setq recentf-max-saved-items 100)))
-#+END_SRC
-
 ** Registers
 Registers can be used to navigate to specific files, used by key chord =JJ=
 #+begin_src emacs-lisp
@@ -844,18 +876,6 @@ Registers can be used to navigate to specific files, used by key chord =JJ=
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<f2>") 'rgrep)
 #+END_SRC
-** Undo Tree
-This lets you use =C-x u= (=undo-tree-visualize=)
-#+BEGIN_SRC emacs-lisp
-(use-package undo-tree
-  :diminish undo-tree-mode
-  :config
-  (progn
-    (global-undo-tree-mode)
-    (setq undo-tree-visualizer-timestamps t)
-    (setq undo-tree-visualizer-diff t)))
-#+END_SRC
-
 ** Which Key
 
 #+BEGIN_QUOTE
