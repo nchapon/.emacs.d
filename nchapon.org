@@ -865,7 +865,6 @@ Magit a git porcelain inside Emacs !
     (projectile-global-mode))
 #+END_SRC
 
-** Search
 ** Windows
 *** ace-window
 Perhaps I need to use =switch-window= (Cf  https://github.com/dimitri/switch-window)
@@ -2210,7 +2209,7 @@ npn install -g tern
               (nc/setup-font)))
 #+END_SRC
 
-* Helper Functions
+* Utilities Functions
 ** Pseudo uuid
 
 Generate a 32 random pseudo uuid
