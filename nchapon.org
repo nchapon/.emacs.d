@@ -1,17 +1,17 @@
-* Personal information
-#+BEGIN_SRC emacs-lisp
-  (setq user-full-name "Nicolas Chapon"
-        user-mail-address "nchapon@gmail.com")
-#+END_SRC
+* Initialization
+** Personal information
+ #+BEGIN_SRC emacs-lisp
+   (setq user-full-name "Nicolas Chapon"
+         user-mail-address "nchapon@gmail.com")
+ #+END_SRC
 
-* Emacs Initialization
-** Packages Sources
+** Packages
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'package-archives
          '("melpa" . "http://melpa.org/packages/"))
 #+END_SRC
-** use-package
- Use package default configuration
+
+Use package default configuration
  #+BEGIN_SRC emacs-lisp
    (unless (package-installed-p 'use-package)
        (package-refresh-contents)
@@ -42,7 +42,7 @@ This happens a lot on OS X, where an Emacs instance started from the GUI inherit
         (exec-path-from-shell-initialize)
         (exec-path-from-shell-copy-env "GOPATH"))))
 #+END_SRC
-** Globals
+** Custom Globals Variables
 
 #+BEGIN_SRC emacs-lisp
   (defconst is-mac (equal system-type 'darwin))
@@ -71,7 +71,7 @@ user with the UI, I add the generated code in a separate file.
 #+END_SRC
 
 * Start Up
-** Visuals
+** UI
 *** All The Icons
 #+BEGIN_SRC emacs-lisp
 (use-package all-the-icons)
@@ -106,10 +106,6 @@ user with the UI, I add the generated code in a separate file.
  #+END_SRC
 *** Mode line
  #+BEGIN_SRC emacs-lisp
-   ;; (use-package smart-mode-line
-   ;;   :defer 0.1
-   ;;   :custom (sml/theme 'respectful)
-   ;;   :config (sml/setup))
    (use-package doom-modeline
      :hook (after-init . doom-modeline-init))
  #+END_SRC
@@ -243,33 +239,76 @@ user with the UI, I add the generated code in a separate file.
 #+end_src
 
 * Advanced Configuration
-** Auto-completion
-=company= provides auto completion mode.
-#+BEGIN_SRC emacs-lisp
-  (use-package company
-    :defer t
-    :diminish ""
-    :bind (("M-/" . company-complete)
-           ("C-c C-y" . company-yasnippet)
-           :map company-active-map
-           ("C-p" . company-select-previous)
-           ("C-n" . company-select-next)
-           ("TAB" . company-complete-common-or-cycle)
-           ("<tab>" . company-complete-common-or-cycle)
-           ("C-d" . company-show-doc-buffer))
-    :init (global-company-mode)
-    :config
-    (progn
-      (setq company-idle-delay 0.1
-            ;; min prefix of 1 chars
-            company-minimum-prefix-length 2
-            company-selection-wrap-around t
-            company-show-numbers t
-            company-dabbrev-downcase nil
-            company-dabbrev-code-everywhere t
-            company-transformers '(company-sort-by-occurrence))))
+** Completion
+*** Company
+ =company= provides auto completion mode.
+ #+BEGIN_SRC emacs-lisp
+   (use-package company
+     :defer t
+     :diminish ""
+     :bind (("M-/" . company-complete)
+            ("C-c C-y" . company-yasnippet)
+            :map company-active-map
+            ("C-p" . company-select-previous)
+            ("C-n" . company-select-next)
+            ("TAB" . company-complete-common-or-cycle)
+            ("<tab>" . company-complete-common-or-cycle)
+            ("C-d" . company-show-doc-buffer))
+     :init (global-company-mode)
+     :config
+     (progn
+       (setq company-idle-delay 0.1
+             ;; min prefix of 1 chars
+             company-minimum-prefix-length 2
+             company-selection-wrap-around t
+             company-show-numbers t
+             company-dabbrev-downcase nil
+             company-dabbrev-code-everywhere t
+             company-transformers '(company-sort-by-occurrence))))
 
-#+END_SRC
+ #+END_SRC
+*** Hippie expand
+ Looks at the word before point and tries  to expand it.
+
+ #+BEGIN_SRC emacs-lisp
+ (setq hippie-expand-try-functions-list
+   '(try-complete-file-name-partially
+     try-complete-file-name
+     try-expand-all-abbrevs
+     try-expand-dabbrev
+     try-expand-dabbrev-visible
+     try-expand-dabbrev-all-buffers
+     try-expand-dabbrev-from-kill
+     try-complete-lisp-symbol-partially
+     try-complete-lisp-symbol))
+ #+END_SRC
+
+ #+BEGIN_SRC emacs-lisp
+ (bind-key "M-/" 'hippie-expand)
+ #+END_SRC
+
+*** Yasnippet
+ Snippets for programming.
+
+ #+BEGIN_SRC emacs-lisp
+   (use-package yasnippet
+     :ensure t
+     :diminish yas-minor-mode
+     :config
+     (yas-global-mode 1)
+     (yas-reload-all))
+ #+END_SRC
+
+ Allow =M-== to choosing a snippet using helm (helm source for yasnippet)
+
+ #+BEGIN_SRC emacs-lisp
+ (use-package helm-c-yasnippet
+   :ensure t
+   :after yasnippet
+   :init (bind-key "M-=" #'helm-yas-complete)
+   :config (setq helm-yas-space-match-any-greedy t))
+ #+END_SRC
+
 ** Buffers
 *** Auto refresh buffers
 #+BEGIN_SRC emacs-lisp
@@ -489,6 +528,12 @@ Auto save buffers when buffers loose focus
            recentf-max-saved-items 200))
  #+END_SRC
 
+*** Backup files
+ #+BEGIN_SRC emacs-lisp
+ (setq delete-old-versions t  ; delete excess backup versions silently
+     version-control t        ; numbered versions
+)
+ #+END_SRC
 *** PDF
  #+begin_src emacs-lisp
    (use-package pdf-tools
@@ -696,89 +741,48 @@ Search in org headings / content like Google
 
   (global-set-key (kbd "C-<f12>") 'nc/helm-in-buffer)
 #+end_src
-** Hippie expand
-Looks at the word before point and tries  to expand it.
+** Key Bindings
+*** Which Key
 
-#+BEGIN_SRC emacs-lisp
-(setq hippie-expand-try-functions-list
-  '(try-complete-file-name-partially
-    try-complete-file-name
-    try-expand-all-abbrevs
-    try-expand-dabbrev
-    try-expand-dabbrev-visible
-    try-expand-dabbrev-all-buffers
-    try-expand-dabbrev-from-kill
-    try-complete-lisp-symbol-partially
-    try-complete-lisp-symbol))
-#+END_SRC
+ #+BEGIN_QUOTE
+ =which-key= is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
 
-#+BEGIN_SRC emacs-lisp
-(bind-key "M-/" 'hippie-expand)
-#+END_SRC
+ [[https://github.com/justbur/emacs-which-key][Justin Burkett]]
+ #+END_QUOTE
 
-** History
-*** Backup files
  #+BEGIN_SRC emacs-lisp
- (setq delete-old-versions t  ; delete excess backup versions silently
-     version-control t        ; numbered versions
-)
+ (use-package which-key
+     :config
+     (which-key-mode))
  #+END_SRC
-** Key Chords
-#+BEGIN_SRC emacs-lisp
-  (use-package key-chord
-    :init
-    (key-chord-mode 1)
-    (key-chord-define-global "jj" 'ace-jump-word-mode)
-    (key-chord-define-global "jl" 'ace-jump-line-mode)
-    (key-chord-define-global "jk" 'ace-jump-char-mode)
-    (key-chord-define-global "FF" 'projectile-find-file)
-    (key-chord-define-global "GG" 'helm-projectile-ag)
-    (key-chord-define-global "HH" 'nc/helm-org-rifle-agenda-files)
-    (key-chord-define-global "DD" 'delete-region)
-    (key-chord-define-global "OO" 'helm-occur)
-    (key-chord-define-global "??" 'nc/helm-do-grep-notes)
-    (key-chord-define-global "BB" 'beginning-of-buffer)
-    (key-chord-define-global "WW" 'nc/swap-windows)
-    (key-chord-define-global "$$" 'end-of-buffer)
-    (key-chord-define-global "kk" 'kill-this-buffer))
-#+END_SRC
-** OS Specific Settings
-*** Dired options
 
-#+BEGIN_SRC emacs-lisp
-   ;; brew install coreutils
-  (if (executable-find "gls")
-      (progn
-        (setq insert-directory-program "gls")
-        (setq dired-listing-switches "-lFaGh1v --group-directories-first"))
-    (setq dired-listing-switches "-ahlF"))
-#+END_SRC
-
-*** Keys for apple keyboard
-#+BEGIN_SRC emacs-lisp
-  (when is-mac
-    (setq mac-command-modifier 'meta)    ; make cmd key do Meta
-    (setq mac-option-modifier 'super)    ; make opt key do Super
-    (setq mac-control-modifier 'control) ; make Control key do Control
-    (setq ns-function-modifier 'hyper)   ; make Fn key do Hyper
-  )
-#+END_SRC
-*** Mac right option
- This will allow you to use the right ~⌥~ key to write symbols ={[]}=. The left ~⌥~ key can be used as the Meta
- key.
+*** Key Chords
  #+BEGIN_SRC emacs-lisp
-   (when is-mac
-     (setq-default mac-right-option-modifier nil))
+   (use-package key-chord
+     :init
+     (key-chord-mode 1)
+     (key-chord-define-global "jj" 'ace-jump-word-mode)
+     (key-chord-define-global "jl" 'ace-jump-line-mode)
+     (key-chord-define-global "jk" 'ace-jump-char-mode)
+     (key-chord-define-global "FF" 'projectile-find-file)
+     (key-chord-define-global "GG" 'helm-projectile-ag)
+     (key-chord-define-global "HH" 'nc/helm-org-rifle-agenda-files)
+     (key-chord-define-global "DD" 'delete-region)
+     (key-chord-define-global "OO" 'helm-occur)
+     (key-chord-define-global "??" 'nc/helm-do-grep-notes)
+     (key-chord-define-global "BB" 'beginning-of-buffer)
+     (key-chord-define-global "WW" 'nc/swap-windows)
+     (key-chord-define-global "$$" 'end-of-buffer)
+     (key-chord-define-global "kk" 'kill-this-buffer))
  #+END_SRC
-*** GPG
+*** Globals Keys
+**** Rgrep
+ #+BEGIN_SRC emacs-lisp
+   (bind-key "<f2>"'rgrep)
+ #+END_SRC
+**** Undo
 #+BEGIN_SRC emacs-lisp
-  (when is-mac
-    (setf epa-pinentry-mode 'loopback))
-#+END_SRC
-*** French Locale
-#+BEGIN_SRC emacs-lisp
-  (when is-mac
-    (set-locale-environment "fr_FR.UTF-8"))
+(bind-key "C-z" #'undo)
 #+END_SRC
 ** Magit
 #+BEGIN_QUOTE
@@ -862,24 +866,6 @@ Magit a git porcelain inside Emacs !
 #+END_SRC
 
 ** Search
-*** Rgrep
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f2>") 'rgrep)
-#+END_SRC
-** Which Key
-
-#+BEGIN_QUOTE
-=which-key= is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
-
-[[https://github.com/justbur/emacs-which-key][Justin Burkett]]
-#+END_QUOTE
-
-#+BEGIN_SRC emacs-lisp
-(use-package which-key
-    :config
-    (which-key-mode))
-#+END_SRC
-
 ** Windows
 *** ace-window
 Perhaps I need to use =switch-window= (Cf  https://github.com/dimitri/switch-window)
@@ -986,6 +972,44 @@ Rotate windows with =C-c r=
     (ace-swap-window)
     (aw-flip-window))
 #+end_src
+* MacOS Settings
+** Dired options
+
+#+BEGIN_SRC emacs-lisp
+   ;; brew install coreutils
+  (if (executable-find "gls")
+      (progn
+        (setq insert-directory-program "gls")
+        (setq dired-listing-switches "-lFaGh1v --group-directories-first"))
+    (setq dired-listing-switches "-ahlF"))
+#+END_SRC
+
+** Keys for apple keyboard
+#+BEGIN_SRC emacs-lisp
+  (when is-mac
+    (setq mac-command-modifier 'meta)    ; make cmd key do Meta
+    (setq mac-option-modifier 'super)    ; make opt key do Super
+    (setq mac-control-modifier 'control) ; make Control key do Control
+    (setq ns-function-modifier 'hyper)   ; make Fn key do Hyper
+  )
+#+END_SRC
+** Mac right option
+This will allow you to use the right ~⌥~ key to write symbols ={[]}=. The left ~⌥~ key can be used as the Meta
+key.
+#+BEGIN_SRC emacs-lisp
+  (when is-mac
+    (setq-default mac-right-option-modifier nil))
+#+END_SRC
+** GPG
+#+BEGIN_SRC emacs-lisp
+  (when is-mac
+    (setf epa-pinentry-mode 'loopback))
+#+END_SRC
+** French Locale
+#+BEGIN_SRC emacs-lisp
+  (when is-mac
+    (set-locale-environment "fr_FR.UTF-8"))
+#+END_SRC
 * Org Mode
 ** My files
 *** Base directory
@@ -1666,7 +1690,7 @@ Reset checkbox items when weekly review is done
     (if (org-at-item-checkbox-p)
         (org-ctrl-c-ctrl-c)))))
 #+END_SRC
-* Coding
+* Programming
 ** Shells
 *** Eshell
     Mainly come from [[https://github.com/howardabrams/dot-files/blob/master/emacs-eshell.org]]
@@ -2174,28 +2198,6 @@ npn install -g tern
     :ensure t
     :mode ("\\.ts\\'" . typescript-mode))
 #+end_src
-
-** Yasnippet
-Snippets for programming.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package yasnippet
-    :ensure t
-    :diminish yas-minor-mode
-    :config
-    (yas-global-mode 1)
-    (yas-reload-all))
-#+END_SRC
-
-Allow =M-== to choosing a snippet using helm (helm source for yasnippet)
-
-#+BEGIN_SRC emacs-lisp
-(use-package helm-c-yasnippet
-  :ensure t
-  :after yasnippet
-  :init (bind-key "M-=" #'helm-yas-complete)
-  :config (setq helm-yas-space-match-any-greedy t))
-#+END_SRC
 
 * Emacs Server
 
