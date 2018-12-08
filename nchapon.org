@@ -734,7 +734,6 @@ Looks at the word before point and tries  to expand it.
     (key-chord-define-global "FF" 'projectile-find-file)
     (key-chord-define-global "GG" 'helm-projectile-ag)
     (key-chord-define-global "HH" 'nc/helm-org-rifle-agenda-files)
-    (key-chord-define-global "JJ" 'jump-to-register)
     (key-chord-define-global "DD" 'delete-region)
     (key-chord-define-global "OO" 'helm-occur)
     (key-chord-define-global "??" 'nc/helm-do-grep-notes)
@@ -862,15 +861,6 @@ Magit a git porcelain inside Emacs !
     (projectile-global-mode))
 #+END_SRC
 
-** Registers
-Registers can be used to navigate to specific files, used by key chord =JJ=
-#+begin_src emacs-lisp
-  (dolist (r `((?n (file . ,(concat user-emacs-directory "nchapon.org")))
-               (?i (file . ,(concat org-directory "GTD/office.org")))
-               (?t (file . ,(concat org-directory "GTD/todo.org")))
-               (?w (file . ,(concat org-directory "GTD/watching.org")))))
-    (set-register (car r) (cadr r)))
-#+end_src
 ** Search
 *** Rgrep
 #+BEGIN_SRC emacs-lisp
