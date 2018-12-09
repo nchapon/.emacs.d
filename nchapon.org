@@ -1,4 +1,4 @@
-* Initialization
+* Base config
 ** Personal information
  #+BEGIN_SRC emacs-lisp
    (setq user-full-name "Nicolas Chapon"
@@ -42,7 +42,7 @@ This happens a lot on OS X, where an Emacs instance started from the GUI inherit
         (exec-path-from-shell-initialize)
         (exec-path-from-shell-copy-env "GOPATH"))))
 #+END_SRC
-** Custom Globals Variables
+** Globals Variables
 
 #+BEGIN_SRC emacs-lisp
   (defconst is-mac (equal system-type 'darwin))
@@ -50,7 +50,7 @@ This happens a lot on OS X, where an Emacs instance started from the GUI inherit
   (defconst has-gui (display-graphic-p))
 #+END_SRC
 
-** no-littering
+** No Littering
 #+BEGIN_QUOTE
 Help keeping =~/.emacs.d= clean
 
@@ -70,162 +70,192 @@ user with the UI, I add the generated code in a separate file.
     (load custom-file t))
 #+END_SRC
 
-* Start Up
-** UI
-*** All The Icons
+* Better default settings
+** Miscellaneous
+#+BEGIN_SRC emacs-lisp
+(setq initial-major-mode 'lisp-interaction-mode
+      redisplay-dont-pause t
+      column-number-mode t
+      echo-keystrokes 0.02
+      transient-mark-mode t
+      shift-select-mode nil
+      require-final-newline t
+      truncate-partial-width-windows nil
+      delete-by-moving-to-trash t
+      confirm-nonexistent-file-or-buffer nil
+      query-replace-highlight t)
+#+END_SRC
+** Indentation & Tabs
+*** Default indentation
+Always spaces with width of 4
+#+BEGIN_SRC emacs-lisp
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+#+END_SRC
+*** Indent new line if necessary
+#+BEGIN_SRC emacs-lisp
+(define-key global-map (kbd "RET") 'newline-and-indent)
+#+END_SRC
+** Transparently open compressed files
+
+#+BEGIN_SRC emacs-lisp
+(auto-compression-mode t)
+#+END_SRC
+
+** Always display line and column numbers
+#+BEGIN_SRC emacs-lisp
+(setq line-number-mode t)
+(setq column-number-mode t)
+#+END_SRC
+** Answering just 'y' or 'n'
+
+#+BEGIN_SRC emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+** Increase or decrease text scale
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+#+END_SRC
+** Lines should be 80 characters
+#+BEGIN_SRC emacs-lisp
+(setq fill-column 80)
+#+END_SRC
+** Disable annoying audio notifications
+#+BEGIN_SRC emacs-lisp
+(setq ring-bell-function 'ignore)
+#+END_SRC
+** UTF-8
+Set all coding systems to utf-8
+#+BEGIN_SRC emacs-lisp
+(prefer-coding-system 'utf-8-unix)
+(set-clipboard-coding-system 'utf-8-unix)
+(set-default-coding-systems 'utf-8-unix)
+(set-keyboard-coding-system 'utf-8-unix)
+(set-language-environment 'utf-8)
+(set-selection-coding-system 'utf-8-unix)
+(set-terminal-coding-system 'utf-8-unix)
+(setq locale-coding-system 'utf-8-unix)
+(setq coding-system-for-write 'utf-8-unix)
+(setq default-buffer-file-coding-system 'utf-8-unix)
+(setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+(setq file-name-coding-system  'utf-8)
+#+END_SRC
+** Calendar
+*** French Calendar
+#+BEGIN_SRC emacs-lisp
+  (setq calendar-week-start-day 1
+        calendar-day-name-array ["Dimanche" "Lundi" "Mardi" "Mercredi"
+                                 "Jeudi" "Vendredi" "Samedi"]
+        calendar-month-name-array ["Janvier" "Fevrier" "Mars" "Avril" "Mai"
+                                   "Juin" "Juillet" "Aout" "Septembre"
+                                   "Octobre" "Novembre" "Decembre"])
+#+END_SRC
+*** French holiday
+#+BEGIN_SRC emacs-lisp
+  (defvar french-holiday
+    '((holiday-fixed 1 1 "Jour de l'an")
+      (holiday-fixed 5 1 "Fête du travail")
+      (holiday-fixed 5 8 "Victoire 45")
+      (holiday-fixed 7 14 "Fête nationale")
+      (holiday-fixed 8 15 "Assomption")
+      (holiday-fixed 11 1 "Toussaint")
+      (holiday-fixed 11 11 "Armistice 18")
+      (holiday-fixed 12 25 "Noël")
+      (holiday-easter-etc 1 "Lundi de Pâques")
+      (holiday-easter-etc 39 "Ascension")
+      (holiday-easter-etc 50 "Lundi de Pentecôte")))
+
+  (setq calendar-date-style 'european
+        calendar-holidays french-holiday
+        calendar-mark-holidays-flag t
+        calendar-mark-diary-entries-flag t)
+
+#+END_SRC
+* UI
+** All The Icons
 #+BEGIN_SRC emacs-lisp
 (use-package all-the-icons)
 #+END_SRC
-*** Theme
- Using moe theme dark all the day
- #+BEGIN_SRC emacs-lisp
-   (use-package doom-themes
+** Theme
+Using moe theme dark all the day
+#+BEGIN_SRC emacs-lisp
+  (use-package doom-themes
 
-     :config
+    :config
 
-     ;; Global settings (defaults)
-     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-           doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    ;; Global settings (defaults)
+    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+          doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
-     ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
-     ;; may have their own settings.
-     (load-theme 'doom-one t)
+    ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
+    ;; may have their own settings.
+    (load-theme 'doom-one t)
 
-     ;; Enable flashing mode-line on errors
-     (doom-themes-visual-bell-config)
+    ;; Enable flashing mode-line on errors
+    (doom-themes-visual-bell-config)
 
-     (doom-themes-org-config)
+    (doom-themes-org-config)
 
-     ;; Enable custom neotree theme (all-the-icons must be installed!)
-     ;;(doom-themes-neotree-config)
-     ;; or for treemacs users
-     ;;(doom-themes-treemacs-config)
+    ;; Enable custom neotree theme (all-the-icons must be installed!)
+    ;;(doom-themes-neotree-config)
+    ;; or for treemacs users
+    ;;(doom-themes-treemacs-config)
 
-     ;; Corrects (and improves) org-mode's native fontification.
-     (doom-themes-org-config))
- #+END_SRC
-*** Mode line
- #+BEGIN_SRC emacs-lisp
-   (use-package doom-modeline
-     :hook (after-init . doom-modeline-init))
- #+END_SRC
+    ;; Corrects (and improves) org-mode's native fontification.
+    (doom-themes-org-config))
+#+END_SRC
+** Mode line
+#+BEGIN_SRC emacs-lisp
+  (use-package doom-modeline
+    :hook (after-init . doom-modeline-init))
+#+END_SRC
 
-*** Font
- Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
+** Font
+Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
 
- #+BEGIN_SRC emacs-lisp
-   (defun nc/setup-font ()
-     "Set up font height"
-     (interactive)
-     (when is-linux
-       (set-frame-font "Input Mono-12" nil t))
-     (when is-mac
-       (set-frame-font "Monaco 15" nil t)))
+#+BEGIN_SRC emacs-lisp
+  (defun nc/setup-font ()
+    "Set up font height"
+    (interactive)
+    (when is-linux
+      (set-frame-font "Input Mono-12" nil t))
+    (when is-mac
+      (set-frame-font "Monaco 15" nil t)))
 
-   (when has-gui
-     (add-hook 'after-init-hook #'nc/setup-font))
- #+END_SRC
+  (when has-gui
+    (add-hook 'after-init-hook #'nc/setup-font))
+#+END_SRC
 
-*** Windows configuration
-**** No menu and toolbar
+** Windows configuration
+*** No menu and toolbar
 
- #+BEGIN_SRC emacs-lisp
- (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
- (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
- (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
- #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+#+END_SRC
 
-**** No welcome screen
+*** No welcome screen
 
- #+BEGIN_SRC emacs-lisp
- (setq  inhibit-startup-message t)
- #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(setq  inhibit-startup-message t)
+#+END_SRC
 
-*** Make fringe smaller
+** Make fringe smaller
 
- #+BEGIN_SRC emacs-lisp
-   (if (fboundp 'fringe-mode)
-       (fringe-mode 2))
- #+END_SRC
-** Sane default settings
-*** Miscellaneous
- #+BEGIN_SRC emacs-lisp
- (setq initial-major-mode 'lisp-interaction-mode
-       redisplay-dont-pause t
-       column-number-mode t
-       echo-keystrokes 0.02
-       transient-mark-mode t
-       shift-select-mode nil
-       require-final-newline t
-       truncate-partial-width-windows nil
-       delete-by-moving-to-trash t
-       confirm-nonexistent-file-or-buffer nil
-       query-replace-highlight t)
- #+END_SRC
-*** Indentation & Tabs
-**** Default indentation
- Always spaces with width of 4
- #+BEGIN_SRC emacs-lisp
- (setq-default indent-tabs-mode nil)
- (setq-default tab-width 4)
- #+END_SRC
-**** Indent new line if necessary
- #+BEGIN_SRC emacs-lisp
- (define-key global-map (kbd "RET") 'newline-and-indent)
- #+END_SRC
-*** Transparently open compressed files
-
- #+BEGIN_SRC emacs-lisp
- (auto-compression-mode t)
- #+END_SRC
-
-*** Always display line and column numbers
- #+BEGIN_SRC emacs-lisp
- (setq line-number-mode t)
- (setq column-number-mode t)
- #+END_SRC
-*** Answering just 'y' or 'n'
-
- #+BEGIN_SRC emacs-lisp
- (defalias 'yes-or-no-p 'y-or-n-p)
- #+END_SRC
-
-*** Increase or decrease text scale
- #+BEGIN_SRC emacs-lisp
- (global-set-key (kbd "C-+") 'text-scale-increase)
- (global-set-key (kbd "C--") 'text-scale-decrease)
- #+END_SRC
-*** Lines should be 80 characters
- #+BEGIN_SRC emacs-lisp
- (setq fill-column 80)
- #+END_SRC
-*** Disable annoying audio notifications
- #+BEGIN_SRC emacs-lisp
- (setq ring-bell-function 'ignore)
- #+END_SRC
-*** UTF-8
- Set all coding systems to utf-8
- #+BEGIN_SRC emacs-lisp
- (prefer-coding-system 'utf-8-unix)
- (set-clipboard-coding-system 'utf-8-unix)
- (set-default-coding-systems 'utf-8-unix)
- (set-keyboard-coding-system 'utf-8-unix)
- (set-language-environment 'utf-8)
- (set-selection-coding-system 'utf-8-unix)
- (set-terminal-coding-system 'utf-8-unix)
- (setq locale-coding-system 'utf-8-unix)
- (setq coding-system-for-write 'utf-8-unix)
- (setq default-buffer-file-coding-system 'utf-8-unix)
- (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
- (setq file-name-coding-system  'utf-8)
- #+END_SRC
-** Hooks
-*** Cleanup before save
- Remove all trailing whitespace and trailing blank lines before saving the file
- #+BEGIN_SRC emacs-lisp
- (add-hook 'before-save-hook 'whitespace-cleanup)
- #+END_SRC
-*** Copying lines without selecting them
+#+BEGIN_SRC emacs-lisp
+  (if (fboundp 'fringe-mode)
+      (fringe-mode 2))
+#+END_SRC
+* Hooks
+** Cleanup before save
+Remove all trailing whitespace and trailing blank lines before saving the file
+#+BEGIN_SRC emacs-lisp
+(add-hook 'before-save-hook 'whitespace-cleanup)
+#+END_SRC
+** Copying lines without selecting them
    From http://emacs-fu.blogspot.fr/2009/11/copying-lines-without-selecting-them.html
     - =M-w= will copy current line without selection
 
@@ -237,6 +267,17 @@ user with the UI, I add the generated code in a separate file.
        (message "Copied line") (list (line-beginning-position) (line-beginning-position 2)))))
 
 #+end_src
+
+** Emacs Server
+
+ #+BEGIN_SRC emacs-lisp
+   (server-start)
+
+   (add-hook 'after-make-frame-functions
+             (lambda (frame)
+               (select-frame frame)
+               (nc/setup-font)))
+ #+END_SRC
 
 * Advanced Configuration
 ** Completion
@@ -267,6 +308,142 @@ user with the UI, I add the generated code in a separate file.
              company-transformers '(company-sort-by-occurrence))))
 
  #+END_SRC
+*** Helm
+**** Helm core configuration
+ #+BEGIN_SRC emacs-lisp
+   (use-package helm
+     :diminish helm-mode
+
+     :config (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
+                   helm-input-idle-delay 0.01  ; this actually updates things
+                                           ; reeeelatively quickly.
+                   helm-yas-display-key-on-candidate t
+                   helm-quick-update t
+                   helm-split-window-in-side-p t
+                   helm-buffers-fuzzy-matching t
+                   helm-move-to-line-cycle-in-source t
+                   helm-ff-search-library-in-sexp t
+                   helm-ff-file-name-history-use-recentf t
+                   helm-M-x-requires-pattern nil
+                   helm-ff-skip-boring-files t
+                   helm-for-files-preferred-list (quote (helm-source-files-in-current-dir helm-source-recentf helm-source-bookmarks helm-source-file-cache helm-source-buffers-list helm-source-locate helm-source-ls-git)))
+
+     :init (progn
+             (require 'helm-config)
+             (helm-mode t)
+
+             (use-package helm-projectile)
+             (helm-projectile-on))
+
+     :bind (("C-x b" . helm-mini)
+            ("M-x" . helm-M-x)
+            ("C-x C-f" . helm-find-files)
+            ("C-h f" . helm-apropos)
+            ("C-x C-b" . helm-buffers-list)
+            ("M-y" . helm-show-kill-ring)
+            ("C-x c o" . helm-occur)
+            ("C-x C-r" . helm-recentf)
+            ("C-x c y" . helm-yas-complete)
+            ("C-x c Y" . helm-yas-create-snippet-on-region)
+            ("C-x c SPC" . helm-all-mark-rings)))
+ #+END_SRC
+**** helm-swoop
+     - From https://github.com/malb/emacs.d/blob/master/malb.org#helm-swoop
+     - Tip :: You can edit helm-swoop buffers by pressing =C-c C-e=.
+
+ #+begin_src emacs-lisp
+   (use-package helm-swoop
+     :ensure t
+     :bind (("C-c o s" . helm-multi-swoop-org)
+            ("C-s"   . nc/swoop-or-search)
+            ("C-M-s" . helm-multi-swoop-all))
+     :config (progn
+               (setq nc/helm-swoop-ignore-major-mode
+                     '(dired-mode
+                       paradox-menu-mode
+                       doc-view-mode
+                       pdf-view-mode
+                       mu4e-headers-mode
+                       latex-mode))
+
+               (setq helm-swoop-pre-input-function  #'nc--helm-swoop-pre-fill
+                     helm-swoop-split-with-multiple-windows nil
+                     helm-swoop-split-direction #'split-window-horizontally
+                     helm-swoop-split-window-function 'helm-default-display-buffer
+                     helm-swoop-speed-or-color t)
+
+               (defun nc--helm-swoop-pre-fill ()
+                 (thing-at-point 'symbol))
+
+               ;; https://emacs.stackexchange.com/questions/28790/helm-swoop-how-to-make-it-behave-more-like-isearch
+               (defun nc/helm-swoop-C-s ()
+                 (interactive)
+                 (if (boundp 'helm-swoop-pattern)
+                     (if (equal helm-swoop-pattern "")
+                         (previous-history-element 1)
+                       (helm-next-line))
+                   (helm-next-line)))
+
+               (defun nc/swoop-or-search ()
+                 (interactive)
+                 (if (or (> (buffer-size) 1048576) ;; helm-swoop can be slow on big buffers
+                         (memq major-mode nc/helm-swoop-ignore-major-mode))
+                     (isearch-forward)
+                   (helm-swoop)))
+
+               (bind-key "C-S-s" #'helm-swoop-from-isearch isearch-mode-map)
+               (bind-key "C-S-s" #'helm-multi-swoop-all-from-helm-swoop helm-swoop-map)
+               (bind-key "C-r"   #'helm-previous-line helm-swoop-map)
+               (bind-key "C-s"   #'nc/helm-swoop-C-s helm-swoop-map)
+               (bind-key "C-r"   #'helm-previous-line helm-multi-swoop-map)
+               (bind-key "C-s"   #'nc/helm-swoop-C-s helm-multi-swoop-map)))
+ #+end_src
+**** helm-ag
+ Can integrate Helm with [[https://github.com/ggreer/the_silver_searcher][The Silver Searcher]] (ag A code searching tool similar to ack, with a focus on speed.)
+
+ #+BEGIN_SRC emacs-lisp
+ (use-package helm-ag)
+
+ (global-set-key (kbd "C-<f2>") 'helm-do-ag)
+ #+END_SRC
+**** helm-tramp
+ Display server list from your =~/.ssh/config= with helm interface
+ #+begin_src emacs-lisp
+   (use-package helm-tramp)
+ #+end_src
+
+ Set tramp default method to ssh
+
+ #+begin_src emacs-lisp
+ (setq tramp-default-method "ssh")
+ #+end_src
+**** helm-org-rifle
+ Search in org headings / content like Google
+ #+BEGIN_SRC emacs-lisp
+   (use-package helm-org-rifle
+     :ensure t
+     :defer t
+     :config (progn
+               (defun nc/helm-org-rifle-agenda-files (arg)
+                 (interactive "p")
+                 (let ((current-prefix-arg nil))
+                   (cond
+                    ((equal arg 4) (call-interactively #'helm-org-rifle-agenda-files nil))
+                    ((equal arg 16) (helm-org-rifle-occur-agenda-files))
+                    (t (helm-org-agenda-files-headings)))))))
+ #+END_SRC
+**** helm-semantic and imenu
+     - From https://github.com/malb/emacs.d/blob/master/malb.org#helm-semantic-imenu-org
+ #+begin_src emacs-lisp
+   (defun nc/helm-in-buffer ()
+     "the right kind of buffer menu"
+     (interactive)
+     (if (eq major-mode 'org-mode)
+         (call-interactively #'helm-org-in-buffer-headings)
+       (call-interactively #'helm-semantic-or-imenu)))
+
+   (global-set-key (kbd "C-<f12>") 'nc/helm-in-buffer)
+ #+end_src
 *** Hippie expand
  Looks at the word before point and tries  to expand it.
 
@@ -330,37 +507,6 @@ Use file path to ensure buffer name uniqueness
 (setq uniquify-separator "/")
 (setq uniquify-after-kill-buffer-p t)
 (setq uniquify-ignore-buffers-re "^\\*")
-#+END_SRC
-** Calendar
-*** French Calendar
-#+BEGIN_SRC emacs-lisp
-  (setq calendar-week-start-day 1
-        calendar-day-name-array ["Dimanche" "Lundi" "Mardi" "Mercredi"
-                                 "Jeudi" "Vendredi" "Samedi"]
-        calendar-month-name-array ["Janvier" "Fevrier" "Mars" "Avril" "Mai"
-                                   "Juin" "Juillet" "Aout" "Septembre"
-                                   "Octobre" "Novembre" "Decembre"])
-#+END_SRC
-*** French holiday
-#+BEGIN_SRC emacs-lisp
-  (defvar french-holiday
-    '((holiday-fixed 1 1 "Jour de l'an")
-      (holiday-fixed 5 1 "Fête du travail")
-      (holiday-fixed 5 8 "Victoire 45")
-      (holiday-fixed 7 14 "Fête nationale")
-      (holiday-fixed 8 15 "Assomption")
-      (holiday-fixed 11 1 "Toussaint")
-      (holiday-fixed 11 11 "Armistice 18")
-      (holiday-fixed 12 25 "Noël")
-      (holiday-easter-etc 1 "Lundi de Pâques")
-      (holiday-easter-etc 39 "Ascension")
-      (holiday-easter-etc 50 "Lundi de Pentecôte")))
-
-  (setq calendar-date-style 'european
-        calendar-holidays french-holiday
-        calendar-mark-holidays-flag t
-        calendar-mark-diary-entries-flag t)
-
 #+END_SRC
 ** Dired
 *** Always delete and copy recursively
@@ -534,17 +680,6 @@ Auto save buffers when buffers loose focus
      version-control t        ; numbered versions
 )
  #+END_SRC
-*** PDF
- #+begin_src emacs-lisp
-   (use-package pdf-tools
-     :ensure t
-     :config
-     (pdf-tools-install)
-     (setq-default pdf-view-display-size 'fit-page)
-     (use-package org-pdfview
-       :ensure t))
- #+end_src
-
 *** Copy file name to clipboard
  #+BEGIN_SRC emacs-lisp
     (defun nc/copy-filename-to-clipboard ()
@@ -605,142 +740,6 @@ Auto save buffers when buffers loose focus
      (global-set-key (kbd "C-c f I") 'nc/find-config)
  #+end_src
 
-** Helm
-*** Helm core configuration
-#+BEGIN_SRC emacs-lisp
-  (use-package helm
-    :diminish helm-mode
-
-    :config (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
-                  helm-input-idle-delay 0.01  ; this actually updates things
-                                          ; reeeelatively quickly.
-                  helm-yas-display-key-on-candidate t
-                  helm-quick-update t
-                  helm-split-window-in-side-p t
-                  helm-buffers-fuzzy-matching t
-                  helm-move-to-line-cycle-in-source t
-                  helm-ff-search-library-in-sexp t
-                  helm-ff-file-name-history-use-recentf t
-                  helm-M-x-requires-pattern nil
-                  helm-ff-skip-boring-files t
-                  helm-for-files-preferred-list (quote (helm-source-files-in-current-dir helm-source-recentf helm-source-bookmarks helm-source-file-cache helm-source-buffers-list helm-source-locate helm-source-ls-git)))
-
-    :init (progn
-            (require 'helm-config)
-            (helm-mode t)
-
-            (use-package helm-projectile)
-            (helm-projectile-on))
-
-    :bind (("C-x b" . helm-mini)
-           ("M-x" . helm-M-x)
-           ("C-x C-f" . helm-find-files)
-           ("C-h f" . helm-apropos)
-           ("C-x C-b" . helm-buffers-list)
-           ("M-y" . helm-show-kill-ring)
-           ("C-x c o" . helm-occur)
-           ("C-x C-r" . helm-recentf)
-           ("C-x c y" . helm-yas-complete)
-           ("C-x c Y" . helm-yas-create-snippet-on-region)
-           ("C-x c SPC" . helm-all-mark-rings)))
-#+END_SRC
-*** helm-swoop
-    - From https://github.com/malb/emacs.d/blob/master/malb.org#helm-swoop
-    - Tip :: You can edit helm-swoop buffers by pressing =C-c C-e=.
-
-#+begin_src emacs-lisp
-  (use-package helm-swoop
-    :ensure t
-    :bind (("C-c o s" . helm-multi-swoop-org)
-           ("C-s"   . nc/swoop-or-search)
-           ("C-M-s" . helm-multi-swoop-all))
-    :config (progn
-              (setq nc/helm-swoop-ignore-major-mode
-                    '(dired-mode
-                      paradox-menu-mode
-                      doc-view-mode
-                      pdf-view-mode
-                      mu4e-headers-mode
-                      latex-mode))
-
-              (setq helm-swoop-pre-input-function  #'nc--helm-swoop-pre-fill
-                    helm-swoop-split-with-multiple-windows nil
-                    helm-swoop-split-direction #'split-window-horizontally
-                    helm-swoop-split-window-function 'helm-default-display-buffer
-                    helm-swoop-speed-or-color t)
-
-              (defun nc--helm-swoop-pre-fill ()
-                (thing-at-point 'symbol))
-
-              ;; https://emacs.stackexchange.com/questions/28790/helm-swoop-how-to-make-it-behave-more-like-isearch
-              (defun nc/helm-swoop-C-s ()
-                (interactive)
-                (if (boundp 'helm-swoop-pattern)
-                    (if (equal helm-swoop-pattern "")
-                        (previous-history-element 1)
-                      (helm-next-line))
-                  (helm-next-line)))
-
-              (defun nc/swoop-or-search ()
-                (interactive)
-                (if (or (> (buffer-size) 1048576) ;; helm-swoop can be slow on big buffers
-                        (memq major-mode nc/helm-swoop-ignore-major-mode))
-                    (isearch-forward)
-                  (helm-swoop)))
-
-              (bind-key "C-S-s" #'helm-swoop-from-isearch isearch-mode-map)
-              (bind-key "C-S-s" #'helm-multi-swoop-all-from-helm-swoop helm-swoop-map)
-              (bind-key "C-r"   #'helm-previous-line helm-swoop-map)
-              (bind-key "C-s"   #'nc/helm-swoop-C-s helm-swoop-map)
-              (bind-key "C-r"   #'helm-previous-line helm-multi-swoop-map)
-              (bind-key "C-s"   #'nc/helm-swoop-C-s helm-multi-swoop-map)))
-#+end_src
-*** helm-ag
-Can integrate Helm with [[https://github.com/ggreer/the_silver_searcher][The Silver Searcher]] (ag A code searching tool similar to ack, with a focus on speed.)
-
-#+BEGIN_SRC emacs-lisp
-(use-package helm-ag)
-
-(global-set-key (kbd "C-<f2>") 'helm-do-ag)
-#+END_SRC
-*** helm-tramp
-Display server list from your =~/.ssh/config= with helm interface
-#+begin_src emacs-lisp
-  (use-package helm-tramp)
-#+end_src
-
-Set tramp default method to ssh
-
-#+begin_src emacs-lisp
-(setq tramp-default-method "ssh")
-#+end_src
-*** helm-org-rifle
-Search in org headings / content like Google
-#+BEGIN_SRC emacs-lisp
-  (use-package helm-org-rifle
-    :ensure t
-    :defer t
-    :config (progn
-              (defun nc/helm-org-rifle-agenda-files (arg)
-                (interactive "p")
-                (let ((current-prefix-arg nil))
-                  (cond
-                   ((equal arg 4) (call-interactively #'helm-org-rifle-agenda-files nil))
-                   ((equal arg 16) (helm-org-rifle-occur-agenda-files))
-                   (t (helm-org-agenda-files-headings)))))))
-#+END_SRC
-*** helm-semantic and imenu
-    - From https://github.com/malb/emacs.d/blob/master/malb.org#helm-semantic-imenu-org
-#+begin_src emacs-lisp
-  (defun nc/helm-in-buffer ()
-    "the right kind of buffer menu"
-    (interactive)
-    (if (eq major-mode 'org-mode)
-        (call-interactively #'helm-org-in-buffer-headings)
-      (call-interactively #'helm-semantic-or-imenu)))
-
-  (global-set-key (kbd "C-<f12>") 'nc/helm-in-buffer)
-#+end_src
 ** Key Bindings
 *** Which Key
 
@@ -783,19 +782,6 @@ Search in org headings / content like Google
 **** Undo
 #+BEGIN_SRC emacs-lisp
 (bind-key "C-z" #'undo)
-#+END_SRC
-** Magit
-#+BEGIN_QUOTE
-Magit a git porcelain inside Emacs !
-
-[[https://github.com/magit/magit]]
-#+END_QUOTE
-
-#+BEGIN_SRC emacs-lisp
-  (use-package magit
-    :bind (("C-x g" . magit-status)
-           ("<f6>" . magit-status )
-           ("C-<f6>" . magit-log-buffer-file)))
 #+END_SRC
 ** Navigation
 *** Basic navigation
@@ -1009,7 +995,7 @@ key.
   (when is-mac
     (set-locale-environment "fr_FR.UTF-8"))
 #+END_SRC
-* Org Mode
+* Org
 ** My files
 *** Base directory
 #+begin_src emacs-lisp
@@ -1537,31 +1523,6 @@ Insert time slot mainly used when I schedule meeting or appointment.
   (interactive)
   (helm-do-grep-1 (list org-directory) t nil (list "*.org")))
 #+end_src
-*** Deft
-#+BEGIN_SRC emacs-lisp
-  (use-package deft
-    :bind
-    (("C-c n" . deft))
-    :config
-    (setq deft-directory "~/notes/topics"
-          deft-recursive t
-          deft-extensions '("org")
-          deft-default-extension "org"
-          deft-text-mode 'org-mode
-          deft-org-mode-title-prefix t
-          deft-use-filter-string-for-filename t
-          deft-auto-save-interval 0
-          deft-recursive-ignore-dir-regexp
-            (concat "\\(?:"
-                    "\\."
-                    "\\|\\.\\."
-                    "\\\|valtech"
-                    "\\)$")
-          deft-file-naming-rules
-            '((noslash . "-")
-              (nospace . "-")
-              (case-fn . downcase))))
-#+END_SRC
 ** Publishing my notes
 *** Table Of Contents
  Only 2 levels
@@ -1689,7 +1650,62 @@ Reset checkbox items when weekly review is done
     (if (org-at-item-checkbox-p)
         (org-ctrl-c-ctrl-c)))))
 #+END_SRC
-* Programming
+* Tools
+** Deft
+#+BEGIN_SRC emacs-lisp
+  (use-package deft
+    :bind
+    (("C-c n" . deft))
+    :config
+    (setq deft-directory "~/notes/topics"
+          deft-recursive t
+          deft-extensions '("org")
+          deft-default-extension "org"
+          deft-text-mode 'org-mode
+          deft-org-mode-title-prefix t
+          deft-use-filter-string-for-filename t
+          deft-auto-save-interval 0
+          deft-recursive-ignore-dir-regexp
+            (concat "\\(?:"
+                    "\\."
+                    "\\|\\.\\."
+                    "\\\|valtech"
+                    "\\)$")
+          deft-file-naming-rules
+            '((noslash . "-")
+              (nospace . "-")
+              (case-fn . downcase))))
+#+END_SRC
+** Docker
+#+begin_src emacs-lisp
+  (use-package dockerfile-mode
+    :mode "Dockerfile.*\\'")
+#+end_src
+** PDF
+#+begin_src emacs-lisp
+  (use-package pdf-tools
+    :ensure t
+    :config
+    (pdf-tools-install)
+    (setq-default pdf-view-display-size 'fit-page)
+    (use-package org-pdfview
+      :ensure t))
+#+end_src
+
+** Magit
+
+#+BEGIN_QUOTE
+Magit a git porcelain inside Emacs !
+
+[[https://github.com/magit/magit]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :bind (("C-x g" . magit-status)
+           ("<f6>" . magit-status )
+           ("C-<f6>" . magit-log-buffer-file)))
+#+END_SRC
 ** Shells
 *** Eshell
     Mainly come from [[https://github.com/howardabrams/dot-files/blob/master/emacs-eshell.org]]
@@ -1896,6 +1912,7 @@ Sometimes I need an Ansi Term...
 (bind-key "C-c t" 'ansi-term)
 #+END_SRC
 
+* Programming
 ** Ediff
 *** Ignore white space
 From : [[https://www.emacswiki.org/emacs/EdiffMode]] :
@@ -1925,11 +1942,6 @@ Ediff should be opened in selected frame and split window horizontally
   :ensure t
   :mode "\\.lua\\'")
 #+END_SRC
-** Docker Files
-#+begin_src emacs-lisp
-  (use-package dockerfile-mode
-    :mode "Dockerfile.*\\'")
-#+end_src
 ** Markdown
    GitHub Flavored Markdown by default for README.md files.
 #+BEGIN_SRC emacs-lisp
@@ -2197,17 +2209,6 @@ npn install -g tern
     :ensure t
     :mode ("\\.ts\\'" . typescript-mode))
 #+end_src
-
-* Emacs Server
-
-#+BEGIN_SRC emacs-lisp
-  (server-start)
-
-  (add-hook 'after-make-frame-functions
-            (lambda (frame)
-              (select-frame frame)
-              (nc/setup-font)))
-#+END_SRC
 
 * Utilities Functions
 ** Pseudo uuid
