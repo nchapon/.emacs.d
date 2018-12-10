@@ -572,6 +572,22 @@ Enable C-x C-j
  (global-set-key (kbd "S-<backspace>") 'kill-whole-line)
  #+END_SRC
 
+*** Multiple Cursors
+
+ This package can create several cursors to all do the same things.
+
+ #+BEGIN_SRC emacs-lisp
+   (use-package multiple-cursors
+     :bind
+     (("C-S-c C-S-c" .  mc/edit-lines)
+      ("C-$" .  mc/edit-ends-of-lines)
+      ("C-S-b" .  mc/edit-beginnings-of-lines)
+      ("C-<" .  mc/mark-previous-word-like-this)
+      ("C->" .  mc/mark-next-word-like-this)
+      ("C-S-n" .  mc/mark-next-like-this)
+      ("C-S-p" .  mc/mark-previous-like-this)
+      ("C-*" .  mc/mark-all-dwim)))
+ #+END_SRC
 *** Move Line
 **** Move line Up
  Move line Up is bound to =C-S-UpArrow=
@@ -1974,22 +1990,6 @@ Ediff should be opened in selected frame and split window horizontally
 
 #+RESULTS:
 
-** Multiple Cursors
-
-This package can create several cursors to all do the same things.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package multiple-cursors
-    :bind
-    (("C-S-c C-S-c" .  mc/edit-lines)
-     ("C-$" .  mc/edit-ends-of-lines)
-     ("C-S-b" .  mc/edit-beginnings-of-lines)
-     ("C-<" .  mc/mark-previous-word-like-this)
-     ("C->" .  mc/mark-next-word-like-this)
-     ("C-S-n" .  mc/mark-next-like-this)
-     ("C-S-p" .  mc/mark-previous-like-this)
-     ("C-*" .  mc/mark-all-dwim)))
-#+END_SRC
 ** Smart Comments
 Smarter commenting for emacs
 #+BEGIN_SRC emacs-lisp
