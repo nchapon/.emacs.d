@@ -13,7 +13,7 @@
   (defconst has-gui (display-graphic-p))
 #+END_SRC
 
-* Initialization settings
+* Package configuration
 ** use-package
  #+BEGIN_SRC emacs-lisp
  (add-to-list 'package-archives
@@ -34,23 +34,6 @@
 
     (use-package diminish)
   #+END_SRC
-** Exec Path From Shell
-
-#+BEGIN_QUOTE
-A GNU Emacs library to ensure environment variables inside Emacs look the same as in the user's shell.
-This happens a lot on OS X, where an Emacs instance started from the GUI inherits a default set of environment variables.
-
-[[https://github.com/purcell/exec-path-from-shell][https://github.com/purcell/exec-path-from-shell]]
-#+END_QUOTE
-
-#+BEGIN_SRC emacs-lisp
-  (use-package exec-path-from-shell
-    :config
-    (when (memq window-system '(mac ns x))
-      (progn
-        (exec-path-from-shell-initialize)
-        (exec-path-from-shell-copy-env "GOPATH"))))
-#+END_SRC
 ** No Littering
 #+BEGIN_QUOTE
 Help keeping =~/.emacs.d= clean
@@ -71,6 +54,23 @@ user with the UI, I add the generated code in a separate file.
     (load custom-file t))
 #+END_SRC
 
+** Exec Path From Shell
+
+#+BEGIN_QUOTE
+A GNU Emacs library to ensure environment variables inside Emacs look the same as in the user's shell.
+This happens a lot on OS X, where an Emacs instance started from the GUI inherits a default set of environment variables.
+
+[[https://github.com/purcell/exec-path-from-shell][https://github.com/purcell/exec-path-from-shell]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+  (use-package exec-path-from-shell
+    :config
+    (when (memq window-system '(mac ns x))
+      (progn
+        (exec-path-from-shell-initialize)
+        (exec-path-from-shell-copy-env "GOPATH"))))
+#+END_SRC
 * UI
 ** All The Icons
 #+BEGIN_SRC emacs-lisp
@@ -147,7 +147,7 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
   (if (fboundp 'fringe-mode)
       (fringe-mode 2))
 #+END_SRC
-* Core Settings
+* General Settings
 ** Better defaults
 *** Miscellaneous
  #+BEGIN_SRC emacs-lisp
@@ -1915,7 +1915,15 @@ Sometimes I need an Ansi Term...
 (bind-key "C-c t" 'ansi-term)
 #+END_SRC
 
-* Programming
+* Programming Languages
+** asciidoc
+
+#+BEGIN_SRC emacs-lisp
+  (use-package adoc-mode
+    :ensure t
+    :mode "\\.adoc?\\'")
+#+END_SRC
+
 ** Ediff
 *** Ignore white space
 From : [[https://www.emacswiki.org/emacs/EdiffMode]] :
@@ -2128,14 +2136,6 @@ Then we can setup Emacs go mode
     (end-of-line-compile))
 
 #+end_src
-** asciidoc
-
-#+BEGIN_SRC emacs-lisp
-  (use-package adoc-mode
-    :ensure t
-    :mode "\\.adoc?\\'")
-#+END_SRC
-
 ** Web
 *** Yaml modes
 #+BEGIN_SRC emacs-lisp
