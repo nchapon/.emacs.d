@@ -204,6 +204,29 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
  #+BEGIN_SRC emacs-lisp
  (setq ring-bell-function 'ignore)
  #+END_SRC
+*** Ediff
+**** Ignore white space
+ From : [[https://www.emacswiki.org/emacs/EdiffMode]] :
+
+ You can ignore whitespace or case sensitivity in two ways:
+
+  - Interactively, on the fly:
+    - Whitespace sensitivity – Toggle with =##= (=ediff-toggle-skip-similar=).
+    - Case sensitivity – Toggle with =#c= (=ediff-toggle-ignore-case=). This assumes that you’ve loaded library Lisp:ediff+.el and that you are using `diff(1)’ as ‘ediff-diff-program’. (Toggling case-sensitivity is available in vanilla GNU Emacs 22, so Lisp:ediff+.el is mainly useful for older Emacs versions.)
+  - Persistently: Customize option =ediff-diff-options=. This assumes that you are using `diff(1)’ as ‘ediff-diff-program’.
+     - Whitespace insensitivity – Include ‘-w’ in =ediff-diff-options=.
+     - Case insensitivity – Include ‘-i’ in =ediff-diff-options=.
+ #+BEGIN_SRC emacs-lisp
+ (setq ediff-diff-options "-w")
+ #+END_SRC
+**** Ediff operate on selected frame
+
+ Ediff should be opened in selected frame and split window horizontally
+
+ #+BEGIN_SRC emacs-lisp
+ (setq ediff-split-window-function 'split-window-horizontally)
+ (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+ #+END_SRC
 *** UTF-8
  Set all coding systems to utf-8
  #+BEGIN_SRC emacs-lisp
@@ -1931,7 +1954,7 @@ Sometimes I need an Ansi Term...
 (bind-key "C-c t" 'ansi-term)
 #+END_SRC
 
-* Programming Languages
+* Programming
 ** asciidoc
 
 #+BEGIN_SRC emacs-lisp
@@ -1940,111 +1963,6 @@ Sometimes I need an Ansi Term...
     :mode "\\.adoc?\\'")
 #+END_SRC
 
-** Ediff
-*** Ignore white space
-From : [[https://www.emacswiki.org/emacs/EdiffMode]] :
-
-You can ignore whitespace or case sensitivity in two ways:
-
- - Interactively, on the fly:
-   - Whitespace sensitivity – Toggle with =##= (=ediff-toggle-skip-similar=).
-   - Case sensitivity – Toggle with =#c= (=ediff-toggle-ignore-case=). This assumes that you’ve loaded library Lisp:ediff+.el and that you are using `diff(1)’ as ‘ediff-diff-program’. (Toggling case-sensitivity is available in vanilla GNU Emacs 22, so Lisp:ediff+.el is mainly useful for older Emacs versions.)
- - Persistently: Customize option =ediff-diff-options=. This assumes that you are using `diff(1)’ as ‘ediff-diff-program’.
-    - Whitespace insensitivity – Include ‘-w’ in =ediff-diff-options=.
-    - Case insensitivity – Include ‘-i’ in =ediff-diff-options=.
-#+BEGIN_SRC emacs-lisp
-(setq ediff-diff-options "-w")
-#+END_SRC
-*** Ediff operate on selected frame
-
-Ediff should be opened in selected frame and split window horizontally
-
-#+BEGIN_SRC emacs-lisp
-(setq ediff-split-window-function 'split-window-horizontally)
-(setq ediff-window-setup-function 'ediff-setup-windows-plain)
-#+END_SRC
-** Lua
-#+BEGIN_SRC emacs-lisp
-(use-package lua-mode
-  :ensure t
-  :mode "\\.lua\\'")
-#+END_SRC
-** Markdown
-   GitHub Flavored Markdown by default for README.md files.
-#+BEGIN_SRC emacs-lisp
-  (use-package markdown-mode
-    :mode (("README\\.md\\'" . gfm-mode)
-           ("\\.md\\'"       . markdown-mode)
-           ("\\.markdown\\'" . markdown-mode))
-    :config
-    ;; Process Markdown with Pandoc, using GitHub stylesheet for nice output
-    (let ((stylesheet (expand-file-name
-                       (locate-user-emacs-file "etc/pandoc.css"))))
-      (setq markdown-command
-            (mapconcat #'shell-quote-argument
-                       `("pandoc" "--toc" "--section-divs"
-                         "--css" ,(concat "file://" stylesheet)
-                         "--standalone" "-f" "markdown" "-t" "html5")
-                       " "))))
-#+END_SRC
-
-#+RESULTS:
-
-** Smart Comments
-Smarter commenting for emacs
-#+BEGIN_SRC emacs-lisp
-(use-package smart-comment
-  :bind ("M-;" . smart-comment))
-#+END_SRC
-
-** Smartparens
-
-Smart parens for all modes.
-
-#+BEGIN_SRC emacs-lisp
-    (use-package smartparens
-      :defer t
-      :diminish ""
-      :init
-      (progn
-        (add-hook 'prog-mode-hook #'turn-on-smartparens-mode)
-        ;; turn on showing the match for clojure and elisp
-        (add-hook 'clojure-mode-hook #'turn-on-show-smartparens-mode)
-        (add-hook 'emacs-lisp-mode-hook #'turn-on-show-smartparens-mode)
-        (add-hook 'java-mode-hook #'turn-on-show-smartparens-mode)
-        (add-hook 'c-mode-hook #'turn-on-show-smartparens-mode))
-      :config
-      (setq-default sp-hybrid-kill-entire-symbol nil)
-
-      (setq sp-highlight-pair-overlay nil)
-
-      (define-key sp-keymap (kbd "<delete>") 'sp-delete-char)
-      (define-key sp-keymap (kbd "C-<right>") 'sp-forward-slurp-sexp)
-      (define-key sp-keymap (kbd "C-<left>") 'sp-forward-barf-sexp)
-      (define-key sp-keymap (kbd "C-S-<right>") 'sp-backward-barf-sexp)
-      (define-key sp-keymap (kbd "C-S-<left>") 'sp-backward-slurp-sexp)
-      (define-key sp-keymap (kbd "M-s") 'sp-unwrap-sexp)
-      (define-key sp-keymap (kbd "M-S-s") 'sp-raise-sexp)
-      (define-key sp-keymap (kbd "M-i") 'sp-split-sexp)
-      (define-key sp-keymap (kbd "M-S-i") 'sp-join-sexp)
-      (define-key sp-keymap (kbd "M-t") 'sp-transpose-sexp)
-      (define-key sp-keymap (kbd "M-S-<left>") 'sp-backward-sexp)
-      (define-key sp-keymap (kbd "M-S-<right>") 'sp-forward-sexp)
-
-
-
-      (defun nc--create-newline-and-enter-sexp (&rest _ignored)
-        "Open a new brace or bracket expression, with relevant newlines and indent. "
-        (newline)
-        (indent-according-to-mode)
-        (forward-line -1)
-        (indent-according-to-mode))
-
-      (sp-with-modes '(c-mode c++-mode js-mode js2-mode java-mode
-                              typescript-mode perl-mode)
-        (sp-local-pair "{" nil :post-handlers
-                       '((nc--create-newline-and-enter-sexp "RET")))))
-#+END_SRC
 ** Go
 Go mode needs some go tools
 *** Go Imports
@@ -2136,6 +2054,88 @@ Then we can setup Emacs go mode
     (end-of-line-compile))
 
 #+end_src
+** Lua
+#+BEGIN_SRC emacs-lisp
+(use-package lua-mode
+  :ensure t
+  :mode "\\.lua\\'")
+#+END_SRC
+** Markdown
+   GitHub Flavored Markdown by default for README.md files.
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode
+    :mode (("README\\.md\\'" . gfm-mode)
+           ("\\.md\\'"       . markdown-mode)
+           ("\\.markdown\\'" . markdown-mode))
+    :config
+    ;; Process Markdown with Pandoc, using GitHub stylesheet for nice output
+    (let ((stylesheet (expand-file-name
+                       (locate-user-emacs-file "etc/pandoc.css"))))
+      (setq markdown-command
+            (mapconcat #'shell-quote-argument
+                       `("pandoc" "--toc" "--section-divs"
+                         "--css" ,(concat "file://" stylesheet)
+                         "--standalone" "-f" "markdown" "-t" "html5")
+                       " "))))
+#+END_SRC
+
+#+RESULTS:
+
+** Smart Comments
+Smarter commenting for emacs
+#+BEGIN_SRC emacs-lisp
+(use-package smart-comment
+  :bind ("M-;" . smart-comment))
+#+END_SRC
+
+** Smartparens
+
+Smart parens for all modes.
+
+#+BEGIN_SRC emacs-lisp
+    (use-package smartparens
+      :defer t
+      :diminish ""
+      :init
+      (progn
+        (add-hook 'prog-mode-hook #'turn-on-smartparens-mode)
+        ;; turn on showing the match for clojure and elisp
+        (add-hook 'clojure-mode-hook #'turn-on-show-smartparens-mode)
+        (add-hook 'emacs-lisp-mode-hook #'turn-on-show-smartparens-mode)
+        (add-hook 'java-mode-hook #'turn-on-show-smartparens-mode)
+        (add-hook 'c-mode-hook #'turn-on-show-smartparens-mode))
+      :config
+      (setq-default sp-hybrid-kill-entire-symbol nil)
+
+      (setq sp-highlight-pair-overlay nil)
+
+      (define-key sp-keymap (kbd "<delete>") 'sp-delete-char)
+      (define-key sp-keymap (kbd "C-<right>") 'sp-forward-slurp-sexp)
+      (define-key sp-keymap (kbd "C-<left>") 'sp-forward-barf-sexp)
+      (define-key sp-keymap (kbd "C-S-<right>") 'sp-backward-barf-sexp)
+      (define-key sp-keymap (kbd "C-S-<left>") 'sp-backward-slurp-sexp)
+      (define-key sp-keymap (kbd "M-s") 'sp-unwrap-sexp)
+      (define-key sp-keymap (kbd "M-S-s") 'sp-raise-sexp)
+      (define-key sp-keymap (kbd "M-i") 'sp-split-sexp)
+      (define-key sp-keymap (kbd "M-S-i") 'sp-join-sexp)
+      (define-key sp-keymap (kbd "M-t") 'sp-transpose-sexp)
+      (define-key sp-keymap (kbd "M-S-<left>") 'sp-backward-sexp)
+      (define-key sp-keymap (kbd "M-S-<right>") 'sp-forward-sexp)
+
+
+
+      (defun nc--create-newline-and-enter-sexp (&rest _ignored)
+        "Open a new brace or bracket expression, with relevant newlines and indent. "
+        (newline)
+        (indent-according-to-mode)
+        (forward-line -1)
+        (indent-according-to-mode))
+
+      (sp-with-modes '(c-mode c++-mode js-mode js2-mode java-mode
+                              typescript-mode perl-mode)
+        (sp-local-pair "{" nil :post-handlers
+                       '((nc--create-newline-and-enter-sexp "RET")))))
+#+END_SRC
 ** Web
 *** Yaml modes
 #+BEGIN_SRC emacs-lisp
