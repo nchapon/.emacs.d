@@ -1,30 +1,39 @@
-* Base config
-** Personal information
+* Globals variables
+** Personal Information
  #+BEGIN_SRC emacs-lisp
    (setq user-full-name "Nicolas Chapon"
          user-mail-address "nchapon@gmail.com")
  #+END_SRC
 
-** Packages
+** System constants
+
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'package-archives
-         '("melpa" . "http://melpa.org/packages/"))
+  (defconst is-mac (equal system-type 'darwin))
+  (defconst is-linux (equal system-type 'gnu/linux))
+  (defconst has-gui (display-graphic-p))
 #+END_SRC
 
-Use package default configuration
+* Initialization settings
+** use-package
  #+BEGIN_SRC emacs-lisp
-   (unless (package-installed-p 'use-package)
-       (package-refresh-contents)
-       (package-install 'use-package))
-
-   (setq use-package-verbose t)
-   (setq use-package-always-ensure t)
-   (require 'use-package)
-   (use-package auto-compile
-     :config (auto-compile-on-load-mode))
-
-   (use-package diminish)
+ (add-to-list 'package-archives
+          '("melpa" . "http://melpa.org/packages/"))
  #+END_SRC
+
+ Use package default configuration
+  #+BEGIN_SRC emacs-lisp
+    (unless (package-installed-p 'use-package)
+        (package-refresh-contents)
+        (package-install 'use-package))
+
+    (setq use-package-verbose t)
+    (setq use-package-always-ensure t)
+    (require 'use-package)
+    (use-package auto-compile
+      :config (auto-compile-on-load-mode))
+
+    (use-package diminish)
+  #+END_SRC
 ** Exec Path From Shell
 
 #+BEGIN_QUOTE
@@ -42,14 +51,6 @@ This happens a lot on OS X, where an Emacs instance started from the GUI inherit
         (exec-path-from-shell-initialize)
         (exec-path-from-shell-copy-env "GOPATH"))))
 #+END_SRC
-** Globals Variables
-
-#+BEGIN_SRC emacs-lisp
-  (defconst is-mac (equal system-type 'darwin))
-  (defconst is-linux (equal system-type 'gnu/linux))
-  (defconst has-gui (display-graphic-p))
-#+END_SRC
-
 ** No Littering
 #+BEGIN_QUOTE
 Help keeping =~/.emacs.d= clean
@@ -70,109 +71,6 @@ user with the UI, I add the generated code in a separate file.
     (load custom-file t))
 #+END_SRC
 
-* Better default settings
-** Miscellaneous
-#+BEGIN_SRC emacs-lisp
-(setq initial-major-mode 'lisp-interaction-mode
-      redisplay-dont-pause t
-      column-number-mode t
-      echo-keystrokes 0.02
-      transient-mark-mode t
-      shift-select-mode nil
-      require-final-newline t
-      truncate-partial-width-windows nil
-      delete-by-moving-to-trash t
-      confirm-nonexistent-file-or-buffer nil
-      query-replace-highlight t)
-#+END_SRC
-** Indentation & Tabs
-*** Default indentation
-Always spaces with width of 4
-#+BEGIN_SRC emacs-lisp
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-#+END_SRC
-*** Indent new line if necessary
-#+BEGIN_SRC emacs-lisp
-(define-key global-map (kbd "RET") 'newline-and-indent)
-#+END_SRC
-** Transparently open compressed files
-
-#+BEGIN_SRC emacs-lisp
-(auto-compression-mode t)
-#+END_SRC
-
-** Always display line and column numbers
-#+BEGIN_SRC emacs-lisp
-(setq line-number-mode t)
-(setq column-number-mode t)
-#+END_SRC
-** Answering just 'y' or 'n'
-
-#+BEGIN_SRC emacs-lisp
-(defalias 'yes-or-no-p 'y-or-n-p)
-#+END_SRC
-
-** Increase or decrease text scale
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-+") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-#+END_SRC
-** Lines should be 80 characters
-#+BEGIN_SRC emacs-lisp
-(setq fill-column 80)
-#+END_SRC
-** Disable annoying audio notifications
-#+BEGIN_SRC emacs-lisp
-(setq ring-bell-function 'ignore)
-#+END_SRC
-** UTF-8
-Set all coding systems to utf-8
-#+BEGIN_SRC emacs-lisp
-(prefer-coding-system 'utf-8-unix)
-(set-clipboard-coding-system 'utf-8-unix)
-(set-default-coding-systems 'utf-8-unix)
-(set-keyboard-coding-system 'utf-8-unix)
-(set-language-environment 'utf-8)
-(set-selection-coding-system 'utf-8-unix)
-(set-terminal-coding-system 'utf-8-unix)
-(setq locale-coding-system 'utf-8-unix)
-(setq coding-system-for-write 'utf-8-unix)
-(setq default-buffer-file-coding-system 'utf-8-unix)
-(setq default-process-coding-system '(utf-8-unix . utf-8-unix))
-(setq file-name-coding-system  'utf-8)
-#+END_SRC
-** Calendar
-*** French Calendar
-#+BEGIN_SRC emacs-lisp
-  (setq calendar-week-start-day 1
-        calendar-day-name-array ["Dimanche" "Lundi" "Mardi" "Mercredi"
-                                 "Jeudi" "Vendredi" "Samedi"]
-        calendar-month-name-array ["Janvier" "Fevrier" "Mars" "Avril" "Mai"
-                                   "Juin" "Juillet" "Aout" "Septembre"
-                                   "Octobre" "Novembre" "Decembre"])
-#+END_SRC
-*** French holiday
-#+BEGIN_SRC emacs-lisp
-  (defvar french-holiday
-    '((holiday-fixed 1 1 "Jour de l'an")
-      (holiday-fixed 5 1 "Fête du travail")
-      (holiday-fixed 5 8 "Victoire 45")
-      (holiday-fixed 7 14 "Fête nationale")
-      (holiday-fixed 8 15 "Assomption")
-      (holiday-fixed 11 1 "Toussaint")
-      (holiday-fixed 11 11 "Armistice 18")
-      (holiday-fixed 12 25 "Noël")
-      (holiday-easter-etc 1 "Lundi de Pâques")
-      (holiday-easter-etc 39 "Ascension")
-      (holiday-easter-etc 50 "Lundi de Pentecôte")))
-
-  (setq calendar-date-style 'european
-        calendar-holidays french-holiday
-        calendar-mark-holidays-flag t
-        calendar-mark-diary-entries-flag t)
-
-#+END_SRC
 * UI
 ** All The Icons
 #+BEGIN_SRC emacs-lisp
@@ -249,37 +147,110 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
   (if (fboundp 'fringe-mode)
       (fringe-mode 2))
 #+END_SRC
-* Hooks
-** Cleanup before save
-Remove all trailing whitespace and trailing blank lines before saving the file
-#+BEGIN_SRC emacs-lisp
-(add-hook 'before-save-hook 'whitespace-cleanup)
-#+END_SRC
-** Copying lines without selecting them
-   From http://emacs-fu.blogspot.fr/2009/11/copying-lines-without-selecting-them.html
-    - =M-w= will copy current line without selection
-
-#+begin_src emacs-lisp
-  (defadvice kill-ring-save (before slick-copy activate compile)
-    "When called  interactively with no active region, copy a single line instead."
-    (interactive
-     (if mark-active (list (region-beginning) (region-end))
-       (message "Copied line") (list (line-beginning-position) (line-beginning-position 2)))))
-
-#+end_src
-
-** Emacs Server
+* Core Settings
+** Better defaults
+*** Miscellaneous
+ #+BEGIN_SRC emacs-lisp
+ (setq initial-major-mode 'lisp-interaction-mode
+       redisplay-dont-pause t
+       column-number-mode t
+       echo-keystrokes 0.02
+       transient-mark-mode t
+       shift-select-mode nil
+       require-final-newline t
+       truncate-partial-width-windows nil
+       delete-by-moving-to-trash t
+       confirm-nonexistent-file-or-buffer nil
+       query-replace-highlight t)
+ #+END_SRC
+*** Indentation & Tabs
+**** Default indentation
+ Always spaces with width of 4
+ #+BEGIN_SRC emacs-lisp
+ (setq-default indent-tabs-mode nil)
+ (setq-default tab-width 4)
+ #+END_SRC
+**** Indent new line if necessary
+ #+BEGIN_SRC emacs-lisp
+ (define-key global-map (kbd "RET") 'newline-and-indent)
+ #+END_SRC
+*** Transparently open compressed files
 
  #+BEGIN_SRC emacs-lisp
-   (server-start)
-
-   (add-hook 'after-make-frame-functions
-             (lambda (frame)
-               (select-frame frame)
-               (nc/setup-font)))
+ (auto-compression-mode t)
  #+END_SRC
 
-* Advanced Configuration
+*** Always display line and column numbers
+ #+BEGIN_SRC emacs-lisp
+ (setq line-number-mode t)
+ (setq column-number-mode t)
+ #+END_SRC
+*** Answering just 'y' or 'n'
+
+ #+BEGIN_SRC emacs-lisp
+ (defalias 'yes-or-no-p 'y-or-n-p)
+ #+END_SRC
+
+*** Increase or decrease text scale
+ #+BEGIN_SRC emacs-lisp
+ (global-set-key (kbd "C-+") 'text-scale-increase)
+ (global-set-key (kbd "C--") 'text-scale-decrease)
+ #+END_SRC
+*** Lines should be 80 characters
+ #+BEGIN_SRC emacs-lisp
+ (setq fill-column 80)
+ #+END_SRC
+*** Disable annoying audio notifications
+ #+BEGIN_SRC emacs-lisp
+ (setq ring-bell-function 'ignore)
+ #+END_SRC
+*** UTF-8
+ Set all coding systems to utf-8
+ #+BEGIN_SRC emacs-lisp
+ (prefer-coding-system 'utf-8-unix)
+ (set-clipboard-coding-system 'utf-8-unix)
+ (set-default-coding-systems 'utf-8-unix)
+ (set-keyboard-coding-system 'utf-8-unix)
+ (set-language-environment 'utf-8)
+ (set-selection-coding-system 'utf-8-unix)
+ (set-terminal-coding-system 'utf-8-unix)
+ (setq locale-coding-system 'utf-8-unix)
+ (setq coding-system-for-write 'utf-8-unix)
+ (setq default-buffer-file-coding-system 'utf-8-unix)
+ (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+ (setq file-name-coding-system  'utf-8)
+ #+END_SRC
+*** Calendar
+**** French Calendar
+ #+BEGIN_SRC emacs-lisp
+   (setq calendar-week-start-day 1
+         calendar-day-name-array ["Dimanche" "Lundi" "Mardi" "Mercredi"
+                                  "Jeudi" "Vendredi" "Samedi"]
+         calendar-month-name-array ["Janvier" "Fevrier" "Mars" "Avril" "Mai"
+                                    "Juin" "Juillet" "Aout" "Septembre"
+                                    "Octobre" "Novembre" "Decembre"])
+ #+END_SRC
+**** French holiday
+ #+BEGIN_SRC emacs-lisp
+   (defvar french-holiday
+     '((holiday-fixed 1 1 "Jour de l'an")
+       (holiday-fixed 5 1 "Fête du travail")
+       (holiday-fixed 5 8 "Victoire 45")
+       (holiday-fixed 7 14 "Fête nationale")
+       (holiday-fixed 8 15 "Assomption")
+       (holiday-fixed 11 1 "Toussaint")
+       (holiday-fixed 11 11 "Armistice 18")
+       (holiday-fixed 12 25 "Noël")
+       (holiday-easter-etc 1 "Lundi de Pâques")
+       (holiday-easter-etc 39 "Ascension")
+       (holiday-easter-etc 50 "Lundi de Pentecôte")))
+
+   (setq calendar-date-style 'european
+         calendar-holidays french-holiday
+         calendar-mark-holidays-flag t
+         calendar-mark-diary-entries-flag t)
+
+ #+END_SRC
 ** Completion
 *** Company
  =company= provides auto completion mode.
@@ -630,13 +601,15 @@ Enable C-x C-j
  (global-set-key [(control shift down)]  'nc/move-line-down)
  #+END_SRC
 *** Super Save
-Auto save buffers when buffers loose focus
+Auto save buffers when buffers loose focus, disabled for remote buffers.
 #+BEGIN_SRC emacs-lisp
   (use-package super-save
     :ensure t
     :config
     (super-save-mode +1)
-    (setq super-save-auto-save-when-idle t))
+    (setq super-save-auto-save-when-idle t
+          super-save-remote-files nil)
+    (add-to-list 'super-save-triggers 'ace-window))
 #+END_SRC
 
 *** Undo Tree
@@ -783,6 +756,44 @@ Auto save buffers when buffers loose focus
 #+BEGIN_SRC emacs-lisp
 (bind-key "C-z" #'undo)
 #+END_SRC
+** Mac OS Specific Settings
+*** Dired options
+
+ #+BEGIN_SRC emacs-lisp
+    ;; brew install coreutils
+   (if (executable-find "gls")
+       (progn
+         (setq insert-directory-program "gls")
+         (setq dired-listing-switches "-lFaGh1v --group-directories-first"))
+     (setq dired-listing-switches "-ahlF"))
+ #+END_SRC
+
+*** Keys for apple keyboard
+ #+BEGIN_SRC emacs-lisp
+   (when is-mac
+     (setq mac-command-modifier 'meta)    ; make cmd key do Meta
+     (setq mac-option-modifier 'super)    ; make opt key do Super
+     (setq mac-control-modifier 'control) ; make Control key do Control
+     (setq ns-function-modifier 'hyper)   ; make Fn key do Hyper
+   )
+ #+END_SRC
+*** Mac right option
+ This will allow you to use the right ~⌥~ key to write symbols ={[]}=. The left ~⌥~ key can be used as the Meta
+ key.
+ #+BEGIN_SRC emacs-lisp
+   (when is-mac
+     (setq-default mac-right-option-modifier nil))
+ #+END_SRC
+*** GPG
+ #+BEGIN_SRC emacs-lisp
+   (when is-mac
+     (setf epa-pinentry-mode 'loopback))
+ #+END_SRC
+*** French Locale
+ #+BEGIN_SRC emacs-lisp
+   (when is-mac
+     (set-locale-environment "fr_FR.UTF-8"))
+ #+END_SRC
 ** Navigation
 *** Basic navigation
 #+BEGIN_SRC emacs-lisp
@@ -957,44 +968,36 @@ Rotate windows with =C-c r=
     (ace-swap-window)
     (aw-flip-window))
 #+end_src
-* MacOS Settings
-** Dired options
+** Hooks
+*** Cleanup before save
+ Remove all trailing whitespace and trailing blank lines before saving the file
+ #+BEGIN_SRC emacs-lisp
+ (add-hook 'before-save-hook 'whitespace-cleanup)
+ #+END_SRC
+*** Copying lines without selecting them
+    From http://emacs-fu.blogspot.fr/2009/11/copying-lines-without-selecting-them.html
+     - =M-w= will copy current line without selection
 
-#+BEGIN_SRC emacs-lisp
-   ;; brew install coreutils
-  (if (executable-find "gls")
-      (progn
-        (setq insert-directory-program "gls")
-        (setq dired-listing-switches "-lFaGh1v --group-directories-first"))
-    (setq dired-listing-switches "-ahlF"))
-#+END_SRC
+ #+begin_src emacs-lisp
+   (defadvice kill-ring-save (before slick-copy activate compile)
+     "When called  interactively with no active region, copy a single line instead."
+     (interactive
+      (if mark-active (list (region-beginning) (region-end))
+        (message "Copied line") (list (line-beginning-position) (line-beginning-position 2)))))
 
-** Keys for apple keyboard
-#+BEGIN_SRC emacs-lisp
-  (when is-mac
-    (setq mac-command-modifier 'meta)    ; make cmd key do Meta
-    (setq mac-option-modifier 'super)    ; make opt key do Super
-    (setq mac-control-modifier 'control) ; make Control key do Control
-    (setq ns-function-modifier 'hyper)   ; make Fn key do Hyper
-  )
-#+END_SRC
-** Mac right option
-This will allow you to use the right ~⌥~ key to write symbols ={[]}=. The left ~⌥~ key can be used as the Meta
-key.
-#+BEGIN_SRC emacs-lisp
-  (when is-mac
-    (setq-default mac-right-option-modifier nil))
-#+END_SRC
-** GPG
-#+BEGIN_SRC emacs-lisp
-  (when is-mac
-    (setf epa-pinentry-mode 'loopback))
-#+END_SRC
-** French Locale
-#+BEGIN_SRC emacs-lisp
-  (when is-mac
-    (set-locale-environment "fr_FR.UTF-8"))
-#+END_SRC
+ #+end_src
+
+*** Emacs Server
+
+  #+BEGIN_SRC emacs-lisp
+    (server-start)
+
+    (add-hook 'after-make-frame-functions
+              (lambda (frame)
+                (select-frame frame)
+                (nc/setup-font)))
+  #+END_SRC
+
 * Org
 ** My files
 *** Base directory
