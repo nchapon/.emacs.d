@@ -1,11 +1,11 @@
 * Globals variables
 ** Personal Information
  #+BEGIN_SRC emacs-lisp
-   (setq user-full-name "Nicolas Chapon"
+ (setq user-full-name "Nicolas Chapon"
          user-mail-address "nchapon@gmail.com")
  #+END_SRC
 
-** System constants
+** Constants
 
 #+BEGIN_SRC emacs-lisp
   (defconst is-mac (equal system-type 'darwin))
