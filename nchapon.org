@@ -69,7 +69,8 @@ This happens a lot on OS X, where an Emacs instance started from the GUI inherit
     (when (memq window-system '(mac ns x))
       (progn
         (exec-path-from-shell-initialize)
-        (exec-path-from-shell-copy-env "GOPATH"))))
+        (exec-path-from-shell-copy-env "GOPATH")
+        (exec-path-from-shell-copy-env "RUST_SRC_PATH"))))
 #+END_SRC
 * UI
 ** All The Icons
@@ -2080,6 +2081,30 @@ Then we can setup Emacs go mode
 #+END_SRC
 
 #+RESULTS:
+** Rust
+#+BEGIN_SRC emacs-lisp
+(use-package rust-mode                  ; Rust major mode
+  :ensure t
+  :bind (:map rust-mode-map ("C-c <tab>" . rust-format-buffer)))
+
+(use-package racer                      ; Completion and navigation for Rust
+  :ensure t
+  :bind (:map racer-mode-map
+              ("C-c m h" . racer-describe)
+              ("C-c m d" . racer-debug))
+  :hook (rust-mode . racer-mode)
+  :config (setq racer-rust-src-path (getenv "RUST_SRC_PATH")))
+
+(use-package cargo                      ; Control Cargo
+  :ensure t
+  :bind (:map rust-mode-map
+              ("<f6>" . cargo-process-build))
+  :hook (rust-mode . cargo-minor-mode))
+
+(use-package toml-mode                  ; Toml for Cargo files
+  :ensure t
+  :defer t)
+#+END_SRC
 
 ** Smart Comments
 Smarter commenting for emacs
