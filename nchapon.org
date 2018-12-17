@@ -482,15 +482,12 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
  #+END_SRC
 
 ** Buffers
-*** Auto refresh buffers
+*** Auto revert mode
+Revert buffers automatically when underlying files are changed externally.
 #+BEGIN_SRC emacs-lisp
-(global-auto-revert-mode 1)
-#+END_SRC
-
-Also auto refresh dired, but be quiet about it
-
-#+BEGIN_SRC emacs-lisp
-(setq global-auto-revert-non-file-buffers t)
+  (global-auto-revert-mode 1)
+  (setq global-auto-revert-non-file-buffers t
+        auto-revert-verbose nil)
 #+END_SRC
 
 *** Uniquify
