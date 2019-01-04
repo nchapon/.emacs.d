@@ -1374,6 +1374,7 @@ My custom agends commands are restricted to some files.
 
                (tags-todo "TODO=\"STARTED\"+@office|TODO=\"WAITING\"+@office"
                           ((org-agenda-overriding-header "Started / waiting tasks @office")
+                           (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 25)")
                            (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                (tags-todo "TODO=\"NEXT\"+@office-HOLD"
                           ((org-agenda-overriding-header "Next tasks @office")
