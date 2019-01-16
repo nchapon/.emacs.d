@@ -1479,7 +1479,7 @@ My templates :
           ("w" "WeeklyReview" entry (file+datetree+prompt nc/weekly-review-file)
            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
            ("D" "Done Business Task" entry
-             (file+headline nc/inbox-file "Done Tasks")
+             (function org-journal-find-location)
              "* DONE %^{Task}"
              :clock-in t :clock-resume t)
           ))
