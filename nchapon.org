@@ -503,8 +503,8 @@ Use file path to ensure buffer name uniqueness
 ** Dired
 *** Always delete and copy recursively
 #+BEGIN_SRC emacs-lisp
-(setq dired-recursive-delete 'always)
-(setq dired-recursive-copy 'always)
+(setq dired-recursive-deletes 'always)
+(setq dired-recursive-copies 'always)
 #+END_SRC
 *** Human readable size
 
