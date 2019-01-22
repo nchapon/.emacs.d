@@ -1072,6 +1072,22 @@ Rotate windows with =C-c r=
 
    (global-set-key (kbd "C-c f j") 'nc/journal-file-today)
  #+END_SRC
+**** Yesterday journal file
+
+#+BEGIN_SRC emacs-lisp
+  (defun nc--get-journal-file-yesterday ()
+    "Return filename for yesterday's journal entry."
+    (let* ((yesterday (time-subtract (current-time) (days-to-time 1)))
+           (daily-name (format-time-string "%Y-%m-%d.org" yesterday)))
+      (expand-file-name (concat org-journal-dir daily-name))))
+
+  (defun nc/journal-file-yesterday ()
+    "Creates and load a file based on yesterday's date."
+    (interactive)
+    (find-file (get-journal-file-yesterday)))
+
+  (global-set-key (kbd "C-c f y") 'nc/journal-file-yesterday)
+#+END_SRC
 
 **** Auto Insert
      Insert in journal file
@@ -1436,8 +1452,7 @@ My custom agends commands are restricted to some files.
               ,nc/org-agenda-context-view))
 
     #+END_SRC
-** Taking notes
-*** Capture templates
+** Capture templates
 My destination files :
 
 #+begin_src emacs-lisp
@@ -1472,20 +1487,31 @@ My templates :
 
       %U" :prepend t)
 
-          ("m" "Meeting" entry (file+headline nc/calendar-file "Réunions")
-           "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-          ("a" "RendezVous" entry (file+headline nc/calendar-file "RendezVous")
-                 "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-          ("w" "WeeklyReview" entry (file+datetree+prompt nc/weekly-review-file)
-           "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]")
+
            ("D" "Done Business Task" entry
              (function org-journal-find-location)
              "* DONE %^{Task}"
              :clock-in t :clock-resume t)
           ))
 #+end_src
+*** TODO Meeting
+Should be moved in gcal.org
 
-**** Journal entry
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'org-capture-templates
+                 `("m" "Meeting" entry (file+headline nc/calendar-file "Réunions")
+           "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
+#+END_SRC
+
+*** TODO RendezVous
+Should be moved in gcal.org
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'org-capture-templates
+                 `("a" "RendezVous" entry (file+headline nc/calendar-file "RendezVous")
+                 "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
+#+END_SRC
+
+*** Journal entry
 
 Integrate =org-journal= with =org-capture=
 
@@ -1502,7 +1528,7 @@ Integrate =org-journal= with =org-capture=
                  `("j" "Journal entry" entry (function org-journal-find-location)
                         "* %?\n  %i\n  From: %a" :empty-lines 1))
 #+END_SRC
-**** Interruption task
+*** Interruption task
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'org-capture-templates
                `("i" "Interrupting task" entry
@@ -1521,8 +1547,26 @@ Integrate =org-journal= with =org-capture=
   ;; Override the key definition
   (global-set-key (kbd "<f9>") 'my/capture-interruption-task)
 #+end_src
-
-*** Refiling
+*** Daily Review
+#+BEGIN_SRC emacs-lisp
+  (defun nc/daily-review ()
+    (interactive)
+    (let ((org-capture-templates '(("d" "Review: Daily Review" entry (file+olp+datetree "/tmp/reviews.org")
+                                    (file "~/notes/templates/dailyreview.org")))))
+      (progn
+        (org-capture nil "d")
+        (org-capture-finalize t)
+        (org-speed-move-safe 'outline-up-heading)
+        (org-narrow-to-subtree)
+        (org-clock-in))))
+#+END_SRC
+*** WeeklyReview
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'org-capture-templates
+                 `("w" "WeeklyReview" entry (file+datetree+prompt nc/weekly-review-file)
+           "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]"))
+#+END_SRC
+** Refiling
 Targets include this file and any file contributing to the agenda - up to 3 levels deep
 #+begin_src emacs-lisp
   (setq org-reverse-note-order t)
@@ -1555,19 +1599,6 @@ Allow creating parent nodes
 (setq org-refile-allow-creating-parent-nodes 'confirm)
 #+END_SRC
 
-*** Insert time slot
-Insert time slot mainly used when I schedule meeting or appointment.
-
-#+begin_src emacs-lisp
-  (defvar current-hour-format "%H:00")
-
-  (defun nc/insert-time-slot ()
-    "Insert Time Slot"
-    (interactive)
-    (let ((begin (format-time-string current-hour-format (current-time)))
-          (end (format-time-string current-hour-format (time-add (current-time) (seconds-to-time 3600)))))
-      (insert (concat begin "-" end))))
-#+end_src
 *** Searching in my notes
 #+begin_src emacs-lisp
 (defun nc/helm-do-grep-notes ()
@@ -2279,7 +2310,18 @@ Generates a strong password
        (interactive)
        (dotimes (i 12) (insert (nc--random-char))))
  #+END_SRC
+** TimeSlot
+Insert time slot mainly used when I schedule meeting or appointment.
+#+begin_src emacs-lisp
+  (defvar current-hour-format "%H:00")
 
+  (defun nc/insert-time-slot ()
+    "Insert Time Slot"
+    (interactive)
+    (let ((begin (format-time-string current-hour-format (current-time)))
+          (end (format-time-string current-hour-format (time-add (current-time) (seconds-to-time 3600)))))
+      (insert (concat begin "-" end))))
+#+end_src
 * Notes
 ** Inspiration configs
   - https://writequit.org/org/settings.html
