@@ -787,7 +787,7 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
 *** Globals Keys
 **** Rgrep
  #+BEGIN_SRC emacs-lisp
-   (bind-key "<f2>"'rgrep)
+   (bind-key "<f2>" 'rgrep)
  #+END_SRC
 **** Undo
 #+BEGIN_SRC emacs-lisp
