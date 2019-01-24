@@ -1084,7 +1084,7 @@ Rotate windows with =C-c r=
   (defun nc/journal-file-yesterday ()
     "Creates and load a file based on yesterday's date."
     (interactive)
-    (find-file (get-journal-file-yesterday)))
+    (find-file (nc--get-journal-file-yesterday)))
 
   (global-set-key (kbd "C-c f y") 'nc/journal-file-yesterday)
 #+END_SRC
