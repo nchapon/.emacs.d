@@ -1607,6 +1607,57 @@ Allow creating parent nodes
   (interactive)
   (helm-do-grep-1 (list org-directory) t nil (list "*.org")))
 #+end_src
+** Speed commands
+ From https://orgmode.org/worg/org-hacks.html
+ #+BEGIN_SRC emacs-lisp
+     (defun nc/org-show-next-heading-tidily ()
+       "Show next entry, keeping other entries closed."
+       (if (save-excursion (end-of-line) (outline-invisible-p))
+           (progn (org-show-entry) (show-children))
+         (outline-next-heading)
+         (unless (and (bolp) (org-on-heading-p))
+           (org-up-heading-safe)
+           (hide-subtree)
+           (error "Boundary reached"))
+         (org-overview)
+         (org-reveal t)
+         (org-show-entry)
+         (show-children)))
+
+     (defun nc/org-show-previous-heading-tidily ()
+       "Show previous entry, keeping other entries closed."
+       (let ((pos (point)))
+         (outline-previous-heading)
+         (unless (and (< (point) pos) (bolp) (org-on-heading-p))
+           (goto-char pos)
+           (hide-subtree)
+           (error "Boundary reached"))
+         (org-overview)
+         (org-reveal t)
+         (org-show-entry)
+         (show-children)))
+
+     (setq org-use-speed-commands t)
+
+   (setq org-use-speed-commands
+         (lambda () (and (looking-at org-outline-regexp) (looking-back "^\**"))))
+
+   (setq org-speed-commands-user
+         '(("n" nc/org-show-next-heading-tidily)
+           ("p" nc/org-show-previous-heading-tidily)
+           ("N" org-narrow-to-subtree)
+           ("$" org-archive-subtree)
+           ("A" org-archive-subtree)
+           ("W" widen)
+           ("d" org-down-element)
+           ("k" org-cut-subtree)
+           ("m" org-mark-subtree)
+           ("s" org-sort)
+           ("X" org-todo-done)
+           ("R" org-done-and-archive)
+           ("y" org-todo-yesterday)))
+ #+END_SRC
+
 ** Publishing my notes
 *** Table Of Contents
  Only 2 levels
