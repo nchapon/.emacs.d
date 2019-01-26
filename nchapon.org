@@ -643,10 +643,10 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
   (use-package super-save
     :ensure t
     :config
-    (super-save-mode +1)
     (setq super-save-auto-save-when-idle t
           super-save-remote-files nil)
-    (add-to-list 'super-save-triggers 'ace-window))
+    (add-to-list 'super-save-triggers 'ace-window)
+    (super-save-mode +1))
 #+END_SRC
 
 *** Undo Tree
