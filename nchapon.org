@@ -1772,19 +1772,6 @@ Export Org documents via Pandoc
              htmlize-region))
 #+END_SRC
 
-** Weekly Review
-*** Reset checkboxes
-Reset checkbox items when weekly review is done
-#+BEGIN_SRC emacs-lisp
-(defun nc/clean-weekly-review ()
-    "Clean week"
-  (interactive)
-  (org-with-point-at
-    (org-id-find "id-weekly-review" 'marker)
-  (while (re-search-forward "\\[X\\]" nil t)
-    (if (org-at-item-checkbox-p)
-        (org-ctrl-c-ctrl-c)))))
-#+END_SRC
 * Tools
 ** Deft
 #+BEGIN_SRC emacs-lisp
