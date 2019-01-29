@@ -1552,7 +1552,7 @@ Integrate =org-journal= with =org-capture=
 #+BEGIN_SRC emacs-lisp
   (defun nc/daily-review ()
     (interactive)
-    (let ((org-capture-templates '(("d" "Review: Daily Review" entry (file+olp+datetree "/tmp/reviews.org")
+    (let ((org-capture-templates '(("d" "Review: Daily Review" entry (function org-journal-find-location)
                                     (file "~/notes/templates/dailyreview.org")))))
       (progn
         (org-capture nil "d")
