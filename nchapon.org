@@ -1712,6 +1712,7 @@ Allow creating parent nodes
    'org-babel-load-languages
    '((shell . t)
      (python . t)
+     (calc . t)
      (js . t)
      (plantuml . t)
      (dot . t)
