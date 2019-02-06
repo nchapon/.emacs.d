@@ -1468,7 +1468,7 @@ My destination files :
 My templates :
 
 #+begin_src emacs-lisp
-  (setq org-capture-templates
+(setq org-capture-templates
         '(("t" "todo" entry (file+headline nc/inbox-file "Inbox" )
            "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
           ("n" "Next Task" entry (file+headline nc/inbox-file "Inbox")
@@ -1549,17 +1549,22 @@ Integrate =org-journal= with =org-capture=
   (global-set-key (kbd "<f9>") 'my/capture-interruption-task)
 #+end_src
 *** Daily Review
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-capture-templates
+               `("d" "Review: Daily Review" entry (function org-journal-find-location)
+                 (file "~/notes/templates/dailyreview.org")
+                 :clock-in t :clock-resume t))
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
   (defun nc/daily-review ()
-    (interactive)
-    (let ((org-capture-templates '(("d" "Review: Daily Review" entry (function org-journal-find-location)
-                                    (file "~/notes/templates/dailyreview.org")))))
-      (progn
-        (org-capture nil "d")
-        (org-capture-finalize t)
-        (org-speed-move-safe 'outline-up-heading)
-        (org-narrow-to-subtree)
-        (org-clock-in))))
+        (interactive)
+          (progn
+            (org-capture nil "d")
+            (org-capture-finalize t)
+            (org-narrow-to-subtree)
+            (org-clock-in)))
 #+END_SRC
 *** WeeklyReview
 #+BEGIN_SRC emacs-lisp
