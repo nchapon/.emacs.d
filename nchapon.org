@@ -1037,7 +1037,7 @@ Rotate windows with =C-c r=
   #+END_SRC
 
 * Org
-** My files
+** Global preferences
 *** Base directory
 #+begin_src emacs-lisp
   (setq org-directory "~/notes/")
@@ -1046,99 +1046,7 @@ Rotate windows with =C-c r=
                           (file-expand-wildcards (concat org-directory "*/*/*.org"))
                           (file-expand-wildcards (concat org-directory "*/*/*/*.org"))))
 #+end_src
-*** Org Journal
-**** Configuration
- #+BEGIN_SRC emacs-lisp
-   (use-package org-journal
-          :ensure t
-           :init
-           (setq org-journal-dir "~/notes/GTD/journal/")
-           (setq org-journal-date-format "%e %b %Y (%A)")
-           (setq org-journal-time-format "")
-           (setq org-journal-file-format "%Y-%m-%d.org"))
- #+END_SRC
 
-**** Function to easily load today
-
- #+BEGIN_SRC emacs-lisp
-   (defun nc--get-journal-file-today ()
-     "Return filename for today's journal entry."
-     (let ((daily-name (format-time-string "%Y-%m-%d.org")))
-       (expand-file-name (concat org-journal-dir daily-name))))
-
-   (defun nc/journal-file-today ()
-     "Create and load a journal file based on today's date."
-     (interactive)
-     (find-file (nc--get-journal-file-today)))
-
-   (global-set-key (kbd "C-c f j") 'nc/journal-file-today)
- #+END_SRC
-**** Yesterday journal file
-
-#+BEGIN_SRC emacs-lisp
-  (defun nc--get-journal-file-yesterday ()
-    "Return filename for yesterday's journal entry."
-    (let* ((yesterday (time-subtract (current-time) (days-to-time 1)))
-           (daily-name (format-time-string "%Y-%m-%d.org" yesterday)))
-      (expand-file-name (concat org-journal-dir daily-name))))
-
-  (defun nc/journal-file-yesterday ()
-    "Creates and load a file based on yesterday's date."
-    (interactive)
-    (find-file (nc--get-journal-file-yesterday)))
-
-  (global-set-key (kbd "C-c f y") 'nc/journal-file-yesterday)
-#+END_SRC
-
-**** Auto Insert
-     Insert in journal file
-   #+BEGIN_SRC emacs-lisp
-     (defun nc/journal-file-insert ()
-       "Insert's the journal heading based on the file's name."
-       (interactive)
-       (let* ((year  (string-to-number (substring (buffer-name) 0 4)))
-              (month (string-to-number (substring (buffer-name) 5 7)))
-              (day   (string-to-number (substring (buffer-name) 8 10)))
-              (datim (encode-time 0 0 0 day month year)))
-
-         (insert (format-time-string (concat "#+TITLE:" org-journal-date-format) datim))
-         (insert "\n")
-
-         ;; Note: The `insert-file-contents' leaves the cursor at the
-         ;; beginning, so the easiest approach is to insert these files
-         ;; in reverse order:
-
-         ;; If the journal entry I'm creating matches today's date:
-         (when (equal (file-name-base (buffer-file-name))
-                      (format-time-string "%Y-%m-%d"))
-
-           (insert-file-contents "templates/journal-dailies-end.org")
-
-
-           ;; Insert dailies that only happen once a week:
-           (let ((weekday-template (downcase
-                                    (format-time-string "templates/journal-%A.org"))))
-             (when (file-exists-p weekday-template)
-               (insert-file-contents weekday-template)))
-
-
-           (insert-file-contents "templates/journal-dailies.org")
-           (insert "")
-
-           (let ((contents (buffer-string)))
-             (delete-region (point-min) (point-max))
-             (yas-expand-snippet contents (point-min) (point-max))))
-         ))
-
-         ;; bind-key
-         (bind-key "C-c o i" 'nc/journal-file-insert)
-   #+END_SRC
-*** Default notes file
-One default notes files by day in *GTD/journal/* folder
-#+BEGIN_SRC emacs-lisp
-(setq org-default-notes-file (nc--get-journal-file-today))
-#+END_SRC
-** Global preferences
 *** Global keys
  #+BEGIN_SRC emacs-lisp
    (bind-key "\C-cl" 'org-store-link)
@@ -1186,58 +1094,6 @@ Set colors for priority faces
                                (?D . (:foreground "green"))))
 #+END_SRC
 
-** Tasks
-*** Todo tasks
-**** Todo states
- - parentheses indicate keyboard shortcuts
- - =@= prompts for a note
- - =!= logs the timestamp of the state change
-
-#+BEGIN_SRC emacs-lisp
-  (setq org-todo-keywords
-   '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-     (sequence "STARTED(s)" "WAITING(w@/!)" "|" "CANCELLED(c@/!)" "INACTIVE(i@/!)")
-     (sequence "MEETING(m)" "RDV(r)"  "|" "DONE(d)")))
-#+END_SRC
-
-**** Todo faces
-Colors from https://flatuicolors.com/
-
-#+BEGIN_SRC emacs-lisp
-  (setq org-todo-keyword-faces
-        (quote (("TODO" :foreground "#c0392b" :weight bold)
-                ("NEXT" :foreground "#d35400" :weight bold)
-                ("STARTED" :foreground "#f39c12" :weight bold)
-                ("SOMEDAY" :foreground "#3498db" :weight bold)
-                ("DONE" :foreground "#27ae60" :weight bold)
-                ("WAITING" :foreground "#e74c3c" :weight bold)
-                ("INACTIVE" :foreground "#bdc3c7" :weight bold)
-                ("MEETING" :foreground "#8e44ad" :weight bold)
-                ("RDV" :foreground "#9b59b6" :weight bold)
-                ("FORMATION" :foreground "#34495e" :weight bold)
-                ("CANCELLED" :foreground "#7f8c8d" :weight bold))))
-#+END_SRC
-*** Projects
-
-**** Contexts
-#+BEGIN_SRC emacs-lisp
-  (setq org-tag-alist (quote (("@computer" . ?c)
-                              ("@office" . ?o)
-                              ("@home" . ?h)
-                              ("@reading" . ?s)
-                              (:newline)
-                              ("WAITING" . ?w)
-                              ("HOLD" . ?H)
-                              ("CANCELLED" . ?c))))
-
-  ;;(setq org-fast-tag-selection-single-key nil)
-
-#+END_SRC
-
-
-#+begin_src emacs-lisp
-(setq org-tags-exclude-from-inheritance '("PROJECT"))
-#+end_src
 ** Org-clock
 *** Function for clocking in
 #+begin_src emacs-lisp
@@ -1320,298 +1176,450 @@ This clocks in a predefined task by org-id that is the default task to clock in
 #+begin_src emacs-lisp
   (bind-key "C-<f9>" 'nc/clock-in-organization-task-as-default)
 #+end_src
+** GTD Workflow
 
-** Agenda
-*** Agenda configuration
-By default all files in GTD and journal folder will be in my agenda, to be searchable
+*** Tasks
+**** Todo tasks
+***** Todo states
+  - parentheses indicate keyboard shortcuts
+  - =@= prompts for a note
+  - =!= logs the timestamp of the state change
 
-My custom agends commands are restricted to some files.
-#+BEGIN_SRC emacs-lisp
-  (setq org-agenda-files (list "~/notes/GTD/" "~/notes/GTD/journal/")
-        org-agenda-span 'day
-        org-agenda-start-on-weekday nil
-        org-agenda-skip-deadline-if-done t
-        org-agenda-skip-scheduled-if-done t
-        org-agenda-start-with-log-mode t
-        org-agenda-block-separator nil
-        org-deadline-warning-days 5)
-#+END_SRC
-*** Diary
-#+BEGIN_SRC emacs-lisp
-  (setq diary-file "~/notes/diary"
-        org-agenda-include-diary t)
-#+END_SRC
-*** Custom Agenda commands
-**** Function to skip headline tagged with =:PROJECT:=
+ #+BEGIN_SRC emacs-lisp
+   (setq org-todo-keywords
+    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+      (sequence "STARTED(s)" "WAITING(w@/!)" "|" "CANCELLED(c@/!)" "INACTIVE(i@/!)")
+      (sequence "MEETING(m)" "RDV(r)"  "|" "DONE(d)")))
+ #+END_SRC
 
-#+begin_src emacs-lisp
-(defun nc--org-agenda-skip-project ()
-    (org-agenda-skip-entry-if 'regexp ":PROJECT:"))
-#+end_src
+***** Todo faces
+ Colors from https://flatuicolors.com/
 
-**** Display Header parent
+ #+BEGIN_SRC emacs-lisp
+   (setq org-todo-keyword-faces
+         (quote (("TODO" :foreground "#c0392b" :weight bold)
+                 ("NEXT" :foreground "#d35400" :weight bold)
+                 ("STARTED" :foreground "#f39c12" :weight bold)
+                 ("SOMEDAY" :foreground "#3498db" :weight bold)
+                 ("DONE" :foreground "#27ae60" :weight bold)
+                 ("WAITING" :foreground "#e74c3c" :weight bold)
+                 ("INACTIVE" :foreground "#bdc3c7" :weight bold)
+                 ("MEETING" :foreground "#8e44ad" :weight bold)
+                 ("RDV" :foreground "#9b59b6" :weight bold)
+                 ("FORMATION" :foreground "#34495e" :weight bold)
+                 ("CANCELLED" :foreground "#7f8c8d" :weight bold))))
+ #+END_SRC
+**** Projects
+***** Contexts
+ #+BEGIN_SRC emacs-lisp
+   (setq org-tag-alist (quote (("@computer" . ?c)
+                               ("@office" . ?o)
+                               ("@home" . ?h)
+                               ("@reading" . ?s)
+                               (:newline)
+                               ("WAITING" . ?w)
+                               ("HOLD" . ?H)
+                               ("CANCELLED" . ?c))))
 
-#+BEGIN_SRC emacs-lisp
-(defun nc--org-agenda-format-parent (n)
-  ;; (s-truncate n (org-format-outline-path (org-get-outline-path)))
-  (save-excursion
-    (save-restriction
-      (widen)
-      (org-up-heading-safe)
-      (s-truncate n (org-get-heading t t)))))
-#+END_SRC
-**** Agenda Commands
+   ;;(setq org-fast-tag-selection-single-key nil)
 
-    #+BEGIN_SRC emacs-lisp
-      (defun org-current-is-todo ()
-        (string= "NEXT" (org-get-todo-state)))
-
-      (defun org-agenda-skip-all-siblings-but-first ()
-        "Skip all but the first non-done entry."
-        (let (should-skip-entry)
-          (unless (org-current-is-todo)
-            (setq should-skip-entry t))
-          (save-excursion
-            (while (and (not should-skip-entry) (org-goto-sibling t))
-              (when (org-current-is-todo)
-                (setq should-skip-entry t))))
-          (when should-skip-entry
-            (or (outline-next-heading)
-                (goto-char (point-max))))))
-
-      (require 'org-agenda)
-      (setq nc/org-agenda-inbox-view
-            `("i" "Inbox" todo ""
-              ((org-agenda-files '("~/notes/GTD/inbox.org")))))
+ #+END_SRC
 
 
-      (setq nc/org-agenda-todo-view
-            `(" " "Agenda"
-              ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep))))
+ #+begin_src emacs-lisp
+ (setq org-tags-exclude-from-inheritance '("PROJECT"))
+ #+end_src
+*** Files and directories
 
-               (tags-todo "TODO=\"STARTED\"+@office|TODO=\"WAITING\"+@office"
-                          ((org-agenda-overriding-header "Started / waiting tasks @office")
-                           (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 25)")
-                           (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-               (tags-todo "TODO=\"NEXT\"+@office-HOLD"
-                          ((org-agenda-overriding-header "Next tasks @office")
-                           (org-tags-exclude-from-inheritance '("PROJECT"))
-                           (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 25)")
-                           ;; (org-agenda-skip-function
-                           ;;  (quote
-                           ;;   (org-agenda-skip-all-siblings-but-first)))
-                           (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))
-                           (org-agenda-todo-keyword-format "%-4s")))
-               (tags-todo "TODO=\"TODO\"-HOLD"
-                          ((org-agenda-overriding-header "Other tasks")
-                           (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 30)")
-                           (org-agenda-skip-function
-                            '(org-agenda-skip-entry-if 'scheduled 'deadline))
-                           (org-agenda-files '("~/notes/GTD/inbox.org"))
-                           (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-               )
-              nil))
+ #+begin_src emacs-lisp
+   (defconst nc/org-default-projects-dir (concat org-directory "projects"))
+   (defconst nc/org-default-technical-dir (concat org-directory "technical"))
+   (defconst nc/org-default-personal-dir (concat org-directory "personal"))
+   (defconst nc/org-default-completed-dir (concat org-directory "projects/archives"))
+   (defconst nc/inbox-file (concat org-directory "GTD/inbox.org"))
+   (defconst nc/org-default-inbox-file (concat org-directory "GTD/inbox.org"))
+   (defconst nc/watching-file (concat org-directory "GTD/watching.org"))
+   (defconst nc/org-default-media-files (concat org-directory "GTD/watching.org"))
+   (defconst nc/fishing-file (concat org-directory "topics/sports/fishing.org"))
+   (defconst nc/someday-file (concat org-directory "GTD/someday.org"))
+   (defconst nc/calendar-file (concat org-directory "GTD/calendar.org"))
+   (defconst nc/weekly-review-file (concat org-directory "GTD/weekly-review.org"))
+ #+end_src
+*** Org Journal
+**** Configuration
+ #+BEGIN_SRC emacs-lisp
+ (use-package org-journal
+          :ensure t
+           :init
+           (setq org-journal-dir "~/notes/journal/")
+           (setq org-journal-date-format "%e %b %Y (%A)")
+           (setq org-journal-time-format "")
+           (setq org-journal-file-format "%Y-%m-%d.org"))
+ #+END_SRC
 
-      (setq nc/org-agenda-context-view
-            `("@" "Contexts"
-              ((todo "STARTED"
-                     ((org-agenda-overriding-header "All started tasks")))
+**** Function to easily load today
 
-               (todo "WAITING"
-                     ((org-agenda-overriding-header "All waiting tasks")))
-               (tags-todo "@office"
-                          ((org-agenda-skip-function
-                            (quote
-                             (org-agenda-skip-all-siblings-but-first)))
-                           (org-agenda-overriding-header "@office")))
-               (tags "emacs"
-                     ((org-agenda-overriding-header "Emacs next actions")
-                      (org-agenda-skip-function
-                       (quote
-                        (org-agenda-skip-all-siblings-but-first)))))
+ #+BEGIN_SRC emacs-lisp
+   (defun nc--get-journal-file-today ()
+     "Return filename for today's journal entry."
+     (let ((daily-name (format-time-string "%Y-%m-%d.org")))
+       (expand-file-name (concat org-journal-dir daily-name))))
 
-               (tags-todo "@reading"
-                          ((org-agenda-overriding-header "To Read")
-                           (org-agenda-skip-function
-                            (quote
-                             (org-agenda-skip-all-siblings-but-first)))))
+   (defun nc/journal-file-today ()
+     "Create and load a journal file based on today's date."
+     (interactive)
+     (find-file (nc--get-journal-file-today)))
 
-               (tags-todo "TO_LEARN"
-                          ((org-agenda-overriding-header "To Learn")
-                           (org-agenda-skip-function
-                            (quote
-                             (org-agenda-skip-all-siblings-but-first)))))
-               (tags-todo "@home"
-                          ((org-agenda-overriding-header "@Home")
-                           )))
-              nil nil))
-
-
-      (setq org-agenda-custom-commands
-            `(,nc/org-agenda-inbox-view
-              ,nc/org-agenda-todo-view
-              ,nc/org-agenda-context-view))
-
-    #+END_SRC
-** Capture templates
-My destination files :
-
-#+begin_src emacs-lisp
-  (defconst nc/inbox-file (concat org-directory "GTD/inbox.org"))
-  (defconst nc/watching-file (concat org-directory "GTD/watching.org"))
-  (defconst nc/fishing-file (concat org-directory "topics/sports/fishing.org"))
-  (defconst nc/someday-file (concat org-directory "GTD/someday.org"))
-  (defconst nc/calendar-file (concat org-directory "GTD/calendar.org"))
-  (defconst nc/weekly-review-file (concat org-directory "GTD/weekly-review.org"))
-#+end_src
-
-My templates :
-
-#+begin_src emacs-lisp
-(setq org-capture-templates
-        '(("t" "todo" entry (file+headline nc/inbox-file "Inbox" )
-           "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-          ("n" "Next Task" entry (file+headline nc/inbox-file "Inbox")
-           "** NEXT %?")
-          ("s" "Someday / Maybe" entry (file+headline nc/someday-file "Someday")
-            "* SOMEDAY %? :IDEA:\n%u" :clock-in t :clock-resume t)
-          ("f" "FishLog" plain (file+datetree+prompt nc/fishing-file)
-           "%[~/notes/templates/fishlog.org]")
-          ("F" "Film" entry (file+headline nc/watching-file "Films à voir")
-               "* NEXT %^{Titre}
-       %i
-       - *Réalisateur:* %^{Auteur}
-       - *Année:* %^{année}
-       - *Genre:* %^{genre}
-
-      %?
-
-      %U" :prepend t)
-
-
-           ("D" "Done Business Task" entry
-             (function org-journal-find-location)
-             "* DONE %^{Task}"
-             :clock-in t :clock-resume t)
-          ))
-#+end_src
-*** TODO Meeting
-Should be moved in gcal.org
+   (global-set-key (kbd "C-c f j") 'nc/journal-file-today)
+ #+END_SRC
+**** Yesterday journal file
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'org-capture-templates
-                 `("m" "Meeting" entry (file+headline nc/calendar-file "Réunions")
-           "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
+  (defun nc--get-journal-file-yesterday ()
+    "Return filename for yesterday's journal entry."
+    (let* ((yesterday (time-subtract (current-time) (days-to-time 1)))
+           (daily-name (format-time-string "%Y-%m-%d.org" yesterday)))
+      (expand-file-name (concat org-journal-dir daily-name))))
+
+  (defun nc/journal-file-yesterday ()
+    "Creates and load a file based on yesterday's date."
+    (interactive)
+    (find-file (nc--get-journal-file-yesterday)))
+
+  (global-set-key (kbd "C-c f y") 'nc/journal-file-yesterday)
 #+END_SRC
 
-*** TODO RendezVous
-Should be moved in gcal.org
+**** Auto Insert
+     Insert in journal file
+   #+BEGIN_SRC emacs-lisp
+     (defun nc/journal-file-insert ()
+       "Insert's the journal heading based on the file's name."
+       (interactive)
+       (let* ((year  (string-to-number (substring (buffer-name) 0 4)))
+              (month (string-to-number (substring (buffer-name) 5 7)))
+              (day   (string-to-number (substring (buffer-name) 8 10)))
+              (datim (encode-time 0 0 0 day month year)))
+
+         (insert (format-time-string (concat "#+TITLE:" org-journal-date-format) datim))
+         (insert "\n")
+
+         ;; Note: The `insert-file-contents' leaves the cursor at the
+         ;; beginning, so the easiest approach is to insert these files
+         ;; in reverse order:
+
+         ;; If the journal entry I'm creating matches today's date:
+         (when (equal (file-name-base (buffer-file-name))
+                      (format-time-string "%Y-%m-%d"))
+
+           (insert-file-contents "templates/journal-dailies-end.org")
+
+
+           ;; Insert dailies that only happen once a week:
+           (let ((weekday-template (downcase
+                                    (format-time-string "templates/journal-%A.org"))))
+             (when (file-exists-p weekday-template)
+               (insert-file-contents weekday-template)))
+
+
+           (insert-file-contents "templates/journal-dailies.org")
+           (insert "")
+
+           (let ((contents (buffer-string)))
+             (delete-region (point-min) (point-max))
+             (yas-expand-snippet contents (point-min) (point-max))))
+         ))
+
+         ;; bind-key
+         (bind-key "C-c o i" 'nc/journal-file-insert)
+   #+END_SRC
+*** Org default notes file
+One default notes files by day in *journal/* folder
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'org-capture-templates
-                 `("a" "RendezVous" entry (file+headline nc/calendar-file "RendezVous")
-                 "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
+(setq org-default-notes-file (nc--get-journal-file-today))
 #+END_SRC
 
-*** Journal entry
-
-Integrate =org-journal= with =org-capture=
-
-#+BEGIN_SRC emacs-lisp
-  (defun org-journal-find-location ()
-    ;; Open today's journal, but specify a non-nil prefix argument in order to
-    ;; inhibit inserting the heading; org-capture will insert the heading.
-    (org-journal-new-entry t)
-    ;; Position point on the journal's top-level heading so that org-capture
-    ;; will add the new entry as a child entry.
-    (goto-char (point-min)))
-
-  (add-to-list 'org-capture-templates
-                 `("j" "Journal entry" entry (function org-journal-find-location)
-                        "* %?\n  %i\n  From: %a" :empty-lines 1))
-#+END_SRC
-*** Interruption task
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'org-capture-templates
-               `("i" "Interrupting task" entry
-                 (function org-journal-find-location)
-                 "* %^{Task}"
-                 :clock-in t :clock-resume t))
-#+END_SRC
+*** Capture templates
 
 
-#+begin_src emacs-lisp
-  (defun my/capture-interruption-task ()
-      "Interrupted Task"
-      (interactive)
-      (org-capture 4 "i"))
+ My templates :
 
-  ;; Override the key definition
-  (global-set-key (kbd "<f9>") 'my/capture-interruption-task)
-#+end_src
-*** Daily Review
+ #+begin_src emacs-lisp
+ (setq org-capture-templates
+         '(("t" "todo" entry (file+headline nc/inbox-file "Inbox" )
+            "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+           ("n" "Next Task" entry (file+headline nc/inbox-file "Inbox")
+            "** NEXT %?")
+           ("s" "Someday / Maybe" entry (file+headline nc/someday-file "Someday")
+             "* SOMEDAY %? :IDEA:\n%u" :clock-in t :clock-resume t)
+           ("f" "FishLog" plain (file+datetree+prompt nc/fishing-file)
+            "%[~/notes/templates/fishlog.org]")
+           ("F" "Film" entry (file+headline nc/watching-file "Films à voir")
+                "* NEXT %^{Titre}
+        %i
+        - *Réalisateur:* %^{Auteur}
+        - *Année:* %^{année}
+        - *Genre:* %^{genre}
 
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'org-capture-templates
-               `("d" "Review: Daily Review" entry (function org-journal-find-location)
-                 (file "~/notes/templates/dailyreview.org")
-                 :clock-in t :clock-resume t))
-#+END_SRC
+       %?
 
-#+BEGIN_SRC emacs-lisp
-  (defun nc/daily-review ()
-        (interactive)
-          (progn
-            (org-capture nil "d")
-            (org-capture-finalize t)
-            (org-narrow-to-subtree)
-            (org-clock-in)))
-#+END_SRC
-*** WeeklyReview
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'org-capture-templates
-                 `("w" "WeeklyReview" entry (file+datetree+prompt nc/weekly-review-file)
-           "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]"))
-#+END_SRC
-** Refiling
-Targets include this file and any file contributing to the agenda - up to 3 levels deep
-#+begin_src emacs-lisp
-  (setq org-reverse-note-order t)
-  (setq org-refile-targets (quote ((nil :maxlevel . 3)
-                                   (org-agenda-files :maxlevel . 3))))
-  (setq org-blank-before-new-entry nil)
-#+end_src
-
-Exclude completed tasks from refile targets.
-
-#+BEGIN_SRC emacs-lisp
-  (defun nc--verify-refile-target ()
-    "Exclude todo keywords with a done state from refile targets"
-    (not (member (nth 2 (org-heading-components)) org-done-keywords)))
-
-  (setq org-refile-target-verify-function 'nc--verify-refile-target)
-#+END_SRC
+       %U" :prepend t)
 
 
-Listing filenames and headings in targets and do not complete in steps, helm will listing filenames & headings.
+            ("D" "Done Business Task" entry
+              (function org-journal-find-location)
+              "* DONE %^{Task}"
+              :clock-in t :clock-resume t)
+           ))
+ #+end_src
+**** TODO Meeting
+ Should be moved in gcal.org
 
-#+BEGIN_SRC emacs-lisp
-(setq org-refile-use-outline-path 'file)
-(setq org-outline-path-complete-in-steps nil)
-#+END_SRC
+ #+BEGIN_SRC emacs-lisp
+ (add-to-list 'org-capture-templates
+                  `("m" "Meeting" entry (file+headline nc/calendar-file "Réunions")
+            "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
+ #+END_SRC
 
-Allow creating parent nodes
+**** TODO RendezVous
+ Should be moved in gcal.org
+ #+BEGIN_SRC emacs-lisp
+ (add-to-list 'org-capture-templates
+                  `("a" "RendezVous" entry (file+headline nc/calendar-file "RendezVous")
+                  "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
+ #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-(setq org-refile-allow-creating-parent-nodes 'confirm)
-#+END_SRC
+**** Journal entry
 
-*** Searching in my notes
-#+begin_src emacs-lisp
-(defun nc/helm-do-grep-notes ()
-  "Search in all my org notes."
-  (interactive)
-  (helm-do-grep-1 (list org-directory) t nil (list "*.org")))
-#+end_src
+ Integrate =org-journal= with =org-capture=
+
+ #+BEGIN_SRC emacs-lisp
+   (defun org-journal-find-location ()
+     ;; Open today's journal, but specify a non-nil prefix argument in order to
+     ;; inhibit inserting the heading; org-capture will insert the heading.
+     (org-journal-new-entry t)
+     ;; Position point on the journal's top-level heading so that org-capture
+     ;; will add the new entry as a child entry.
+     (goto-char (point-min)))
+
+   (add-to-list 'org-capture-templates
+                  `("j" "Journal entry" entry (function org-journal-find-location)
+                         "* %?\n  %i\n  From: %a" :empty-lines 1))
+ #+END_SRC
+**** Interruption task
+ #+BEGIN_SRC emacs-lisp
+   (add-to-list 'org-capture-templates
+                `("i" "Interrupting task" entry
+                  (function org-journal-find-location)
+                  "* %^{Task}"
+                  :clock-in t :clock-resume t))
+ #+END_SRC
+
+
+ #+begin_src emacs-lisp
+   (defun my/capture-interruption-task ()
+       "Interrupted Task"
+       (interactive)
+       (org-capture 4 "i"))
+
+   ;; Override the key definition
+   (global-set-key (kbd "<f9>") 'my/capture-interruption-task)
+ #+end_src
+**** Daily Review
+
+ #+BEGIN_SRC emacs-lisp
+   (add-to-list 'org-capture-templates
+                `("d" "Review: Daily Review" entry (function org-journal-find-location)
+                  (file "~/notes/templates/dailyreview.org")
+                  :clock-in t :clock-resume t))
+ #+END_SRC
+
+ #+BEGIN_SRC emacs-lisp
+   (defun nc/daily-review ()
+         (interactive)
+           (progn
+             (org-capture nil "d")
+             (org-capture-finalize t)
+             (org-narrow-to-subtree)
+             (org-clock-in)))
+ #+END_SRC
+**** WeeklyReview
+ #+BEGIN_SRC emacs-lisp
+ (add-to-list 'org-capture-templates
+                  `("w" "WeeklyReview" entry (file+datetree+prompt nc/weekly-review-file)
+            "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]"))
+ #+END_SRC
+*** Refiling
+ Targets include this file and any file contributing to the agenda - up to 3 levels deep
+ #+begin_src emacs-lisp
+   (setq org-reverse-note-order t)
+   (setq org-refile-targets (quote ((nil :maxlevel . 3)
+                                    (org-agenda-files :maxlevel . 3))))
+   (setq org-blank-before-new-entry nil)
+ #+end_src
+
+ Exclude completed tasks from refile targets.
+
+ #+BEGIN_SRC emacs-lisp
+   (defun nc--verify-refile-target ()
+     "Exclude todo keywords with a done state from refile targets"
+     (not (member (nth 2 (org-heading-components)) org-done-keywords)))
+
+   (setq org-refile-target-verify-function 'nc--verify-refile-target)
+ #+END_SRC
+
+
+ Listing filenames and headings in targets and do not complete in steps, helm will listing filenames & headings.
+
+ #+BEGIN_SRC emacs-lisp
+ (setq org-refile-use-outline-path 'file)
+ (setq org-outline-path-complete-in-steps nil)
+ #+END_SRC
+
+ Allow creating parent nodes
+
+ #+BEGIN_SRC emacs-lisp
+ (setq org-refile-allow-creating-parent-nodes 'confirm)
+ #+END_SRC
+
+**** Searching in my notes
+ #+begin_src emacs-lisp
+ (defun nc/helm-do-grep-notes ()
+   "Search in all my org notes."
+   (interactive)
+   (helm-do-grep-1 (list org-directory) t nil (list "*.org")))
+ #+end_src
+*** Agenda
+**** Agenda configuration
+ By default all files in GTD and journal folder will be in my agenda, to be searchable
+
+ My custom agends commands are restricted to some files.
+ #+BEGIN_SRC emacs-lisp
+   (setq org-agenda-files (list "~/notes/GTD/" "~/notes/journal/" "~/notes/projects/")
+         org-agenda-span 'day
+         org-agenda-start-on-weekday nil
+         org-agenda-skip-deadline-if-done t
+         org-agenda-skip-scheduled-if-done t
+         org-agenda-start-with-log-mode t
+         org-agenda-block-separator nil
+         org-deadline-warning-days 5)
+ #+END_SRC
+**** Diary
+ #+BEGIN_SRC emacs-lisp
+   (setq diary-file "~/notes/diary"
+         org-agenda-include-diary t)
+ #+END_SRC
+**** Custom Agenda commands
+***** Function to skip headline tagged with =:PROJECT:=
+
+ #+begin_src emacs-lisp
+ (defun nc--org-agenda-skip-project ()
+     (org-agenda-skip-entry-if 'regexp ":PROJECT:"))
+ #+end_src
+
+***** Display Header parent
+
+ #+BEGIN_SRC emacs-lisp
+ (defun nc--org-agenda-format-parent (n)
+   ;; (s-truncate n (org-format-outline-path (org-get-outline-path)))
+   (save-excursion
+     (save-restriction
+       (widen)
+       (org-up-heading-safe)
+       (s-truncate n (org-get-heading t t)))))
+ #+END_SRC
+***** Agenda Commands
+
+     #+BEGIN_SRC emacs-lisp
+       (defun org-current-is-todo ()
+         (string= "NEXT" (org-get-todo-state)))
+
+       (defun org-agenda-skip-all-siblings-but-first ()
+         "Skip all but the first non-done entry."
+         (let (should-skip-entry)
+           (unless (org-current-is-todo)
+             (setq should-skip-entry t))
+           (save-excursion
+             (while (and (not should-skip-entry) (org-goto-sibling t))
+               (when (org-current-is-todo)
+                 (setq should-skip-entry t))))
+           (when should-skip-entry
+             (or (outline-next-heading)
+                 (goto-char (point-max))))))
+
+       (require 'org-agenda)
+       (setq nc/org-agenda-inbox-view
+             `("i" "Inbox" todo ""
+               ((org-agenda-files '("~/notes/GTD/inbox.org")))))
+
+
+       (setq nc/org-agenda-todo-view
+             `(" " "Agenda"
+               ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep))))
+
+                (tags-todo "TODO=\"STARTED\"+@office|TODO=\"WAITING\"+@office"
+                           ((org-agenda-overriding-header "Started / waiting tasks @office")
+                            (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 25)")
+                            (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
+                (tags-todo "TODO=\"NEXT\"+@office-HOLD"
+                           ((org-agenda-overriding-header "Next tasks @office")
+                            (org-tags-exclude-from-inheritance '("PROJECT"))
+                            (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 25)")
+                            ;; (org-agenda-skip-function
+                            ;;  (quote
+                            ;;   (org-agenda-skip-all-siblings-but-first)))
+                            (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))
+                            (org-agenda-todo-keyword-format "%-4s")))
+                (tags-todo "TODO=\"TODO\"-HOLD"
+                           ((org-agenda-overriding-header "Other tasks")
+                            (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 30)")
+                            (org-agenda-skip-function
+                             '(org-agenda-skip-entry-if 'scheduled 'deadline))
+                            (org-agenda-files '("~/notes/GTD/inbox.org"))
+                            (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
+                )
+               nil))
+
+       (setq nc/org-agenda-context-view
+             `("@" "Contexts"
+               ((todo "STARTED"
+                      ((org-agenda-overriding-header "All started tasks")))
+
+                (todo "WAITING"
+                      ((org-agenda-overriding-header "All waiting tasks")))
+                (tags-todo "@office"
+                           ((org-agenda-skip-function
+                             (quote
+                              (org-agenda-skip-all-siblings-but-first)))
+                            (org-agenda-overriding-header "@office")))
+                (tags "emacs"
+                      ((org-agenda-overriding-header "Emacs next actions")
+                       (org-agenda-skip-function
+                        (quote
+                         (org-agenda-skip-all-siblings-but-first)))))
+
+                (tags-todo "@reading"
+                           ((org-agenda-overriding-header "To Read")
+                            (org-agenda-skip-function
+                             (quote
+                              (org-agenda-skip-all-siblings-but-first)))))
+
+                (tags-todo "TO_LEARN"
+                           ((org-agenda-overriding-header "To Learn")
+                            (org-agenda-skip-function
+                             (quote
+                              (org-agenda-skip-all-siblings-but-first)))))
+                (tags-todo "@home"
+                           ((org-agenda-overriding-header "@Home")
+                            )))
+               nil nil))
+
+
+       (setq org-agenda-custom-commands
+             `(,nc/org-agenda-inbox-view
+               ,nc/org-agenda-todo-view
+               ,nc/org-agenda-context-view))
+
+     #+END_SRC
 ** Speed commands
  From https://orgmode.org/worg/org-hacks.html
  #+BEGIN_SRC emacs-lisp
@@ -1781,7 +1789,7 @@ Export Org documents via Pandoc
 * Tools
 ** Deft
 #+BEGIN_SRC emacs-lisp
-  (use-package deft
+(use-package deft
     :bind
     (("C-c n" . deft))
     :config
