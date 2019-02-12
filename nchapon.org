@@ -2375,6 +2375,34 @@ Insert time slot mainly used when I schedule meeting or appointment.
           (end (format-time-string current-hour-format (time-add (current-time) (seconds-to-time 3600)))))
       (insert (concat begin "-" end))))
 #+end_src
+** Inserting time stamps
+   From : https://github.com/novoid/dot-emacs/blob/master/config.org#inserting-time-stamps--my-map-ddtt
+
+#+BEGIN_SRC emacs-lisp
+   (defun nc/insert-datestamp()
+     "Insert the current date in yyyy-mm-dd format."
+     (interactive "*")
+     (if (eq major-mode 'org-mode)
+         (progn
+           (org-insert-time-stamp nil nil nil)
+           (insert " "))
+         (insert (format-time-string "%Y-%m-%d" (current-time)))))
+ #+END_SRC
+
+
+ #+BEGIN_SRC emacs-lisp
+   (defun nc/insert-datestamp-inactive()
+     "Insert the current date in yyyy-mm-dd format."
+     (interactive "*")
+     (if (eq major-mode 'org-mode)
+         (progn
+       (org-insert-time-stamp nil nil t)
+       (insert " "))
+       (insert (format-time-string "%Y-%m-%d" (current-time)))))
+ #+END_SRC
+
+
+
 * Notes
 ** Inspiration configs
   - https://writequit.org/org/settings.html
