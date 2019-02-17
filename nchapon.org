@@ -1177,8 +1177,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
   (bind-key "C-<f9>" 'nc/clock-in-organization-task-as-default)
 #+end_src
 ** GTD Workflow
-
-*** Tasks
+*** Tasks & projects
 **** Todo tasks
 ***** Todo states
   - parentheses indicate keyboard shortcuts
@@ -1209,8 +1208,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
                  ("FORMATION" :foreground "#34495e" :weight bold)
                  ("CANCELLED" :foreground "#7f8c8d" :weight bold))))
  #+END_SRC
-**** Projects
-***** Contexts
+**** Contexts
  #+BEGIN_SRC emacs-lisp
    (setq org-tag-alist (quote (("@computer" . ?c)
                                ("@office" . ?o)
@@ -1224,11 +1222,17 @@ This clocks in a predefined task by org-id that is the default task to clock in
    ;;(setq org-fast-tag-selection-single-key nil)
 
  #+END_SRC
+**** Projects
+Projects are marked with the =project= tag. They are supposed to
+contain todo items, and are considered stuck unless they do. The
+=project= tag should not be inheritable, because otherwise its tasks
+will appear as projects.
+   #+begin_src emacs-lisp
+     (setq org-tags-exclude-from-inheritance '("project" "crypt")
+           org-stuck-projects '("+project/-DONE"
+                                ("TODO" "NEXT") ()))
+   #+end_src
 
-
- #+begin_src emacs-lisp
- (setq org-tags-exclude-from-inheritance '("PROJECT"))
- #+end_src
 *** Files and directories
 
  #+begin_src emacs-lisp
@@ -1519,11 +1523,11 @@ I have my own template for creating new projects
          org-agenda-include-diary t)
  #+END_SRC
 **** Custom Agenda commands
-***** Function to skip headline tagged with =:PROJECT:=
+***** Function to skip headline tagged with =:project:=
 
  #+begin_src emacs-lisp
  (defun nc--org-agenda-skip-project ()
-     (org-agenda-skip-entry-if 'regexp ":PROJECT:"))
+     (org-agenda-skip-entry-if 'regexp ":project:"))
  #+end_src
 
 ***** Display Header parent
@@ -1572,7 +1576,7 @@ I have my own template for creating new projects
                             (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                 (tags-todo "TODO=\"NEXT\"+@office-HOLD"
                            ((org-agenda-overriding-header "Next tasks @office")
-                            (org-tags-exclude-from-inheritance '("PROJECT"))
+                            (org-tags-exclude-from-inheritance '("project"))
                             (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 25)")
                             ;; (org-agenda-skip-function
                             ;;  (quote
@@ -1769,7 +1773,8 @@ I have my own template for creating new projects
 #+begin_src emacs-lisp
   (require 'org-crypt)
   (org-crypt-use-before-save-magic)
-  (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+
+  ;; (setq org-tags-exclude-from-inheritance (quote ("crypt")))
   ;; GPG key to use for encryption
   ;; Either the Key ID or set to nil to use symmetric encryption.
   (setq org-crypt-key nil)
