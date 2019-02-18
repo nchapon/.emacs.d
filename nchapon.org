@@ -1804,28 +1804,29 @@ Export Org documents via Pandoc
 * Tools
 ** Deft
 #+BEGIN_SRC emacs-lisp
-(use-package deft
-    :bind
-    (("C-c n" . deft))
-    :config
-    (setq deft-directory "~/notes/topics"
-          deft-recursive t
-          deft-extensions '("org")
-          deft-default-extension "org"
-          deft-text-mode 'org-mode
-          deft-org-mode-title-prefix t
-          deft-use-filter-string-for-filename t
-          deft-auto-save-interval 0
-          deft-recursive-ignore-dir-regexp
-            (concat "\\(?:"
-                    "\\."
-                    "\\|\\.\\."
-                    "\\\|valtech"
-                    "\\)$")
-          deft-file-naming-rules
-            '((noslash . "-")
-              (nospace . "-")
-              (case-fn . downcase))))
+  (use-package deft
+      :bind
+      (("C-c n" . deft))
+      :config
+      (setq deft-directory "~/notes"
+            deft-recursive t
+            deft-extensions '("org")
+            deft-default-extension "org"
+            deft-text-mode 'org-mode
+            deft-org-mode-title-prefix t
+            deft-use-filter-string-for-filename t
+            deft-auto-save-interval 0
+            deft-recursive-ignore-dir-regexp
+              (concat "\\(?:"
+                      "\\."
+                      "\\|\\.\\."
+                      "\\\|valtech"
+                      "\\|journal"
+                      "\\)$")
+            deft-file-naming-rules
+              '((noslash . "-")
+                (nospace . "-")
+                (case-fn . downcase))))
 #+END_SRC
 ** Docker
 #+begin_src emacs-lisp
