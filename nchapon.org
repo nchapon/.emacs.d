@@ -1634,6 +1634,20 @@ I have my own template for creating new projects
                ,nc/org-agenda-context-view))
 
      #+END_SRC
+**** Recent open loops
+
+ #+BEGIN_SRC emacs-lisp
+ (defun nc/org-agenda-recent-open-loops ()
+     (interactive)
+     (let ((org-agenda-start-with-log-mode t)
+             (org-agenda-use-time-grid nil))
+       ;; (fetch-calendar)
+       (org-agenda-list nil (org-read-date nil nil "-2d") 4)))
+ #+END_SRC
+
+
+
+
 ** Speed commands
  From https://orgmode.org/worg/org-hacks.html
  #+BEGIN_SRC emacs-lisp
