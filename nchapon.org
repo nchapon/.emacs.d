@@ -1186,7 +1186,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
 
  #+BEGIN_SRC emacs-lisp
    (setq org-todo-keywords
-    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+    '((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(.)" "MAYBE(M)"  "|" "DONE(d!)")
       (sequence "STARTED(s)" "WAITING(w@/!)" "|" "CANCELLED(c@/!)" "INACTIVE(i@/!)")
       (sequence "MEETING(m)" "RDV(r)"  "|" "DONE(d)")))
  #+END_SRC
@@ -1205,7 +1205,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
                  ("INACTIVE" :foreground "#bdc3c7" :weight bold)
                  ("MEETING" :foreground "#8e44ad" :weight bold)
                  ("RDV" :foreground "#9b59b6" :weight bold)
-                 ("FORMATION" :foreground "#34495e" :weight bold)
+                 ("MAYBE" :foreground "#3498db" :weight bold)
                  ("CANCELLED" :foreground "#7f8c8d" :weight bold))))
  #+END_SRC
 **** Contexts
@@ -1240,14 +1240,14 @@ will appear as projects.
    (defconst nc/org-default-technical-dir (concat org-directory "technical"))
    (defconst nc/org-default-personal-dir (concat org-directory "personal"))
    (defconst nc/org-default-completed-dir (concat org-directory "projects/archives"))
-   (defconst nc/inbox-file (concat org-directory "GTD/inbox.org"))
-   (defconst nc/org-default-inbox-file (concat org-directory "GTD/inbox.org"))
-   (defconst nc/watching-file (concat org-directory "GTD/watching.org"))
-   (defconst nc/org-default-media-files (concat org-directory "GTD/watching.org"))
+   (defconst nc/inbox-file (concat org-directory "inbox.org"))
+   (defconst nc/org-default-inbox-file (concat org-directory "inbox.org"))
+   (defconst nc/watching-file (concat org-directory "personal/watching.org"))
+   (defconst nc/org-default-media-files (concat org-directory "personal/watching.org"))
    (defconst nc/fishing-file (concat org-directory "topics/sports/fishing.org"))
-   (defconst nc/someday-file (concat org-directory "GTD/someday.org"))
-   (defconst nc/calendar-file (concat org-directory "GTD/calendar.org"))
-   (defconst nc/weekly-review-file (concat org-directory "GTD/weekly-review.org"))
+   (defconst nc/someday-file (concat org-directory "projects/someday.org"))
+   (defconst nc/calendar-file (concat org-directory "personal/calendar.org"))
+   (defconst nc/weekly-review-file (concat org-directory "personal/reviews/weekly-review.org"))
  #+end_src
 *** Org Journal
 **** Configuration
@@ -1437,7 +1437,6 @@ I have my own template for creating new projects
              (file "~/notes/templates/newproject.org")))
 #+END_SRC
 
-
 **** Daily Review
 
  #+BEGIN_SRC emacs-lisp
@@ -1508,7 +1507,7 @@ I have my own template for creating new projects
 
  My custom agends commands are restricted to some files.
  #+BEGIN_SRC emacs-lisp
-   (setq org-agenda-files (list "~/notes/GTD/" "~/notes/journal/" "~/notes/projects/")
+   (setq org-agenda-files (list "~/notes/personal/calendar.org" "~/notes/journal/" "~/notes/projects/")
          org-agenda-span 'day
          org-agenda-start-on-weekday nil
          org-agenda-skip-deadline-if-done t
@@ -1563,7 +1562,7 @@ I have my own template for creating new projects
        (require 'org-agenda)
        (setq nc/org-agenda-inbox-view
              `("i" "Inbox" todo ""
-               ((org-agenda-files '("~/notes/GTD/inbox.org")))))
+               ((org-agenda-files '("~/notes/inbox.org")))))
 
 
        (setq nc/org-agenda-todo-view
@@ -1588,7 +1587,7 @@ I have my own template for creating new projects
                             (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 30)")
                             (org-agenda-skip-function
                              '(org-agenda-skip-entry-if 'scheduled 'deadline))
-                            (org-agenda-files '("~/notes/GTD/inbox.org"))
+                            (org-agenda-files '("~/notes/projects/tasks.org"))
                             (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                 )
                nil))
@@ -1644,7 +1643,6 @@ I have my own template for creating new projects
        ;; (fetch-calendar)
        (org-agenda-list nil (org-read-date nil nil "-2d") 4)))
  #+END_SRC
-
 
 
 
