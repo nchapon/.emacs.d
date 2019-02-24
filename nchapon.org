@@ -1812,7 +1812,21 @@ Export Org documents via Pandoc
              htmlize-many-files-dired
              htmlize-region))
 #+END_SRC
-
+** Yankpad
+#+BEGIN_SRC emacs-lisp
+  (use-package yankpad
+    :ensure t
+    :defer 10
+    :init
+    (setq yankpad-file "~/notes/templates/yankpad.org")
+    :config
+    (bind-key "<f7>" 'yankpad-map)
+    ;(bind-key "<f12>" 'yankpad-expand)
+    ;; If you want to complete snippets using company-mode
+    (add-to-list 'company-backends #'company-yankpad)
+    ;; If you want to expand snippets with hippie-expand
+    (add-to-list 'hippie-expand-try-functions-list #'yankpad-expand))
+#+END_SRC
 * Tools
 ** Deft -> <F8>
 #+BEGIN_SRC emacs-lisp
