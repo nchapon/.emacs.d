@@ -1560,78 +1560,43 @@ I have my own template for creating new projects
                  (goto-char (point-max))))))
 
        (require 'org-agenda)
-       (setq nc/org-agenda-inbox-view
-             `("i" "Inbox" todo ""
-               ((org-agenda-files '("~/notes/inbox.org")))))
-
-
-       (setq nc/org-agenda-todo-view
-             `(" " "Agenda"
-               ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep))))
-
-                (tags-todo "TODO=\"STARTED\"+@office|TODO=\"WAITING\"+@office"
-                           ((org-agenda-overriding-header "Started / waiting tasks @office")
-                            (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 25)")
-                            (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-                (tags-todo "TODO=\"NEXT\"+@office-HOLD"
-                           ((org-agenda-overriding-header "Next tasks @office")
-                            (org-tags-exclude-from-inheritance '("project"))
-                            (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 25)")
-                            ;; (org-agenda-skip-function
-                            ;;  (quote
-                            ;;   (org-agenda-skip-all-siblings-but-first)))
-                            (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))
-                            (org-agenda-todo-keyword-format "%-4s")))
-                (tags-todo "TODO=\"TODO\"-HOLD"
-                           ((org-agenda-overriding-header "Other tasks")
-                            (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 30)")
-                            (org-agenda-skip-function
-                             '(org-agenda-skip-entry-if 'scheduled 'deadline))
-                            (org-agenda-files '("~/notes/projects/tasks.org"))
-                            (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
-                )
-               nil))
-
-       (setq nc/org-agenda-context-view
-             `("@" "Contexts"
-               ((todo "STARTED"
-                      ((org-agenda-overriding-header "All started tasks")))
-
-                (todo "WAITING"
-                      ((org-agenda-overriding-header "All waiting tasks")))
-                (tags-todo "@office"
-                           ((org-agenda-skip-function
-                             (quote
-                              (org-agenda-skip-all-siblings-but-first)))
-                            (org-agenda-overriding-header "@office")))
-                (tags "emacs"
-                      ((org-agenda-overriding-header "Emacs next actions")
-                       (org-agenda-skip-function
-                        (quote
-                         (org-agenda-skip-all-siblings-but-first)))))
-
-                (tags-todo "@reading"
-                           ((org-agenda-overriding-header "To Read")
-                            (org-agenda-skip-function
-                             (quote
-                              (org-agenda-skip-all-siblings-but-first)))))
-
-                (tags-todo "TO_LEARN"
-                           ((org-agenda-overriding-header "To Learn")
-                            (org-agenda-skip-function
-                             (quote
-                              (org-agenda-skip-all-siblings-but-first)))))
-                (tags-todo "@home"
-                           ((org-agenda-overriding-header "@Home")
-                            )))
-               nil nil))
-
 
        (setq org-agenda-custom-commands
-             `(,nc/org-agenda-inbox-view
-               ,nc/org-agenda-todo-view
-               ,nc/org-agenda-context-view))
+             '((" " "Agenda"
+                      ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep))))
 
+                       (tags-todo "TODO=\"STARTED\"+@office|TODO=\"WAITING\"+@office"
+                                  ((org-agenda-overriding-header "Started / waiting tasks @office")
+                                   (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 25)")
+                                   (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
+                       ;; (tags-todo "TODO=\"NEXT\"+@office-HOLD"
+                       ;;            ((org-agenda-overriding-header "Next tasks @office")
+                       ;;             (org-tags-exclude-from-inheritance '("project"))
+                       ;;             (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 25)")
+                       ;;             ;; (org-agenda-skip-function
+                       ;;             ;;  (quote
+                       ;;             ;;   (org-agenda-skip-all-siblings-but-first)))
+                       ;;             (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))
+                       ;;             (org-agenda-todo-keyword-format "%-4s")))
+                       (tags-todo "TODO=\"TODO\"-HOLD"
+                                  ((org-agenda-overriding-header "Other tasks")
+                                   (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 30)")
+                                   (org-agenda-skip-function
+                                    '(org-agenda-skip-entry-if 'scheduled 'deadline))
+                                   (org-agenda-files '("~/notes/projects/tasks.org"))
+                                   (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
+                       )
+                      nil)
+               ("g" . "GTD contexts")
+                  ("go" "Office" tags-todo "@office")
+                  ("ge" "Computer" tags-todo "@computer")
+                  ("gp" "Emacs" tags-todo "emacs")
+                  ("gl" "Learning" tags-todo "learning")
+                  ("gr" "Reading" tags-todo "@reading")
+                   ;; exports block to this file with C-c a e
+                 ;; ..other commands here
+
+                  ))
      #+END_SRC
 **** Recent open loops
 
