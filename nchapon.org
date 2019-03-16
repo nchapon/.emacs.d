@@ -1237,7 +1237,7 @@ will appear as projects.
 
  #+begin_src emacs-lisp
    (defconst nc/org-default-projects-dir (concat org-directory "projects"))
-   (defconst nc/org-default-technical-dir (concat org-directory "technical"))
+   (defconst nc/org-default-resources-dir (concat org-directory "resources"))
    (defconst nc/org-default-personal-dir (concat org-directory "personal"))
    (defconst nc/org-default-completed-dir (concat org-directory "projects/archives"))
    (defconst nc/inbox-file (concat org-directory "inbox.org"))
