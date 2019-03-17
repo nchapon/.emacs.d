@@ -1583,7 +1583,7 @@ I have my own template for creating new projects
                                    (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 30)")
                                    (org-agenda-skip-function
                                     '(org-agenda-skip-entry-if 'scheduled 'deadline))
-                                   (org-agenda-files '("~/notes/projects/tasks.org"))
+                                   (org-agenda-files '("~/notes/inbox.org"))
                                    (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                        )
                       nil)
@@ -1608,9 +1608,6 @@ I have my own template for creating new projects
        ;; (fetch-calendar)
        (org-agenda-list nil (org-read-date nil nil "-2d") 4)))
  #+END_SRC
-
-
-
 ** Speed commands
  From https://orgmode.org/worg/org-hacks.html
  #+BEGIN_SRC emacs-lisp
@@ -2407,7 +2404,6 @@ Insert time slot mainly used when I schedule meeting or appointment.
        (insert " "))
        (insert (format-time-string "%Y-%m-%d" (current-time)))))
  #+END_SRC
-
 
 
 * Notes
