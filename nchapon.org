@@ -1507,7 +1507,7 @@ I have my own template for creating new projects
 
  My custom agends commands are restricted to some files.
  #+BEGIN_SRC emacs-lisp
-   (setq org-agenda-files (list "~/notes/personal/calendar.org" "~/notes/journal/" "~/notes/projects/")
+   (setq org-agenda-files (list "~/notes/inbox.org" "~/notes/personal/calendar.org" "~/notes/journal/" "~/notes/projects/")
          org-agenda-span 'day
          org-agenda-start-on-weekday nil
          org-agenda-skip-deadline-if-done t
