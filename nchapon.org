@@ -1585,8 +1585,8 @@ I have my own template for creating new projects
                       nil)
                ("g" . "GTD contexts")
                   ("go" "Office" tags-todo "@office")
-                  ("ge" "Computer" tags-todo "@computer")
-                  ("gp" "Emacs" tags-todo "emacs")
+                  ("gc" "Computer" tags-todo "@computer")
+                  ("ge" "Emacs" tags-todo "emacs")
                   ("gl" "Learning" tags-todo "learning")
                   ("gr" "Reading" tags-todo "@reading")
                    ;; exports block to this file with C-c a e
