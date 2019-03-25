@@ -1041,10 +1041,6 @@ Rotate windows with =C-c r=
 *** Base directory
 #+begin_src emacs-lisp
   (setq org-directory "~/notes/")
-
-  (setq org-files (append (file-expand-wildcards (concat org-directory "*/*.org"))
-                          (file-expand-wildcards (concat org-directory "*/*/*.org"))
-                          (file-expand-wildcards (concat org-directory "*/*/*/*.org"))))
 #+end_src
 
 *** Global keys
