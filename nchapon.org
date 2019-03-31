@@ -1242,7 +1242,7 @@ will appear as projects.
    (defconst nc/org-default-inbox-file (concat org-directory "inbox.org"))
    (defconst nc/watching-file (concat org-directory "personal/watching.org"))
    (defconst nc/org-default-media-files (concat org-directory "personal/watching.org"))
-   (defconst nc/fishing-file (concat org-directory "topics/sports/fishing.org"))
+   (defconst nc/fishing-file (concat org-directory "personal/sports/fishing.org"))
    (defconst nc/someday-file (concat org-directory "projects/someday.org"))
    (defconst nc/calendar-file (concat org-directory "personal/calendar.org"))
    (defconst nc/weekly-review-file (concat org-directory "personal/reviews/weekly-review.org"))
@@ -1334,7 +1334,7 @@ will appear as projects.
          ;; bind-key
          (bind-key "C-c o i" 'nc/journal-file-insert)
    #+END_SRC
-*** Projects
+*** Navigation
 
 #+BEGIN_SRC emacs-lisp
 (defun nc/go-to-projects ()
@@ -1344,6 +1344,12 @@ will appear as projects.
   (beginning-of-buffer)
   (re-search-forward "* Projects")
   (beginning-of-line))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defun nc/go-to-resources-dir ()
+    (interactive)
+    (dired nc/org-default-resources-dir))
 #+END_SRC
 
 *** Org default notes file
