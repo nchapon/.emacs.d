@@ -1217,18 +1217,20 @@ This clocks in a predefined task by org-id that is the default task to clock in
  #+END_SRC
 **** Contexts
  #+BEGIN_SRC emacs-lisp
-   (setq org-tag-alist (quote (("@computer" . ?c)
+   (setq org-tag-alist (quote ((:startgroup)
                                ("@office" . ?o)
                                ("@home" . ?h)
+                               (:endgroup)
+                               ("@computer" . ?c)
                                ("@reading" . ?r)
                                ("learning" . ?l)
+                               ("EMACS" . ?e)
                                (:newline)
                                ("WAITING" . ?w)
                                ("HOLD" . ?H)
                                ("CANCELLED" . ?c))))
 
    ;;(setq org-fast-tag-selection-single-key nil)
-
  #+END_SRC
 **** Projects
 Projects are marked with the =project= tag. They are supposed to
