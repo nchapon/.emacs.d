@@ -16,4 +16,4 @@ alias ll ls -lh
 alias mvnci mvn clean install
 alias mvncist mvn clean install -DskipTests
 alias mvnist mvn install -DskipTests
-alias dpsa docker ps -a --format "{{.Names}} {{.Size}} : {{.Command}}" --no-trunc
+alias mvnudd mvn --global-settings ~/Projects/cnp/maven/settings.xml $*
