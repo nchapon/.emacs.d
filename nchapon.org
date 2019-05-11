@@ -796,11 +796,54 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
 #+BEGIN_SRC emacs-lisp
   (use-package hydra :ensure t)
 #+END_SRC
+**** Function key settings
+
+#+BEGIN_SRC emacs-lisp
+(setq nc--f-key-settings (concat
+
+  (propertize
+  "    F1      F2             F3   F4  ┃  F5             F6     F7       F8    ┃  F9                    F10      F11            F12
+  "                                                                                                            'face '(:foreground "green"))
+  "    Hydra   Hydra Global    ★       ┃  revert-buffer  Magit  Yankpad  Deft  ┃  Interruption task     Menu     Clock   Agenda
+
+  "))
+#+END_SRC
+
+**** Hydra Global settings -> F2
+
+#+BEGIN_SRC emacs-lisp
+  (defhydra hydra-global (:color blue)
+    (concat nc--f-key-settings
+            "
+      ^^Go to                          ^^Actions                        ^^Other
+      ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
+      _j_ournal file today             _d_elete file                    _p_ersonal credentials
+      _i_nit file                      _r_ename file                    ^^
+      _y_esterday file                 _S_ilver Searcher                ^^
+      ^^                               ^^                               ^^
+
+      ")
+
+    ("i" nc/find-config nil)
+    ("j" nc/journal-file-today nil)
+    ("y" nc/journal-file-yesterday nil)
+    ("d" nc/delete-this-file nil)
+    ("r" nc/rename-this-file-and-buffer nil)
+    ("S" helm-do-ag nil)
+
+    ("p" (lambda ()
+           (interactive)
+           (find-file (concat nc/org-default-personal-dir "/password.gpg")
+                      ) nil))
+
+
+    ("q" nil "quit")
+    )
+  (global-set-key (kbd "<f2>") 'hydra-global/body)
+#+END_SRC
+
+
 *** Globals Keys
-**** Rgrep
- #+BEGIN_SRC emacs-lisp
-   (bind-key "<f2>" 'rgrep)
- #+END_SRC
 **** Undo
 #+BEGIN_SRC emacs-lisp
 (bind-key "C-z" #'undo)
