@@ -841,62 +841,6 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
     )
   (global-set-key (kbd "<f2>") 'hydra-global/body)
 #+END_SRC
-**** Hydra for Org Mode -> F1
-#+BEGIN_SRC emacs-lisp
-  (defhydra hydra-org (:color blue)
-    (concat nc--f-key-settings
-    "
-    ^^Go to                          ^^Inserting                      ^^Crypto
-    ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
-    _p_rojects                       _t_ime slot                      _g_enerate password
-    _R_esources directory            _d_aily plan                     ^^
-    _P_ersonal directory             _D_aily review                   ^^
-    ^^                               ^^                               ^^
-    ^^Filter                         ^^Export                         ^^MISC
-    ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
-    ^^                               ^^                               ^^
-    _2_ org-tags-view  (C-c a m)     ^^                               ^^
-    ^^                               ^^                               ^^
-    _f_ocus agenda (prio A; sched .) ^^                               ^^
-    _F_ocus disabled for agenda      ^^                               ^^
-    ")
-
-    ("f" (lambda ()
-            (interactive)
-            (org-agenda-filter-apply '("+.*\\[#A\\].*") 'regexp)
-    ) nil)
-    ("F" (lambda ()
-            (interactive)
-            (org-agenda-filter-show-all-re)
-    ) nil)
-
-    ("p" nc/go-to-projects nil)
-    ("R" nc/go-to-resources-dir nil)
-
-    ("P" (lambda ()
-            (interactive)
-            (dired nc/org-default-personal-dir)
-    ) nil)
-
-
-    ("t" nc/insert-time-slot nil)
-    ("d" nc/journal-file-insert nil)
-    ("D" nc/daily-review nil)
-
-    ;;("T" my-sparse-tree-with-tag-filter nil)
-    ("2" org-tags-view nil)
-    ("3" org-tags-sparse-tree nil)
-
-    ("g" nc/generate-password nil)
-    ("q" nil "quit")
-
-  )
-
-  (define-key org-mode-map [f1] 'hydra-org/body)
-  (define-key org-agenda-mode-map [f1] 'hydra-org/body)
-#+END_SRC
-
-
 *** Globals Keys
 **** Undo
 #+BEGIN_SRC emacs-lisp
@@ -1920,6 +1864,62 @@ Export Org documents via Pandoc
     ;; If you want to expand snippets with hippie-expand
     (add-to-list 'hippie-expand-try-functions-list #'yankpad-expand))
 #+END_SRC
+** Hydra Org -> F1
+#+BEGIN_SRC emacs-lisp
+  (defhydra hydra-org (:color blue)
+    (concat nc--f-key-settings
+    "
+    ^^Go to                          ^^Inserting                      ^^Crypto
+    ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
+    _p_rojects                       _t_ime slot                      _g_enerate password
+    _R_esources directory            _d_aily plan                     ^^
+    _P_ersonal directory             _D_aily review                   ^^
+    ^^                               ^^                               ^^
+    ^^Filter                         ^^Export                         ^^MISC
+    ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
+    ^^                               ^^                               ^^
+    _2_ org-tags-view  (C-c a m)     ^^                               ^^
+    ^^                               ^^                               ^^
+    _f_ocus agenda (prio A; sched .) ^^                               ^^
+    _F_ocus disabled for agenda      ^^                               ^^
+    ")
+
+    ("f" (lambda ()
+            (interactive)
+            (org-agenda-filter-apply '("+.*\\[#A\\].*") 'regexp)
+    ) nil)
+    ("F" (lambda ()
+            (interactive)
+            (org-agenda-filter-show-all-re)
+    ) nil)
+
+    ("p" nc/go-to-projects nil)
+    ("R" nc/go-to-resources-dir nil)
+
+    ("P" (lambda ()
+            (interactive)
+            (dired nc/org-default-personal-dir)
+    ) nil)
+
+
+    ("t" nc/insert-time-slot nil)
+    ("d" nc/journal-file-insert nil)
+    ("D" nc/daily-review nil)
+
+    ;;("T" my-sparse-tree-with-tag-filter nil)
+    ("2" org-tags-view nil)
+    ("3" org-tags-sparse-tree nil)
+
+    ("g" nc/generate-password nil)
+    ("q" nil "quit")
+
+  )
+
+  (define-key org-mode-map [f1] 'hydra-org/body)
+  (define-key org-agenda-mode-map [f1] 'hydra-org/body)
+#+END_SRC
+
+
 * Tools
 ** Deft -> <F8>
 #+BEGIN_SRC emacs-lisp
