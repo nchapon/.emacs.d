@@ -792,55 +792,6 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
      (key-chord-define-global "$$" 'end-of-buffer)
      (key-chord-define-global "kk" 'kill-this-buffer))
  #+END_SRC
-*** Hydra
-#+BEGIN_SRC emacs-lisp
-  (use-package hydra :ensure t)
-#+END_SRC
-**** Function key settings
-
-#+BEGIN_SRC emacs-lisp
-(setq nc--f-key-settings (concat
-
-  (propertize
-  "    F1      F2             F3   F4  ┃  F5             F6     F7       F8    ┃  F9                    F10      F11            F12
-  "                                                                                                            'face '(:foreground "green"))
-  "    Hydra   Hydra Global    ★       ┃  revert-buffer  Magit  Yankpad  Deft  ┃  Interruption task     Menu     Clock   Agenda
-
-  "))
-#+END_SRC
-
-**** Hydra Global settings -> F2
-
-#+BEGIN_SRC emacs-lisp
-  (defhydra hydra-global (:color blue)
-    (concat nc--f-key-settings
-            "
-      ^^Go to                          ^^Actions                        ^^Other
-      ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
-      _j_ournal file today             _d_elete file                    _p_ersonal credentials
-      _i_nit file                      _r_ename file                    ^^
-      _y_esterday file                 _S_ilver Searcher                ^^
-      ^^                               ^^                               ^^
-
-      ")
-
-    ("i" nc/find-config nil)
-    ("j" nc/journal-file-today nil)
-    ("y" nc/journal-file-yesterday nil)
-    ("d" nc/delete-this-file nil)
-    ("r" nc/rename-this-file-and-buffer nil)
-    ("S" helm-do-ag nil)
-
-    ("p" (lambda ()
-           (interactive)
-           (find-file (concat nc/org-default-personal-dir "/password.gpg")
-                      )) nil)
-
-
-    ("q" nil "quit")
-    )
-  (global-set-key (kbd "<f2>") 'hydra-global/body)
-#+END_SRC
 *** Globals Keys
 **** Undo
 #+BEGIN_SRC emacs-lisp
@@ -1859,77 +1810,6 @@ Export Org documents via Pandoc
              htmlize-many-files-dired
              htmlize-region))
 #+END_SRC
-** Yankpad
-#+BEGIN_SRC emacs-lisp
-  (use-package yankpad
-    :ensure t
-    :defer 10
-    :init
-    (setq yankpad-file "~/notes/templates/yankpad.org")
-    :config
-    (bind-key "<f7>" 'yankpad-map)
-    ;(bind-key "<f12>" 'yankpad-expand)
-    ;; If you want to complete snippets using company-mode
-    ;;(add-to-list 'company-backends #'company-yankpad)
-    ;; If you want to expand snippets with hippie-expand
-    (add-to-list 'hippie-expand-try-functions-list #'yankpad-expand))
-#+END_SRC
-** Hydra Org -> F1
-#+BEGIN_SRC emacs-lisp
-  (defhydra hydra-org (:color blue)
-    (concat nc--f-key-settings
-    "
-    ^^Go to                          ^^Inserting                      ^^Crypto
-    ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
-    _p_rojects                       _t_ime slot                      _g_enerate password
-    _R_esources directory            _d_aily plan                     ^^
-    _P_ersonal directory             _D_aily review                   ^^
-    ^^                               ^^                               ^^
-    ^^Filter                         ^^Export                         ^^MISC
-    ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
-    ^^                               ^^                               ^^
-    _2_ org-tags-view  (C-c a m)     ^^                               ^^
-    ^^                               ^^                               ^^
-    _f_ocus agenda (prio A; sched .) ^^                               ^^
-    _F_ocus disabled for agenda      ^^                               ^^
-    ")
-
-    ("f" (lambda ()
-            (interactive)
-            (org-agenda-filter-apply '("+.*\\[#A\\].*") 'regexp)
-    ) nil)
-    ("F" (lambda ()
-            (interactive)
-            (org-agenda-filter-show-all-re)
-    ) nil)
-
-    ("p" nc/go-to-projects nil)
-    ("R" nc/go-to-resources-dir nil)
-
-    ("P" (lambda ()
-            (interactive)
-            (dired nc/org-default-personal-dir)
-    ) nil)
-
-
-    ("t" nc/insert-time-slot nil)
-    ("d" nc/journal-file-insert nil)
-    ("D" nc/daily-review nil)
-
-    ;;("T" my-sparse-tree-with-tag-filter nil)
-    ("2" org-tags-view nil)
-    ("3" org-tags-sparse-tree nil)
-
-    ("g" nc/generate-password nil)
-    ("q" nil "quit")
-
-  )
-
-  (define-key org-mode-map [f1] 'hydra-org/body)
-  (define-key org-agenda-mode-map [f1] 'hydra-org/body)
-#+END_SRC
-
-
 * Tools
 ** Deft -> <F8>
 #+BEGIN_SRC emacs-lisp
@@ -1957,11 +1837,6 @@ Export Org documents via Pandoc
                 (nospace . "-")
                 (case-fn . downcase))))
 #+END_SRC
-** Docker
-#+begin_src emacs-lisp
-  (use-package dockerfile-mode
-    :mode "Dockerfile.*\\'")
-#+end_src
 ** PDF
 #+begin_src emacs-lisp
   (use-package pdf-tools
@@ -2196,6 +2071,257 @@ Sometimes I need an Ansi Term...
 (bind-key "C-c t" 'ansi-term)
 #+END_SRC
 
+** Yankpad -> <F7>
+#+BEGIN_SRC emacs-lisp
+  (use-package yankpad
+    :ensure t
+    :defer 10
+    :init
+    (setq yankpad-file "~/notes/templates/yankpad.org")
+    :config
+    (bind-key "<f7>" 'yankpad-map)
+    ;(bind-key "<f12>" 'yankpad-expand)
+    ;; If you want to complete snippets using company-mode
+    ;;(add-to-list 'company-backends #'company-yankpad)
+    ;; If you want to expand snippets with hippie-expand
+    (add-to-list 'hippie-expand-try-functions-list #'yankpad-expand))
+#+END_SRC
+** Hydra -> <F1>
+#+BEGIN_SRC emacs-lisp
+  (use-package hydra :ensure t)
+#+END_SRC
+*** Hydra Context Launcher
+
+Hydra context laucher inspired from https://dfeich.github.io/www/org-mode/emacs/2018/05/10/context-hydra.html
+
+=F1= will invoke hydra context laucher, if there is no hydra for the
+current context, it display by default global hydra
+
+#+BEGIN_SRC emacs-lisp
+  (defun nc/context-hydra-launcher ()
+    "A launcher for hydras based on the current context."
+    (interactive)
+    (cl-case major-mode
+      ('org-mode (let* ((elem (org-element-context))
+                (etype (car elem))
+                (type (org-element-property :type elem)))
+           (cl-case etype
+             (src-block (hydra-org-babel/body))
+             ((table-row table-cell) (hydra-org-table/body) )
+             (t (hydra-org/body))))
+             )
+      ('dired-mode (hydra-dired/body))
+      ;;('ibuffer-mode (hydra-ibuffer-main/body))
+      (t (hydra-global/body))))
+
+  (global-set-key (kbd "<f1>") 'nc/context-hydra-launcher)
+#+END_SRC
+
+*** Function key settings
+
+#+BEGIN_SRC emacs-lisp
+(setq nc--f-key-settings (concat
+
+  (propertize
+  "    F1      F2             F3   F4  ┃  F5             F6     F7       F8    ┃  F9                    F10      F11            F12
+  "                                                                                                            'face '(:foreground "green"))
+  "    Hydra   Hydra Global    ★       ┃  revert-buffer  Magit  Yankpad  Deft  ┃  Interruption task     Menu     Clock   Agenda
+
+  "))
+#+END_SRC
+
+*** Hydra Global settings -> F2
+
+#+BEGIN_SRC emacs-lisp
+  (defhydra hydra-global (:color blue)
+    (concat nc--f-key-settings
+            "
+      ^^Go to                          ^^Actions                        ^^Other
+      ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
+      _j_ournal file today             _d_elete file                    _p_ersonal credentials
+      _i_nit file                      _r_ename file                    ^^
+      _y_esterday file                 _S_ilver Searcher                ^^
+      ^^                               ^^                               ^^
+
+      ")
+
+    ("i" nc/find-config nil)
+    ("j" nc/journal-file-today nil)
+    ("y" nc/journal-file-yesterday nil)
+    ("d" nc/delete-this-file nil)
+    ("r" nc/rename-this-file-and-buffer nil)
+    ("S" helm-do-ag nil)
+
+    ("p" (lambda ()
+           (interactive)
+           (super-save-mode nil)
+           (find-file (concat nc/org-default-personal-dir "/password.gpg")
+                      )) nil)
+
+
+    ("q" nil "quit")
+    )
+  (global-set-key (kbd "<f2>") 'hydra-global/body)
+#+END_SRC
+*** Hydra org
+ #+BEGIN_SRC emacs-lisp
+   (defhydra hydra-org (:color blue)
+     (concat nc--f-key-settings
+     "
+     ^^Go to                          ^^Inserting                      ^^Crypto
+     ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
+     _p_rojects                       _t_ime slot                      _g_enerate password
+     _R_esources directory            _d_aily plan                     ^^
+     _P_ersonal directory             _D_aily review                   ^^
+     ^^                               ^^                               ^^
+     ^^Filter                         ^^Export                         ^^MISC
+     ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
+     ^^                               ^^                               ^^
+     _2_ org-tags-view  (C-c a m)     ^^                               ^^
+     ^^                               ^^                               ^^
+     _f_ocus agenda (prio A; sched .) ^^                               ^^
+     _F_ocus disabled for agenda      ^^                               ^^
+     ")
+
+     ("f" (lambda ()
+             (interactive)
+             (org-agenda-filter-apply '("+.*\\[#A\\].*") 'regexp)
+     ) nil)
+     ("F" (lambda ()
+             (interactive)
+             (org-agenda-filter-show-all-re)
+     ) nil)
+
+     ("p" nc/go-to-projects nil)
+     ("R" nc/go-to-resources-dir nil)
+
+     ("P" (lambda ()
+             (interactive)
+             (dired nc/org-default-personal-dir)
+     ) nil)
+
+
+     ("t" nc/insert-time-slot nil)
+     ("d" nc/journal-file-insert nil)
+     ("D" nc/daily-review nil)
+
+     ;;("T" my-sparse-tree-with-tag-filter nil)
+     ("2" org-tags-view nil)
+     ("3" org-tags-sparse-tree nil)
+
+     ("g" nc/generate-password nil)
+     ("q" nil "quit")
+
+   )
+
+ #+END_SRC
+*** Hydra org-table
+Helper for org tables
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-org-table (:color pink :hint nil)
+    "
+  org table helper
+  _R_ insert row
+  _r_ recalculate     _w_ wrap region      _c_ toggle coordinates
+  _i_ iterate table   _t_ transpose        _D_ toggle debugger
+  _B_ iterate buffer  _E_ export table     _d_ edit field
+  _e_ eval formula    _s_ sort lines
+  _q_ quit
+  "
+    ("E" org-table-export :color blue)
+    ("R" org-table-insert-row :color blue)
+    ("s" org-table-sort-lines)
+    ("d" org-table-edit-field)
+    ("e" org-table-eval-formula)
+    ("r" org-table-recalculate)
+    ("i" org-table-iterate)
+    ("B" org-table-iterate-buffer-tables)
+    ("w" org-table-wrap-region)
+    ("D" org-table-toggle-formula-debugger)
+    ("t" org-table-transpose-table-at-point)
+    ("c" org-table-toggle-coordinate-overlays :color blue)
+    ("q" nil :color blue))
+#+END_SRC
+*** Hydra org-babel
+#+BEGIN_SRC emacs-lisp :dir blah :results output
+(defhydra hydra-org-babel (:color pink :hint nil)
+  "
+org babel src block helper functions
+_n_ next       _i_ info           _I_ insert header
+_p_ prev       _c_ check
+_h_ goto head  _E_ expand
+^ ^            _s_ split
+_q_ quit       _r_ remove result  _e_ examplify region
+"
+  ("i" org-babel-view-src-block-info)
+  ("I" org-babel-insert-header-arg)
+  ("c" org-babel-check-src-block :color blue)
+  ("s" org-babel-demarcate-block :color blue)
+  ("n" org-babel-next-src-block)
+  ("p" org-babel-previous-src-block)
+  ("E" org-babel-expand-src-block :color blue)
+  ("e" org-babel-examplify-region :color blue)
+  ("r" org-babel-remove-result :color blue)
+  ("h" org-babel-goto-src-block-head)
+("q" nil :color blue))
+#+END_SRC
+*** Hydra dired
+
+ #+BEGIN_SRC emacs-lisp
+ (defhydra hydra-dired (:hint nil :color red)
+   "
+ _+_: mkdir            _v_: view           _m_: mark                _(_: details        _i_: insert-subdir     _W_: wdired
+ _C_: Copy             _O_: view other     _U_: unmark all          _)_: omit-mode      _$_: hide-subdir       C-x C-q : edit
+ _D_: delete           _o_: open other     _u_: unmark              _l_: redisplay      _w_: kill-subdir       C-c C-c : commit
+ _R_: rename           _M_: chmod          _t_: toggle              _g_: revert buf     _e_: ediff             C-c ESC : abort
+ _Y_: rel symlink      _G_: chgrp          _E_: Extension mark      _s_: sort           _=_: pdiff
+ _S_: symlink          ^ ^                 _F_: find marked         _._: toggle hydra    \\:  flyspell
+ _r_: sync             ^ ^                 ^ ^                      ^ ^                 _?_: summary
+ _z_: compress-file    _A_: find regexp
+ _Z_: compress         _Q_: repl regexp
+
+ T - tag prefix
+ "
+   ("\\" dired-do-ispell)
+   ("(" dired-hide-details-mode)
+   (")" dired-omit-mode)
+   ("+" dired-create-directory)
+   ("=" diredp-ediff)         ;; smart diff
+   ("?" dired-summary)
+   ("$" diredp-hide-subdir-nomove)
+   ("A" dired-do-find-regexp)
+   ("C" dired-do-copy)        ;; Copy all marked files
+   ("D" dired-do-delete)
+   ("E" dired-mark-extension)
+   ("e" dired-ediff-files)
+   ("F" dired-do-find-marked-files)
+   ("G" dired-do-chgrp)
+   ("g" revert-buffer)        ;; read all directories again (refresh)
+   ("i" dired-maybe-insert-subdir)
+   ("l" dired-do-redisplay)   ;; relist the marked or singel directory
+   ("M" dired-do-chmod)
+   ("m" dired-mark)
+   ("O" dired-display-file)
+   ("o" dired-find-file-other-window)
+   ("Q" dired-do-find-regexp-and-replace)
+   ("R" dired-do-rename)
+   ("r" dired-do-rsynch)
+   ("S" dired-do-symlink)
+   ("s" dired-sort-toggle-or-edit)
+   ("t" dired-toggle-marks)
+   ("U" dired-unmark-all-marks)
+   ("u" dired-unmark)
+   ("v" dired-view-file)      ;; q to exit, s to search, = gets line #
+   ("w" dired-kill-subdir)
+   ("W" wdired-change-to-wdired-mode)
+   ("Y" dired-do-relsymlink)
+   ("z" diredp-compress-this-file)
+   ("Z" dired-do-compress)
+   ("q" nil)
+   ("." nil :color blue))
+ #+END_SRC
+
+
 * Programming
 ** asciidoc
 
@@ -2205,6 +2331,11 @@ Sometimes I need an Ansi Term...
     :mode "\\.adoc?\\'")
 #+END_SRC
 
+** Docker
+#+begin_src emacs-lisp
+  (use-package dockerfile-mode
+    :mode "Dockerfile.*\\'")
+#+end_src
 ** Go
 Go mode needs some go tools
 *** Go Imports
