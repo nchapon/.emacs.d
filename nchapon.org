@@ -1253,6 +1253,7 @@ will appear as projects.
    (defconst nc/org-default-resources-dir (concat org-directory "resources"))
    (defconst nc/org-default-personal-dir (concat org-directory "personal"))
    (defconst nc/org-default-completed-dir (concat org-directory "projects/_completed"))
+   (defconst nc/org-journal-dir (concat org-directory "journal"))
    (defconst nc/inbox-file (concat org-directory "inbox.org"))
    (defconst nc/org-default-inbox-file (concat org-directory "inbox.org"))
    (defconst nc/watching-file (concat org-directory "personal/watching.org"))
@@ -1262,25 +1263,13 @@ will appear as projects.
    (defconst nc/calendar-file (concat org-directory "personal/calendar.org"))
    (defconst nc/weekly-review-file (concat org-directory "personal/reviews/weekly-review.org"))
  #+end_src
-*** Org Journal
-**** Configuration
- #+BEGIN_SRC emacs-lisp
- (use-package org-journal
-          :ensure t
-           :init
-           (setq org-journal-dir "~/notes/journal/")
-           (setq org-journal-date-format "%e %b %Y (%A)")
-           (setq org-journal-time-format "")
-           (setq org-journal-file-format "%Y-%m-%d.org"))
- #+END_SRC
-
+*** Journal
 **** Function to easily load today
-
  #+BEGIN_SRC emacs-lisp
    (defun nc--get-journal-file-today ()
      "Return filename for today's journal entry."
      (let ((daily-name (format-time-string "%Y-%m-%d.org")))
-       (expand-file-name (concat org-journal-dir daily-name))))
+       (expand-file-name (concat nc/org-journal-dir "/" daily-name))))
 
    (defun nc/journal-file-today ()
      "Create and load a journal file based on today's date."
@@ -1296,7 +1285,7 @@ will appear as projects.
     "Return filename for yesterday's journal entry."
     (let* ((yesterday (time-subtract (current-time) (days-to-time 1)))
            (daily-name (format-time-string "%Y-%m-%d.org" yesterday)))
-      (expand-file-name (concat org-journal-dir daily-name))))
+      (expand-file-name (concat nc/org-journal-dir "/" daily-name))))
 
   (defun nc/journal-file-yesterday ()
     "Creates and load a file based on yesterday's date."
