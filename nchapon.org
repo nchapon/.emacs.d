@@ -1306,7 +1306,7 @@ will appear as projects.
               (day   (string-to-number (substring (buffer-name) 8 10)))
               (datim (encode-time 0 0 0 day month year)))
 
-         (insert (format-time-string (concat "#+TITLE:" org-journal-date-format) datim))
+         (insert (format-time-string (concat "#+TITLE:" "%A %d %B %Y") datim))
          (insert "\n")
 
          ;; Note: The `insert-file-contents' leaves the cursor at the
