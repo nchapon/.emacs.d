@@ -2233,26 +2233,27 @@ Helper for org tables
 #+END_SRC
 *** Hydra org-babel
 #+BEGIN_SRC emacs-lisp :dir blah :results output
-(defhydra hydra-org-babel (:color pink :hint nil)
+  (defhydra hydra-org-babel (:color pink :hint nil)
+    "
+  org babel src block helper functions
+  _n_ next       _i_ info           _I_ insert header
+  _p_ prev       _c_ check
+  _h_ goto head  _E_ expand
+  _t_ tangle     _s_ split
+  _q_ quit       _r_ remove result  _e_ examplify region
   "
-org babel src block helper functions
-_n_ next       _i_ info           _I_ insert header
-_p_ prev       _c_ check
-_h_ goto head  _E_ expand
-^ ^            _s_ split
-_q_ quit       _r_ remove result  _e_ examplify region
-"
-  ("i" org-babel-view-src-block-info)
-  ("I" org-babel-insert-header-arg)
-  ("c" org-babel-check-src-block :color blue)
-  ("s" org-babel-demarcate-block :color blue)
-  ("n" org-babel-next-src-block)
-  ("p" org-babel-previous-src-block)
-  ("E" org-babel-expand-src-block :color blue)
-  ("e" org-babel-examplify-region :color blue)
-  ("r" org-babel-remove-result :color blue)
-  ("h" org-babel-goto-src-block-head)
-("q" nil :color blue))
+    ("i" org-babel-view-src-block-info)
+    ("I" org-babel-insert-header-arg)
+    ("c" org-babel-check-src-block :color blue)
+    ("s" org-babel-demarcate-block :color blue)
+    ("t" org-babel-tangle :color blue)
+    ("n" org-babel-next-src-block)
+    ("p" org-babel-previous-src-block)
+    ("E" org-babel-expand-src-block :color blue)
+    ("e" org-babel-examplify-region :color blue)
+    ("r" org-babel-remove-result :color blue)
+    ("h" org-babel-goto-src-block-head)
+  ("q" nil :color red))
 #+END_SRC
 *** Hydra dired
 
