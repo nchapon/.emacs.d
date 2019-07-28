@@ -2125,11 +2125,11 @@ current context, it display by default global hydra
   (defhydra hydra-global (:color blue)
     (concat nc--f-key-settings
             "
-      ^^Go to                          ^^Actions                        ^^Other
+      ^^Go To                          ^^Actions                        ^^Other
       ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
-      _j_ournal file today             _d_elete file                    _p_ersonal credentials
-      _i_nit file                      _r_ename file                    ^^
-      _y_esterday file                 _S_ilver Searcher                ^^
+      _j_ournal file today             _d_elete file                    _i_nit file
+      _y_esterday file                 _r_ename file                    _p_ersonal credentials
+      _P_roject dir                    _S_ilver Searcher                ^^
       ^^                               ^^                               ^^
 
       ")
@@ -2137,6 +2137,12 @@ current context, it display by default global hydra
     ("i" nc/find-config nil)
     ("j" nc/journal-file-today nil)
     ("y" nc/journal-file-yesterday nil)
+
+    ("P" (lambda ()
+               (interactive)
+               (dired nc/org-default-projects-dir)
+       ) nil)
+
     ("d" nc/delete-this-file nil)
     ("r" nc/rename-this-file-and-buffer nil)
     ("S" helm-do-ag nil)
