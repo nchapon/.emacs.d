@@ -2119,7 +2119,7 @@ current context, it display by default global hydra
   "))
 #+END_SRC
 
-*** Hydra Global settings -> F2
+*** Hydra Global -> Shift F1
 
 #+BEGIN_SRC emacs-lisp
   (defhydra hydra-global (:color blue)
@@ -2156,7 +2156,7 @@ current context, it display by default global hydra
 
     ("q" nil "quit")
     )
-  (global-set-key (kbd "<f2>") 'hydra-global/body)
+  (define-key global-map [(shift f1)] 'hydra-global/body)
 #+END_SRC
 *** Hydra org
  #+BEGIN_SRC emacs-lisp
@@ -2206,6 +2206,7 @@ current context, it display by default global hydra
 
      ("g" nc/generate-password nil)
      ("q" nil "quit")
+     ("<f1>" hydra-global/body "Global")
 
    )
 
