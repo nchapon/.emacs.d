@@ -2,12 +2,12 @@
 # name: babel-shell
 # key: babel-sh
 # --
-* Technical Section
+* Shell Script
+:PROPERTIES:
+:header-args: :tangle ${1:~/bin/`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`}
+:header-args+: :comments org :mkdirp yes
+:header-args+: :shebang "# -*- mode: sh -*-"
+:header-args+: :tangle-mode (identity #o644)
+:END:
 
-  This file originally came from an [[http://orgmode.org][org-mode]] file.
   Create the script by tangling it with: =C-c C-v t=
-
-#+PROPERTY: tangle ${1:~/bin/`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`}
-#+PROPERTY: comments org
-#+PROPERTY: shebang #!/usr/bin/env ${2:sh}
-#+DESCRIPTION: $0
