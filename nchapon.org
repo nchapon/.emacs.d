@@ -2125,16 +2125,18 @@ current context, it display by default global hydra
   (defhydra hydra-global (:color blue)
     (concat nc--f-key-settings
             "
-      ^^Go To                          ^^Actions                        ^^Other
+      ^^Go To Files                    ^^Go To Dirs                        ^^Actions
       ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
-      _j_ournal file today             _d_elete file                    _i_nit file
-      _y_esterday file                 _r_ename file                    _p_ersonal credentials
-      _P_roject dir                    _S_ilver Searcher                ^^
+      _e_macs init file               _P_rojects Dir                   _d_elete file
+      _j_ournal file today             _R_esources Dir                  _r_ename file
+      _p_ersonal credentials           _S_ources Dir                    _s_ilver searcher
+      _y_esterday file                 _X_ PIM
+      ^^                               ^^                               ^^
       ^^                               ^^                               ^^
 
       ")
 
-    ("i" nc/find-config nil)
+    ("e" nc/find-config nil)
     ("j" nc/journal-file-today nil)
     ("y" nc/journal-file-yesterday nil)
 
@@ -2143,9 +2145,24 @@ current context, it display by default global hydra
                (dired nc/org-default-projects-dir)
        ) nil)
 
+    ("R" (lambda ()
+               (interactive)
+               (dired nc/org-default-resources-dir)
+       ) nil)
+
+    ("S" (lambda ()
+               (interactive)
+               (dired nc/org-default-resources-dir)
+       ) nil)
+
+    ("X" (lambda ()
+               (interactive)
+               (dired nc/org-default-resources-dir)
+       ) nil)
+
     ("d" nc/delete-this-file nil)
     ("r" nc/rename-this-file-and-buffer nil)
-    ("S" helm-do-ag nil)
+    ("s" helm-do-ag nil)
 
     ("p" (lambda ()
            (interactive)
