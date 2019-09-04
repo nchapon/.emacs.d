@@ -2122,57 +2122,40 @@ current context, it display by default global hydra
 *** Hydra Global -> Shift F1
 
 #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-global (:color blue)
-    (concat nc--f-key-settings
-            "
-      ^^Go To Files                    ^^Go To Dirs                        ^^Actions
-      ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
-      _e_macs init file               _P_rojects Dir                   _d_elete file
-      _j_ournal file today             _R_esources Dir                  _r_ename file
-      _p_ersonal credentials           _S_ources Dir                    _s_ilver searcher
-      _y_esterday file                 _X_ PIM
-      ^^                               ^^                               ^^
-      ^^                               ^^                               ^^
+  (defhydra hydra-global
+    (:color red :hint nil)
 
-      ")
-
-    ("e" nc/find-config nil)
-    ("j" nc/journal-file-today nil)
-    ("y" nc/journal-file-yesterday nil)
-
-    ("P" (lambda ()
-               (interactive)
-               (dired nc/org-default-projects-dir)
-       ) nil)
-
-    ("R" (lambda ()
-               (interactive)
-               (dired nc/org-default-resources-dir)
-       ) nil)
-
-    ("S" (lambda ()
-               (interactive)
-               (dired nc/org-default-resources-dir)
-       ) nil)
-
-    ("X" (lambda ()
-               (interactive)
-               (dired nc/org-default-resources-dir)
-       ) nil)
-
-    ("d" nc/delete-this-file nil)
-    ("r" nc/rename-this-file-and-buffer nil)
-    ("s" helm-do-ag nil)
-
+    ("e" nc/find-config "emacs" :color blue :column "FILES")
+    ("j" nc/journal-file-today "journal file today")
+    ("y" nc/journal-file-yesterday "yesterday file")
     ("p" (lambda ()
            (interactive)
            (super-save-mode nil)
            (find-file (concat nc/org-default-personal-dir "/password.gpg")
-                      )) nil)
+                      )) "personal credentials")
+    ("P" (lambda ()
+               (interactive)
+               (dired nc/org-default-projects-dir)
+       ) "Projects" :color blue :column "DIRECTORIES")
+    ("R" (lambda ()
+               (interactive)
+               (dired nc/org-default-resources-dir)
+       ) "Resources")
+    ("D" (lambda ()
+               (interactive)
+               (dired nc/org-default-resources-dir)
+       ) "Dev")
+    ("X" (lambda ()
+               (interactive)
+               (dired nc/org-default-resources-dir)
+               ) "PIM")
+    ;; Actions
+    ("d" nc/delete-this-file "delete file" :color blue :column "ACTIONS")
+    ("r" nc/rename-this-file-and-buffer "rename file")
+    ("s" helm-do-ag "search (ag)")
+    ;; Quit
+    ("q" nil "quit" :color blue :column nil))
 
-
-    ("q" nil "quit")
-    )
   (define-key global-map [(shift f1)] 'hydra-global/body)
 #+END_SRC
 *** Hydra org
