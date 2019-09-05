@@ -2112,9 +2112,9 @@ current context, it display by default global hydra
 (setq nc--f-key-settings (concat
 
   (propertize
-  "    F1      F2             F3   F4  ┃  F5             F6     F7       F8    ┃  F9                    F10      F11            F12
+  "    F1      S-F1           F3   F4  ┃  F5      F6     F7       F8    ┃  F9                  F10      F11     F12
   "                                                                                                            'face '(:foreground "green"))
-  "    Hydra   Hydra Global    ★       ┃  revert-buffer  Magit  Yankpad  Deft  ┃  Interruption task     Menu     Clock   Agenda
+  "    ^^Hydra  Hydra Global    ★      ┃  Revert  Magit  Yankpad  Deft  ┃  Interruption task   Menu     Clock   Agenda
 
   "))
 #+END_SRC
@@ -2123,9 +2123,15 @@ current context, it display by default global hydra
 
 #+BEGIN_SRC emacs-lisp
   (defhydra hydra-global
-    (:color red :hint nil)
+    (:color pink :hint nil)
 
-    ("e" nc/find-config "emacs" :color blue :column "FILES")
+    (concat nc--f-key-settings
+    "
+    Global Hydra
+    ")
+
+    ("e" nc/find-config "emacs" :color blue :column "Go To")
+    ("I" nc/inbox-file "inbox tasks file")
     ("j" nc/journal-file-today "journal file today")
     ("y" nc/journal-file-yesterday "yesterday file")
     ("p" (lambda ()
@@ -2136,85 +2142,69 @@ current context, it display by default global hydra
     ("P" (lambda ()
                (interactive)
                (dired nc/org-default-projects-dir)
-       ) "Projects" :color blue :column "DIRECTORIES")
+       ) "Projects" :color blue :column "Directories")
     ("R" (lambda ()
                (interactive)
                (dired nc/org-default-resources-dir)
        ) "Resources")
-    ("D" (lambda ()
-               (interactive)
-               (dired nc/org-default-resources-dir)
-       ) "Dev")
+
     ("X" (lambda ()
                (interactive)
-               (dired nc/org-default-resources-dir)
+               (dired "~/_PIM")
                ) "PIM")
+    ;; Insert
+    ("ip" nc/generate-password "password"  :column "Inserting")
+    ("iD" nc/insert-datestamp "datestamp")
+    ("id" nc/insert-datestamp-inactive "date stamp inactive")
     ;; Actions
-    ("d" nc/delete-this-file "delete file" :color blue :column "ACTIONS")
+    ("d" nc/delete-this-file "delete file"  :column "ACTIONS")
     ("r" nc/rename-this-file-and-buffer "rename file")
     ("s" helm-do-ag "search (ag)")
+
     ;; Quit
-    ("q" nil "quit" :color blue :column nil))
+    ("q" nil "quit" :column nil :color red))
 
   (define-key global-map [(shift f1)] 'hydra-global/body)
 #+END_SRC
 *** Hydra org
  #+BEGIN_SRC emacs-lisp
-   (defhydra hydra-org (:color blue)
-     (concat nc--f-key-settings
-     "
-     ^^Go to                          ^^Inserting                      ^^Crypto
-     ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
-     _p_rojects                       _t_ime slot                      _g_enerate password
-     _R_esources directory            _d_aily plan                     ^^
-     _P_ersonal directory             _D_aily review                   ^^
-     ^^                               ^^                               ^^
-     ^^Filter                         ^^Export                         ^^MISC
-     ^────────^───────────────────────^──────^─────────────────────────^─────────^───────────────
-     ^^                               ^^                               ^^
-     _2_ org-tags-view  (C-c a m)     ^^                               ^^
-     ^^                               ^^                               ^^
-     _f_ocus agenda (prio A; sched .) ^^                               ^^
-     _F_ocus disabled for agenda      ^^                               ^^
-     ")
+   (defhydra hydra-org
+     (:color pink :hint nil)
 
-     ("f" (lambda ()
-             (interactive)
-             (org-agenda-filter-apply '("+.*\\[#A\\].*") 'regexp)
-     ) nil)
-     ("F" (lambda ()
-             (interactive)
-             (org-agenda-filter-show-all-re)
-     ) nil)
-
-     ("p" nc/go-to-projects nil)
-     ("R" nc/go-to-resources-dir nil)
+     ("I" nc/inbox-file "inbox tasks file" :color blue :column "Org Files")
+     ("j" nc/journal-file-today "journal file today")
+     ("y" nc/journal-file-yesterday "yesterday file")
+     ("p" nc/go-to-projects "projects")
 
      ("P" (lambda ()
-             (interactive)
-             (dired nc/org-default-personal-dir)
-     ) nil)
+            (interactive)
+            (dired nc/org-default-projects-dir)
+            ) "Projects" :color blue :column "Directories")
+     ("R" nc/go-to-resources-dir "Resource")
+     ("P" (lambda ()
+            (interactive)
+            (dired nc/org-default-personal-dir)
+            ) "Personal")
+    ("X" (lambda ()
+               (interactive)
+               (dired "~/_PIM")
+               ) "PIM")
 
-
-     ("t" nc/insert-time-slot nil)
+     ("t" nc/insert-time-slot "time slot" :column "Inserting")
      ("d" nc/journal-file-insert nil)
      ("D" nc/daily-review nil)
+     ("iD" nc/insert-datestamp "datestamp")
+     ("id" nc/insert-datestamp-inactive "date stamp inactive")
 
-     ;;("T" my-sparse-tree-with-tag-filter nil)
-     ("2" org-tags-view nil)
-     ("3" org-tags-sparse-tree nil)
+     ("2" org-tags-view "org-tags-view" :column "Actions")
+     ("3" org-tags-sparse-tree "org-tags-sparse-tree")
 
-     ("g" nc/generate-password nil)
-     ("q" nil "quit")
-     ("<f1>" hydra-global/body "Global")
-
-   )
-
+     ("q" nil "quit" :column nil :color red))
  #+END_SRC
 *** Hydra org-table
 Helper for org tables
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-org-table (:color pink :hint nil)
+(defhydra hydra-org-table (:color pink :hint nil :columns 3)
     "
   org table helper
   _R_ insert row
