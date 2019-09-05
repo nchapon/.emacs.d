@@ -2112,11 +2112,9 @@ current context, it display by default global hydra
 (setq nc--f-key-settings (concat
 
   (propertize
-  "    F1      S-F1           F3   F4  ┃  F5      F6     F7       F8    ┃  F9                  F10      F11     F12
-  "                                                                                                            'face '(:foreground "green"))
-  "    ^^Hydra  Hydra Global    ★      ┃  Revert  Magit  Yankpad  Deft  ┃  Interruption task   Menu     Clock   Agenda
-
-  "))
+  "  F1      S-F1           F3   F4  ┃  F5      F6     F7       F8    ┃  F9                  F10      F11     F12
+  " 'face '(:foreground "green"))
+  "^^^^^^Hydra   Hydra Global            ┃  Revert  Magit  Yankpad  Deft  ┃  Interruption task   Menu     Clock   Agenda"))
 #+END_SRC
 
 *** Hydra Global -> Shift F1
@@ -2126,9 +2124,10 @@ current context, it display by default global hydra
     (:color pink :hint nil)
 
     (concat nc--f-key-settings
-    "
-    Global Hydra
-    ")
+    (propertize "
+
+  ---- Global Helper ----
+    " 'face '(:foreground "teal")))
 
     ("e" nc/find-config "emacs" :color blue :column "Go To")
     ("I" nc/inbox-file "inbox tasks file")
