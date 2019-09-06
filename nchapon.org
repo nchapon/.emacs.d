@@ -2112,9 +2112,12 @@ current context, it display by default global hydra
 (setq nc--f-key-settings (concat
 
   (propertize
-  "  F1      S-F1           F3   F4  ┃  F5      F6     F7       F8    ┃  F9                  F10      F11     F12
-  " 'face '(:foreground "green"))
-  "^^^^^^Hydra   Hydra Global            ┃  Revert  Magit  Yankpad  Deft  ┃  Interruption task   Menu     Clock   Agenda"))
+  "F1      S-F1           | F5      F6     F7       | F8    F9                  F10      F11     F12
+"
+'face '(:foreground "teal"))
+  "Hydra   Hydra Global   | Revert  Magit  Yankpad  | Deft  Interruption task   Menu     Clock   Agenda
+"
+  "----------------------------------------------------------------------------------------------------"))
 #+END_SRC
 
 *** Hydra Global -> Shift F1
@@ -2124,10 +2127,11 @@ current context, it display by default global hydra
     (:color pink :hint nil)
 
     (concat nc--f-key-settings
-    (propertize "
+"
 
-  ---- Global Helper ----
-    " 'face '(:foreground "teal")))
+Global Helper
+
+")
 
     ("e" nc/find-config "emacs" :color blue :column "Go To")
     ("I" nc/inbox-file "inbox tasks file")
@@ -2170,6 +2174,13 @@ current context, it display by default global hydra
    (defhydra hydra-org
      (:color pink :hint nil)
 
+(concat nc--f-key-settings
+"
+
+Org Mode Helper
+
+")
+
      ("I" nc/inbox-file "inbox tasks file" :color blue :column "Org Files")
      ("j" nc/journal-file-today "journal file today")
      ("y" nc/journal-file-yesterday "yesterday file")
@@ -2190,121 +2201,128 @@ current context, it display by default global hydra
                ) "PIM")
 
      ("t" nc/insert-time-slot "time slot" :column "Inserting")
-     ("d" nc/journal-file-insert nil)
-     ("D" nc/daily-review nil)
+     ("d" nc/journal-file-insert "daily template")
+     ("D" nc/daily-review "daily review")
      ("iD" nc/insert-datestamp "datestamp")
      ("id" nc/insert-datestamp-inactive "date stamp inactive")
 
      ("2" org-tags-view "org-tags-view" :column "Actions")
      ("3" org-tags-sparse-tree "org-tags-sparse-tree")
 
-     ("q" nil "quit" :column nil :color red))
+     ("q" nil "quit" :column nil))
  #+END_SRC
 *** Hydra org-table
 Helper for org tables
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-org-table (:color pink :hint nil :columns 3)
+  (defhydra hydra-org-table
+    (:color pink :hint nil)
+
+    (concat nc--f-key-settings
     "
-  org table helper
-  _R_ insert row
-  _r_ recalculate     _w_ wrap region      _c_ toggle coordinates
-  _i_ iterate table   _t_ transpose        _D_ toggle debugger
-  _B_ iterate buffer  _E_ export table     _d_ edit field
-  _e_ eval formula    _s_ sort lines
-  _q_ quit
-  "
-    ("E" org-table-export :color blue)
-    ("R" org-table-insert-row :color blue)
-    ("s" org-table-sort-lines)
-    ("d" org-table-edit-field)
-    ("e" org-table-eval-formula)
-    ("r" org-table-recalculate)
-    ("i" org-table-iterate)
-    ("B" org-table-iterate-buffer-tables)
-    ("w" org-table-wrap-region)
-    ("D" org-table-toggle-formula-debugger)
-    ("t" org-table-transpose-table-at-point)
-    ("c" org-table-toggle-coordinate-overlays :color blue)
-    ("q" nil :color blue))
+
+  Org Table Functions Helper
+
+    ")
+
+      ("d" org-table-edit-field "edit field" :column "Edit")
+      ("." org-table-edit-special "edit special (C-c ')" :column "Edit")
+      ("R" org-table-insert-row "insert row" :color blue)
+      ("E" org-table-export "export table" :color blue)
+      ("t" org-table-transpose-table-at-point "transpose (remove header)")
+      ("w" org-table-wrap-region "wrap region")
+      ("e" org-table-eval-formula "eval formula" :column "Compute")
+      ("r" org-table-recalculate "table calculate" )
+      ("i" org-table-iterate "iterate")
+      ("B" org-table-iterate-buffer-tables "iterate buffer tables")
+      ("s" org-table-sort-lines "sorts" :column "Actions")
+      ("D" org-table-toggle-formula-debugger "toggle debugger")
+      ("c" org-table-toggle-coordinate-overlays "toggle coordinate" :color blue)
+      ("q" nil "quit" :column nil))
 #+END_SRC
 *** Hydra org-babel
-#+BEGIN_SRC emacs-lisp :dir blah :results output
-  (defhydra hydra-org-babel (:color pink :hint nil)
-    "
-  org babel src block helper functions
-  _n_ next       _i_ info           _I_ insert header
-  _p_ prev       _c_ check
-  _h_ goto head  _E_ expand
-  _t_ tangle     _s_ split
-  _q_ quit       _r_ remove result  _e_ examplify region
-  "
-    ("i" org-babel-view-src-block-info)
-    ("I" org-babel-insert-header-arg)
-    ("c" org-babel-check-src-block :color blue)
-    ("s" org-babel-demarcate-block :color blue)
-    ("t" org-babel-tangle :color blue)
-    ("n" org-babel-next-src-block)
-    ("p" org-babel-previous-src-block)
-    ("E" org-babel-expand-src-block :color blue)
-    ("e" org-babel-examplify-region :color blue)
-    ("r" org-babel-remove-result :color blue)
-    ("h" org-babel-goto-src-block-head)
-  ("q" nil :color red))
+#+BEGIN_SRC emacs-lisp
+  (defhydra hydra-org-babel
+    (:color pink :hint nil)
+
+    (concat nc--f-key-settings
+      "
+
+Org Babel Functions Helper
+
+      ")
+
+    ("h" org-babel-goto-src-block-head "head" :column "Go To")
+    ("n" org-babel-next-src-block "next")
+    ("p" org-babel-previous-src-block "previous")
+    ("I" org-babel-insert-header-arg "insert header" :column "Editing")
+    ("s" org-babel-demarcate-block "split" :color blue)
+    ("E" org-babel-expand-src-block "expand" :color blue)
+    ("i" org-babel-view-src-block-info "info")
+    ("t" org-babel-tangle "tangle" :color blue :column "Actions")
+    ("c" org-babel-check-src-block "check" :color blue)
+    ("e" org-babel-examplify-region "examplify region" :color blue)
+    ("r" org-babel-remove-result "remove result" :color blue)
+    ("q" nil "quit" :color red :column nil))
 #+END_SRC
 *** Hydra dired
 
  #+BEGIN_SRC emacs-lisp
- (defhydra hydra-dired (:hint nil :color red)
-   "
- _+_: mkdir            _v_: view           _m_: mark                _(_: details        _i_: insert-subdir     _W_: wdired
- _C_: Copy             _O_: view other     _U_: unmark all          _)_: omit-mode      _$_: hide-subdir       C-x C-q : edit
- _D_: delete           _o_: open other     _u_: unmark              _l_: redisplay      _w_: kill-subdir       C-c C-c : commit
- _R_: rename           _M_: chmod          _t_: toggle              _g_: revert buf     _e_: ediff             C-c ESC : abort
- _Y_: rel symlink      _G_: chgrp          _E_: Extension mark      _s_: sort           _=_: pdiff
- _S_: symlink          ^ ^                 _F_: find marked         _._: toggle hydra    \\:  flyspell
- _r_: sync             ^ ^                 ^ ^                      ^ ^                 _?_: summary
- _z_: compress-file    _A_: find regexp
- _Z_: compress         _Q_: repl regexp
+    (defhydra hydra-dired (:hint nil :color pink)
 
- T - tag prefix
- "
-   ("\\" dired-do-ispell)
-   ("(" dired-hide-details-mode)
-   (")" dired-omit-mode)
-   ("+" dired-create-directory)
-   ("=" diredp-ediff)         ;; smart diff
-   ("?" dired-summary)
-   ("$" diredp-hide-subdir-nomove)
-   ("A" dired-do-find-regexp)
-   ("C" dired-do-copy)        ;; Copy all marked files
-   ("D" dired-do-delete)
-   ("E" dired-mark-extension)
-   ("e" dired-ediff-files)
-   ("F" dired-do-find-marked-files)
-   ("G" dired-do-chgrp)
-   ("g" revert-buffer)        ;; read all directories again (refresh)
-   ("i" dired-maybe-insert-subdir)
-   ("l" dired-do-redisplay)   ;; relist the marked or singel directory
-   ("M" dired-do-chmod)
-   ("m" dired-mark)
-   ("O" dired-display-file)
-   ("o" dired-find-file-other-window)
-   ("Q" dired-do-find-regexp-and-replace)
-   ("R" dired-do-rename)
-   ("r" dired-do-rsynch)
-   ("S" dired-do-symlink)
-   ("s" dired-sort-toggle-or-edit)
-   ("t" dired-toggle-marks)
-   ("U" dired-unmark-all-marks)
-   ("u" dired-unmark)
-   ("v" dired-view-file)      ;; q to exit, s to search, = gets line #
-   ("w" dired-kill-subdir)
-   ("W" wdired-change-to-wdired-mode)
-   ("Y" dired-do-relsymlink)
-   ("z" diredp-compress-this-file)
-   ("Z" dired-do-compress)
-   ("q" nil)
-   ("." nil :color blue))
+   (concat nc--f-key-settings
+         "
+
+   Dired Helper
+
+    _+_: mkdir            _v_: view           _m_: mark                _(_: details        _i_: insert-subdir     _W_: wdired
+    _C_: Copy             _O_: view other     _U_: unmark all          _)_: omit-mode      _$_: hide-subdir       C-x C-q : edit
+    _D_: delete           _o_: open other     _u_: unmark              _l_: redisplay      _w_: kill-subdir       C-c C-c : commit
+    _R_: rename           _M_: chmod          _t_: toggle              _g_: revert buf     _e_: ediff             C-c ESC : abort
+    _Y_: rel symlink      _G_: chgrp          _E_: Extension mark      _s_: sort           _=_: pdiff
+    _S_: symlink          ^ ^                 _F_: find marked         _._: toggle hydra    \\:  flyspell
+    _r_: sync             ^ ^                 ^ ^                      ^ ^                 _?_: summary
+    _z_: compress-file    _A_: find regexp
+    _Z_: compress         _Q_: repl regexp
+
+    T - tag prefix
+    ")
+      ("\\" dired-do-ispell)
+      ("(" dired-hide-details-mode)
+      (")" dired-omit-mode)
+      ("+" dired-create-directory)
+      ("=" diredp-ediff)         ;; smart diff
+      ("?" dired-summary)
+      ("$" diredp-hide-subdir-nomove)
+      ("A" dired-do-find-regexp)
+      ("C" dired-do-copy)        ;; Copy all marked files
+      ("D" dired-do-delete)
+      ("E" dired-mark-extension)
+      ("e" dired-ediff-files)
+      ("F" dired-do-find-marked-files)
+      ("G" dired-do-chgrp)
+      ("g" revert-buffer)        ;; read all directories again (refresh)
+      ("i" dired-maybe-insert-subdir)
+      ("l" dired-do-redisplay)   ;; relist the marked or singel directory
+      ("M" dired-do-chmod)
+      ("m" dired-mark)
+      ("O" dired-display-file)
+      ("o" dired-find-file-other-window)
+      ("Q" dired-do-find-regexp-and-replace)
+      ("R" dired-do-rename)
+      ("r" dired-do-rsynch)
+      ("S" dired-do-symlink)
+      ("s" dired-sort-toggle-or-edit)
+      ("t" dired-toggle-marks)
+      ("U" dired-unmark-all-marks)
+      ("u" dired-unmark)
+      ("v" dired-view-file)      ;; q to exit, s to search, = gets line #
+      ("w" dired-kill-subdir)
+      ("W" wdired-change-to-wdired-mode)
+      ("Y" dired-do-relsymlink)
+      ("z" diredp-compress-this-file)
+      ("Z" dired-do-compress)
+      ("q" nil)
+      ("." nil :color blue))
  #+END_SRC
 
 
