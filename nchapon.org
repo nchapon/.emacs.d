@@ -1351,6 +1351,16 @@ will appear as projects.
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
+  (defun nc/go-to-inbox ()
+    (interactive)
+    (find-file nc/inbox-file )
+    (widen)
+    (beginning-of-buffer)
+    (re-search-forward "* Inbox")
+    (beginning-of-line))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
   (defun nc/go-to-resources-dir ()
     (interactive)
     (dired nc/org-default-resources-dir))
@@ -2134,7 +2144,7 @@ Global Helper
 ")
 
     ("e" nc/find-config "emacs" :color blue :column "Go To")
-    ("I" nc/inbox-file "inbox tasks file")
+    ("I" nc/go-to-inbox "inbox tasks file")
     ("j" nc/journal-file-today "journal file today")
     ("y" nc/journal-file-yesterday "yesterday file")
     ("p" (lambda ()
@@ -2181,7 +2191,7 @@ Org Mode Helper
 
 ")
 
-     ("I" nc/inbox-file "inbox tasks file" :color blue :column "Org Files")
+     ("I" nc/go-to-inbox "inbox tasks file" :color blue :column "Org Files")
      ("j" nc/journal-file-today "journal file today")
      ("y" nc/journal-file-yesterday "yesterday file")
      ("p" nc/go-to-projects "projects")
