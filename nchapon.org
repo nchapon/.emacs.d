@@ -1279,7 +1279,7 @@ contain todo items, and are considered stuck unless they do. The
 =project= tag should not be inheritable, because otherwise its tasks
 will appear as projects.
    #+begin_src emacs-lisp
-     (setq org-tags-exclude-from-inheritance '("project" "crypt")
+     (setq org-tags-exclude-from-inheritance '("project")
            org-stuck-projects '("+project/-DONE"
                                 ("TODO" "NEXT") ()))
    #+end_src
@@ -1822,7 +1822,8 @@ I have my own template for creating new projects
   (require 'org-crypt)
   (org-crypt-use-before-save-magic)
 
-  ;; (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+  (add-to-list 'org-tags-exclude-from-inheritance "crypt")
+
   ;; GPG key to use for encryption
   ;; Either the Key ID or set to nil to use symmetric encryption.
   (setq org-crypt-key nil)
