@@ -1090,7 +1090,7 @@ Hiding leading bullets in headers
                                ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
                                (nil (warn "Cannot find a Sans Serif Font.  Install Open Sans."))))
          (base-font-color     (face-foreground 'default nil 'default))
-         (headline           `(:inherit default :weight light :foreground ,base-font-color)))
+         (headline           `(:inherit default :weight normal :foreground ,base-font-color)))
 
     (custom-theme-set-faces 'user
                             '(org-special-keyword  ((t (:inherit (font-lock-comment-face fixed-pitch)) :foreground "#69ffeb")))
@@ -1112,13 +1112,13 @@ Hiding leading bullets in headers
                             '(org-block-begin-line ((t (:foreground "#69ffeb"))))
                             '(org-verbatim ((t (:foreground "#69ffeb"))))
                             '(org-table ((t (:foreground "#fae196"))))
-                            `(org-checkbox ((t (:foreground "#69ffeb"
+                            `(org-checkbox ((t (:foreground "#ff4c4f"
                                            :box (:line-width 1 :style released-button)))))
                             `(org-date ((t (:foreground "#69ffeb"))))
                             `(org-tag ((t (:foreground "#e6b68d"))))
 
-                            `(org-checkbox-statistics-todo ((t (:foreground "#69ffeb"))))
-                            '(org-list-dt               ((t (:foreground "#69ffeb"))))
+                            `(org-checkbox-statistics-todo ((t (:foreground "#ff4c4f"))))
+                            '(org-list-dt               ((t (:foreground "#ff4c4f"))))
                             '(org-link                  ((t (:foreground "#697dff" :underline t))))))
 #+END_SRC
 *** org-fancy-priorities
@@ -1826,7 +1826,7 @@ I have my own template for creating new projects
 
   ;; GPG key to use for encryption
   ;; Either the Key ID or set to nil to use symmetric encryption.
-  (setq org-crypt-key nil)
+  (setq org-crypt-key "79789A175EC18150")
 #+end_src
 ** ox-pandoc
 Export Org documents via Pandoc
