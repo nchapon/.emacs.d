@@ -1144,15 +1144,15 @@ Set colors for priority faces
                                (?D . (:foreground "green"))))
 #+END_SRC
 
-** Org-clock
+** Org-clock -> <F11>
 *** Function for clocking in
 #+begin_src emacs-lisp
-(defun nc/org-clock-in ()
-  (interactive)
-  (org-clock-in '(4)))
+  (defun nc/org-clock-in ()
+    (interactive)
+    (org-clock-in '(4)))
 
-(global-set-key (kbd "<f11>") #'nc/org-clock-in)
-(global-set-key (kbd "C-<f11>") 'org-clock-out)
+  (global-set-key (kbd "M-<f11>") #'nc/org-clock-in)
+  (global-set-key (kbd "C-<f11>") 'org-clock-out)
 #+end_src
 *** Configuration
 
@@ -1162,7 +1162,7 @@ Too many clock entries clutter up a heading.
   (use-package org
     :bind (("C-c C-x C-i" . nc/org-clock-in)
            ("C-c C-x C-o" . org-clock-out)
-           ("M-<f11>" . org-clock-goto))
+           ("<f11>" . org-clock-goto))
     :config
     (progn
       ;; Insinuate it everywhere
@@ -2195,9 +2195,9 @@ Sometimes I need an Ansi Term...
     (setq yankpad-file "~/notes/templates/yankpad.org")
     :config
     (bind-key "<f7>" 'yankpad-map)
-    ;(bind-key "<f12>" 'yankpad-expand)
+    (bind-key "C-<f7>" 'yankpad-expand)
     ;; If you want to complete snippets using company-mode
-    ;;(add-to-list 'company-backends #'company-yankpad)
+    (add-to-list 'company-backends #'company-yankpad)
     ;; If you want to expand snippets with hippie-expand
     (add-to-list 'hippie-expand-try-functions-list #'yankpad-expand))
 #+END_SRC
@@ -2235,15 +2235,15 @@ current context, it display by default global hydra
 *** Function key settings
 
 #+BEGIN_SRC emacs-lisp
-(setq nc--f-key-settings (concat
+  (setq nc--f-key-settings (concat
 
-  (propertize
-  "F1      S-F1           | F5      F6     F7       | F8    F9                  F10      F11     F12
-"
-'face '(:foreground "teal"))
-  "Hydra   Hydra Global   | Revert  Magit  Yankpad  | Deft  Interruption task   Menu     Clock   Agenda
-"
-  "----------------------------------------------------------------------------------------------------"))
+    (propertize
+    "F1      S-F1            F2        | F5      F6     F7       | F8    F9                  F10      F11     F12
+  "
+  'face '(:foreground "teal"))
+    "Hydra   Hydra Global    Treemacs  | Revert  Magit  Yankpad  | Deft  Interruption task   Menu     Clock   Agenda
+  "
+    "---------------------------------------------------------------------------------------------------------------"))
 #+END_SRC
 
 *** Hydra Global -> Shift F1
