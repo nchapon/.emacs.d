@@ -2661,7 +2661,11 @@ Then we can setup Emacs go mode
                        " "))))
 #+END_SRC
 
-#+RESULTS:
+
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-toc)
+#+END_SRC
+
 ** Rust
 #+BEGIN_SRC emacs-lisp
 (use-package rust-mode                  ; Rust major mode
