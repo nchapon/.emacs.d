@@ -1889,7 +1889,7 @@ Export Org documents via Pandoc
       :ensure t))
 #+end_src
 
-** Magit
+** Magit -> <F6>
 
 #+BEGIN_QUOTE
 Magit a git porcelain inside Emacs !
@@ -2190,14 +2190,13 @@ Sometimes I need an Ansi Term...
 #+BEGIN_SRC emacs-lisp
   (use-package yankpad
     :ensure t
-    :defer 10
     :init
     (setq yankpad-file "~/notes/templates/yankpad.org")
     :config
     (bind-key "<f7>" 'yankpad-map)
-    (bind-key "C-<f7>" 'yankpad-expand)
+    (bind-key "C-<f7>" 'yankpad-insert)
     ;; If you want to complete snippets using company-mode
-    (add-to-list 'company-backends #'company-yankpad)
+    ;; (add-to-list 'company-backends 'company-yankpad)
     ;; If you want to expand snippets with hippie-expand
     (add-to-list 'hippie-expand-try-functions-list #'yankpad-expand))
 #+END_SRC
