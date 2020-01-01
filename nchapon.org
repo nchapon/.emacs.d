@@ -1308,7 +1308,7 @@ will appear as projects.
  #+BEGIN_SRC emacs-lisp
    (defun nc--get-journal-file-today ()
      "Return filename for today's journal entry."
-     (let ((daily-name (format-time-string "%Y-%m-%d.org")))
+     (let ((daily-name (format-time-string "%Y-%m-%d")))
        (expand-file-name (concat nc/org-journal-dir "/" daily-name))))
 
    (defun nc/journal-file-today ()
@@ -1318,13 +1318,20 @@ will appear as projects.
 
    (global-set-key (kbd "C-c f j") 'nc/journal-file-today)
  #+END_SRC
+
+Journal files do not have =.org= extension, add filename pattern to have =org-mode= default.
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '(".*/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]" . org-mode))
+#+END_SRC
+
 **** Yesterday journal file
 
 #+BEGIN_SRC emacs-lisp
   (defun nc--get-journal-file-yesterday ()
     "Return filename for yesterday's journal entry."
     (let* ((yesterday (time-subtract (current-time) (days-to-time 1)))
-           (daily-name (format-time-string "%Y-%m-%d.org" yesterday)))
+           (daily-name (format-time-string "%Y-%m-%d" yesterday)))
       (expand-file-name (concat nc/org-journal-dir "/" daily-name))))
 
   (defun nc/journal-file-yesterday ()
