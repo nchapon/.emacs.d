@@ -1584,6 +1584,13 @@ I have my own template for creating new projects
 **** Agenda configuration
  By default all files in GTD and journal folder will be in my agenda, to be searchable
 
+Setting =org-agenda-file-regexp= to include all numeric files (journal files)
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-file-regexp "\\`[^.].*\\.org'\\|[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$")
+#+END_SRC
+
+
  My custom agends commands are restricted to some files.
  #+BEGIN_SRC emacs-lisp
    (setq org-agenda-files (list "~/notes/inbox.org" "~/notes/personal/calendar.org" "~/notes/journal/" "~/notes/projects/")
