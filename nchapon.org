@@ -1587,13 +1587,12 @@ I have my own template for creating new projects
 Setting =org-agenda-file-regexp= to include all numeric files (journal files)
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-agenda-file-regexp "\\`[^.].*\\.org'\\|[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$")
+  (setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$")
 #+END_SRC
-
 
  My custom agends commands are restricted to some files.
  #+BEGIN_SRC emacs-lisp
-   (setq org-agenda-files (list "~/notes/inbox.org" "~/notes/personal/calendar.org" "~/notes/journal/" "~/notes/projects/")
+   (setq org-agenda-files (list "~/notes/projects/" "~/notes/inbox.org" "~/notes/personal/calendar.org" "~/notes/journal/")
          org-agenda-span 'day
          org-agenda-start-on-weekday nil
          org-agenda-skip-deadline-if-done t
