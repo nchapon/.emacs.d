@@ -1663,7 +1663,7 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
                        ;;             ;;   (org-agenda-skip-all-siblings-but-first)))
                        ;;             (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))
                        ;;             (org-agenda-todo-keyword-format "%-4s")))
-                       (tags-todo "TODO=\"TODO\"-HOLD"
+                       (tags-todo "TODO=\"TODO\"|TODO=\"STARTED\"-@office"
                                   ((org-agenda-overriding-header "Other tasks")
                                    (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 30)")
                                    (org-agenda-skip-function
@@ -1680,7 +1680,7 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
                   ("gr" "Reading" tags-todo "@reading")
                    ;; exports block to this file with C-c a e
                  ;; ..other commands here
-
+               ("p" "Projects" tags "project")
                   ))
      #+END_SRC
 **** Recent open loops
