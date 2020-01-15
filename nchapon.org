@@ -792,6 +792,8 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
      (key-chord-define-global "BB" 'beginning-of-buffer)
      (key-chord-define-global "WW" 'nc/swap-windows)
      (key-chord-define-global "$$" 'end-of-buffer)
+     (key-chord-define-global "--" 'org-ctrl-c-minus)
+     (key-chord-define-global "**" 'org-ctrl-c-star)
      (key-chord-define-global "kk" 'kill-this-buffer))
  #+END_SRC
 *** Globals Keys
@@ -1143,7 +1145,6 @@ Set colors for priority faces
                                (?C . (:foreground "yellow"))
                                (?D . (:foreground "green"))))
 #+END_SRC
-
 ** Org-clock -> <F11>
 *** Function for clocking in
 #+begin_src emacs-lisp
