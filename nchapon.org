@@ -1145,6 +1145,15 @@ Set colors for priority faces
                                (?C . (:foreground "yellow"))
                                (?D . (:foreground "green"))))
 #+END_SRC
+*** Startup Indented
+#+BEGIN_SRC emacs-lisp
+  (setq org-startup-indented t
+        org-pretty-entities t
+        ;; show actually italicized text instead of /italicized text/
+        org-hide-emphasis-markers t
+        org-fontify-quote-and-verse-blocks t)
+#+END_SRC
+
 ** Org-clock -> <F11>
 *** Function for clocking in
 #+begin_src emacs-lisp
