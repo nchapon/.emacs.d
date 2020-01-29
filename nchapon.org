@@ -887,6 +887,22 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
                  'nc/smarter-move-beginning-of-line)
 
  #+END_SRC
+*** Dumb Jump
+#+BEGIN_SRC emacs-lisp
+  (use-package dumb-jump
+    ;; :bind (("M-g o" . dumb-jump-go-other-window)
+    ;;        ("M-g j" . dumb-jump-go)
+    ;;        ("M-g b" . dumb-jump-back)
+    ;;        ("M-g i" . dumb-jump-go-prompt)
+    ;;        ("M-g x" . dumb-jump-go-prefer-external)
+    ;;        ("M-g z" . dumb-jump-go-prefer-external-other-window))
+    :config
+    (setq dumb-jump-selector 'helm
+          dumb-jump-force-searcher 'rg)
+    ;; (setq dumb-jump-selector 'helm)
+    :ensure)
+#+END_SRC
+
 ** Projectile
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
