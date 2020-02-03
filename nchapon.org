@@ -1598,8 +1598,14 @@ I have my own template for creating new projects
  #+BEGIN_SRC emacs-lisp
  (setq org-refile-allow-creating-parent-nodes 'confirm)
  #+END_SRC
-
-**** Searching in my notes
+*** Linking Headings
+Autamatically add =ID= (unique identifier) in heading drawers to keep links unique
+#+BEGIN_SRC emacs-lisp
+(require 'org-id)
+(setq org-id-method 'uuidgen)
+(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+#+END_SRC
+*** Searching in my notes
  #+begin_src emacs-lisp
  (defun nc/helm-do-grep-notes ()
    "Search in all my org notes."
