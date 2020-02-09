@@ -1603,13 +1603,6 @@ Autamatically add =ID= (unique identifier) in heading drawers to keep links uniq
 (setq org-id-method 'uuidgen)
 (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 #+END_SRC
-*** Searching in my notes
- #+begin_src emacs-lisp
- (defun nc/helm-do-grep-notes ()
-   "Search in all my org notes."
-   (interactive)
-   (helm-do-grep-1 (list org-directory) t nil (list "*.org")))
- #+end_src
 *** Agenda
 **** Agenda configuration
  By default all files in GTD and journal folder will be in my agenda, to be searchable
@@ -1775,11 +1768,6 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
  #+END_SRC
 
 ** Publishing my notes
-*** Table Of Contents
- Only 2 levels
-#+begin_src emacs-lisp
-  (setq org-export-with-toc 2)
-#+end_src
 *** Basic Configuration
     - Headings starts with =<h2>= and with no section numbers.
 
@@ -1815,6 +1803,18 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
             )))
  #+END_SRC
 
+*** Table Of Contents
+ Only 2 levels
+#+begin_src emacs-lisp
+  (setq org-export-with-toc 2)
+#+end_src
+** Searching in my notes
+ #+begin_src emacs-lisp
+   (defun nc/helm-do-grep-notes ()
+     "Search in all my org notes."
+     (interactive)
+     (helm-do-grep-1 (list org-directory) t nil (list "*.org" "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]")))
+ #+end_src
 ** Babel
 *** Babel languages
 
