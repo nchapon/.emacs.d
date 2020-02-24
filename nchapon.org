@@ -2031,7 +2031,7 @@ Magit a git porcelain inside Emacs !
                           ("C-d" . nc/eshell-quit-or-delete-char)))))
  #+END_SRC
 
-**** Eshell here
+**** Eshell switcher here
 
  Opens up a new shell in the directory associated with the
  current buffer's file. The eshell is renamed to match that
@@ -2056,7 +2056,30 @@ Magit a git porcelain inside Emacs !
                   (eshell buffer-id)
                   (rename-buffer buffer-id))))))
 
-   (bind-key "C-c e" 'nc/eshell-here)
+
+
+   (defun nc--select-or-create (arg)
+     "Select or create new eshell"
+     (if (string= arg "New Eshell")
+         (nc/eshell-here)
+       (switch-to-buffer arg)))
+
+   (defun nc/eshell-switcher ()
+     "My Eshell"
+     (interactive)
+     (let* (
+            (buffers
+             (cl-remove-if-not (lambda (n) (eq (buffer-local-value 'major-mode n) 'eshell-mode)) (buffer-list)))
+            (num-buffers (length buffers))
+            (names (mapcar (lambda (n) (buffer-name n)) buffers)))
+
+       (cond
+        ( (eq num-buffers 0) (nc/eshell-here) )
+        ( t (nc--select-or-create (completing-read "Select eshell :" (cons "New Eshell" names))))
+        )))
+
+
+   (bind-key "C-c e" 'nc/eshell-switcher)
  #+end_src
 
 **** Enable eshell git prompt
