@@ -1313,14 +1313,14 @@ will appear as projects.
 *** Files and directories
 
  #+begin_src emacs-lisp
-   (defconst nc/org-default-projects-dir (concat org-directory "projects"))
-   (defconst nc/org-default-projects-file (concat org-directory "inbox.org"))
+   (defconst nc/org-default-projects-dir (concat org-directory "gtd"))
+   (defconst nc/org-default-projects-file (concat org-directory "gtd/inbox.org"))
    (defconst nc/org-default-resources-dir (concat org-directory "resources"))
    (defconst nc/org-default-personal-dir (concat org-directory "personal"))
-   (defconst nc/org-default-completed-dir (concat org-directory "projects/_completed"))
+   (defconst nc/org-default-completed-dir (concat org-directory "gtd/_completed"))
    (defconst nc/org-journal-dir (concat org-directory "journal"))
-   (defconst nc/inbox-file (concat org-directory "inbox.org"))
-   (defconst nc/org-default-inbox-file (concat org-directory "inbox.org"))
+   (defconst nc/inbox-file (concat org-directory "gtd/inbox.org"))
+   (defconst nc/org-default-inbox-file (concat org-directory "gtd/inbox.org"))
    (defconst nc/watching-file (concat org-directory "personal/watching.org"))
    (defconst nc/org-default-media-files (concat org-directory "personal/watching.org"))
    (defconst nc/fishing-file (concat org-directory "personal/sports/fishing.org"))
@@ -1466,7 +1466,7 @@ One default notes files by day in *journal/* folder
 
             ("D" "Done Business Task" entry
               (function org-journal-find-location)
-              "* DONE %^{Task}"
+              "* DONE %^{Task} :@office:"
               :clock-in t :clock-resume t)
            ))
  #+end_src
@@ -1569,7 +1569,7 @@ I have my own template for creating new projects
    (setq org-reverse-note-order t)
    (setq org-refile-targets (quote ((nil :maxlevel . 2)
                                     (org-agenda-files :maxlevel . 2)
-                                    (nc/org-default-inbox-file :maxlevel . 3))))
+                                    (nc/inbox-file :maxlevel . 3))))
    (setq org-blank-before-new-entry nil)
  #+end_src
 
@@ -1615,7 +1615,7 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
 
  My custom agends commands are restricted to some files.
  #+BEGIN_SRC emacs-lisp
-   (setq org-agenda-files (list "~/notes/projects/" "~/notes/inbox.org" "~/notes/personal/calendar.org" "~/notes/journal/")
+   (setq org-agenda-files (list "~/notes/gtd/" "~/notes/personal/calendar.org" "~/notes/journal/")
          org-agenda-span 'day
          org-agenda-start-on-weekday nil
          org-agenda-skip-deadline-if-done t
@@ -1691,7 +1691,7 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
                                    (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 30)")
                                    (org-agenda-skip-function
                                     '(org-agenda-skip-entry-if 'scheduled 'deadline))
-                                   (org-agenda-files '("~/notes/inbox.org"))
+                                   (org-agenda-files '("~/notes/gtd/inbox.org"))
                                    (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                        )
                       nil)
