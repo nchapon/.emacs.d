@@ -1388,7 +1388,7 @@ Journal files do not have =.org= extension, add filename pattern to have =org-mo
          (when (equal (file-name-base (buffer-file-name))
                       (format-time-string "%Y-%m-%d"))
 
-           (insert-file-contents "templates/journal-dailies-end.org")
+           ;;(insert-file-contents "templates/journal-dailies-end.org")
 
 
            ;; Insert dailies that only happen once a week:
@@ -1834,6 +1834,8 @@ Documentation :
 
     (delete-blank-lines)
     (goto-char (point-max))
+    (insert "\n")
+    (insert "* " head)
     (insert "\n")
     (insert body))
 
