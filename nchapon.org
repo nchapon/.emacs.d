@@ -1568,8 +1568,8 @@ I have my own template for creating new projects
  #+begin_src emacs-lisp
    (setq org-reverse-note-order t)
    (setq org-refile-targets (quote ((nil :maxlevel . 2)
-                                    (org-agenda-files :maxlevel . 2)
-                                    (nc/inbox-file :maxlevel . 3))))
+                                    (org-agenda-files :maxlevel . 0)
+                                    (nc/inbox-file :maxlevel . 1))))
    (setq org-blank-before-new-entry nil)
  #+end_src
 
