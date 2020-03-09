@@ -1440,35 +1440,35 @@ One default notes files by day in *journal/* folder
 #+END_SRC
 
 *** Capture templates
-
-
  My templates :
 
  #+begin_src emacs-lisp
- (setq org-capture-templates
-         '(("t" "Task" entry (file+headline nc/inbox-file "Inbox" )
-            "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-           ("s" "Someday" entry (file+headline nc/inbox-file "Inbox")
-             "* SOMEDAY %? :IDEA:\n%u" :clock-in t :clock-resume t)
-           ("f" "FishLog" plain (file+datetree+prompt nc/fishing-file)
-            "%[~/notes/templates/fishlog.org]")
-           ("F" "Film" entry (file+headline nc/watching-file "Films à voir")
-                "* NEXT %^{Titre}
-        %i
-        - *Réalisateur:* %^{Auteur}
-        - *Année:* %^{année}
-        - *Genre:* %^{genre}
+   (setq org-capture-templates
+           '(("t" "Task Entry"        entry
+                 (file+headline nc/inbox-file "Inbox")
+                 "* TODO %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\n\nFrom: %a"
+                 :empty-lines 1)
+             ("s" "Someday" entry (file+headline nc/inbox-file "Inbox")
+               "* SOMEDAY %? :IDEA:\n%u" :clock-in t :clock-resume t)
+             ("f" "FishLog" plain (file+datetree+prompt nc/fishing-file)
+              "%[~/notes/templates/fishlog.org]")
+             ("F" "Film" entry (file+headline nc/watching-file "Films à voir")
+                  "* NEXT %^{Titre}
+          %i
+          - *Réalisateur:* %^{Auteur}
+          - *Année:* %^{année}
+          - *Genre:* %^{genre}
 
-       %?
+         %?
 
-       %U" :prepend t)
+         %U" :prepend t)
 
 
-            ("D" "Done Business Task" entry
-              (function org-journal-find-location)
-              "* DONE %^{Task} :@office:"
-              :clock-in t :clock-resume t)
-           ))
+              ("D" "Done Business Task" entry
+                (function org-journal-find-location)
+                "* DONE %^{Task} :@office:"
+                :clock-in t :clock-resume t)
+             ))
  #+end_src
 **** TODO Meeting
  Should be moved in gcal.org
