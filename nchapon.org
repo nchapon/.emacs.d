@@ -34,6 +34,12 @@
       :config (auto-compile-on-load-mode))
 
     (use-package diminish)
+
+    (use-package dash
+      :ensure t)
+
+    (use-package s
+      :ensure t)
   #+END_SRC
 ** No Littering
 #+BEGIN_QUOTE
@@ -1568,15 +1574,15 @@ I have my own template for creating new projects
  #+begin_src emacs-lisp
    ;;(setq org-reverse-note-order t)
 
-   (setq org-refile-targets (append '((nc/org-default-projects-file :level . 1)
-                                      (org-default-notes-file :level . 0)
-                                      (nil :maxlevel . 1))
+   (setq org-refile-targets (append '((org-default-notes-file :level . 0))
                                       (->>
                                        (directory-files nc/org-default-projects-dir nil ".org$")
                                        (-remove-item (file-name-base nc/org-default-projects-file))
                                        (--remove (s-starts-with? "." it))
                                        (--map (format "%s/%s" nc/org-default-projects-dir it))
-                                       (--map (cons it (cons :level 0))))))
+                                       (--map (cons it (cons :level 0))))
+                                      '((nc/org-default-projects-file :level . 1)
+                                        (nil :maxlevel . 1))))
 
    (setq org-blank-before-new-entry nil)
  #+end_src
