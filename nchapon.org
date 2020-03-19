@@ -757,12 +757,12 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
 *** Emacs Config File
 
  #+begin_src emacs-lisp
-   (defun nc/find-config ()
+   (defun nc/emacs-config ()
        "Edit nchapon.org"
        (interactive)
        (find-file "~/.emacs.d/nchapon.org"))
 
-     (global-set-key (kbd "C-c f I") 'nc/find-config)
+     (global-set-key (kbd "C-c f e") 'nc/emacs-config)
  #+end_src
 
 ** Key Bindings
@@ -1329,6 +1329,7 @@ will appear as projects.
    (defconst nc/org-default-inbox-file (concat org-directory "gtd/inbox.org"))
    (defconst nc/watching-file (concat org-directory "personal/watching.org"))
    (defconst nc/org-default-media-files (concat org-directory "personal/watching.org"))
+   (defconst nc/org-default-someday-file (concat org-directory "gtd/someday.org"))
    (defconst nc/fishing-file (concat org-directory "personal/sports/fishing.org"))
    (defconst nc/calendar-file (concat org-directory "personal/calendar.org"))
    (defconst nc/weekly-review-file (concat org-directory "personal/reviews/weekly-review.org"))
@@ -1416,12 +1417,6 @@ Journal files do not have =.org= extension, add filename pattern to have =org-mo
          (bind-key "C-c o i" 'nc/journal-file-insert)
    #+END_SRC
 *** Navigation
-
-#+BEGIN_SRC emacs-lisp
-  (defun nc/projects-overview ()
-    (interactive)
-    (org-agenda "project" "m"))
-#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
   (defun nc/go-to-inbox ()
@@ -2458,7 +2453,7 @@ current context, it display by default global hydra
            (cl-case etype
              (src-block (hydra-org-babel/body))
              ((table-row table-cell) (hydra-org-table/body) )
-             (t (hydra-org/body))))
+             (t (hydra-global/body))))
              )
       ('dired-mode (hydra-dired/body))
       ;;('ibuffer-mode (hydra-ibuffer-main/body))
@@ -2482,96 +2477,66 @@ current context, it display by default global hydra
 #+END_SRC
 
 *** Hydra Global -> Shift F1
-
+My global hydra almost used in all modes
 #+BEGIN_SRC emacs-lisp
   (defhydra hydra-global
-    (:color pink :hint nil)
+      (:color pink :hint nil)
 
-    (concat nc--f-key-settings
-"
+      (concat nc--f-key-settings
+  "
 
-Global Helper
+  Global Helper
 
-")
+  ")
 
-    ("e" nc/find-config "emacs" :color blue :column "Go To")
-    ("I" nc/go-to-inbox "inbox tasks file")
-    ("j" nc/journal-file-today "journal file today")
-    ("y" nc/journal-file-yesterday "yesterday file")
-    ("p" (lambda ()
-           (interactive)
-           (super-save-mode nil)
-           (find-file (concat nc/org-default-personal-dir "/password.gpg")
-                      )) "personal credentials")
-    ("P" (lambda ()
-               (interactive)
-               (dired nc/org-default-projects-dir)
-       ) "Projects" :color blue :column "Directories")
-    ("R" (lambda ()
-               (interactive)
-               (dired nc/org-default-resources-dir)
-       ) "Resources")
+      ("g t" (find-file-other-window org-default-tasks-file) "tasks"  :column "Go To")
+      ("g i" nc/go-to-inbox "inbox")
+      ("g j" nc/journal-file-today "journal file today")
+      ("g y" nc/journal-file-yesterday "yesterday file")
+      ("g c" (lambda ()
+             (interactive)
+             (super-save-mode nil)
+             (find-file (concat nc/org-default-personal-dir "/password.gpg")
+                        )) "personal credentials")
+      ;; Dired
+      ("g X" (lambda ()
+                 (interactive)
+                 (dired nc/org-default-projects-dir)
+         ) "Projects" :column "Dired")
+      ("g R" (lambda ()
+                 (interactive)
+                 (dired nc/org-default-resources-dir)
+                 ) "Resources")
 
-    ("X" (lambda ()
-               (interactive)
-               (dired "~/_PIM")
-               ) "PIM")
-    ;; Insert
-    ("ip" nc/generate-password "password"  :column "Inserting")
-    ("iD" nc/insert-datestamp "datestamp")
-    ("id" nc/insert-datestamp-inactive "date stamp inactive")
-    ;; Actions
-    ("d" nc/delete-this-file "delete file"  :column "ACTIONS")
-    ("r" nc/rename-this-file-and-buffer "rename file")
-    ("s" helm-do-ag "search (ag)")
+      ("g P" (lambda ()
+              (interactive)
+              (dired nc/org-default-personal-dir)
+              ) "Personal")
 
-    ;; Quit
-    ("q" nil "quit" :column nil :color red))
+      ("g H" (lambda ()
+                 (interactive)
+                 (dired "~/_PIM")
+                 ) "PIM")
 
-  (define-key global-map [(shift f1)] 'hydra-global/body)
+      ("g J" (lambda ()
+                 (interactive)
+                 (dired "~/notes/journal")
+                 ) "Journal")
+
+      ;; Insert
+      ("i p" nc/generate-password "password"  :column "Inserting")
+      ("i d" nc/journal-file-insert "daily template")
+      ("i D" nc/daily-review "daily review")
+
+      ("i s" nc/insert-time-slot "time slot" :column "Inserting Date/Time")
+      ("i T" nc/insert-datestamp "datestamp")
+      ("i t" nc/insert-datestamp-inactive "date stamp inactive")
+
+      ("s" (org-save-all-org-buffers) "save org" :column "Actions" :color blue)
+      ("q" nil "quit" :color red))
+
+      (define-key global-map [(shift f1)] 'hydra-global/body)
 #+END_SRC
-*** Hydra org
- #+BEGIN_SRC emacs-lisp
-   (defhydra hydra-org
-     (:color pink :hint nil)
-
-(concat nc--f-key-settings
-"
-
-Org Mode Helper
-
-")
-
-     ("I" nc/go-to-inbox "inbox tasks file" :color blue :column "Org Files")
-     ("j" nc/journal-file-today "journal file today")
-     ("y" nc/journal-file-yesterday "yesterday file")
-     ("p" nc/projects-overview "Projects overview")
-
-     ("P" (lambda ()
-            (interactive)
-            (dired nc/org-default-projects-dir)
-            ) "Projects" :color blue :column "Directories")
-     ("R" nc/go-to-resources-dir "Resource")
-     ("P" (lambda ()
-            (interactive)
-            (dired nc/org-default-personal-dir)
-            ) "Personal")
-    ("X" (lambda ()
-               (interactive)
-               (dired "~/_PIM")
-               ) "PIM")
-
-     ("t" nc/insert-time-slot "time slot" :column "Inserting")
-     ("d" nc/journal-file-insert "daily template")
-     ("D" nc/daily-review "daily review")
-     ("iD" nc/insert-datestamp "datestamp")
-     ("id" nc/insert-datestamp-inactive "date stamp inactive")
-
-     ("2" org-tags-view "org-tags-view" :column "Actions")
-     ("3" org-tags-sparse-tree "org-tags-sparse-tree")
-
-     ("q" nil "quit" :column nil))
- #+END_SRC
 *** Hydra org-table
 Helper for org tables
 #+BEGIN_SRC emacs-lisp
