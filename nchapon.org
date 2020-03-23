@@ -1686,7 +1686,7 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
        (org-agenda-list nil (org-read-date nil nil "-2d") 4)))
  #+END_SRC
 *** Refiling
- Targets include this file and any file contributing to the agenda - up to 2 levels deep
+Targets include this file and any file contributing to the agenda - up to 2 levels deep
  #+begin_src emacs-lisp
    ;;(setq org-reverse-note-order t)
 
@@ -1726,59 +1726,59 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
  #+BEGIN_SRC emacs-lisp
  (setq org-refile-allow-creating-parent-nodes 'confirm)
  #+END_SRC
-
-
-
 *** Refiling Extras
 From GTD Boxes https://gitlab.com/howardabrams/spacemacs.d/-/blob/master/elisp/boxes-extras.el
 Documentation : http://www.howardism.org/Technical/Emacs/getting-more-boxes-done.html
 
 **** Refiling subtree helpers
 #+BEGIN_SRC emacs-lisp
-(defun org-subtree-region ()
-    "Return a list of the start and end of a subtree."
-    (save-excursion
-      (list (progn (org-back-to-heading) (point))
-            (progn (org-end-of-subtree)  (point)))))
+  (defun org-subtree-region ()
+      "Return a list of the start and end of a subtree."
+      (save-excursion
+        (list (progn (org-back-to-heading) (point))
+              (progn (org-end-of-subtree)  (point)))))
 
-  (defun org-refile-directly (file-dest)
-    "Move the current subtree to the end of FILE-DEST.
-  If SHOW-AFTER is non-nil, show the destination window,
-  otherwise, this destination buffer is not shown."
-    (interactive "fDestination: ")
+    (defun org-refile-directly (file-dest)
+      "Move the current subtree to the end of FILE-DEST.
+    If SHOW-AFTER is non-nil, show the destination window,
+    otherwise, this destination buffer is not shown."
+      (interactive "fDestination: ")
 
-    (defun dump-it (file contents)
-      (find-file-other-window file-dest)
-      (goto-char (point-max))
-      (insert "\n" contents))
+      (defun dump-it (file contents)
+        (find-file-other-window file-dest)
+        (goto-char (point-max))
+        (insert "\n" contents))
 
-    (save-excursion
-      (let* ((region (org-subtree-region))
-             (contents (buffer-substring (first region) (second region))))
-        (apply 'kill-region region)
-        (if org-refile-directly-show-after
-            (save-current-buffer (dump-it file-dest contents))
-          (save-window-excursion (dump-it file-dest contents))))))
+      (save-excursion
+        (let* ((region (org-subtree-region))
+               (contents (buffer-substring (first region) (second region))))
+          (apply 'kill-region region)
+          (if org-refile-directly-show-after
+              (save-current-buffer (dump-it file-dest contents))
+            (save-window-excursion (dump-it file-dest contents))))))
 
-  (defvar org-refile-directly-show-after nil
-    "When refiling directly (using the `org-refile-directly'
-  function), show the destination buffer afterwards if this is set
-  to `t', otherwise, just do everything in the background.")
+    (defvar org-refile-directly-show-after nil
+      "When refiling directly (using the `org-refile-directly'
+    function), show the destination buffer afterwards if this is set
+    to `t', otherwise, just do everything in the background.")
 
-  (defun org-refile-to-someday ()
-    "Refile (move) the current Org subtree to `nc/org-default-someday-fire'."
-    (interactive)
-    (org-refile-directly nc/org-default-someday-file))
+    (defun org-refile-to-someday ()
+      "Refile (move) the current Org subtree to `nc/org-default-someday-fire'."
+      (interactive)
+      (org-refile-directly nc/org-default-someday-file))
 
-  (defun org-refile-to-task ()
-    "Refile (move) the current Org subtree to `org-default-tasks-file'."
-    (interactive)
-    (org-refile-directly nc/org-default-tasks-file))
+    (defun org-refile-to-task ()
+      "Refile (move) the current Org subtree to `org-default-tasks-file'."
+      (interactive)
+      (org-refile-directly nc/org-default-tasks-file))
 
-  (defun org-refile-to-personal-notes ()
-    "Refile (move) the current Org subtree to `org-default-notes-file'."
-    (interactive)
-    (org-refile-directly org-default-notes-file))
+    (defun org-refile-to-personal-notes ()
+      "Refile (move) the current Org subtree to `org-default-notes-file'."
+      (interactive)
+      (org-refile-directly org-default-notes-file))
+
+  (bind-key "C-c o r" #'org-refile-directly)
+
 #+END_SRC
 
 **** Refiling a subtree to a new File
@@ -1946,6 +1946,22 @@ Documentation : http://www.howardism.org/Technical/Emacs/getting-more-boxes-done
     "Move the current subtree to a file in the `personal' directory."
     (interactive)
     (org-refile-subtree-to-file nc/org-default-personal-dir))
+#+END_SRC
+*** Rename Header -> <C-c o R>
+
+From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
+
+#+BEGIN_SRC emacs-lisp
+    (defun nc/org-rename-header (label)
+        "Rename the current section's header to LABEL, and moves the
+      point to the end of the line."
+        (interactive (list
+                      (read-string "Header: "
+                                   (substring-no-properties (org-get-heading t t t t)))))
+        (org-back-to-heading)
+        (replace-string (org-get-heading t t t t) label))
+
+  (bind-key "C-c o R" #'nc/org-rename-header)
 #+END_SRC
 ** Speed commands
  From https://orgmode.org/worg/org-hacks.html
@@ -2536,6 +2552,10 @@ My global hydra almost used in all modes
 
   ")
 
+      ("<up>" org-previous-visible-heading "↑ previous" :column "Navigate")
+      ("<down>" org-next-visible-heading "↓ next")
+      ("d" org-cut-subtree "delete")
+
       ("g t" (find-file-other-window nc/org-default-tasks-file) "tasks"  :column "Go To")
       ("g i" nc/go-to-inbox "inbox")
       ("g j" nc/journal-file-today "journal file today")
@@ -2588,9 +2608,8 @@ My global hydra almost used in all modes
       ("m P" org-refile-to-personal-dir "personal dir")
       ("m R" org-refile-to-technical-dir "resources dir")
 
-
-
       ("s" (org-save-all-org-buffers) "save org" :column "Actions" :color blue)
+      ("R" nc/org-rename-header "rename")
       ("q" nil "quit" :color red))
 
       (define-key global-map [(shift f1)] 'hydra-global/body)
