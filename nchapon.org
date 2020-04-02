@@ -356,7 +356,7 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
  #+begin_src emacs-lisp
    (use-package helm-swoop
      :ensure t
-     :bind (("C-c o s" . helm-multi-swoop-org)
+     :bind (("C-c o S" . helm-multi-swoop-org)
             ("C-s"   . nc/swoop-or-search)
             ("C-M-s" . helm-multi-swoop-all))
      :config (progn
@@ -1551,13 +1551,15 @@ I have my own template for creating new projects
  #+END_SRC
 
  #+BEGIN_SRC emacs-lisp
-   (defun nc/daily-review ()
+   (defun nc/insert-daily-review ()
          (interactive)
            (progn
              (org-capture nil "d")
              (org-capture-finalize t)
              (org-narrow-to-subtree)
              (org-clock-in)))
+
+    (bind-key "C-c o D" 'nc/insert-daily-review)
  #+END_SRC
 **** WeeklyReview
  #+BEGIN_SRC emacs-lisp
@@ -1961,7 +1963,10 @@ From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
         (org-back-to-heading)
         (replace-string (org-get-heading t t t t) label))
 
-  (bind-key "C-c o R" #'nc/org-rename-header)
+  (bind-key "C-c o R" 'nc/org-rename-header)
+
+  ;; Useful keybinding
+  (bind-key "C-c o c" 'org-cut-subtree)
 #+END_SRC
 ** Speed commands
  From https://orgmode.org/worg/org-hacks.html
@@ -2055,12 +2060,14 @@ From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
 #+begin_src emacs-lisp
   (setq org-export-with-toc 2)
 #+end_src
-** Searching in my notes
+** Searching in my notes -> C-c o s
  #+begin_src emacs-lisp
    (defun nc/helm-do-grep-notes ()
      "Search in all my org notes."
      (interactive)
      (helm-do-grep-1 (list org-directory) t nil (list "*.org" "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]")))
+
+   (bind-key "C-c o s" 'nc/helm-do-grep-notes)
  #+end_src
 ** Babel
 *** Babel languages
@@ -2494,7 +2501,8 @@ Sometimes I need an Ansi Term...
     ;; If you want to expand snippets with hippie-expand
     (add-to-list 'hippie-expand-try-functions-list #'yankpad-expand))
 #+END_SRC
-** Hydra -> <F1>
+** Hydra -> <C-c h>
+My Hydras are bound by default to =C-c h=
 #+BEGIN_SRC emacs-lisp
   (use-package hydra :ensure t)
 #+END_SRC
@@ -2502,8 +2510,8 @@ Sometimes I need an Ansi Term...
 
 Hydra context laucher inspired from https://dfeich.github.io/www/org-mode/emacs/2018/05/10/context-hydra.html
 
-=F1= will invoke hydra context laucher, if there is no hydra for the
-current context, it display by default global hydra
+=C-c h= will invoke hydra context laucher, if there is no hydra for the
+current context, it display by default org hydra.
 
 #+BEGIN_SRC emacs-lisp
   (defun nc/context-hydra-launcher ()
@@ -2514,15 +2522,15 @@ current context, it display by default global hydra
                 (etype (car elem))
                 (type (org-element-property :type elem)))
            (cl-case etype
-             (src-block (hydra-org-babel/body))
-             ((table-row table-cell) (hydra-org-table/body) )
-             (t (hydra-global/body))))
+             (src-block (nc-hydra-org-babel/body))
+             ((table-row table-cell) (nc-hydra-org-table/body) )
+             (t (nc-hydra-org/body))))
              )
-      ('dired-mode (hydra-dired/body))
+      ('dired-mode (nc-hydra-dired/body))
       ;;('ibuffer-mode (hydra-ibuffer-main/body))
-      (t (hydra-global/body))))
+      (t (nc-hydra-org/body))))
 
-  (global-set-key (kbd "<f1>") 'nc/context-hydra-launcher)
+  (global-set-key (kbd "C-c h") 'nc/context-hydra-launcher)
 #+END_SRC
 
 *** Function key settings
@@ -2531,18 +2539,18 @@ current context, it display by default global hydra
   (setq nc--f-key-settings (concat
 
     (propertize
-    "F1      S-F1            F2        | F5      F6     F7       | F8    F9                  F10      F11     F12
+    "F1      F2        | F5      F6     F7       | F8    F9                  F10      F11     F12
   "
   'face '(:foreground "teal"))
-    "Hydra   Hydra Global    Treemacs  | Revert  Magit  Yankpad  | Deft  Interruption task   Menu     Clock   Agenda
+    "Help    Treemacs  | Revert  Magit  Yankpad  | Deft  Interruption task   Menu     Clock   Agenda
   "
     "---------------------------------------------------------------------------------------------------------------"))
 #+END_SRC
 
-*** Hydra Global -> Shift F1
-My global hydra almost used in all modes
+*** Hydra Org -> C-c C-h
+My Org / Gtd workflow hydra should be always accessible in all mode with =C-c C-h=
 #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-global
+  (defhydra nc-hydra-org
       (:color pink :hint nil)
 
       (concat nc--f-key-settings
@@ -2554,7 +2562,7 @@ My global hydra almost used in all modes
 
       ("<up>" org-previous-visible-heading "↑ previous" :column "Navigate")
       ("<down>" org-next-visible-heading "↓ next")
-      ("d" org-cut-subtree "delete")
+      ("c" org-cut-subtree "cut subtree")
 
       ("g t" (find-file-other-window nc/org-default-tasks-file) "tasks"  :column "Go To")
       ("g i" nc/go-to-inbox "inbox")
@@ -2590,15 +2598,6 @@ My global hydra almost used in all modes
                  (dired "~/notes/journal")
                  ) "Journal")
 
-      ;; Insert
-      ("i p" nc/generate-password "password"  :column "Inserting")
-      ("i d" nc/journal-file-insert "daily template")
-      ("i D" nc/daily-review "daily review")
-
-      ("i s" nc/insert-time-slot "time slot" :column "Inserting Date/Time")
-      ("i T" nc/insert-datestamp "datestamp")
-      ("i t" nc/insert-datestamp-inactive "date stamp inactive")
-
       ("r r" org-refile "refile" :column "Refile")
       ("r s" org-refile-to-someday "someday")
       ("r t" org-refile-to-tasks "tasks")
@@ -2609,15 +2608,15 @@ My global hydra almost used in all modes
       ("m R" org-refile-to-technical-dir "resources dir")
 
       ("s" (org-save-all-org-buffers) "save org" :column "Actions" :color blue)
-      ("R" nc/org-rename-header "rename")
+
       ("q" nil "quit" :color red))
 
-      (define-key global-map [(shift f1)] 'hydra-global/body)
+      (define-key global-map  (kbd "C-c C-h") 'nc-hydra-org/body)
 #+END_SRC
 *** Hydra org-table
 Helper for org tables
 #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-org-table
+  (defhydra nc-hydra-org-table
     (:color pink :hint nil)
 
     (concat nc--f-key-settings
@@ -2644,7 +2643,7 @@ Helper for org tables
 #+END_SRC
 *** Hydra org-babel
 #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-org-babel
+  (defhydra nc-hydra-org-babel
     (:color pink :hint nil)
 
     (concat nc--f-key-settings
@@ -2670,7 +2669,7 @@ Org Babel Functions Helper
 *** Hydra dired
 
  #+BEGIN_SRC emacs-lisp
-    (defhydra hydra-dired (:hint nil :color pink)
+    (defhydra nc-hydra-dired (:hint nil :color pink)
 
    (concat nc--f-key-settings
          "
@@ -3101,12 +3100,11 @@ npn install -g tern
 #+end_src
 
 * Utilities Functions
-** Pseudo uuid
+** Pseudo uuid -> C-c i u
 
 Generate a 32 random pseudo uuid
 
 #+begin_src emacs-lisp
-
   (defun nc--random-alnum ()
     (let* ((alnum "abcdef0123456789")
            (i (% (abs (random)) (length alnum))))
@@ -3116,12 +3114,12 @@ Generate a 32 random pseudo uuid
     (interactive)
     (dotimes (i 32) (insert (nc--random-alnum))))
 
+  (bind-key "C-c i u" 'nc/uuid)
 #+end_src
-** Password generator
+** Password generator -> C-c i p
 Generates a strong password
 
  #+BEGIN_SRC emacs-lisp
-
    (defun nc--random-char ()
        (let* ((alnum "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-/%+*?&#[]()={}_<>!$,;:^µ0123456789")
               (i (% (abs (random)) (length alnum))))
@@ -3131,8 +3129,10 @@ Generates a strong password
    (defun nc/generate-password ()
        (interactive)
        (dotimes (i 12) (insert (nc--random-char))))
+
+   (bind-key "C-c i p" 'nc/generate-password)
  #+END_SRC
-** TimeSlot
+** TimeSlot -> C-c i t
 Insert time slot mainly used when I schedule meeting or appointment.
 #+begin_src emacs-lisp
   (defvar current-hour-format "%H:00")
@@ -3143,19 +3143,24 @@ Insert time slot mainly used when I schedule meeting or appointment.
     (let ((begin (format-time-string current-hour-format (current-time)))
           (end (format-time-string current-hour-format (time-add (current-time) (seconds-to-time 3600)))))
       (insert (concat begin "-" end))))
+
+  (bind-key "C-c i t" 'nc/insert-time-slot)
+
 #+end_src
-** Inserting time stamps
+** Inserting time stamps -> C-c i d/D
    From : https://github.com/novoid/dot-emacs/blob/master/config.org#inserting-time-stamps--my-map-ddtt
 
 #+BEGIN_SRC emacs-lisp
-   (defun nc/insert-datestamp()
-     "Insert the current date in yyyy-mm-dd format."
-     (interactive "*")
-     (if (eq major-mode 'org-mode)
-         (progn
-           (org-insert-time-stamp nil nil nil)
-           (insert " "))
-         (insert (format-time-string "%Y-%m-%d" (current-time)))))
+  (defun nc/insert-datestamp()
+    "Insert the current date in yyyy-mm-dd format."
+    (interactive "*")
+    (if (eq major-mode 'org-mode)
+        (progn
+          (org-insert-time-stamp nil nil nil)
+          (insert " "))
+        (insert (format-time-string "%Y-%m-%d" (current-time)))))
+
+  (bind-key "C-c i d" 'nc/insert-datestamp)
  #+END_SRC
 
 
@@ -3168,6 +3173,8 @@ Insert time slot mainly used when I schedule meeting or appointment.
        (org-insert-time-stamp nil nil t)
        (insert " "))
        (insert (format-time-string "%Y-%m-%d" (current-time)))))
+
+   (bind-key "C-c i D" 'nc/insert-datestamp-inactive)
  #+END_SRC
 
 ** Manipulate hours/minutes in tables
