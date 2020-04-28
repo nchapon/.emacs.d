@@ -1076,8 +1076,15 @@ Rotate windows with =C-c r=
             ("C-c a" . org-agenda)
             ("<f12>" . org-agenda)
             ("C-c C-b" . org-iswitchb))
+
      :config
-     (setq org-directory "~/notes/"))
+     ;; New template exapnsion
+     (require 'org-tempo)
+
+      (setq org-directory "~/notes/"))
+
+
+
  #+END_SRC
 *** Custom ellipsis
 #+BEGIN_SRC emacs-lisp
@@ -1581,20 +1588,36 @@ Autamatically add =ID= (unique identifier) in heading drawers to keep links uniq
 
 Setting =org-agenda-file-regexp= to include all numeric files (journal files)
 
+#+begin_src emacs-lisp
+  (use-package org-agenda
+    :ensure nil
+
+    :config
+    (setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$"
+          org-agenda-files (list "~/notes/gtd/" "~/notes/personal/calendar.org" "~/notes/journal/")
+          org-agenda-span 'day
+          org-agenda-start-on-weekday nil
+          org-agenda-skip-deadline-if-done t
+          org-agenda-skip-scheduled-if-done t
+          org-agenda-start-with-log-mode t
+          org-agenda-block-separator nil
+          org-deadline-warning-days 5))
+#+end_src
+
 #+BEGIN_SRC emacs-lisp
-  (setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$")
+  ;;(setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$")
 #+END_SRC
 
  My custom agends commands are restricted to some files.
  #+BEGIN_SRC emacs-lisp
-   (setq org-agenda-files (list "~/notes/gtd/" "~/notes/personal/calendar.org" "~/notes/journal/")
-         org-agenda-span 'day
-         org-agenda-start-on-weekday nil
-         org-agenda-skip-deadline-if-done t
-         org-agenda-skip-scheduled-if-done t
-         org-agenda-start-with-log-mode t
-         org-agenda-block-separator nil
-         org-deadline-warning-days 5)
+   ;; (setq org-agenda-files (list "~/notes/gtd/" "~/notes/personal/calendar.org" "~/notes/journal/")
+   ;;       org-agenda-span 'day
+   ;;       org-agenda-start-on-weekday nil
+   ;;       org-agenda-skip-deadline-if-done t
+   ;;       org-agenda-skip-scheduled-if-done t
+   ;;       org-agenda-start-with-log-mode t
+   ;;       org-agenda-block-separator nil
+   ;;       org-deadline-warning-days 5)
  #+END_SRC
 **** Diary
  #+BEGIN_SRC emacs-lisp
@@ -1642,7 +1665,7 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
        (require 'org-agenda)
 
        (setq org-agenda-custom-commands
-             '((" " "Agenda"
+             '(("," "Agenda"
                       ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep))))
 
                        (tags-todo "TODO=\"STARTED\"+@office|TODO=\"WAITING\"+@office"
