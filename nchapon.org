@@ -1065,19 +1065,19 @@ Rotate windows with =C-c r=
   #+END_SRC
 
 * Org
-** Global preferences
-*** Base directory
-#+begin_src emacs-lisp
-  (setq org-directory "~/notes/")
-#+end_src
+** Global settings
 
-*** Global keys
  #+BEGIN_SRC emacs-lisp
-   (bind-key "\C-cl" 'org-store-link)
-   (bind-key "\C-cc" 'org-capture)
-   (bind-key "\C-ca" 'org-agenda)
-   (bind-key "<f12>" 'org-agenda)
-   (bind-key "\C-cb" 'org-iswitchb)
+
+   (use-package org
+     :ensure org-plus-contrib
+     :bind (("C-c l" . org-store-link)
+            ("C-c c" . org-capture)
+            ("C-c a" . org-agenda)
+            ("<f12>" . org-agenda)
+            ("C-c C-b" . org-iswitchb))
+     :config
+     (setq org-directory "~/notes/"))
  #+END_SRC
 *** Custom ellipsis
 #+BEGIN_SRC emacs-lisp
