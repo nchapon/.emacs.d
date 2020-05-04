@@ -1327,18 +1327,18 @@ will appear as projects.
 *** Files and directories
 
  #+begin_src emacs-lisp
-   (defconst nc/org-default-projects-dir (concat org-directory "gtd"))
-   (defconst nc/org-default-projects-file (concat org-directory "gtd/tasks.org"))
+   (defconst nc/org-default-projects-dir (concat org-directory "projects"))
+   (defconst nc/org-default-projects-file (concat org-directory "gtd.org"))
    (defconst nc/org-default-resources-dir (concat org-directory "resources"))
    (defconst nc/org-default-personal-dir (concat org-directory "personal"))
-   (defconst nc/org-default-completed-dir (concat org-directory "gtd/_completed"))
+   (defconst nc/org-default-completed-dir (concat org-directory "projects/_completed"))
    (defconst nc/org-journal-dir (concat org-directory "journal"))
-   (defconst nc/inbox-file (concat org-directory "gtd/inbox.org"))
-   (defconst nc/org-default-inbox-file (concat org-directory "gtd/inbox.org"))
-   (defconst nc/org-default-tasks-file (concat org-directory "gtd/tasks.org"))
+   (defconst nc/inbox-file (concat org-directory "inbox.org"))
+   (defconst nc/org-default-inbox-file (concat org-directory "inbox.org"))
+   (defconst nc/org-default-tasks-file (concat org-directory "gtd.org"))
    (defconst nc/watching-file (concat org-directory "personal/watching.org"))
    (defconst nc/org-default-media-files (concat org-directory "personal/watching.org"))
-   (defconst nc/org-default-someday-file (concat org-directory "gtd/someday.org"))
+   (defconst nc/org-default-someday-file (concat org-directory "someday.org"))
    (defconst nc/fishing-file (concat org-directory "personal/sports/fishing.org"))
    (defconst nc/calendar-file (concat org-directory "personal/calendar.org"))
    (defconst nc/weekly-review-file (concat org-directory "personal/reviews/weekly-review.org"))
@@ -1518,7 +1518,7 @@ One default notes files by day in *journal/* folder
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'org-capture-templates
                    '("n" "Note"  entry
-                     (file nc/inbox-file)
+                     (file nc/inbox-file "Inbox")
                      "* %?\n\n  %i\n\n  See: %a" :empty-lines 1))
 #+END_SRC
 **** Interruption task
@@ -1717,14 +1717,9 @@ Targets include this file and any file contributing to the agenda - up to 2 leve
    ;;(setq org-reverse-note-order t)
 
    (setq org-refile-targets (append '((org-default-notes-file :level . 0))
-                                      (->>
-                                       (directory-files nc/org-default-projects-dir nil ".org$")
-                                       (-remove-item (file-name-base nc/org-default-projects-file))
-                                       (--remove (s-starts-with? "." it))
-                                       (--map (format "%s/%s" nc/org-default-projects-dir it))
-                                       (--map (cons it (cons :level 0))))
-                                      '((nc/org-default-projects-file :level . 1)
-                                        (nil :maxlevel . 1))))
+                                    '((nc/org-default-tasks-file :level . 1)
+                                      (nc/org-default-someday-file :level . 0)
+                                      (nil :maxlevel . 1)))) ;; current file
 
    (setq org-blank-before-new-entry nil)
  #+end_src
