@@ -349,7 +349,16 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
             ("C-x c y" . helm-yas-complete)
             ("C-x c Y" . helm-yas-create-snippet-on-region)
             ("C-x c SPC" . helm-all-mark-rings)))
+
  #+END_SRC
+
+Disable helm completing because helm is unable to set multiple tags in org mode
+
+#+begin_src emacs-lisp
+ (add-to-list 'helm-completing-read-handlers-alist '(org-set-tags-command))
+#+end_src
+
+
 **** helm-swoop
      - From https://github.com/malb/emacs.d/blob/master/malb.org#helm-swoop
      - Tip :: You can edit helm-swoop buffers by pressing =C-c C-e=.
@@ -435,6 +444,18 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
                     ((equal arg 16) (helm-org-rifle-occur-agenda-files))
                     (t (helm-org-agenda-files-headings)))))))
  #+END_SRC
+
+
+ #+begin_src emacs-lisp
+   ;; (use-package helm-org
+   ;;   ;;:defer 90
+   ;;   :ensure t
+   ;;   :config
+   ;;   (add-to-list 'helm-completing-read-handlers-alist '(org-capture . helm-org-completing-read-tags))
+   ;;   (add-to-list 'helm-completing-read-handlers-alist '(org-set-tags-command . helm-org-completing-read-tags)))
+ #+end_src
+
+
 **** helm-semantic and imenu
      - From https://github.com/malb/emacs.d/blob/master/malb.org#helm-semantic-imenu-org
  #+begin_src emacs-lisp
@@ -1305,7 +1326,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
                                ("@computer" . ?c)
                                ("@reading" . ?r)
                                ("learning" . ?l)
-                               ("EMACS" . ?e)
+                               ("emacs" . ?e)
                                (:newline)
                                ("WAITING" . ?w)
                                ("HOLD" . ?H)
@@ -1395,6 +1416,8 @@ Journal files do not have =.org= extension, add filename pattern to have =org-mo
 
          (insert (format-time-string (concat "#+TITLE:" "%A %d %B %Y") datim))
          (insert "\n")
+         (insert "#+SETUPFILE: ~/notes/tags.org")
+         (insert "\n")
 
          ;; Note: The `insert-file-contents' leaves the cursor at the
          ;; beginning, so the easiest approach is to insert these files
@@ -1404,22 +1427,18 @@ Journal files do not have =.org= extension, add filename pattern to have =org-mo
          (when (equal (file-name-base (buffer-file-name))
                       (format-time-string "%Y-%m-%d"))
 
-           ;;(insert-file-contents "templates/journal-dailies-end.org")
-
-
            ;; Insert dailies that only happen once a week:
            (let ((weekday-template (downcase
                                     (format-time-string "templates/journal-%A.org"))))
              (when (file-exists-p weekday-template)
                (insert-file-contents weekday-template)))
 
-
-           (insert-file-contents "templates/journal-dailies.org")
            (insert "")
 
            (let ((contents (buffer-string)))
              (delete-region (point-min) (point-max))
-             (yas-expand-snippet contents (point-min) (point-max))))
+             (yas-expand-snippet contents (point-min) (point-max)))
+           )
          ))
 
          ;; bind-key
@@ -1459,7 +1478,7 @@ One default notes files by day in *journal/* folder
                  "* TODO %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\n\nFrom: %a"
                  :empty-lines 1)
              ("s" "Someday" entry (file+headline nc/inbox-file "Inbox")
-               "* SOMEDAY %? :IDEA:\n%u" :clock-in t :clock-resume t)
+               "* SOMEDAY %? :idea:\n%u" :clock-in t :clock-resume t)
              ("f" "FishLog" plain (file+datetree+prompt nc/fishing-file)
               "%[~/notes/templates/fishlog.org]")
              ("F" "Film" entry (file+headline nc/watching-file "Films à voir")
@@ -1486,7 +1505,7 @@ One default notes files by day in *journal/* folder
  #+BEGIN_SRC emacs-lisp
  (add-to-list 'org-capture-templates
                   `("m" "Meeting" entry (file+headline nc/calendar-file "Réunions")
-            "* MEETING %? :MEETING:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
+            "* MEETING %? :meeting:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
  #+END_SRC
 
 **** TODO RendezVous
@@ -1494,7 +1513,7 @@ One default notes files by day in *journal/* folder
  #+BEGIN_SRC emacs-lisp
  (add-to-list 'org-capture-templates
                   `("a" "RendezVous" entry (file+headline nc/calendar-file "RendezVous")
-                  "* RDV %? :APPT:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
+                  "* RDV %? :rdv:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
  #+END_SRC
 
 **** Journal entry
@@ -1518,7 +1537,7 @@ One default notes files by day in *journal/* folder
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'org-capture-templates
                    '("n" "Note"  entry
-                     (file nc/inbox-file "Inbox")
+                     (file+headline nc/inbox-file "Notes")
                      "* %?\n\n  %i\n\n  See: %a" :empty-lines 1))
 #+END_SRC
 **** Interruption task
@@ -1604,21 +1623,6 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
           org-deadline-warning-days 5))
 #+end_src
 
-#+BEGIN_SRC emacs-lisp
-  ;;(setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$")
-#+END_SRC
-
- My custom agends commands are restricted to some files.
- #+BEGIN_SRC emacs-lisp
-   ;; (setq org-agenda-files (list "~/notes/gtd/" "~/notes/personal/calendar.org" "~/notes/journal/")
-   ;;       org-agenda-span 'day
-   ;;       org-agenda-start-on-weekday nil
-   ;;       org-agenda-skip-deadline-if-done t
-   ;;       org-agenda-skip-scheduled-if-done t
-   ;;       org-agenda-start-with-log-mode t
-   ;;       org-agenda-block-separator nil
-   ;;       org-deadline-warning-days 5)
- #+END_SRC
 **** Diary
  #+BEGIN_SRC emacs-lisp
    (setq diary-file "~/notes/diary"
@@ -1686,7 +1690,7 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
                                    (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 30)")
                                    (org-agenda-skip-function
                                     '(org-agenda-skip-entry-if 'scheduled 'deadline))
-                                   (org-agenda-files '("~/notes/gtd/inbox.org"))
+                                   (org-agenda-files '("~/notes/inbox.org"))
                                    (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                        )
                       nil)
