@@ -2220,7 +2220,7 @@ Org Roam dierctory is tested only in my =~/notes/resources= directory
     :config
     (pdf-tools-install)
     (setq-default pdf-view-display-size 'fit-page)
-    (use-package org-pdfview
+    (use-package org-pdftools
       :ensure t))
 #+end_src
 
@@ -3136,10 +3136,10 @@ npn install -g tern
   (use-package tern
     :ensure t)
 
-  (use-package company-tern
-    :ensure    company-tern
-    :init      (add-to-list 'company-backends 'company-tern)
-    :config    (add-hook 'js2-mode-hook 'tern-mode))
+  ;; (use-package company-tern
+  ;;   :ensure    company-tern
+  ;;   :init      (add-to-list 'company-backends 'company-tern)
+  ;;   :config    (add-hook 'js2-mode-hook 'tern-mode))
 #+end_src
 
 *** TypeScript
