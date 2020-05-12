@@ -338,6 +338,7 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
              (use-package helm-projectile)
              (helm-projectile-on))
 
+
      :bind (("C-x b" . helm-mini)
             ("M-x" . helm-M-x)
             ("C-x C-f" . helm-find-files)
@@ -357,7 +358,6 @@ Disable helm completing because helm is unable to set multiple tags in org mode
 #+begin_src emacs-lisp
  (add-to-list 'helm-completing-read-handlers-alist '(org-set-tags-command))
 #+end_src
-
 
 **** helm-swoop
      - From https://github.com/malb/emacs.d/blob/master/malb.org#helm-swoop
@@ -445,14 +445,10 @@ Disable helm completing because helm is unable to set multiple tags in org mode
                     (t (helm-org-agenda-files-headings)))))))
  #+END_SRC
 
-
  #+begin_src emacs-lisp
-   ;; (use-package helm-org
-   ;;   ;;:defer 90
-   ;;   :ensure t
-   ;;   :config
-   ;;   (add-to-list 'helm-completing-read-handlers-alist '(org-capture . helm-org-completing-read-tags))
-   ;;   (add-to-list 'helm-completing-read-handlers-alist '(org-set-tags-command . helm-org-completing-read-tags)))
+   (use-package helm-org
+     :custom ((helm-org-headings-fontify t)
+              (helm-org-format-outline-path t)))
  #+end_src
 
 
@@ -468,6 +464,32 @@ Disable helm completing because helm is unable to set multiple tags in org mode
 
    (global-set-key (kbd "C-<f12>") 'nc/helm-in-buffer)
  #+end_src
+**** Restore arrows keys
+
+Cf https://github.com/emacs-helm/helm/wiki/FAQ#arrow-keys-behavior-have-changed
+
+#+begin_src emacs-lisp
+(define-key helm-map (kbd "<left>") 'helm-previous-source)
+(define-key helm-map (kbd "<right>") 'helm-next-source)
+
+
+;; for helm-find-files
+(customize-set-variable 'helm-ff-lynx-style-map t)
+
+;; for helm-imenu
+(customize-set-variable 'helm-imenu-lynx-style-map t)
+
+;; for semantic
+(customize-set-variable 'helm-semantic-lynx-style-map t)
+
+;; for helm-occur
+(customize-set-variable 'helm-occur-use-ioccur-style-keys t)
+
+;; for helm-grep
+(customize-set-variable 'helm-grep-use-ioccur-style-keys t)
+#+end_src
+
+
 *** Hippie expand
  Looks at the word before point and tries  to expand it.
 
