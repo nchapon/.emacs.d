@@ -2189,25 +2189,6 @@ Export Org documents via Pandoc
              htmlize-many-files-dired
              htmlize-region))
 #+END_SRC
-** org-roam
-Org Roam dierctory is tested only in my =~/notes/resources= directory
-#+BEGIN_SRC emacs-lisp
-  (use-package org-roam
-        :hook
-        (after-init . org-roam-mode)
-        :custom
-        (org-roam-directory nc/org-default-resources-dir)
-        :bind (:map org-roam-mode-map
-                (("C-c n l" . org-roam)
-                 ("C-c n f" . org-roam-find-file)
-                 ("C-c n g" . org-roam-show-graph))
-                :map org-mode-map
-                (("C-c n i" . org-roam-insert))))
-#+END_SRC
-
-
-
-
 * Tools
 ** Deft -> <F8>
 #+BEGIN_SRC emacs-lisp
