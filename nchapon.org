@@ -2105,15 +2105,37 @@ From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
 #+begin_src emacs-lisp
   (setq org-export-with-toc 2)
 #+end_src
-** Searching in my notes -> C-c o s
+** Searching in my notes -> C-c s n
  #+begin_src emacs-lisp
    (defun nc/helm-do-grep-notes ()
      "Search in all my org notes."
      (interactive)
      (helm-do-grep-1 (list org-directory) t nil (list "*.org" "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]")))
 
-   (bind-key "C-c o s" 'nc/helm-do-grep-notes)
+   (bind-key "C-c s n" 'nc/helm-do-grep-notes)
  #+end_src
+** Searching tags in my notes -> C-c s t
+Searching in my notes from tags completion table, because I use a lot of tags...
+#+begin_src emacs-lisp
+
+  (defun nc--helm-do-grep-notes-tags (candidate)
+      "Search notes with tags"
+
+    (let ((candidates (concat ":" (--reduce (format "%s:%s" acc it) (helm-marked-candidates)) ":")))
+      (helm-do-grep-1 (list org-directory) t nil (list "*.org" "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]") candidates )))
+
+  (defun nc/helm-grep-notes-tags ()
+      "Grep tags notes from org-global-tags-completion-table"
+    (interactive)
+    (helm :sources '(((name . "Tags List")
+                    (candidates . org-global-tags-completion-table)
+                    (action . nc--helm-do-grep-notes-tags)))
+           :prompt "Search with tag : "))
+
+  (bind-key "C-c s t" 'nc/helm-grep-notes-tags)
+#+end_src
+
+
 ** Babel
 *** Babel languages
 
