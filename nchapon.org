@@ -1371,13 +1371,13 @@ will appear as projects.
 
  #+begin_src emacs-lisp
    (defconst nc/org-default-projects-dir (concat org-directory "projects"))
-   (defconst nc/org-default-projects-file (concat org-directory "gtd.org"))
+   (defconst nc/org-default-projects-file (concat org-directory "projects.org"))
    (defconst nc/org-default-resources-dir (concat org-directory "resources"))
    (defconst nc/org-default-personal-dir (concat org-directory "personal"))
    (defconst nc/org-default-completed-dir (concat org-directory "projects/_completed"))
    (defconst nc/org-journal-dir (concat org-directory "journal"))
-   (defconst nc/inbox-file (concat org-directory "inbox.org"))
-   (defconst nc/org-default-inbox-file (concat org-directory "inbox.org"))
+   (defconst nc/inbox-file (concat org-directory "gtd.org"))
+   (defconst nc/org-default-inbox-file (concat org-directory "gtd.org"))
    (defconst nc/org-default-tasks-file (concat org-directory "gtd.org"))
    (defconst nc/watching-file (concat org-directory "personal/watching.org"))
    (defconst nc/org-default-media-files (concat org-directory "personal/watching.org"))
