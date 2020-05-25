@@ -1635,7 +1635,7 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
 
     :config
     (setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$"
-          org-agenda-files (list "~/notes/gtd.org" "~/notes/inbox.org" "~/notes/someday.org" "~/notes/personal/calendar.org" "~/notes/journal/")
+          org-agenda-files (list "~/notes/gtd.org" "~/notes/projects.org" "~/notes/someday.org" "~/notes/personal/calendar.org" "~/notes/journal/")
           org-agenda-span 'day
           org-agenda-start-on-weekday nil
           org-agenda-skip-deadline-if-done t
@@ -1712,7 +1712,7 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
                                    (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 30)")
                                    (org-agenda-skip-function
                                     '(org-agenda-skip-entry-if 'scheduled 'deadline))
-                                   (org-agenda-files '("~/notes/inbox.org"))
+                                   (org-agenda-files '("~/notes/gtd.org"))
                                    (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                        )
                       nil)
@@ -1744,6 +1744,7 @@ Targets include this file and any file contributing to the agenda - up to 2 leve
 
    (setq org-refile-targets (append '((org-default-notes-file :level . 0))
                                     '((nc/org-default-tasks-file :level . 1)
+                                      (nc/org-default-projects-file :level . 1)
                                       (nc/org-default-someday-file :level . 0)
                                       (nil :maxlevel . 1)))) ;; current file
 
