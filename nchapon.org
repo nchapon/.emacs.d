@@ -834,7 +834,6 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
      (key-chord-define-global "jk" 'ace-jump-char-mode)
      (key-chord-define-global "FF" 'projectile-find-file)
      (key-chord-define-global "GG" 'helm-projectile-ag)
-     (key-chord-define-global ";h" 'helm-org-rifle)
      (key-chord-define-global "HH" 'nc/helm-org-rifle-agenda-files)
      (key-chord-define-global "DD" 'delete-region)
      (key-chord-define-global "OO" 'helm-occur)
@@ -842,8 +841,6 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
      (key-chord-define-global "BB" 'beginning-of-buffer)
      (key-chord-define-global "WW" 'nc/swap-windows)
      (key-chord-define-global "$$" 'end-of-buffer)
-     (key-chord-define-global "--" 'org-ctrl-c-minus)
-     (key-chord-define-global "**" 'org-ctrl-c-star)
      (key-chord-define-global "kk" 'kill-this-buffer))
  #+END_SRC
 *** Globals Keys
