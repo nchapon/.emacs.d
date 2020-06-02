@@ -801,13 +801,25 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
 *** Emacs Config File
 
  #+begin_src emacs-lisp
-   (defun nc/emacs-config ()
+   (defun nc/goto-emacs-config ()
        "Edit nchapon.org"
        (interactive)
        (find-file "~/.emacs.d/nchapon.org"))
 
-     (global-set-key (kbd "C-c f e") 'nc/emacs-config)
+     (global-set-key (kbd "C-c f e") 'nc/goto-emacs-config)
  #+end_src
+*** My personal credentials
+
+#+begin_src emacs-lisp
+    (defun nc/goto-my-credentials ()
+      "Goto my credentials"
+      (interactive)
+      ;; before disable super-save-mode
+      (super-save-mode)
+      (find-file (concat nc/org-default-personal-dir "/password.gpg")))
+
+  (global-set-key (kbd "C-c f p") 'nc/goto-my-credentials)
+#+end_src
 
 ** Key Bindings
 *** Which Key
@@ -2612,8 +2624,8 @@ current context, it display by default org hydra.
     "---------------------------------------------------------------------------------------------------------------"))
 #+END_SRC
 
-*** Hydra Org -> C-c C-h
-My Org / Gtd workflow hydra should be always accessible in all mode with =C-c C-h=
+*** Hydra GTD Workflow -> C-c C-g
+My Org / Gtd workflow hydra should be always accessible in all mode with =C-c C-g=
 #+BEGIN_SRC emacs-lisp
   (defhydra nc-hydra-org
       (:color pink :hint nil)
@@ -2631,15 +2643,12 @@ My Org / Gtd workflow hydra should be always accessible in all mode with =C-c C-
 
       ("g t" (find-file-other-window nc/org-default-tasks-file) "tasks"  :column "Go To")
       ("g i" nc/go-to-inbox "inbox")
+      ("g p" (find-file-other-window nc/org-default-projects-file) "projects")
       ("g j" nc/journal-file-today "journal file today")
       ("g y" nc/journal-file-yesterday "yesterday file")
-      ("g c" (lambda ()
-             (interactive)
-             (super-save-mode nil)
-             (find-file (concat nc/org-default-personal-dir "/password.gpg")
-                        )) "personal credentials")
+
       ;; Dired
-      ("g X" (lambda ()
+      ("g P" (lambda ()
                  (interactive)
                  (dired nc/org-default-projects-dir)
          ) "Projects" :column "Dired" :exit t)
@@ -2648,10 +2657,10 @@ My Org / Gtd workflow hydra should be always accessible in all mode with =C-c C-
                  (dired nc/org-default-resources-dir)
                  ) "Resources" :exit t)
 
-      ("g P" (lambda ()
+      ("g M" (lambda ()
               (interactive)
               (dired nc/org-default-personal-dir)
-              ) "Personal" :exit t)
+              ) "My Personal Dir" :exit t)
 
       ("g H" (lambda ()
                  (interactive)
@@ -2676,7 +2685,7 @@ My Org / Gtd workflow hydra should be always accessible in all mode with =C-c C-
 
       ("q" nil "quit" :color red))
 
-      (define-key global-map  (kbd "C-c C-h") 'nc-hydra-org/body)
+      (define-key global-map  (kbd "C-c C-g") 'nc-hydra-org/body)
 #+END_SRC
 *** Hydra org-table
 Helper for org tables
