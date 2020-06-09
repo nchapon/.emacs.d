@@ -2624,8 +2624,8 @@ current context, it display by default org hydra.
     "---------------------------------------------------------------------------------------------------------------"))
 #+END_SRC
 
-*** Hydra GTD Workflow -> C-c C-g
-My Org / Gtd workflow hydra should be always accessible in all mode with =C-c C-g=
+*** Hydra GTD Workflow -> C-c g
+My Org / Gtd workflow hydra should be always accessible in all mode with =C-c g=
 #+BEGIN_SRC emacs-lisp
   (defhydra nc-hydra-org
       (:color pink :hint nil)
@@ -2633,44 +2633,42 @@ My Org / Gtd workflow hydra should be always accessible in all mode with =C-c C-
       (concat nc--f-key-settings
   "
 
-  Global Helper
+  GTD Files Helper
 
   ")
 
-      ("<up>" org-previous-visible-heading "↑ previous" :column "Navigate")
-      ("<down>" org-next-visible-heading "↓ next")
-      ("c" org-cut-subtree "cut subtree")
-
-      ("g t" (find-file-other-window nc/org-default-tasks-file) "tasks"  :column "Go To")
-      ("g i" nc/go-to-inbox "inbox")
-      ("g p" (find-file-other-window nc/org-default-projects-file) "projects")
-      ("g j" nc/journal-file-today "journal file today")
-      ("g y" nc/journal-file-yesterday "yesterday file")
+      ("t" (find-file-other-window nc/org-default-tasks-file) "tasks"  :column "Go To")
+      ("i" nc/go-to-inbox "inbox")
+      ("p" (find-file-other-window nc/org-default-projects-file) "projects")
+      ("j" nc/journal-file-today "journal file today")
+      ("y" nc/journal-file-yesterday "yesterday file")
 
       ;; Dired
-      ("g P" (lambda ()
+      ("P" (lambda ()
                  (interactive)
                  (dired nc/org-default-projects-dir)
          ) "Projects" :column "Dired" :exit t)
-      ("g R" (lambda ()
+      ("R" (lambda ()
                  (interactive)
                  (dired nc/org-default-resources-dir)
                  ) "Resources" :exit t)
 
-      ("g M" (lambda ()
+      ("M" (lambda ()
               (interactive)
               (dired nc/org-default-personal-dir)
               ) "My Personal Dir" :exit t)
 
-      ("g H" (lambda ()
+      ("H" (lambda ()
                  (interactive)
                  (dired "~/_PIM")
                  ) "PIM" :exit t)
 
-      ("g J" (lambda ()
+      ("J" (lambda ()
                  (interactive)
                  (dired "~/notes/journal")
                  ) "Journal" :exit t)
+
+      ("c" org-cut-subtree "cut subtree" :column "Edit")
 
       ("r r" org-refile "refile" :column "Refile")
       ("r s" org-refile-to-someday "someday")
@@ -2685,7 +2683,7 @@ My Org / Gtd workflow hydra should be always accessible in all mode with =C-c C-
 
       ("q" nil "quit" :color red))
 
-      (define-key global-map  (kbd "C-c C-g") 'nc-hydra-org/body)
+      (define-key global-map  (kbd "C-c g") 'nc-hydra-org/body)
 #+END_SRC
 *** Hydra org-table
 Helper for org tables
