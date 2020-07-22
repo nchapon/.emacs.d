@@ -589,6 +589,14 @@ Enable C-x C-j
   ;;   :init
   ;;   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 #+END_SRC
+*** Dired Narrow
+Narrow dired to match filter from http://pragmaticemacs.com/emacs/dynamically-filter-directory-listing-with-dired-narrow/
+#+begin_src emacs-lisp
+(use-package dired-narrow
+  :ensure t
+  :bind (:map dired-mode-map
+              ("/" . dired-narrow)))
+#+end_src
 ** Editing
 *** Duplicate line
  Duplicate line with =C-c d=
