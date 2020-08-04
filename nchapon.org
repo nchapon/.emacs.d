@@ -78,6 +78,8 @@ This happens a lot on OS X, where an Emacs instance started from the GUI inherit
       (progn
         (exec-path-from-shell-initialize)
         (exec-path-from-shell-copy-env "GOPATH")
+        (exec-path-from-shell-copy-env "JAVA_HOME")
+        (exec-path-from-shell-copy-env "PATH")
         (exec-path-from-shell-copy-env "RUST_SRC_PATH"))))
 #+END_SRC
 * UI
