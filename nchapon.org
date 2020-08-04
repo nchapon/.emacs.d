@@ -465,6 +465,7 @@ Disable helm completing because helm is unable to set multiple tags in org mode
        (call-interactively #'helm-semantic-or-imenu)))
 
    (global-set-key (kbd "C-<f12>") 'nc/helm-in-buffer)
+   (global-set-key (kbd "M-1") 'nc/helm-in-buffer)
  #+end_src
 **** Restore arrows keys
 
