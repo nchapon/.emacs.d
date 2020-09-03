@@ -2319,6 +2319,7 @@ Magit a git porcelain inside Emacs !
        (eshell/alias "mvncist" "mvn clean install -DskipTests")
        (eshell/alias "mvnist" "mvn install -DskipTests")
        (eshell/alias "git" "git --no-pager $*")
+       (eshell/alias "s3api" "aws --no-verify-ssl --endpoint-url https://sgws-prod.cnp.fr s3api $*")
 
        ;; alias dpsa docker ps -a --format "{{.Names}} {{.Size}} : {{.Command}}" --no-trunc
 
