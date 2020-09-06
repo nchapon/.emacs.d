@@ -826,7 +826,7 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
       "Goto my credentials"
       (interactive)
       ;; before disable super-save-mode
-      (super-save-mode)
+      (super-save-stop)
       (find-file (concat nc/org-default-personal-dir "/password.gpg")))
 
   (global-set-key (kbd "C-c f p") 'nc/goto-my-credentials)
