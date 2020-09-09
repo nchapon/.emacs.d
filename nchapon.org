@@ -349,7 +349,6 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
             ("M-y" . helm-show-kill-ring)
             ("C-x c o" . helm-occur)
             ("C-x C-r" . helm-recentf)
-            ("C-x c y" . helm-yas-complete)
             ("C-x c Y" . helm-yas-create-snippet-on-region)
             ("C-x c SPC" . helm-all-mark-rings)))
 
@@ -412,7 +411,7 @@ Disable helm completing because helm is unable to set multiple tags in org mode
                (bind-key "C-r"   #'helm-previous-line helm-multi-swoop-map)
                (bind-key "C-s"   #'nc/helm-swoop-C-s helm-multi-swoop-map)))
  #+end_src
-**** helm-ag
+**** helm-ag <C-f2>
  Can integrate Helm with [[https://github.com/ggreer/the_silver_searcher][The Silver Searcher]] (ag A code searching tool similar to ack, with a focus on speed.)
 
  #+BEGIN_SRC emacs-lisp
@@ -454,7 +453,7 @@ Disable helm completing because helm is unable to set multiple tags in org mode
  #+end_src
 
 
-**** helm-semantic and imenu
+**** helm-semantic and imenu <C-f12>
      - From https://github.com/malb/emacs.d/blob/master/malb.org#helm-semantic-imenu-org
  #+begin_src emacs-lisp
    (defun nc/helm-in-buffer ()
@@ -465,7 +464,6 @@ Disable helm completing because helm is unable to set multiple tags in org mode
        (call-interactively #'helm-semantic-or-imenu)))
 
    (global-set-key (kbd "C-<f12>") 'nc/helm-in-buffer)
-   (global-set-key (kbd "M-1") 'nc/helm-in-buffer)
  #+end_src
 **** Restore arrows keys
 
@@ -592,7 +590,7 @@ Enable C-x C-j
   ;;   :init
   ;;   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 #+END_SRC
-*** Dired Narrow
+*** Dired Narrow </>
 Narrow dired to match filter from http://pragmaticemacs.com/emacs/dynamically-filter-directory-listing-with-dired-narrow/
 #+begin_src emacs-lisp
 (use-package dired-narrow
@@ -657,7 +655,7 @@ Narrow dired to match filter from http://pragmaticemacs.com/emacs/dynamically-fi
  (global-set-key "\C-w" 'backward-kill-word)
  (global-set-key "\C-x\C-k" 'kill-region)
  #+END_SRC
-**** Kill whole line
+**** Kill whole line <S-backspace>
  Kill whole line with
  #+BEGIN_SRC emacs-lisp
  (global-set-key (kbd "S-<backspace>") 'kill-whole-line)
@@ -732,10 +730,9 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
  #+END_SRC
 
 ** Files
-*** Core commands
+*** Revert Buffer <F5>
     #+BEGIN_SRC emacs-lisp
       (bind-key "<f5>" 'revert-buffer)
-      (bind-key "C-c f l" 'find-file-literally)
     #+END_SRC
 *** Recent Files
 
@@ -760,7 +757,7 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
      version-control t        ; numbered versions
 )
  #+END_SRC
-*** Copy file name to clipboard
+*** Copy file name to clipboard <C-c f w>
  #+BEGIN_SRC emacs-lisp
     (defun nc/copy-filename-to-clipboard ()
       "Copy the current buffer file name to the clipboard."
@@ -775,7 +772,7 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
    (bind-key "C-c f w" #'nc/copy-filename-to-clipboard)
  #+END_SRC
 
-*** Delete file
+*** Delete file <C-c f D>
 #+BEGIN_SRC emacs-lisp
   (defun nc/delete-this-file ()
     "Kill the current buffer and deletes the file it is visiting."
@@ -791,7 +788,7 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
 
   (bind-key "C-c f D" #'nc/delete-this-file)
 #+END_SRC
-*** Rename file
+*** Rename file <C-c f R>
 #+BEGIN_SRC emacs-lisp
   (defun nc/rename-this-file-and-buffer ()
     "Renames current buffer and file it is visiting."
@@ -1019,8 +1016,8 @@ Perhaps I need to use =switch-window= (Cf  https://github.com/dimitri/switch-win
                    '(ace-window))))
  #+END_SRC
 
-*** Toggle window split
-Bound to =C-c -=.
+*** Toggle window split <C-c w ->
+Bound to =C-c w -=.
 #+BEGIN_SRC emacs-lisp
   (defun nc/toggle-window-split ()
     (interactive)
@@ -1047,21 +1044,22 @@ Bound to =C-c -=.
             (select-window first-win)
             (if this-win-2nd (other-window 1))))))
 
-  (bind-key "C-c -" 'nc/toggle-window-split)
+  (bind-key "C-c w -" 'nc/toggle-window-split)
 #+END_SRC
-*** Split window right
-Split window right with =C-c |= and move there
+*** Split window right <C-c w |>
+Split window right with =C-c w |= and move there
 #+BEGIN_SRC emacs-lisp
 (defun nc/split-window-right-and-move-there-dammit ()
   (interactive)
   (split-window-right)
   (windmove-right))
 
-(bind-key "C-c |" 'nc/split-window-right-and-move-there-dammit)
+(bind-key "C-c w |" 'nc/split-window-right-and-move-there-dammit)
+(bind-key "C-c w l" 'nc/split-window-right-and-move-there-dammit)
 #+END_SRC
 
-*** Rotate windows
-Rotate windows with =C-c r=
+*** Rotate windows <C-c w r>
+Rotate windows with =C-c w r=
 #+begin_src emacs-lisp
   (defun nc/rotate-windows ()
     "Rotate your windows"
@@ -1086,7 +1084,7 @@ Rotate windows with =C-c r=
             (set-window-start w2 s1)
             (setq i (1+ i))))))))
 
-  (bind-key "C-c r" 'nc/rotate-windows)
+  (bind-key "C-c w r" 'nc/rotate-windows)
 #+end_src
 *** Swap windows
     From https://github.com/zamansky/using-emacs/blob/master/myinit.org
