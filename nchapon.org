@@ -722,13 +722,13 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
 *** Undo Tree
  This lets you use =C-x u= (=undo-tree-visualize=)
  #+BEGIN_SRC emacs-lisp
- (use-package undo-tree
-   :diminish undo-tree-mode
-   :config
-   (progn
-     (global-undo-tree-mode)
-     (setq undo-tree-visualizer-timestamps t)
-     (setq undo-tree-visualizer-diff t)))
+   (use-package undo-tree
+     :diminish undo-tree-mode
+     :config
+     (progn
+       (global-undo-tree-mode)
+       (setq undo-tree-visualizer-timestamps t)
+       (setq undo-tree-visualizer-diff t)))
  #+END_SRC
 
 ** Files
@@ -2126,16 +2126,16 @@ From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
 #+begin_src emacs-lisp
   (setq org-export-with-toc 2)
 #+end_src
-** Searching in my notes -> C-c s n
+** Searching in my notes -> M-s n
  #+begin_src emacs-lisp
    (defun nc/helm-do-grep-notes ()
      "Search in all my org notes."
      (interactive)
      (helm-do-grep-1 (list org-directory) t nil (list "*.org" "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]")))
 
-   (bind-key "C-c s n" 'nc/helm-do-grep-notes)
+   (bind-key "M-s n" 'nc/helm-do-grep-notes)
  #+end_src
-** Searching tags in my notes -> C-c s t
+** Searching tags in my notes -> M-s t
 Searching in my notes from tags completion table, because I use a lot of tags...
 #+begin_src emacs-lisp
 
@@ -2153,7 +2153,7 @@ Searching in my notes from tags completion table, because I use a lot of tags...
                     (action . nc--helm-do-grep-notes-tags)))
            :prompt "Search with tag : "))
 
-  (bind-key "C-c s t" 'nc/helm-grep-notes-tags)
+  (bind-key "M-s t" 'nc/helm-grep-notes-tags)
 #+end_src
 
 
@@ -2589,8 +2589,8 @@ Sometimes I need an Ansi Term...
     ;; If you want to expand snippets with hippie-expand
     (add-to-list 'hippie-expand-try-functions-list #'yankpad-expand))
 #+END_SRC
-** Hydra -> <C-c h>
-My Hydras are bound by default to =C-c h=
+** Hydra -> <F1>
+My Hydras are bound by default to =F1=
 #+BEGIN_SRC emacs-lisp
   (use-package hydra :ensure t)
 #+END_SRC
@@ -2612,13 +2612,12 @@ current context, it display by default org hydra.
            (cl-case etype
              (src-block (nc-hydra-org-babel/body))
              ((table-row table-cell) (nc-hydra-org-table/body) )
-             (t (nc-hydra-org/body))))
-             )
+             (t (nc-hydra-org/body)))) )
       ('dired-mode (nc-hydra-dired/body))
       ;;('ibuffer-mode (hydra-ibuffer-main/body))
       (t (nc-hydra-org/body))))
 
-  (global-set-key (kbd "C-c h") 'nc/context-hydra-launcher)
+  (global-set-key (kbd "<f1>") 'nc/context-hydra-launcher)
 #+END_SRC
 
 *** Function key settings
@@ -2630,13 +2629,13 @@ current context, it display by default org hydra.
     "F1      F2        | F5      F6     F7       | F8    F9                  F10      F11     F12
   "
   'face '(:foreground "teal"))
-    "Help    Treemacs  | Revert  Magit  Yankpad  | Deft  Interruption task   Menu     Clock   Agenda
+    "Hydra   Treemacs  | Revert  Magit  Yankpad  | Deft  Interruption task   Menu     Clock   Agenda
   "
     "---------------------------------------------------------------------------------------------------------------"))
 #+END_SRC
 
-*** Hydra GTD Workflow -> C-c g
-My Org / Gtd workflow hydra should be always accessible in all mode with =C-c g=
+*** Hydra GTD Workflow -> M-F1
+My Org / Gtd workflow hydra should be always accessible in all mode with =M-F1=
 #+BEGIN_SRC emacs-lisp
   (defhydra nc-hydra-org
       (:color pink :hint nil)
@@ -2694,7 +2693,7 @@ My Org / Gtd workflow hydra should be always accessible in all mode with =C-c g=
 
       ("q" nil "quit" :color red))
 
-      (define-key global-map  (kbd "C-c g") 'nc-hydra-org/body)
+      (define-key global-map (kbd "M-<f1>") 'nc-hydra-org/body)
 #+END_SRC
 *** Hydra org-table
 Helper for org tables
