@@ -2991,6 +2991,12 @@ Then we can setup Emacs go mode
     (end-of-line-compile))
 
 #+end_src
+** Java
+Switch Java version
+#+begin_src emacs-lisp
+  (use-package switch-java
+    :load-path "site-lisp/switch-java")
+#+end_src
 ** Lua
 #+BEGIN_SRC emacs-lisp
 (use-package lua-mode
