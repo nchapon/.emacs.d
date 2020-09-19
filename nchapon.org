@@ -2622,8 +2622,8 @@ current context, it display by default org hydra.
     "---------------------------------------------------------------------------------------------------------------"))
 #+END_SRC
 
-*** Hydra GTD Workflow -> M-F1
-My Org / Gtd workflow hydra should be always accessible in all mode with =M-F1=
+*** Hydra GTD Workflow -> S-F1
+My Org / Gtd workflow hydra should be always accessible in all mode with =S-F1=
 #+BEGIN_SRC emacs-lisp
   (defhydra nc-hydra-org
       (:color pink :hint nil)
@@ -2681,7 +2681,7 @@ My Org / Gtd workflow hydra should be always accessible in all mode with =M-F1=
 
       ("q" nil "quit" :color red))
 
-      (define-key global-map (kbd "M-<f1>") 'nc-hydra-org/body)
+      (define-key global-map (kbd "S-<f1>") 'nc-hydra-org/body)
 #+END_SRC
 *** Hydra org-table
 Helper for org tables
