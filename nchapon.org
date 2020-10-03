@@ -2513,6 +2513,25 @@ Magit a git porcelain inside Emacs !
    ;; online.
    (setq tramp-verbose 1)
  #+END_SRC
+*** vterm
+Last emacs terminal emulator :  https://github.com/akermu/emacs-libvterm
+#+begin_src emacs-lisp
+  (use-package vterm
+    :ensure
+    :commands vterm
+    :config
+    (setq vterm-disable-bold-font nil)
+    (setq vterm-disable-inverse-video nil)
+    (setq vterm-disable-underline nil)
+    (setq vterm-kill-buffer-on-exit nil)
+    (setq vterm-max-scrollback 9999)
+    (setq vterm-shell "/bin/zsh")
+    (setq vterm-term-environment-variable "xterm-256color")
+
+    :bind (("s-<return>" . vterm)
+            ("M-<f12>" . vterm)))
+
+#+end_src
 *** Shell
 **** helm-comint-input-ring
  Similar to =helm-eshell-history=, but used for =M-x shell=.
@@ -2520,23 +2539,13 @@ Magit a git porcelain inside Emacs !
  #+begin_src emacs-lisp
    (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring)
  #+end_src
-**** Better Shell
-
- Simplifies shell management
- #+begin_src emacs-lisp
-   (use-package better-shell
-       :ensure t
-       :bind (("C-'" . better-shell-shell)
-              ("C-;" . better-shell-remote-open)
-              ("M-<f12>" . better-shell-for-current-dir)))
- #+end_src
 *** Ansi Terminal Emulator
 Sometimes I need an Ansi Term...
-**** Force Bash
+**** Force zsh
 #+BEGIN_SRC emacs-lisp
-  (defconst t-term-name "/bin/bash")
+  (defconst t-term-name "/bin/zsh")
 
-  (defadvice ansi-term (before force-bash)
+  (defadvice ansi-term (before force-zsh)
         (interactive (list t-term-name)))
 
   (ad-activate 'ansi-term)
