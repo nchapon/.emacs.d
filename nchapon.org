@@ -2991,7 +2991,6 @@ Then we can setup Emacs go mode
 Switch Java version
 #+begin_src emacs-lisp
   (use-package sdkman
-    :no-require t
     :load-path "~/Projects/nchapon/sdkman.el")
 #+end_src
 ** Lua
