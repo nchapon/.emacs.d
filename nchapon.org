@@ -1697,9 +1697,10 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
              '(("," "Agenda"
                       ((agenda "" ((org-agenda-sorting-strategy '(timestamp-up time-up priority-down category-keep))))
 
-                       (tags-todo "TODO=\"STARTED\"+@office|TODO=\"WAITING\"+@office"
-                                  ((org-agenda-overriding-header "Started / waiting tasks @office")
-                                   (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 25)")
+                       (tags-todo "TODO=\"STARTED\"+|TODO=\"WAITING\""
+                                  ((org-agenda-overriding-header "Started / waiting tasks")
+                                   (org-agenda-prefix-format " %i %-25:c")
+                                   ;;(org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 25)")
                                    (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                        ;; (tags-todo "TODO=\"NEXT\"+@office-HOLD"
                        ;;            ((org-agenda-overriding-header "Next tasks @office")
@@ -1710,12 +1711,12 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
                        ;;             ;;   (org-agenda-skip-all-siblings-but-first)))
                        ;;             (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))
                        ;;             (org-agenda-todo-keyword-format "%-4s")))
-                       (tags-todo "TODO=\"TODO\"|TODO=\"STARTED\"-@office"
-                                  ((org-agenda-overriding-header "Other tasks")
-                                   (org-agenda-prefix-format "%-27:(nc--org-agenda-format-parent 30)")
+                       (tags-todo "TODO=\"NEXT\""
+                                  ((org-agenda-overriding-header "Next tasks")
+                                   (org-agenda-prefix-format " %i %-25:c")
                                    (org-agenda-skip-function
                                     '(org-agenda-skip-entry-if 'scheduled 'deadline))
-                                   (org-agenda-files '("~/notes/gtd.org"))
+                                   ;;(org-agenda-files '("~/notes/gtd.org"))
                                    (org-agenda-sorting-strategy '(priority-down todo-state-up category-keep))))
                        )
                       nil)
