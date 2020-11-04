@@ -1405,81 +1405,66 @@ will appear as projects.
    (defconst nc/weekly-review-file (concat org-directory "personal/reviews/weekly-review.org"))
  #+end_src
 *** Journal
-**** Function to easily load today
+**** Function to easily load weekly journal
  #+BEGIN_SRC emacs-lisp
-   (defun nc--get-journal-file-today ()
-     "Return filename for today's journal entry."
-     (let ((daily-name (format-time-string "%Y-%m-%d")))
-       (expand-file-name (concat nc/org-journal-dir "/" daily-name))))
 
    (defun nc/journal-file-today ()
-     "Create and load a journal file based on today's date."
-     (interactive)
-     (find-file (nc--get-journal-file-today)))
+         "Create and load a journal file based on today's date."
+         (interactive)
 
-   (global-set-key (kbd "C-c f j") 'nc/journal-file-today)
+         (find-file (nc--get-journal-file-today)))
+
+   (defun nc--get-journal-file-today ()
+         "Return today's journal file."
+         (let ((daily-name (format-time-string "%Y-W%W")))
+           (expand-file-name (concat nc/org-journal-dir "/" daily-name ".org"))))
+
+
+   (global-set-key (kbd "C-c f j") 'nc/goto-journal)
  #+END_SRC
 
-Journal files do not have =.org= extension, add filename pattern to have =org-mode= default.
 
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'auto-mode-alist '(".*/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]" . org-mode))
-#+END_SRC
-
-**** Yesterday journal file
-
-#+BEGIN_SRC emacs-lisp
-  (defun nc--get-journal-file-yesterday ()
-    "Return filename for yesterday's journal entry."
-    (let* ((yesterday (time-subtract (current-time) (days-to-time 1)))
-           (daily-name (format-time-string "%Y-%m-%d" yesterday)))
-      (expand-file-name (concat nc/org-journal-dir "/" daily-name))))
-
-  (defun nc/journal-file-yesterday ()
-    "Creates and load a file based on yesterday's date."
-    (interactive)
-    (find-file (nc--get-journal-file-yesterday)))
-
-  (global-set-key (kbd "C-c f y") 'nc/journal-file-yesterday)
-#+END_SRC
 
 **** Auto Insert
      Insert in journal file
    #+BEGIN_SRC emacs-lisp
-     (defun nc/journal-file-insert ()
-       "Insert's the journal heading based on the file's name."
-       (interactive)
-       (let* ((year  (string-to-number (substring (buffer-name) 0 4)))
-              (month (string-to-number (substring (buffer-name) 5 7)))
-              (day   (string-to-number (substring (buffer-name) 8 10)))
-              (datim (encode-time 0 0 0 day month year)))
+     (defun nc--autoinsert-yas-expand ()
+           "Replace text in yasnippet template."
+           (yas-expand-snippet (buffer-string) (point-min) (point-max)))
 
-         (insert (format-time-string (concat "#+TITLE:" "%A %d %B %Y") datim))
-         (insert "\n")
-         (insert "#+SETUPFILE: ~/notes/tags.org")
-         (insert "\n")
+         (custom-set-variables
+          '(auto-insert 'other)
+          '(auto-insert-directory "~/notes/templates"))
 
-         ;; Note: The `insert-file-contents' leaves the cursor at the
-         ;; beginning, so the easiest approach is to insert these files
-         ;; in reverse order:
+         (define-auto-insert "\\.org\\'" ["week.org" nc--autoinsert-yas-expand])
 
-         ;; If the journal entry I'm creating matches today's date:
-         (when (equal (file-name-base (buffer-file-name))
-                      (format-time-string "%Y-%m-%d"))
+       (defun nc/journal-file-insert ()
+         "Insert's the journal heading based on the file's name."
+         (interactive)
+         (let* ((datim (current-time)))
 
-           ;; Insert dailies that only happen once a week:
-           (let ((weekday-template (downcase
-                                    (format-time-string "templates/journal-%A.org"))))
-             (when (file-exists-p weekday-template)
-               (insert-file-contents weekday-template)))
+           (insert (format-time-string (concat "** %A %d %B %Y") datim))
 
-           (insert "")
 
-           (let ((contents (buffer-string)))
-             (delete-region (point-min) (point-max))
-             (yas-expand-snippet contents (point-min) (point-max)))
-           )
-         ))
+           ;; Note: The `insert-file-contents' leaves the cursor at the
+           ;; beginning, so the easiest approach is to insert these files
+           ;; in reverse order:
+
+           ;; If the journal entry I'm creating matches today's date:
+
+             ;; Insert dailies that only happen once a week:
+             (let ((weekday-template (downcase
+                                      (format-time-string "templates/journal-%A.org"))))
+               (when (file-exists-p weekday-template)
+                 (insert-file-contents weekday-template)))
+
+             (insert "\n")
+
+             ;; (let ((contents (buffer-string)))
+             ;;   (delete-region (point-min) (point-max))
+             ;;   (yas-expand-snippet contents (point-min) (point-max)))
+
+           ))
 
          ;; bind-key
          (bind-key "C-c o i" 'nc/journal-file-insert)
@@ -1503,7 +1488,7 @@ Journal files do not have =.org= extension, add filename pattern to have =org-mo
 #+END_SRC
 
 *** Org default notes file
-One default notes files by day in *journal/* folder
+One default notes files by week in *journal/* folder
 #+BEGIN_SRC emacs-lisp
 (setq org-default-notes-file (nc--get-journal-file-today))
 #+END_SRC
@@ -1534,7 +1519,7 @@ One default notes files by day in *journal/* folder
 
 
               ("D" "Done Business Task" entry
-                (function org-journal-find-location)
+                (file+headline nc/inbox-file "Tasks")
                 "* DONE %^{Task} :@office:"
                 :clock-in t :clock-resume t)
              ))
@@ -1570,7 +1555,7 @@ One default notes files by day in *journal/* folder
      (goto-char (point-min)))
 
    (add-to-list 'org-capture-templates
-                  `("j" "Journal entry" entry (function org-journal-find-location)
+                  `("j" "Journal entry" (file+headline org-default-notes-file "Notes")
                          "* %?\n  %i\n  From: %a" :empty-lines 1))
  #+END_SRC
 **** General Note
@@ -1760,7 +1745,7 @@ Targets include this file and any file contributing to the agenda - up to 2 leve
  #+begin_src emacs-lisp
    ;;(setq org-reverse-note-order t)
 
-   (setq org-refile-targets (append '((org-default-notes-file :level . 0))
+   (setq org-refile-targets (append '((org-default-notes-file :level . 2))
                                     '((nc/org-default-tasks-file :level . 1)
                                       (nc/org-default-projects-file :regexp . "\\(?:\\(?:Note\\|Task\\)s\\)")
                                       (nc/org-default-someday-file :level . 0)
