@@ -1126,7 +1126,7 @@ Rotate windows with =C-c w r=
   #+END_SRC
 
 * Org
-** Global settings
+** Org Configuration
 
  #+BEGIN_SRC emacs-lisp
 
@@ -1142,27 +1142,17 @@ Rotate windows with =C-c w r=
      ;; New template exapnsion
      (require 'org-tempo)
 
-      (setq org-directory "~/notes/"))
+     (setq org-directory "~/notes/"
+           org-ellipsis " ⬎"
+           org-cycle-separator-lines 0                 ;; Hide empty lines between subtrees
+           org-catch-invisible-edits 'show-and-error   ;; Avoid inadvertent text edit in invisible area
+           )
 
-
+     (set-face-attribute 'org-ellipsis nil :underline nil)
+     )
 
  #+END_SRC
-*** Custom ellipsis
-#+BEGIN_SRC emacs-lisp
-(setq org-ellipsis " ⬎") ;; ⤵ ↴ ⬎ ⤷
-(set-face-attribute 'org-ellipsis nil :underline nil)
-#+END_SRC
-*** In collapsed view, hide empty lines between subtrees
-    From: https://yiufung.net/post/org-mode-hidden-gems-pt1/
-#+BEGIN_SRC emacs-lisp
-(setq org-cycle-separator-lines 0)
-#+END_SRC
-*** Avoid inadvertent text edit in invisible area
-#+BEGIN_SRC emacs-lisp
-(setq org-catch-invisible-edits 'show-and-error)
-#+END_SRC
-
-** Fancy UI
+** Fonts & Bullets
 *** org-bullets
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
@@ -1325,87 +1315,8 @@ This clocks in a predefined task by org-id that is the default task to clock in
 #+begin_src emacs-lisp
   (bind-key "C-<f9>" 'nc/clock-in-organization-task-as-default)
 #+end_src
-** GTD Workflow
-*** Tasks & projects
-**** Todo tasks
-***** Todo states
-  - parentheses indicate keyboard shortcuts
-  - =@= prompts for a note
-  - =!= logs the timestamp of the state change
-
- #+BEGIN_SRC emacs-lisp
-   (setq org-todo-keywords
-    '((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(.)" "MAYBE(M)"  "|" "DONE(d!)")
-      (sequence "STARTED(s)" "WAITING(w@/!)" "|" "CANCELLED(c@/!)" "INACTIVE(i@/!)")
-      (sequence "MEETING(m)" "RDV(r)"  "|" "DONE(d)")))
- #+END_SRC
-
-***** Todo faces
- Colors from https://flatuicolors.com/
-
- #+BEGIN_SRC emacs-lisp
-   (setq org-todo-keyword-faces
-         (quote (("TODO" :foreground "#c0392b" :weight bold)
-                 ("NEXT" :foreground "#d35400" :weight bold)
-                 ("STARTED" :foreground "#f39c12" :weight bold)
-                 ("SOMEDAY" :foreground "#3498db" :weight bold)
-                 ("DONE" :foreground "#27ae60" :weight bold)
-                 ("WAITING" :foreground "#e74c3c" :weight bold)
-                 ("INACTIVE" :foreground "#bdc3c7" :weight bold)
-                 ("MEETING" :foreground "#e6b68d" :weight bold)
-                 ("RDV" :foreground "#e6b68d" :weight bold)
-                 ("MAYBE" :foreground "#3498db" :weight bold)
-                 ("CANCELLED" :foreground "#7f8c8d" :weight bold))))
- #+END_SRC
-**** Contexts
- #+BEGIN_SRC emacs-lisp
-   (setq org-tag-alist (quote ((:startgroup)
-                               ("@office" . ?o)
-                               ("@home" . ?h)
-                               (:endgroup)
-                               ("@computer" . ?c)
-                               ("@reading" . ?r)
-                               ("learning" . ?l)
-                               ("emacs" . ?e)
-                               (:newline)
-                               ("WAITING" . ?w)
-                               ("HOLD" . ?H)
-                               ("CANCELLED" . ?c))))
-
-   ;;(setq org-fast-tag-selection-single-key nil)
- #+END_SRC
-**** Projects
-Projects are marked with the =project= tag. They are supposed to
-contain todo items, and are considered stuck unless they do. The
-=project= tag should not be inheritable, because otherwise its tasks
-will appear as projects.
-   #+begin_src emacs-lisp
-     (setq org-tags-exclude-from-inheritance '("project")
-           org-stuck-projects '("+project/-DONE"
-                                ("TODO" "NEXT") ()))
-   #+end_src
-
-*** Files and directories
-
- #+begin_src emacs-lisp
-   (defconst nc/org-default-projects-dir (concat org-directory "projects"))
-   (defconst nc/org-default-projects-file (concat org-directory "projects.org"))
-   (defconst nc/org-default-resources-dir (concat org-directory "resources"))
-   (defconst nc/org-default-personal-dir (concat org-directory "personal"))
-   (defconst nc/org-default-completed-dir (concat org-directory "projects/_completed"))
-   (defconst nc/org-journal-dir (concat org-directory "journal"))
-   (defconst nc/inbox-file (concat org-directory "gtd.org"))
-   (defconst nc/org-default-inbox-file (concat org-directory "gtd.org"))
-   (defconst nc/org-default-tasks-file (concat org-directory "gtd.org"))
-   (defconst nc/watching-file (concat org-directory "personal/watching.org"))
-   (defconst nc/org-default-media-files (concat org-directory "personal/watching.org"))
-   (defconst nc/org-default-someday-file (concat org-directory "someday.org"))
-   (defconst nc/fishing-file (concat org-directory "personal/sports/fishing.org"))
-   (defconst nc/calendar-file (concat org-directory "personal/calendar.org"))
-   (defconst nc/weekly-review-file (concat org-directory "personal/reviews/weekly-review.org"))
- #+end_src
-*** Journal
-**** Function to easily load weekly journal
+** Journal -> <C-c f j>
+ Function to easily load weekly journal
  #+BEGIN_SRC emacs-lisp
 
    (defun nc/journal-file-today ()
@@ -1424,9 +1335,8 @@ will appear as projects.
  #+END_SRC
 
 
+Insert daily header in journal file =C-c-o-i=
 
-**** Auto Insert
-     Insert in journal file
    #+BEGIN_SRC emacs-lisp
      (defun nc--autoinsert-yas-expand ()
            "Replace text in yasnippet template."
@@ -1469,30 +1379,6 @@ will appear as projects.
          ;; bind-key
          (bind-key "C-c o i" 'nc/journal-file-insert)
    #+END_SRC
-*** Navigation
-
-#+BEGIN_SRC emacs-lisp
-  (defun nc/go-to-inbox ()
-    (interactive)
-    (find-file nc/inbox-file )
-    (widen)
-    (beginning-of-buffer)
-    (re-search-forward "* Inbox")
-    (beginning-of-line))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (defun nc/go-to-resources-dir ()
-    (interactive)
-    (dired nc/org-default-resources-dir))
-#+END_SRC
-
-*** Org default notes file
-One default notes files by week in *journal/* folder
-#+BEGIN_SRC emacs-lisp
-(setq org-default-notes-file (nc--get-journal-file-today))
-#+END_SRC
-
 *** Capture templates
  My templates :
 
@@ -2018,6 +1904,112 @@ From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
   ;; Useful keybinding
   (bind-key "C-c o c" 'org-cut-subtree)
 #+END_SRC
+** GTD Workflow
+*** Tasks & projects
+**** Todo tasks
+***** Todo states
+  - parentheses indicate keyboard shortcuts
+  - =@= prompts for a note
+  - =!= logs the timestamp of the state change
+
+ #+BEGIN_SRC emacs-lisp
+   (setq org-todo-keywords
+    '((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(.)" "MAYBE(M)"  "|" "DONE(d!)")
+      (sequence "STARTED(s)" "WAITING(w@/!)" "|" "CANCELLED(c@/!)" "INACTIVE(i@/!)")
+      (sequence "MEETING(m)" "RDV(r)"  "|" "DONE(d)")))
+ #+END_SRC
+
+***** Todo faces
+ Colors from https://flatuicolors.com/
+
+ #+BEGIN_SRC emacs-lisp
+   (setq org-todo-keyword-faces
+         (quote (("TODO" :foreground "#c0392b" :weight bold)
+                 ("NEXT" :foreground "#d35400" :weight bold)
+                 ("STARTED" :foreground "#f39c12" :weight bold)
+                 ("SOMEDAY" :foreground "#3498db" :weight bold)
+                 ("DONE" :foreground "#27ae60" :weight bold)
+                 ("WAITING" :foreground "#e74c3c" :weight bold)
+                 ("INACTIVE" :foreground "#bdc3c7" :weight bold)
+                 ("MEETING" :foreground "#e6b68d" :weight bold)
+                 ("RDV" :foreground "#e6b68d" :weight bold)
+                 ("MAYBE" :foreground "#3498db" :weight bold)
+                 ("CANCELLED" :foreground "#7f8c8d" :weight bold))))
+ #+END_SRC
+**** Contexts
+ #+BEGIN_SRC emacs-lisp
+   (setq org-tag-alist (quote ((:startgroup)
+                               ("@office" . ?o)
+                               ("@home" . ?h)
+                               (:endgroup)
+                               ("@computer" . ?c)
+                               ("@reading" . ?r)
+                               ("learning" . ?l)
+                               ("emacs" . ?e)
+                               (:newline)
+                               ("WAITING" . ?w)
+                               ("HOLD" . ?H)
+                               ("CANCELLED" . ?c))))
+
+   ;;(setq org-fast-tag-selection-single-key nil)
+ #+END_SRC
+**** Projects
+Projects are marked with the =project= tag. They are supposed to
+contain todo items, and are considered stuck unless they do. The
+=project= tag should not be inheritable, because otherwise its tasks
+will appear as projects.
+   #+begin_src emacs-lisp
+     (setq org-tags-exclude-from-inheritance '("project")
+           org-stuck-projects '("+project/-DONE"
+                                ("TODO" "NEXT") ()))
+   #+end_src
+
+** Org Files Paths
+
+ My default org files
+
+ #+begin_src emacs-lisp
+      ;; One default notes files by week in *journal/* folder
+   (setq org-directory "~/notes/"
+         org-default-notes-file (nc--get-journal-file-today))
+
+   ;; Org constant files
+    (defconst nc/org-default-projects-dir (concat org-directory "projects"))
+    (defconst nc/org-default-projects-file (concat org-directory "projects.org"))
+    (defconst nc/org-default-resources-dir (concat org-directory "resources"))
+    (defconst nc/org-default-personal-dir (concat org-directory "personal"))
+    (defconst nc/org-default-completed-dir (concat org-directory "projects/_completed"))
+    (defconst nc/org-journal-dir (concat org-directory "journal"))
+    (defconst nc/inbox-file (concat org-directory "gtd.org"))
+    (defconst nc/org-default-inbox-file (concat org-directory "gtd.org"))
+    (defconst nc/org-default-tasks-file (concat org-directory "gtd.org"))
+    (defconst nc/watching-file (concat org-directory "personal/watching.org"))
+    (defconst nc/org-default-media-files (concat org-directory "personal/watching.org"))
+    (defconst nc/org-default-someday-file (concat org-directory "someday.org"))
+    (defconst nc/fishing-file (concat org-directory "personal/sports/fishing.org"))
+    (defconst nc/calendar-file (concat org-directory "personal/calendar.org"))
+    (defconst nc/weekly-review-file (concat org-directory "personal/reviews/weekly-review.org"))
+ #+end_src
+
+Helpers Functions
+
+#+BEGIN_SRC emacs-lisp
+  (defun nc/go-to-inbox ()
+    (interactive)
+    (find-file nc/inbox-file )
+    (widen)
+    (beginning-of-buffer)
+    (re-search-forward "* Inbox")
+    (beginning-of-line))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defun nc/go-to-resources-dir ()
+    (interactive)
+    (dired nc/org-default-resources-dir))
+#+END_SRC
+
+
 ** Speed commands
  From https://orgmode.org/worg/org-hacks.html
  #+BEGIN_SRC emacs-lisp
