@@ -1420,7 +1420,7 @@ will appear as projects.
            (expand-file-name (concat nc/org-journal-dir "/" daily-name ".org"))))
 
 
-   (global-set-key (kbd "C-c f j") 'nc/goto-journal)
+   (global-set-key (kbd "C-c f j") 'nc/journal-file-today)
  #+END_SRC
 
 
@@ -1555,7 +1555,7 @@ One default notes files by week in *journal/* folder
      (goto-char (point-min)))
 
    (add-to-list 'org-capture-templates
-                  `("j" "Journal entry" (file+headline org-default-notes-file "Notes")
+                  `("j" "Journal entry" entry (function org-journal-find-location)
                          "* %?\n  %i\n  From: %a" :empty-lines 1))
  #+END_SRC
 **** General Note
