@@ -1315,6 +1315,52 @@ This clocks in a predefined task by org-id that is the default task to clock in
 #+begin_src emacs-lisp
   (bind-key "C-<f9>" 'nc/clock-in-organization-task-as-default)
 #+end_src
+** Org Files Paths
+
+ My default org files
+
+ #+begin_src emacs-lisp
+      ;; One default notes files by week in *journal/* folder
+   (setq org-directory "~/notes/")
+
+
+   ;; Org constant files
+    (defconst nc/org-default-projects-dir (concat org-directory "projects"))
+    (defconst nc/org-default-projects-file (concat org-directory "projects.org"))
+    (defconst nc/org-default-resources-dir (concat org-directory "resources"))
+    (defconst nc/org-default-personal-dir (concat org-directory "personal"))
+    (defconst nc/org-default-completed-dir (concat org-directory "projects/_completed"))
+    (defconst nc/org-journal-dir (concat org-directory "journal"))
+    (defconst nc/inbox-file (concat org-directory "gtd.org"))
+    (defconst nc/org-default-inbox-file (concat org-directory "gtd.org"))
+    (defconst nc/org-default-tasks-file (concat org-directory "gtd.org"))
+    (defconst nc/watching-file (concat org-directory "personal/watching.org"))
+    (defconst nc/org-default-media-files (concat org-directory "personal/watching.org"))
+    (defconst nc/org-default-someday-file (concat org-directory "someday.org"))
+    (defconst nc/fishing-file (concat org-directory "personal/sports/fishing.org"))
+    (defconst nc/calendar-file (concat org-directory "personal/calendar.org"))
+    (defconst nc/weekly-review-file (concat org-directory "personal/reviews/weekly-review.org"))
+ #+end_src
+
+Helpers Functions
+
+#+BEGIN_SRC emacs-lisp
+  (defun nc/go-to-inbox ()
+    (interactive)
+    (find-file nc/inbox-file )
+    (widen)
+    (beginning-of-buffer)
+    (re-search-forward "* Inbox")
+    (beginning-of-line))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defun nc/go-to-resources-dir ()
+    (interactive)
+    (dired nc/org-default-resources-dir))
+#+END_SRC
+
+
 ** Journal -> <C-c f j>
  Function to easily load weekly journal
  #+BEGIN_SRC emacs-lisp
@@ -1330,6 +1376,7 @@ This clocks in a predefined task by org-id that is the default task to clock in
          (let ((daily-name (format-time-string "%Y-W%W")))
            (expand-file-name (concat nc/org-journal-dir "/" daily-name ".org"))))
 
+   (setq org-default-notes-file (nc--get-journal-file-today))
 
    (global-set-key (kbd "C-c f j") 'nc/journal-file-today)
  #+END_SRC
@@ -1379,7 +1426,7 @@ Insert daily header in journal file =C-c-o-i=
          ;; bind-key
          (bind-key "C-c o i" 'nc/journal-file-insert)
    #+END_SRC
-*** Capture templates
+** Capture templates
  My templates :
 
  #+begin_src emacs-lisp
@@ -1410,7 +1457,7 @@ Insert daily header in journal file =C-c-o-i=
                 :clock-in t :clock-resume t)
              ))
  #+end_src
-**** TODO Meeting
+*** TODO Meeting
  Should be moved in gcal.org
 
  #+BEGIN_SRC emacs-lisp
@@ -1419,7 +1466,7 @@ Insert daily header in journal file =C-c-o-i=
             "* MEETING %? :meeting:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
  #+END_SRC
 
-**** TODO RendezVous
+*** TODO RendezVous
  Should be moved in gcal.org
  #+BEGIN_SRC emacs-lisp
  (add-to-list 'org-capture-templates
@@ -1427,7 +1474,7 @@ Insert daily header in journal file =C-c-o-i=
                   "* RDV %? :rdv:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
  #+END_SRC
 
-**** Journal entry
+*** Journal entry
 
  Integrate =org-journal= with =org-capture=
 
@@ -1444,14 +1491,14 @@ Insert daily header in journal file =C-c-o-i=
                   `("j" "Journal entry" entry (function org-journal-find-location)
                          "* %?\n  %i\n  From: %a" :empty-lines 1))
  #+END_SRC
-**** General Note
+*** General Note
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'org-capture-templates
                    '("n" "Note"  entry
                      (file+headline nc/inbox-file "Notes")
                      "* %?\n\n  %i\n\n  See: %a" :empty-lines 1))
 #+END_SRC
-**** Interruption task
+*** Interruption task
  #+BEGIN_SRC emacs-lisp
    (add-to-list 'org-capture-templates
                 `("i" "Interrupting task" entry
@@ -1470,7 +1517,7 @@ Insert daily header in journal file =C-c-o-i=
    ;; Override the key definition
    (global-set-key (kbd "<f9>") 'my/capture-interruption-task)
  #+end_src
-**** New project
+*** New project
 I have my own template for creating new projects
 
 #+BEGIN_SRC emacs-lisp
@@ -1479,7 +1526,7 @@ I have my own template for creating new projects
                (file "~/notes/templates/newproject.org")))
 #+END_SRC
 
-**** Daily Review
+*** Daily Review
 
  #+BEGIN_SRC emacs-lisp
    (add-to-list 'org-capture-templates
@@ -1499,21 +1546,21 @@ I have my own template for creating new projects
 
     (bind-key "C-c o D" 'nc/insert-daily-review)
  #+END_SRC
-**** WeeklyReview
+*** WeeklyReview
  #+BEGIN_SRC emacs-lisp
  (add-to-list 'org-capture-templates
                   `("w" "WeeklyReview" entry (file+datetree+prompt nc/weekly-review-file)
             "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]"))
  #+END_SRC
-*** Linking Headings
+** Linking Headings
 Autamatically add =ID= (unique identifier) in heading drawers to keep links unique
 #+BEGIN_SRC emacs-lisp
 (require 'org-id)
 (setq org-id-method 'uuidgen)
 (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 #+END_SRC
-*** Agenda
-**** Agenda configuration
+** Agenda
+*** Agenda configuration
  By default all files in GTD and journal folder will be in my agenda, to be searchable
 
 Setting =org-agenda-file-regexp= to include all numeric files (journal files)
@@ -1534,20 +1581,20 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
           org-deadline-warning-days 5))
 #+end_src
 
-**** Diary
+*** Diary
  #+BEGIN_SRC emacs-lisp
    (setq diary-file "~/notes/diary"
          org-agenda-include-diary t)
  #+END_SRC
-**** Custom Agenda commands
-***** Function to skip headline tagged with =:project:=
+*** Custom Agenda commands
+**** Function to skip headline tagged with =:project:=
 
  #+begin_src emacs-lisp
  (defun nc--org-agenda-skip-project ()
      (org-agenda-skip-entry-if 'regexp ":project:"))
  #+end_src
 
-***** Display Header parent
+**** Display Header parent
 
  #+BEGIN_SRC emacs-lisp
  (defun nc--org-agenda-format-parent (n)
@@ -1558,7 +1605,7 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
        (org-up-heading-safe)
        (s-truncate n (org-get-heading t t)))))
  #+END_SRC
-***** Agenda Commands
+**** Agenda Commands
 
      #+BEGIN_SRC emacs-lisp
        (defun org-current-is-todo ()
@@ -1617,7 +1664,7 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
                ("p" "Projects" tags "project")
                   ))
      #+END_SRC
-**** Recent open loops
+*** Recent open loops
 
  #+BEGIN_SRC emacs-lisp
  (defun nc/org-agenda-recent-open-loops ()
@@ -1627,7 +1674,7 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
        ;; (fetch-calendar)
        (org-agenda-list nil (org-read-date nil nil "-2d") 4)))
  #+END_SRC
-*** Refiling
+** Refiling
 Targets include this file and any file contributing to the agenda - up to 2 levels deep
  #+begin_src emacs-lisp
    ;;(setq org-reverse-note-order t)
@@ -1664,11 +1711,11 @@ Targets include this file and any file contributing to the agenda - up to 2 leve
  #+BEGIN_SRC emacs-lisp
  (setq org-refile-allow-creating-parent-nodes 'confirm)
  #+END_SRC
-*** Refiling Extras
+** Refiling Extras
 From GTD Boxes https://gitlab.com/howardabrams/spacemacs.d/-/blob/master/elisp/boxes-extras.el
 Documentation : http://www.howardism.org/Technical/Emacs/getting-more-boxes-done.html
 
-**** Refiling subtree helpers
+*** Refiling subtree helpers
 #+BEGIN_SRC emacs-lisp
   (defun org-subtree-region ()
       "Return a list of the start and end of a subtree."
@@ -1719,7 +1766,7 @@ Documentation : http://www.howardism.org/Technical/Emacs/getting-more-boxes-done
 
 #+END_SRC
 
-**** Refiling a subtree to a new File
+*** Refiling a subtree to a new File
 
 #+BEGIN_SRC emacs-lisp
   (require 'cl)
@@ -1885,7 +1932,7 @@ Documentation : http://www.howardism.org/Technical/Emacs/getting-more-boxes-done
     (interactive)
     (org-refile-subtree-to-file nc/org-default-personal-dir))
 #+END_SRC
-*** Rename Header -> <C-c o R>
+** Rename Header -> <C-c o R>
 
 From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
 
@@ -1963,52 +2010,6 @@ will appear as projects.
            org-stuck-projects '("+project/-DONE"
                                 ("TODO" "NEXT") ()))
    #+end_src
-
-** Org Files Paths
-
- My default org files
-
- #+begin_src emacs-lisp
-      ;; One default notes files by week in *journal/* folder
-   (setq org-directory "~/notes/"
-         org-default-notes-file (nc--get-journal-file-today))
-
-   ;; Org constant files
-    (defconst nc/org-default-projects-dir (concat org-directory "projects"))
-    (defconst nc/org-default-projects-file (concat org-directory "projects.org"))
-    (defconst nc/org-default-resources-dir (concat org-directory "resources"))
-    (defconst nc/org-default-personal-dir (concat org-directory "personal"))
-    (defconst nc/org-default-completed-dir (concat org-directory "projects/_completed"))
-    (defconst nc/org-journal-dir (concat org-directory "journal"))
-    (defconst nc/inbox-file (concat org-directory "gtd.org"))
-    (defconst nc/org-default-inbox-file (concat org-directory "gtd.org"))
-    (defconst nc/org-default-tasks-file (concat org-directory "gtd.org"))
-    (defconst nc/watching-file (concat org-directory "personal/watching.org"))
-    (defconst nc/org-default-media-files (concat org-directory "personal/watching.org"))
-    (defconst nc/org-default-someday-file (concat org-directory "someday.org"))
-    (defconst nc/fishing-file (concat org-directory "personal/sports/fishing.org"))
-    (defconst nc/calendar-file (concat org-directory "personal/calendar.org"))
-    (defconst nc/weekly-review-file (concat org-directory "personal/reviews/weekly-review.org"))
- #+end_src
-
-Helpers Functions
-
-#+BEGIN_SRC emacs-lisp
-  (defun nc/go-to-inbox ()
-    (interactive)
-    (find-file nc/inbox-file )
-    (widen)
-    (beginning-of-buffer)
-    (re-search-forward "* Inbox")
-    (beginning-of-line))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (defun nc/go-to-resources-dir ()
-    (interactive)
-    (dired nc/org-default-resources-dir))
-#+END_SRC
-
 
 ** Speed commands
  From https://orgmode.org/worg/org-hacks.html
