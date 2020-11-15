@@ -367,7 +367,7 @@ Disable helm completing because helm is unable to set multiple tags in org mode
  #+begin_src emacs-lisp
    (use-package helm-swoop
      :ensure t
-     :bind (("C-c o S" . helm-multi-swoop-org)
+     :bind (("C-c o s o" . helm-multi-swoop-org)
             ("C-s"   . nc/swoop-or-search)
             ("C-M-s" . helm-multi-swoop-all))
      :config (progn
@@ -1129,7 +1129,6 @@ Rotate windows with =C-c w r=
 ** Org Configuration
 
  #+BEGIN_SRC emacs-lisp
-
    (use-package org
      :ensure org-plus-contrib
      :bind (("C-c l" . org-store-link)
@@ -1149,6 +1148,22 @@ Rotate windows with =C-c w r=
            )
 
      (set-face-attribute 'org-ellipsis nil :underline nil)
+
+     ;; Autamatically add =ID= (unique identifier) in heading drawers to keep links unique
+     (require 'org-id)
+     (setq org-id-method 'uuidgen)
+     (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+
+
+     (require 'org-crypt)
+     (org-crypt-use-before-save-magic)
+
+     (add-to-list 'org-tags-exclude-from-inheritance "crypt")
+     ;; GPG key to use for encryption
+     ;; Either the Key ID or set to nil to use symmetric encryption.
+     (setq org-crypt-key "0DF2D6C6E8443FE7")
+
+
      )
 
  #+END_SRC
@@ -1233,88 +1248,6 @@ Set colors for priority faces
         org-fontify-quote-and-verse-blocks t)
 #+END_SRC
 
-** Org-clock -> <F11>
-*** Function for clocking in
-#+begin_src emacs-lisp
-  (defun nc/org-clock-in ()
-    (interactive)
-    (org-clock-in '(4)))
-
-  (global-set-key (kbd "M-<f11>") #'nc/org-clock-in)
-  (global-set-key (kbd "C-<f11>") 'org-clock-out)
-#+end_src
-*** Configuration
-
-Too many clock entries clutter up a heading.
-
-#+begin_src emacs-lisp
-  (use-package org
-    :bind (("C-c C-x C-i" . nc/org-clock-in)
-           ("C-c C-x C-o" . org-clock-out)
-           ("<f11>" . org-clock-goto))
-    :config
-    (progn
-      ;; Insinuate it everywhere
-      (org-clock-persistence-insinuate)
-      ;; Show lot of clocking history so it's easy to pick items off the C-F11 list
-      (setq org-clock-history-length 23
-            ;; Resume clocking task on clock-in if the clock is open
-            org-clock-in-resume t
-            ;; Separate drawers for clocking and logs
-            org-drawers '("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "HIDDEN")
-            ;; Save clock data and state changes and notes in the LOGBOOK drawer
-            org-clock-into-drawer t
-            ;; Sometimes I change tasks I'm clocking quickly -
-            ;; this removes clocked tasks with 0:00 duration
-            org-clock-out-remove-zero-time-clocks t
-            ;; Clock out when moving task to a done state
-            org-clock-out-when-done t
-            ;; Save the running clock and all clock history when exiting Emacs, load it on startup
-            org-clock-persist t
-            ;; Prompt to resume an active clock
-            org-clock-persist-query-resume t
-            ;; Enable auto clock resolution for finding open clocks
-            org-clock-auto-clock-resolution #'when-no-clock-is-running
-            ;; Include current clocking task in clock reports
-            org-clock-report-include-clocking-task t)))
-#+end_src
-
-*** Timereport indentation
-Fix timereport indentation
-
-#+begin_src emacs-lisp
-(defun nc--org-clocktable-indent-string (level)
-  (if (= level 1)
-      ""
-    (let ((str "\\"))
-      (while (> level 2)
-        (setq level (1- level)
-              str (concat str "_")))
-      (concat str "_ "))))
-
-(advice-add 'org-clocktable-indent-string :override #'nc--org-clocktable-indent-string)
-#+end_src
-*** Clock in organization task as default
-Organization task ID
-#+begin_src emacs-lisp
-(defvar nc/organization-task-id "93905237-907b-42a6-bdb1-11832c4d59d5")
-#+end_src
-
-This clocks in a predefined task by org-id that is the default task to clock in
-#+begin_src emacs-lisp
-  (use-package org-id
-    :ensure org
-    :config
-    (defun nc/clock-in-organization-task-as-default ()
-      (interactive)
-      (org-with-point-at (org-id-find nc/organization-task-id 'marker)
-        (org-clock-in '(16)))))
-#+end_src
-
-
-#+begin_src emacs-lisp
-  (bind-key "C-<f9>" 'nc/clock-in-organization-task-as-default)
-#+end_src
 ** Org Files Paths
 
  My default org files
@@ -1426,8 +1359,67 @@ Insert daily header in journal file =C-c-o-i=
          ;; bind-key
          (bind-key "C-c o i" 'nc/journal-file-insert)
    #+END_SRC
+** Tasks
+My Todos tasks
+  - parentheses indicate keyboard shortcuts
+  - =@= prompts for a note
+  - =!= logs the timestamp of the state change
+
+ #+BEGIN_SRC emacs-lisp
+   (setq org-todo-keywords
+    '((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(.)" "MAYBE(M)"  "|" "DONE(d!)")
+      (sequence "STARTED(s)" "WAITING(w@/!)" "|" "CANCELLED(c@/!)" "INACTIVE(i@/!)")
+      (sequence "MEETING(m)" "RDV(r)"  "|" "DONE(d)")))
+ #+END_SRC
+
+
+ Tasks faces : colors from https://flatuicolors.com/
+
+ #+BEGIN_SRC emacs-lisp
+   (setq org-todo-keyword-faces
+         (quote (("TODO" :foreground "#c0392b" :weight bold)
+                 ("NEXT" :foreground "#d35400" :weight bold)
+                 ("STARTED" :foreground "#f39c12" :weight bold)
+                 ("SOMEDAY" :foreground "#3498db" :weight bold)
+                 ("DONE" :foreground "#27ae60" :weight bold)
+                 ("WAITING" :foreground "#e74c3c" :weight bold)
+                 ("INACTIVE" :foreground "#bdc3c7" :weight bold)
+                 ("MEETING" :foreground "#e6b68d" :weight bold)
+                 ("RDV" :foreground "#e6b68d" :weight bold)
+                 ("MAYBE" :foreground "#3498db" :weight bold)
+                 ("CANCELLED" :foreground "#7f8c8d" :weight bold))))
+ #+END_SRC
+** Tags (contexts)
+In GTD tags are contexts
+ #+BEGIN_SRC emacs-lisp
+   (setq org-tag-alist (quote ((:startgroup)
+                               ("@office" . ?o)
+                               ("@home" . ?h)
+                               (:endgroup)
+                               ("@computer" . ?c)
+                               ("@reading" . ?r)
+                               ("learning" . ?l)
+                               ("emacs" . ?e)
+                               (:newline)
+                               ("WAITING" . ?w)
+                               ("HOLD" . ?H)
+                               ("CANCELLED" . ?c))))
+
+   ;;(setq org-fast-tag-selection-single-key nil)
+ #+END_SRC
+
+Projects are marked with the =project= tag. They are supposed to
+contain todo items, and are considered stuck unless they do. The
+=project= tag should not be inheritable, because otherwise its tasks
+will appear as projects.
+ #+begin_src emacs-lisp
+     (setq org-tags-exclude-from-inheritance '("project")
+           org-stuck-projects '("+project/-DONE"
+                                ("TODO" "NEXT") ()))
+ #+end_src
+
+
 ** Capture templates
- My templates :
 
  #+begin_src emacs-lisp
    (setq org-capture-templates
@@ -1552,13 +1544,6 @@ I have my own template for creating new projects
                   `("w" "WeeklyReview" entry (file+datetree+prompt nc/weekly-review-file)
             "* Summary of the week :REVIEW:\n%[~/notes/templates/review.org]"))
  #+END_SRC
-** Linking Headings
-Autamatically add =ID= (unique identifier) in heading drawers to keep links unique
-#+BEGIN_SRC emacs-lisp
-(require 'org-id)
-(setq org-id-method 'uuidgen)
-(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
-#+END_SRC
 ** Agenda
 *** Agenda configuration
  By default all files in GTD and journal folder will be in my agenda, to be searchable
@@ -1674,6 +1659,88 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
        ;; (fetch-calendar)
        (org-agenda-list nil (org-read-date nil nil "-2d") 4)))
  #+END_SRC
+** Org-clock -> <F11>
+*** Function for clocking in
+#+begin_src emacs-lisp
+  (defun nc/org-clock-in ()
+    (interactive)
+    (org-clock-in '(4)))
+
+  (global-set-key (kbd "M-<f11>") #'nc/org-clock-in)
+  (global-set-key (kbd "C-<f11>") 'org-clock-out)
+#+end_src
+*** Configuration
+
+Too many clock entries clutter up a heading.
+
+#+begin_src emacs-lisp
+  (use-package org
+    :bind (("C-c C-x C-i" . nc/org-clock-in)
+           ("C-c C-x C-o" . org-clock-out)
+           ("<f11>" . org-clock-goto))
+    :config
+    (progn
+      ;; Insinuate it everywhere
+      (org-clock-persistence-insinuate)
+      ;; Show lot of clocking history so it's easy to pick items off the C-F11 list
+      (setq org-clock-history-length 23
+            ;; Resume clocking task on clock-in if the clock is open
+            org-clock-in-resume t
+            ;; Separate drawers for clocking and logs
+            org-drawers '("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "HIDDEN")
+            ;; Save clock data and state changes and notes in the LOGBOOK drawer
+            org-clock-into-drawer t
+            ;; Sometimes I change tasks I'm clocking quickly -
+            ;; this removes clocked tasks with 0:00 duration
+            org-clock-out-remove-zero-time-clocks t
+            ;; Clock out when moving task to a done state
+            org-clock-out-when-done t
+            ;; Save the running clock and all clock history when exiting Emacs, load it on startup
+            org-clock-persist t
+            ;; Prompt to resume an active clock
+            org-clock-persist-query-resume t
+            ;; Enable auto clock resolution for finding open clocks
+            org-clock-auto-clock-resolution #'when-no-clock-is-running
+            ;; Include current clocking task in clock reports
+            org-clock-report-include-clocking-task t)))
+#+end_src
+
+*** Timereport indentation
+Fix timereport indentation
+
+#+begin_src emacs-lisp
+(defun nc--org-clocktable-indent-string (level)
+  (if (= level 1)
+      ""
+    (let ((str "\\"))
+      (while (> level 2)
+        (setq level (1- level)
+              str (concat str "_")))
+      (concat str "_ "))))
+
+(advice-add 'org-clocktable-indent-string :override #'nc--org-clocktable-indent-string)
+#+end_src
+*** Clock in organization task as default
+Organization task ID
+#+begin_src emacs-lisp
+(defvar nc/organization-task-id "93905237-907b-42a6-bdb1-11832c4d59d5")
+#+end_src
+
+This clocks in a predefined task by org-id that is the default task to clock in
+#+begin_src emacs-lisp
+  (use-package org-id
+    :ensure org
+    :config
+    (defun nc/clock-in-organization-task-as-default ()
+      (interactive)
+      (org-with-point-at (org-id-find nc/organization-task-id 'marker)
+        (org-clock-in '(16)))))
+#+end_src
+
+
+#+begin_src emacs-lisp
+  (bind-key "C-<f9>" 'nc/clock-in-organization-task-as-default)
+#+end_src
 ** Refiling
 Targets include this file and any file contributing to the agenda - up to 2 levels deep
  #+begin_src emacs-lisp
@@ -1711,11 +1778,77 @@ Targets include this file and any file contributing to the agenda - up to 2 leve
  #+BEGIN_SRC emacs-lisp
  (setq org-refile-allow-creating-parent-nodes 'confirm)
  #+END_SRC
-** Refiling Extras
+** Searching -> <C-c o s>
+*** Searching in my notes ->C-c o s n
+ #+begin_src emacs-lisp
+   (defun nc/helm-do-grep-notes ()
+     "Search in all my org notes."
+     (interactive)
+     (helm-do-grep-1 (list org-directory) t nil (list "*.org" "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]")))
+
+   (bind-key "C-c o s n" 'nc/helm-do-grep-notes)
+ #+end_src
+*** Searching tags in my notes -> C-c o s t
+Searching in my notes from tags completion table, because I use a lot of tags...
+#+begin_src emacs-lisp
+
+  (defun nc--helm-do-grep-notes-tags (candidate)
+      "Search notes with tags"
+
+    (let ((candidates (concat ":" (--reduce (format "%s:%s" acc it) (helm-marked-candidates)) ":")))
+      (helm-do-grep-1 (list org-directory) t nil (list "*.org" "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]") candidates )))
+
+  (defun nc/helm-grep-notes-tags ()
+      "Grep tags notes from org-global-tags-completion-table"
+    (interactive)
+    (helm :sources '(((name . "Tags List")
+                    (candidates . org-global-tags-completion-table)
+                    (action . nc--helm-do-grep-notes-tags)))
+           :prompt "Search with tag : "))
+
+  (bind-key "C-c o s t" 'nc/helm-grep-notes-tags)
+#+end_src
+
+
+** Babel
+*** Babel languages
+
+#+begin_src emacs-lisp
+  (use-package ob-restclient)
+
+  (setq org-plantuml-jar-path
+        (expand-file-name "~/opt/lib/plantuml.jar"))
+
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((shell . t)
+     (python . t)
+     (calc . t)
+     (js . t)
+     (plantuml . t)
+     (dot . t)
+     (restclient . t)))
+#+end_src
+*** Editing source code
+ I don't want to get distracted by the same code in the other window, so I want org src to use the current window.
+
+ #+begin_src emacs-lisp
+   (setq org-src-window-setup 'current-window)
+ #+end_src
+*** Evaluate code blocks without prompting
+#+begin_src emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
+#+end_src
+*** Syntax highlight in source blocks
+#+begin_src emacs-lisp
+  (setq org-src-fontify-natively t)
+#+end_src
+** Extras
+*** Refiling Extras -> <C-c o r>
 From GTD Boxes https://gitlab.com/howardabrams/spacemacs.d/-/blob/master/elisp/boxes-extras.el
 Documentation : http://www.howardism.org/Technical/Emacs/getting-more-boxes-done.html
 
-*** Refiling subtree helpers
+**** Refiling subtree helpers
 #+BEGIN_SRC emacs-lisp
   (defun org-subtree-region ()
       "Return a list of the start and end of a subtree."
@@ -1766,7 +1899,7 @@ Documentation : http://www.howardism.org/Technical/Emacs/getting-more-boxes-done
 
 #+END_SRC
 
-*** Refiling a subtree to a new File
+**** Refiling a subtree to a new File
 
 #+BEGIN_SRC emacs-lisp
   (require 'cl)
@@ -1932,7 +2065,7 @@ Documentation : http://www.howardism.org/Technical/Emacs/getting-more-boxes-done
     (interactive)
     (org-refile-subtree-to-file nc/org-default-personal-dir))
 #+END_SRC
-** Rename Header -> <C-c o R>
+*** Rename Header -> <C-c o R>
 
 From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
 
@@ -1951,67 +2084,7 @@ From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
   ;; Useful keybinding
   (bind-key "C-c o c" 'org-cut-subtree)
 #+END_SRC
-** GTD Workflow
-*** Tasks & projects
-**** Todo tasks
-***** Todo states
-  - parentheses indicate keyboard shortcuts
-  - =@= prompts for a note
-  - =!= logs the timestamp of the state change
-
- #+BEGIN_SRC emacs-lisp
-   (setq org-todo-keywords
-    '((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(.)" "MAYBE(M)"  "|" "DONE(d!)")
-      (sequence "STARTED(s)" "WAITING(w@/!)" "|" "CANCELLED(c@/!)" "INACTIVE(i@/!)")
-      (sequence "MEETING(m)" "RDV(r)"  "|" "DONE(d)")))
- #+END_SRC
-
-***** Todo faces
- Colors from https://flatuicolors.com/
-
- #+BEGIN_SRC emacs-lisp
-   (setq org-todo-keyword-faces
-         (quote (("TODO" :foreground "#c0392b" :weight bold)
-                 ("NEXT" :foreground "#d35400" :weight bold)
-                 ("STARTED" :foreground "#f39c12" :weight bold)
-                 ("SOMEDAY" :foreground "#3498db" :weight bold)
-                 ("DONE" :foreground "#27ae60" :weight bold)
-                 ("WAITING" :foreground "#e74c3c" :weight bold)
-                 ("INACTIVE" :foreground "#bdc3c7" :weight bold)
-                 ("MEETING" :foreground "#e6b68d" :weight bold)
-                 ("RDV" :foreground "#e6b68d" :weight bold)
-                 ("MAYBE" :foreground "#3498db" :weight bold)
-                 ("CANCELLED" :foreground "#7f8c8d" :weight bold))))
- #+END_SRC
-**** Contexts
- #+BEGIN_SRC emacs-lisp
-   (setq org-tag-alist (quote ((:startgroup)
-                               ("@office" . ?o)
-                               ("@home" . ?h)
-                               (:endgroup)
-                               ("@computer" . ?c)
-                               ("@reading" . ?r)
-                               ("learning" . ?l)
-                               ("emacs" . ?e)
-                               (:newline)
-                               ("WAITING" . ?w)
-                               ("HOLD" . ?H)
-                               ("CANCELLED" . ?c))))
-
-   ;;(setq org-fast-tag-selection-single-key nil)
- #+END_SRC
-**** Projects
-Projects are marked with the =project= tag. They are supposed to
-contain todo items, and are considered stuck unless they do. The
-=project= tag should not be inheritable, because otherwise its tasks
-will appear as projects.
-   #+begin_src emacs-lisp
-     (setq org-tags-exclude-from-inheritance '("project")
-           org-stuck-projects '("+project/-DONE"
-                                ("TODO" "NEXT") ()))
-   #+end_src
-
-** Speed commands
+*** Speed commands
  From https://orgmode.org/worg/org-hacks.html
  #+BEGIN_SRC emacs-lisp
      (defun nc/org-show-next-heading-tidily ()
@@ -2062,16 +2135,16 @@ will appear as projects.
            ("y" org-todo-yesterday)))
  #+END_SRC
 
-** Publishing my notes
-*** Basic Configuration
-    - Headings starts with =<h2>= and with no section numbers.
+*** Publishing my notes
+**** Basic Configuration
+ - Headings starts with =<h2>= and with no section numbers.
 
   #+BEGIN_SRC emacs-lisp
     (setq org-html-toplevel-hlevel 2)
     (setq org-export-with-section-numbers nil)
     (setq org-export-with-sub-superscripts nil)
   #+END_SRC
-*** CSS Style
+**** CSS Style
 
 #+begin_src emacs-lisp
   ;; (setq org-html-head "<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css?family=Inconsolata\">
@@ -2079,7 +2152,7 @@ will appear as projects.
   (setq org-html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">")
 #+end_src
 
-*** Publishing projects
+**** Publishing projects
 
  #+BEGIN_SRC emacs-lisp
    (setq org-publish-project-alist
@@ -2098,87 +2171,12 @@ will appear as projects.
             )))
  #+END_SRC
 
-*** Table Of Contents
+**** Table Of Contents
  Only 2 levels
 #+begin_src emacs-lisp
   (setq org-export-with-toc 2)
 #+end_src
-** Searching in my notes -> M-s n
- #+begin_src emacs-lisp
-   (defun nc/helm-do-grep-notes ()
-     "Search in all my org notes."
-     (interactive)
-     (helm-do-grep-1 (list org-directory) t nil (list "*.org" "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]")))
-
-   (bind-key "M-s n" 'nc/helm-do-grep-notes)
- #+end_src
-** Searching tags in my notes -> M-s t
-Searching in my notes from tags completion table, because I use a lot of tags...
-#+begin_src emacs-lisp
-
-  (defun nc--helm-do-grep-notes-tags (candidate)
-      "Search notes with tags"
-
-    (let ((candidates (concat ":" (--reduce (format "%s:%s" acc it) (helm-marked-candidates)) ":")))
-      (helm-do-grep-1 (list org-directory) t nil (list "*.org" "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]") candidates )))
-
-  (defun nc/helm-grep-notes-tags ()
-      "Grep tags notes from org-global-tags-completion-table"
-    (interactive)
-    (helm :sources '(((name . "Tags List")
-                    (candidates . org-global-tags-completion-table)
-                    (action . nc--helm-do-grep-notes-tags)))
-           :prompt "Search with tag : "))
-
-  (bind-key "M-s t" 'nc/helm-grep-notes-tags)
-#+end_src
-
-
-** Babel
-*** Babel languages
-
-#+begin_src emacs-lisp
-  (use-package ob-restclient)
-
-  (setq org-plantuml-jar-path
-        (expand-file-name "~/opt/lib/plantuml.jar"))
-
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((shell . t)
-     (python . t)
-     (calc . t)
-     (js . t)
-     (plantuml . t)
-     (dot . t)
-     (restclient . t)))
-#+end_src
-*** Editing source code
- I don't want to get distracted by the same code in the other window, so I want org src to use the current window.
-
- #+begin_src emacs-lisp
-   (setq org-src-window-setup 'current-window)
- #+end_src
-*** Evaluate code blocks without prompting
-#+begin_src emacs-lisp
-  (setq org-confirm-babel-evaluate nil)
-#+end_src
-*** Syntax highlight in source blocks
-#+begin_src emacs-lisp
-  (setq org-src-fontify-natively t)
-#+end_src
-** Org Crypt
-#+begin_src emacs-lisp
-  (require 'org-crypt)
-  (org-crypt-use-before-save-magic)
-
-  (add-to-list 'org-tags-exclude-from-inheritance "crypt")
-
-  ;; GPG key to use for encryption
-  ;; Either the Key ID or set to nil to use symmetric encryption.
-  (setq org-crypt-key "0DF2D6C6E8443FE7")
-#+end_src
-** ox-pandoc
+*** ox-pandoc
 Export Org documents via Pandoc
 #+begin_src emacs-lisp
 (use-package ox-pandoc
@@ -2628,7 +2626,7 @@ My Org / Gtd workflow hydra should be always accessible in all mode with =S-F1=
       ("i" nc/go-to-inbox "inbox")
       ("p" (find-file-other-window nc/org-default-projects-file) "projects")
       ("j" nc/journal-file-today "journal file today")
-      ("y" nc/journal-file-yesterday "yesterday file")
+      ;;("y" nc/journal-file-yesterday "yesterday file")
 
       ;; Dired
       ("P" (lambda ()
