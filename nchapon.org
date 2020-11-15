@@ -2224,16 +2224,7 @@ Export Org documents via Pandoc
                 (nospace . "-")
                 (case-fn . downcase))))
 #+END_SRC
-** PDF
-#+begin_src emacs-lisp
-  (use-package pdf-tools
-    :ensure t
-    :config
-    (pdf-tools-install)
-    (setq-default pdf-view-display-size 'fit-page)
-    (use-package org-pdftools
-      :ensure t))
-#+end_src
+
 
 ** Magit -> <F6>
 
