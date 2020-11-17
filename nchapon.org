@@ -2956,12 +2956,6 @@ Then we can setup Emacs go mode
     (end-of-line-compile))
 
 #+end_src
-** Java
-Switch Java version
-#+begin_src emacs-lisp
-  (use-package sdkman
-    :load-path "~/Projects/nchapon/sdkman.el")
-#+end_src
 ** Lua
 #+BEGIN_SRC emacs-lisp
 (use-package lua-mode
