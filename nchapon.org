@@ -10,6 +10,7 @@
 #+BEGIN_SRC emacs-lisp
   (defconst is-mac (equal system-type 'darwin))
   (defconst is-linux (equal system-type 'gnu/linux))
+  (defconst is-windows (equal system-type 'windows-nt))
   (defconst has-gui (display-graphic-p))
 #+END_SRC
 
@@ -2236,6 +2237,11 @@ Magit a git porcelain inside Emacs !
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
+
+    :init
+    (when (getenv "GIT_EXECUTABLE")
+      (setq magit-git-executable (getenv "GIT_EXECUTABLE")))
+
     :bind (("C-x g" . magit-status)
            ("<f6>" . magit-status )
            ("C-<f6>" . magit-log-buffer-file)))
@@ -2386,6 +2392,7 @@ Magit a git porcelain inside Emacs !
  #+begin_src emacs-lisp
    (use-package eshell-git-prompt
      :ensure t
+     :if (when (not is-windows) t)
      :config
      (eshell-git-prompt-use-theme 'robbyrussell))
  #+end_src
