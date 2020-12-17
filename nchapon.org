@@ -1523,11 +1523,21 @@ I have my own template for creating new projects
 *** Daily Review
 
  #+BEGIN_SRC emacs-lisp
+   (defun org-journal-find-location ()
+    ;; Open today's journal, but specify a non-nil prefix argument in order to
+    ;; inhibit inserting the heading; org-capture will insert the heading.
+    (nc/journal-file-today)
+    ;; Position point on the journal's top-level heading so that org-capture
+    ;; will add the new entry as a child entry.
+
+    (goto-char (point-min)))
+
    (add-to-list 'org-capture-templates
-                `("d" "Review: Daily Review" entry (function org-journal-find-location)
-                  (file "~/notes/templates/dailyreview.org")
-                  :clock-in t :clock-resume t))
+                  `("d" "Review: Daily Review" entry (function org-journal-find-location)
+                    (file "~/notes/templates/dailyreview.org")
+                    :clock-in t :clock-resume t))
  #+END_SRC
+
 
  #+BEGIN_SRC emacs-lisp
    (defun nc/insert-daily-review ()
