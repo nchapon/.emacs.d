@@ -1855,6 +1855,17 @@ Searching in my notes from tags completion table, because I use a lot of tags...
 #+begin_src emacs-lisp
   (setq org-src-fontify-natively t)
 #+end_src
+** Structure templates
+
+#+begin_src emacs-lisp
+;; This is needed as of Org 9.2
+(require 'org-tempo)
+
+(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("py" . "src python"))
+#+end_src
+
 ** Extras
 *** Refiling Extras -> <C-c o r>
 From GTD Boxes https://gitlab.com/howardabrams/spacemacs.d/-/blob/master/elisp/boxes-extras.el
@@ -2066,9 +2077,9 @@ Documentation : http://www.howardism.org/Technical/Emacs/getting-more-boxes-done
           (insert (format "#+%s: %s\n" (upcase key) value))))))
 
   (defun org-refile-to-technical-dir ()
-    "Move the current subtree to a file in the `technical' directory."
+    "Move the current subtree to a file in the `resources' directory."
     (interactive)
-    (org-refile-subtree-to-file nc/org-default-resources-dir))
+    (org-refile-subtree-to-file (concat nc/org-default-resources-dir "/" (format-time-string "%Y"))))
 
   (define-auto-insert "/personal/*\\.org" ["personal.org" ha/autoinsert-yas-expand])
 
@@ -2076,6 +2087,8 @@ Documentation : http://www.howardism.org/Technical/Emacs/getting-more-boxes-done
     "Move the current subtree to a file in the `personal' directory."
     (interactive)
     (org-refile-subtree-to-file nc/org-default-personal-dir))
+
+
 #+END_SRC
 *** Rename Header -> <C-c o R>
 
@@ -2980,6 +2993,15 @@ Then we can setup Emacs go mode
   :ensure t
   :mode "\\.lua\\'")
 #+END_SRC
+** Python
+
+#+begin_src emacs-lisp
+  (use-package python-mode
+    :ensure t
+    :custom
+    (python-shell-interpreter "python3"))
+#+end_src
+
 ** Markdown
    GitHub Flavored Markdown by default for README.md files.
 #+BEGIN_SRC emacs-lisp
