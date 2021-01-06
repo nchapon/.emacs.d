@@ -1790,17 +1790,17 @@ Targets include this file and any file contributing to the agenda - up to 2 leve
  #+BEGIN_SRC emacs-lisp
  (setq org-refile-allow-creating-parent-nodes 'confirm)
  #+END_SRC
-** Searching -> <C-c o s>
-*** Searching in my notes ->C-c o s n
+** Searching -> <C-c s>
+*** Searching in my notes ->C-c s n
  #+begin_src emacs-lisp
    (defun nc/helm-do-grep-notes ()
      "Search in all my org notes."
      (interactive)
      (helm-do-grep-1 (list org-directory) t nil (list "*.org" "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]")))
 
-   (bind-key "C-c o s n" 'nc/helm-do-grep-notes)
+   (bind-key "C-c s n" 'nc/helm-do-grep-notes)
  #+end_src
-*** Searching tags in my notes -> C-c o s t
+*** Searching tags in my notes -> C-c s t
 Searching in my notes from tags completion table, because I use a lot of tags...
 #+begin_src emacs-lisp
 
@@ -1818,7 +1818,7 @@ Searching in my notes from tags completion table, because I use a lot of tags...
                     (action . nc--helm-do-grep-notes-tags)))
            :prompt "Search with tag : "))
 
-  (bind-key "C-c o s t" 'nc/helm-grep-notes-tags)
+  (bind-key "C-c s t" 'nc/helm-grep-notes-tags)
 #+end_src
 
 
@@ -2156,8 +2156,18 @@ From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
            ("m" org-mark-subtree)
            ("s" org-sort)
            ("X" org-todo-done)
-           ("R" org-done-and-archive)
            ("y" org-todo-yesterday)))
+
+
+   (defun nc/org-go-speed ()
+     "Goes to the beginning of an element's header, so that you can execute speed commands."
+     (interactive)
+     (when (equal major-mode 'org-mode)
+       (if (org-at-heading-p)
+           (beginning-of-line)
+         (outline-previous-heading))))
+
+   (bind-key "C-c o s" 'nc/org-go-speed)
  #+END_SRC
 
 *** Publishing my notes
