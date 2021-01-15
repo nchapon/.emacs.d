@@ -7,7 +7,6 @@
 #+EMAIL:  `user-mail-address`
 #+DATE:   `(format-time-string "%Y-%m-%d %B")`
 #+TAGS:   $2
-#+SETUPFILE: ~/notes/tags.org
-
+#+SETUPFILE: `(concat org-directory "tags.org")`
 
 $0
