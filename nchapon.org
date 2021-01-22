@@ -1834,6 +1834,7 @@ Searching in my notes from tags completion table, because I use a lot of tags...
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((shell . t)
+     (awk .t)
      (python . t)
      (calc . t)
      (js . t)
