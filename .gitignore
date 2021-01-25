@@ -6,4 +6,5 @@ url/
 /.cache/treemacs-persist
 /.cache/treemacs-persist-at-last-error
 /etc/eshell/
+org-roam.db
 /server/

@@ -2238,6 +2238,10 @@ Export Org documents via Pandoc
 *** org-roam
 Org Roam dierctory is tested only in my =~/notes/roam= directory
 #+BEGIN_SRC emacs-lisp
+
+  (when is-windows
+    (add-to-list 'exec-path "C:/ProgramJava/tools/sqlite-tools-win32-x86-3340100"))
+
   (use-package org-roam
         :hook
         (after-init . org-roam-mode)
