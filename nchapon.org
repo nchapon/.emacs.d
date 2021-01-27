@@ -2261,6 +2261,22 @@ Org Roam dierctory is tested only in my =~/notes/roam= directory
                 :map org-mode-map
                 (("C-c n i" . org-roam-insert))))
 #+END_SRC
+*** Attachments folder
+I'm not a big fan of =org-attachments= so I prefer to store all my
+attachements in a subfolder *assets/buffer-name-sans-extension* that
+correspond to current buffer I'm editing.
+
+#+begin_src elisp
+(defun nc/create-buffer-attachment-directory ()
+    "Create assets directory for org mode file"
+  (interactive)
+  (let ((assets-buffer-dir (file-name-sans-extension (buffer-name) )))
+    (f-mkdir "assets" assets-buffer-dir)
+    (message "Creation %s folder for current folder" assets-buffer-dir)))
+#+end_src
+
+
+
 
 * Tools
 ** Deft -> <F8>
