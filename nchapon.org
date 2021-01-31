@@ -1840,8 +1840,12 @@ Searching in my notes from tags completion table, because I use a lot of tags...
      (js . t)
      (plantuml . t)
      (dot . t)
+     (java .t)
      (restclient . t)))
 #+end_src
+
+#+RESULTS:
+
 *** Editing source code
  I don't want to get distracted by the same code in the other window, so I want org src to use the current window.
 
