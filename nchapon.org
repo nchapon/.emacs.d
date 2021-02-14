@@ -95,10 +95,11 @@ This happens a lot on OS X, where an Emacs instance started from the GUI inherit
     (when (memq window-system '(mac ns x))
       (progn
         (exec-path-from-shell-initialize)
-        (exec-path-from-shell-copy-env "GOPATH")
-        (exec-path-from-shell-copy-env "JAVA_HOME")
-        (exec-path-from-shell-copy-env "PATH")
-        (exec-path-from-shell-copy-env "RUST_SRC_PATH"))))
+        ;; (exec-path-from-shell-copy-env "GOPATH")
+        ;;(exec-path-from-shell-copy-env "JAVA_HOME")
+        ;; (exec-path-from-shell-copy-env "PATH")
+        ;; (exec-path-from-shell-copy-env "RUST_SRC_PATH")
+        )))
 #+END_SRC
 * UI
 ** All The Icons
@@ -2232,14 +2233,15 @@ From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
 *** ox-pandoc
 Export Org documents via Pandoc
 #+begin_src emacs-lisp
-(use-package ox-pandoc
-  :ensure t
-  :config
-  ;; Use external css for html5
-  (let ((stylesheet (expand-file-name
-                     (locate-user-emacs-file "etc/pandoc.css"))))
-    (setq org-pandoc-options-for-html5
-`((css . ,(concat "file://" stylesheet))))))
+  (use-package ox-pandoc
+    :ensure t
+    :after org
+    :config
+    ;; Use external css for html5
+    (let ((stylesheet (expand-file-name
+                       (locate-user-emacs-file "etc/pandoc.css"))))
+      (setq org-pandoc-options-for-html5
+  `((css . ,(concat "file://" stylesheet))))))
 #+end_src
 
 #+BEGIN_SRC emacs-lisp
@@ -2351,6 +2353,7 @@ Magit a git porcelain inside Emacs !
 
  #+begin_src emacs-lisp
    (use-package eshell
+   :after esh-mode
      :init
      (setq eshell-scroll-to-bottom-on-input 'all
            eshell-error-if-no-glob t
@@ -2359,81 +2362,71 @@ Magit a git porcelain inside Emacs !
            ;;eshell-prefer-lisp-functions nil
            eshell-destroy-buffer-when-process-dies t)
 
-     )
- #+end_src
-**** Visual commands
-
- #+begin_src emacs-lisp
-   (use-package eshell
-     :init
+     ;; Visual Commands
      (require 'em-term)
      (setq eshell-visual-commands '("vi" "screen" "top" "less" "more" "lynx"
                                     "ncftp" "pine" "tin" "trn" "elm" "htop" "node" "npm")
-           eshell-visual-subcommands '(("git" "log" "diff" "show"))))
+           eshell-visual-subcommands '(("git" "log" "diff" "show")))
+
+
+
+     :config
+     (add-hook 'eshell-mode-hook (lambda ()
+                                   (eshell/alias "e" "find-file $1")
+                                   (eshell/alias "f" "helm-find-files $1")
+                                   (eshell/alias "p" "helm-projectile")
+                                   (eshell/alias "esudo" "find-file /sudo::/$1")
+                                   (eshell/alias "emacs" "find-file $1")
+                                   (eshell/alias "ee" "find-file-other-window $1")
+
+                                   (eshell/alias "gd" "magit-diff-unstaged")
+                                   (eshell/alias "gds" "magit-diff-staged")
+                                   (eshell/alias "d" "dired $1")
+
+                                   (eshell/alias "mvnci" "mvn clean install")
+                                   (eshell/alias "mvncist" "mvn clean install -DskipTests")
+                                   (eshell/alias "mvnist" "mvn install -DskipTests")
+                                   (eshell/alias "git" "git --no-pager $*")
+                                   (eshell/alias "s3api" "aws --no-verify-ssl --endpoint-url https://sgws-prod.cnp.fr s3api $*")
+
+                                   ;; alias dpsa docker ps -a --format "{{.Names}} {{.Size}} : {{.Command}}" --no-trunc
+
+                                   ;; The 'ls' executable requires the Gnu version on the Mac
+                                   ;; (eshell/alias "ll" " ls -AlohG")
+                                   ))
+
+
+
+     (defun nc/eshell-clear-buffer ()
+       "Clear terminal"
+       (interactive)
+       (let ((inhibit-read-only t))
+         (erase-buffer)
+         (eshell-send-input)))
+
+
+     (defun nc/eshell-quit-or-delete-char (arg)
+       (interactive "p")
+       (if (and (eolp) (looking-back eshell-prompt-regexp))
+           (progn
+             (eshell-life-is-too-much) ; Why not? (eshell/exit)
+             (ignore-errors
+               (delete-window)))
+         (delete-forward-char arg)))
+
+
+     :bind
+     (:map eshell-mode-map
+           ("C-d" . nc/eshell-quit-or-delete-char)
+           ("C-l" . nc/eshell-clear-buffer))
+
+     )
+
+
+
+
+
  #+end_src
-
-**** Aliases
-
- #+begin_src emacs-lisp
-   (add-hook 'eshell-mode-hook (lambda ()
-       (eshell/alias "e" "find-file $1")
-       (eshell/alias "f" "helm-find-files $1")
-       (eshell/alias "p" "helm-projectile")
-       (eshell/alias "esudo" "find-file /sudo::/$1")
-       (eshell/alias "emacs" "find-file $1")
-       (eshell/alias "ee" "find-file-other-window $1")
-
-       (eshell/alias "gd" "magit-diff-unstaged")
-       (eshell/alias "gds" "magit-diff-staged")
-       (eshell/alias "d" "dired $1")
-
-       (eshell/alias "mvnci" "mvn clean install")
-       (eshell/alias "mvncist" "mvn clean install -DskipTests")
-       (eshell/alias "mvnist" "mvn install -DskipTests")
-       (eshell/alias "git" "git --no-pager $*")
-       (eshell/alias "s3api" "aws --no-verify-ssl --endpoint-url https://sgws-prod.cnp.fr s3api $*")
-
-       ;; alias dpsa docker ps -a --format "{{.Names}} {{.Size}} : {{.Command}}" --no-trunc
-
-       ;; The 'ls' executable requires the Gnu version on the Mac
-       ;; (eshell/alias "ll" " ls -AlohG")
-       ))
- #+end_src
-
-**** Functions
-***** Clear buffer
-  #+begin_src emacs-lisp
-    (defun nc/eshell-clear-buffer ()
-      "Clear terminal"
-      (interactive)
-      (let ((inhibit-read-only t))
-        (erase-buffer)
-        (eshell-send-input)))
-
-    (add-hook 'eshell-mode-hook
-              '(lambda()
-                 (local-set-key (kbd "C-l") 'nc/eshell-clear-buffer)))
-  #+end_src
-***** Exit
-      Exit eshell with  =C-d=
- #+BEGIN_SRC emacs-lisp
- (use-package eshell
-   :config
-   (defun nc/eshell-quit-or-delete-char (arg)
-     (interactive "p")
-     (if (and (eolp) (looking-back eshell-prompt-regexp))
-         (progn
-           (eshell-life-is-too-much) ; Why not? (eshell/exit)
-           (ignore-errors
-             (delete-window)))
-       (delete-forward-char arg)))
-   :init
-   (add-hook 'eshell-mode-hook
-             (lambda ()
-               (bind-keys :map eshell-mode-map
-                          ("C-d" . nc/eshell-quit-or-delete-char)))))
- #+END_SRC
-
 **** Eshell switcher here
 
  Opens up a new shell in the directory associated with the
@@ -2490,6 +2483,7 @@ Magit a git porcelain inside Emacs !
  #+begin_src emacs-lisp
    (use-package eshell-git-prompt
      :ensure t
+     :after eshell
      :if (when (not is-windows) t)
      :config
      (eshell-git-prompt-use-theme 'robbyrussell))
@@ -2499,6 +2493,7 @@ Magit a git porcelain inside Emacs !
  #+begin_src emacs-lisp
    (use-package helm-eshell
      :ensure eshell
+     :after eshell
      :init
      (setq helm-show-completion-display-function #'helm-show-completion-default-display-function)
      (add-hook 'eshell-mode-hook
@@ -2514,6 +2509,7 @@ Magit a git porcelain inside Emacs !
      fish shell history autosuggestions.
  #+begin_src emacs-lisp
    (use-package esh-autosuggest
+     :after eshell
      :config (add-hook 'eshell-mode-hook #'esh-autosuggest-mode))
  #+end_src
 **** Tramp integration
@@ -2658,7 +2654,13 @@ Sometimes I need an Ansi Term...
     ;; If you want to complete snippets using company-mode
     ;; (add-to-list 'company-backends 'company-yankpad)
     ;; If you want to expand snippets with hippie-expand
-    (add-to-list 'hippie-expand-try-functions-list #'yankpad-expand))
+    (add-to-list 'hippie-expand-try-functions-list #'yankpad-expand)
+
+    :bind
+    (:map global-map
+
+          ("C-<f7>"   . yankpad-insert)
+          ("<f7>"   . yankpad-map)))
 #+END_SRC
 ** Hydra -> <F1>
 My Hydras are bound by default to =F1=
@@ -3141,48 +3143,54 @@ Smarter commenting for emacs
 Smart parens for all modes.
 
 #+BEGIN_SRC emacs-lisp
-    (use-package smartparens
-      :defer t
-      :diminish ""
-      :init
-      (progn
-        (add-hook 'prog-mode-hook #'turn-on-smartparens-mode)
-        ;; turn on showing the match for clojure and elisp
-        (add-hook 'clojure-mode-hook #'turn-on-show-smartparens-mode)
-        (add-hook 'emacs-lisp-mode-hook #'turn-on-show-smartparens-mode)
-        (add-hook 'java-mode-hook #'turn-on-show-smartparens-mode)
-        (add-hook 'c-mode-hook #'turn-on-show-smartparens-mode))
-      :config
-      (setq-default sp-hybrid-kill-entire-symbol nil)
+  (use-package smartparens
+    :defer t
+    :diminish ""
+    :init
+    (progn
+      (add-hook 'prog-mode-hook #'turn-on-smartparens-mode)
+      ;; turn on showing the match for clojure and elisp
+      (add-hook 'clojure-mode-hook #'turn-on-show-smartparens-mode)
+      (add-hook 'emacs-lisp-mode-hook #'turn-on-show-smartparens-mode)
+      (add-hook 'java-mode-hook #'turn-on-show-smartparens-mode)
+      (add-hook 'c-mode-hook #'turn-on-show-smartparens-mode))
+    :bind (:map sp-keymap
+                ("M-S-<left>" . sp-backward-sexp)
+                ("M-S-<right>" . sp-backward-sexp))
 
-      (setq sp-highlight-pair-overlay nil)
+    :config
+    (setq-default sp-hybrid-kill-entire-symbol nil)
 
-      (define-key sp-keymap (kbd "<delete>") 'sp-delete-char)
-      (define-key sp-keymap (kbd "C-<right>") 'sp-forward-slurp-sexp)
-      (define-key sp-keymap (kbd "C-<left>") 'sp-forward-barf-sexp)
-      (define-key sp-keymap (kbd "C-S-<right>") 'sp-backward-barf-sexp)
-      (define-key sp-keymap (kbd "C-S-<left>") 'sp-backward-slurp-sexp)
-      (define-key sp-keymap (kbd "M-s") 'sp-unwrap-sexp)
-      (define-key sp-keymap (kbd "M-S-s") 'sp-raise-sexp)
-      (define-key sp-keymap (kbd "M-i") 'sp-split-sexp)
-      (define-key sp-keymap (kbd "M-S-i") 'sp-join-sexp)
-      (define-key sp-keymap (kbd "M-t") 'sp-transpose-sexp)
-      (define-key sp-keymap (kbd "M-S-<left>") 'sp-backward-sexp)
-      (define-key sp-keymap (kbd "M-S-<right>") 'sp-forward-sexp)
+    (setq sp-highlight-pair-overlay nil)
+
+    ;; (define-key sp-keymap (kbd "<delete>") 'sp-delete-char)
+    ;; (define-key sp-keymap (kbd "C-<right>") 'sp-forward-slurp-sexp)
+    ;; (define-key sp-keymap (kbd "C-<left>") 'sp-forward-barf-sexp)
+    ;; (define-key sp-keymap (kbd "C-S-<right>") 'sp-backward-barf-sexp)
+    ;; (define-key sp-keymap (kbd "C-S-<left>") 'sp-backward-slurp-sexp)
+    ;; (define-key sp-keymap (kbd "M-s") 'sp-unwrap-sexp)
+    ;; (define-key sp-keymap (kbd "M-S-s") 'sp-raise-sexp)
+    ;; (define-key sp-keymap (kbd "M-i") 'sp-split-sexp)
+    ;; (define-key sp-keymap (kbd "M-S-i") 'sp-join-sexp)
+    ;; (define-key sp-keymap (kbd "M-t") 'sp-transpose-sexp)
+    ;; (define-key sp-keymap (kbd "M-S-<left>") 'sp-backward-sexp)
+    ;; (define-key sp-keymap (kbd "M-S-<right>") 'sp-forward-sexp)
 
 
 
-      (defun nc--create-newline-and-enter-sexp (&rest _ignored)
-        "Open a new brace or bracket expression, with relevant newlines and indent. "
-        (newline)
-        (indent-according-to-mode)
-        (forward-line -1)
-        (indent-according-to-mode))
+    (defun nc--create-newline-and-enter-sexp (&rest _ignored)
+      "Open a new brace or bracket expression, with relevant newlines and indent. "
+      (newline)
+      (indent-according-to-mode)
+      (forward-line -1)
+      (indent-according-to-mode))
 
-      (sp-with-modes '(c-mode c++-mode js-mode js2-mode java-mode
-                              typescript-mode perl-mode)
-        (sp-local-pair "{" nil :post-handlers
-                       '((nc--create-newline-and-enter-sexp "RET")))))
+    (sp-with-modes '(c-mode c++-mode js-mode js2-mode java-mode
+                            typescript-mode perl-mode)
+      (sp-local-pair "{" nil :post-handlers
+                     '((nc--create-newline-and-enter-sexp "RET")))))
+
+
 #+END_SRC
 ** Web
 *** Yaml modes
@@ -3198,12 +3206,6 @@ Smart parens for all modes.
     :mode (("\\.restclient\\'" . restclient-mode)
            ("\\.http\\'" . restclient-mode)))
 #+end_src
-*** Vue mode
-    Major mode for vue.js development
-#+BEGIN_SRC emacs-lisp
-  (use-package vue-mode)
-#+END_SRC
-
 *** Web Mode
 
 #+begin_src emacs-lisp
@@ -3224,8 +3226,8 @@ Smart parens for all modes.
 **** JS2 Mode
 #+begin_src emacs-lisp
   (use-package js2-mode
+    :mode "\\.js\\'"
     :init
-    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
     (defalias 'javascript-generic-mode 'js2-mode)
     :config
     (js2-imenu-extras-setup)
@@ -3248,7 +3250,8 @@ npn install -g tern
 
 #+begin_src emacs-lisp
   (use-package tern
-    :ensure t)
+    :ensure t
+    :after js2-mode)
 
   ;; (use-package company-tern
   ;;   :ensure    company-tern
