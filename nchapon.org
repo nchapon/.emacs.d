@@ -2275,7 +2275,7 @@ Org Roam dierctory is tested only in my =~/notes/roam= directory
           '(("d" "default" plain (function org-roam--capture-get-point)
             "%?"
             :file-name "%(format-time-string \"%Y-%m-%d--%H-%M--${slug}\" (current-time) t)"
-            :head "#+title: ${title}\n#+options: toc:nil date:nil num:nil\n\n- tags ::\n"
+            :head "#+title: ${title}\n#+options: toc:nil date:nil num:nil\n\n- links ::\n"
             :unnarrowed t)))
         :bind (:map org-roam-mode-map
                 (("C-c n l" . org-roam)
