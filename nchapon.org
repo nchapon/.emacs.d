@@ -2966,6 +2966,21 @@ First unbind emacs function =transpose-chars=
     :ensure t
     :mode "\\.adoc?\\'")
 #+END_SRC
+** Clojure
+Before you need to install Java and Clojure
+*** Clojure Mode
+#+begin_src emacs-lisp
+(use-package clojure-mode
+  :mode "\\.clj$"
+  :init
+  (setq clojure-align-forms-automatically t))
+#+end_src
+*** Cider
+
+#+begin_src emacs-lisp
+(use-package cider
+  :ensure t)
+#+end_src
 
 ** Docker
 #+begin_src emacs-lisp
