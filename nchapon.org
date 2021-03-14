@@ -1489,7 +1489,7 @@ will appear as projects.
  #+END_SRC
 *** Bookmark entry
 
- Bookmark entry are captured in journal Bookmark heading.
+ Bookmark entry are captured in journal Links heading.
 
  #+BEGIN_SRC emacs-lisp
    (defun org-journal-find-bookmark ()
@@ -1500,7 +1500,7 @@ will appear as projects.
      ;; will add the new entry as a child entry.
 
      (goto-char (point-min))
-     (search-forward (concat "Bookmarks " (format-time-string "%Y-W%W"))))
+     (search-forward (concat "Links " (format-time-string "%Y-W%W"))))
 
    (add-to-list 'org-capture-templates
                   `("b" "Bookmark" entry (function org-journal-find-bookmark)
