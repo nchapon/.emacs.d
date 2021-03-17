@@ -1291,6 +1291,7 @@ Set colors for priority faces
     (defconst nc/org-default-inbox-file (concat org-directory "gtd.org"))
     (defconst nc/org-default-tasks-file (concat org-directory "gtd.org"))
     (defconst nc/watching-file (concat org-directory "personal/watching.org"))
+    (defconst nc/reading-file (concat org-directory "personal/books.org"))
     (defconst nc/org-default-media-files (concat org-directory "personal/watching.org"))
     (defconst nc/org-default-someday-file (concat org-directory "someday.org"))
     (defconst nc/fishing-file (concat org-directory "personal/sports/fishing.org"))
@@ -1487,7 +1488,7 @@ will appear as projects.
                   `("a" "RendezVous" entry (file+headline nc/calendar-file "RendezVous")
                   "* RDV %? :rdv:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
  #+END_SRC
-*** Bookmark entry
+*** Link
 
  Bookmark entry are captured in journal Links heading.
 
@@ -1503,7 +1504,7 @@ will appear as projects.
      (search-forward (concat "Links " (format-time-string "%Y-W%W"))))
 
    (add-to-list 'org-capture-templates
-                  `("b" "Bookmark" entry (function org-journal-find-bookmark)
+                  `("l" "Linkk" entry (function org-journal-find-bookmark)
                          "* %?\n  %i\n  From: %a" :empty-lines 1))
  #+END_SRC
 *** Note
@@ -1513,6 +1514,13 @@ will appear as projects.
                      (file+headline nc/inbox-file "Notes")
                      "* %(org-insert-time-stamp nil nil t) %?\n  %i \n  See: %a" :empty-lines 1))
 #+END_SRC
+*** Book
+#+begin_src emacs-lisp
+  (add-to-list 'org-capture-templates
+                   '("b" "Book"  entry
+                     (file+headline nc/reading-file "Inbox")
+                     "* NEXT %^{Title}\n:PROPERTIES:\n:author: %^{Author}\n:name: %^{Title}\n:type: %^{Type}\n:END:\n\n%i\n\n" :empty-lines 1))
+#+end_src
 *** Interruption task
  #+BEGIN_SRC emacs-lisp
    (add-to-list 'org-capture-templates
