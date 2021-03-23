@@ -2982,10 +2982,10 @@ First unbind emacs function =transpose-chars=
 Before you need to install Java and Clojure
 *** Clojure Mode
 #+begin_src emacs-lisp
-(use-package clojure-mode
-  :mode "\\.clj$"
-  :init
-  (setq clojure-align-forms-automatically t))
+  (use-package clojure-mode
+    :mode "\\.clj$"
+    :init
+    (setq clojure-align-forms-automatically t))
 #+end_src
 *** Cider
 
@@ -2993,6 +2993,14 @@ Before you need to install Java and Clojure
 (use-package cider
   :ensure t)
 #+end_src
+*** clj-refactor
+
+#+begin_src emacs-lisp
+(use-package clj-refactor
+  :defer t)
+#+end_src
+
+
 
 ** Docker
 #+begin_src emacs-lisp
