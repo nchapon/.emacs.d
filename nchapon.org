@@ -2201,7 +2201,7 @@ From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
            (beginning-of-line)
          (outline-previous-heading))))
 
-   (bind-key "C-c o s" 'nc/org-go-speed)
+   (bind-key "C-c o /" 'nc/org-go-speed)
  #+END_SRC
 
 *** Publishing my notes
