@@ -1391,11 +1391,15 @@ My Todos tasks
 
  #+BEGIN_SRC emacs-lisp
    (setq org-todo-keywords
-    '((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(.)" "MAYBE(M)"  "|" "DONE(d!)")
-      (sequence "STARTED(s)" "WAITING(w@/!)" "|" "CANCELLED(c@/!)" "INACTIVE(i@/!)")
+    '((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(.)" "MAYBE(M)"  "|" "DONE(d)")
+      (sequence "STARTED(s)" "WAITING(w@/!)" "|" "CANCELLED(c@/!)" "INACTIVE(i@)")
       (sequence "MEETING(m)" "RDV(r)"  "|" "DONE(d)")))
  #+END_SRC
 
+Keep track when the task is completed.
+ #+begin_src emacs-lisp
+ (setq org-log-done 'time)
+ #+end_src
 
  Tasks faces : colors from https://flatuicolors.com/
 
