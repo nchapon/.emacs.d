@@ -2062,7 +2062,7 @@ Documentation : http://www.howardism.org/Technical/Emacs/getting-more-boxes-done
     (when properties
       (goto-char (point-min))
       (or (re-search-forward "^\s*$" nil t) (point-max))
-      (--map (insert (format "#+PROPERTY: %s %s" (first it) (second it))) properties))
+      (--map (insert (format "#+property: %s %s\n" (first it) (second it))) properties))
 
     ;; My auto-insert often adds an initial headline for a subtree, and in this
     ;; case, I don't want that... Yeah, this isn't really globally applicable,
