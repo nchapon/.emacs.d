@@ -17,31 +17,31 @@
 
 * Globals variables
 ** Personal Information
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (setq user-full-name "Nicolas Chapon"
          user-mail-address "nchapon@gmail.com")
- #+END_SRC
+ #+end_src
 
 ** Constants
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defconst is-mac (equal system-type 'darwin))
   (defconst is-linux (equal system-type 'gnu/linux))
   (defconst is-windows (equal system-type 'windows-nt))
   (defconst has-gui (display-graphic-p))
-#+END_SRC
+#+end_src
 
 * Package configuration
 ** use-package
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (add-to-list 'package-archives
           '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 ;;(package-refresh-contents)
- #+END_SRC
+ #+end_src
 
  Use package default configuration
-  #+BEGIN_SRC emacs-lisp
+  #+begin_src emacs-lisp
     (unless (package-installed-p 'use-package)
         (package-refresh-contents)
         (package-install 'use-package))
@@ -59,7 +59,7 @@
 
     (use-package s
       :ensure t)
-  #+END_SRC
+  #+end_src
 ** No Littering
 #+BEGIN_QUOTE
 Help keeping =~/.emacs.d= clean
@@ -74,11 +74,11 @@ Help keeping =~/.emacs.d= clean
 To avoid overloading the GNU Emacs custormization =init.el= file made by the
 user with the UI, I add the generated code in a separate file.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
   (when (file-exists-p custom-file)
     (load custom-file t))
-#+END_SRC
+#+end_src
 
 ** Exec Path From Shell
 
@@ -89,7 +89,7 @@ This happens a lot on OS X, where an Emacs instance started from the GUI inherit
 [[https://github.com/purcell/exec-path-from-shell][https://github.com/purcell/exec-path-from-shell]]
 #+END_QUOTE
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package exec-path-from-shell
     :config
     (when (memq window-system '(mac ns x))
@@ -100,15 +100,15 @@ This happens a lot on OS X, where an Emacs instance started from the GUI inherit
         ;; (exec-path-from-shell-copy-env "PATH")
         ;; (exec-path-from-shell-copy-env "RUST_SRC_PATH")
         )))
-#+END_SRC
+#+end_src
 * UI
 ** All The Icons
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package all-the-icons)
-#+END_SRC
+#+end_src
 ** Theme
 Using moe theme dark all the day
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package doom-themes
 
     :config
@@ -133,17 +133,17 @@ Using moe theme dark all the day
 
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
-#+END_SRC
+#+end_src
 ** Mode line
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package doom-modeline
     :hook (after-init . doom-modeline-init))
-#+END_SRC
+#+end_src
 
 ** Font
 Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun nc/setup-font ()
     "Set up font height"
     (interactive)
@@ -157,33 +157,33 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
 
   (when has-gui
     (add-hook 'after-init-hook #'nc/setup-font))
-#+END_SRC
+#+end_src
 
 ** Windows configuration
 *** No menu and toolbar
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-#+END_SRC
+#+end_src
 
 *** No welcome screen
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (setq  inhibit-startup-message t)
-#+END_SRC
+#+end_src
 
 ** Make fringe smaller
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (if (fboundp 'fringe-mode)
       (fringe-mode 2))
-#+END_SRC
+#+end_src
 * General Settings
 ** Better defaults
 *** Miscellaneous
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (setq initial-major-mode 'lisp-interaction-mode
        redisplay-dont-pause t
        column-number-mode t
@@ -195,48 +195,48 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
        delete-by-moving-to-trash t
        confirm-nonexistent-file-or-buffer nil
        query-replace-highlight t)
- #+END_SRC
+ #+end_src
 *** Indentation & Tabs
 **** Default indentation
  Always spaces with width of 4
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (setq-default indent-tabs-mode nil)
  (setq-default tab-width 4)
- #+END_SRC
+ #+end_src
 **** Indent new line if necessary
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (define-key global-map (kbd "RET") 'newline-and-indent)
- #+END_SRC
+ #+end_src
 *** Transparently open compressed files
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (auto-compression-mode t)
- #+END_SRC
+ #+end_src
 
 *** Always display line and column numbers
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (setq line-number-mode t)
  (setq column-number-mode t)
- #+END_SRC
+ #+end_src
 *** Answering just 'y' or 'n'
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (defalias 'yes-or-no-p 'y-or-n-p)
- #+END_SRC
+ #+end_src
 
 *** Increase or decrease text scale
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (global-set-key (kbd "C-+") 'text-scale-increase)
  (global-set-key (kbd "C--") 'text-scale-decrease)
- #+END_SRC
+ #+end_src
 *** Lines should be 80 characters
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (setq fill-column 80)
- #+END_SRC
+ #+end_src
 *** Disable annoying audio notifications
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (setq ring-bell-function 'ignore)
- #+END_SRC
+ #+end_src
 *** Ediff
 **** Ignore white space
  From : [[https://www.emacswiki.org/emacs/EdiffMode]] :
@@ -249,20 +249,20 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
   - Persistently: Customize option =ediff-diff-options=. This assumes that you are using `diff(1)’ as ‘ediff-diff-program’.
      - Whitespace insensitivity – Include ‘-w’ in =ediff-diff-options=.
      - Case insensitivity – Include ‘-i’ in =ediff-diff-options=.
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (setq ediff-diff-options "-w")
- #+END_SRC
+ #+end_src
 **** Ediff operate on selected frame
 
  Ediff should be opened in selected frame and split window horizontally
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (setq ediff-split-window-function 'split-window-horizontally)
  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
- #+END_SRC
+ #+end_src
 *** UTF-8
  Set all coding systems to utf-8
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (prefer-coding-system 'utf-8-unix)
  (set-clipboard-coding-system 'utf-8-unix)
  (set-default-coding-systems 'utf-8-unix)
@@ -275,19 +275,19 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
  (setq default-buffer-file-coding-system 'utf-8-unix)
  (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
  (setq file-name-coding-system  'utf-8)
- #+END_SRC
+ #+end_src
 *** Calendar
 **** French Calendar
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (setq calendar-week-start-day 1
          calendar-day-name-array ["Dimanche" "Lundi" "Mardi" "Mercredi"
                                   "Jeudi" "Vendredi" "Samedi"]
          calendar-month-name-array ["Janvier" "Fevrier" "Mars" "Avril" "Mai"
                                     "Juin" "Juillet" "Aout" "Septembre"
                                     "Octobre" "Novembre" "Decembre"])
- #+END_SRC
+ #+end_src
 **** French holiday
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (defvar french-holiday
      '((holiday-fixed 1 1 "Jour de l'an")
        (holiday-fixed 5 1 "Fête du travail")
@@ -306,11 +306,11 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
          calendar-mark-holidays-flag t
          calendar-mark-diary-entries-flag t)
 
- #+END_SRC
+ #+end_src
 ** Completion
 *** Company
  =company= provides auto completion mode.
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (use-package company
      :defer t
      :diminish ""
@@ -334,10 +334,10 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
              company-dabbrev-code-everywhere t
              company-transformers '(company-sort-by-occurrence))))
 
- #+END_SRC
+ #+end_src
 *** Helm
 **** Helm core configuration
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (use-package helm
      :diminish helm-mode
 
@@ -374,7 +374,7 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
             ("C-x c Y" . helm-yas-create-snippet-on-region)
             ("C-x c SPC" . helm-all-mark-rings)))
 
- #+END_SRC
+ #+end_src
 
 Disable helm completing because helm is unable to set multiple tags in org mode
 
@@ -436,11 +436,11 @@ Disable helm completing because helm is unable to set multiple tags in org mode
 **** helm-ag <C-f2>
  Can integrate Helm with [[https://github.com/ggreer/the_silver_searcher][The Silver Searcher]] (ag A code searching tool similar to ack, with a focus on speed.)
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (use-package helm-ag)
 
  (global-set-key (kbd "C-<f2>") 'helm-do-ag)
- #+END_SRC
+ #+end_src
 **** helm-tramp
  Display server list from your =~/.ssh/config= with helm interface
  #+begin_src emacs-lisp
@@ -454,7 +454,7 @@ Disable helm completing because helm is unable to set multiple tags in org mode
  #+end_src
 **** helm-org-rifle
  Search in org headings / content like Google
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (use-package helm-org-rifle
      :ensure t
      :defer t
@@ -466,7 +466,7 @@ Disable helm completing because helm is unable to set multiple tags in org mode
                     ((equal arg 4) (call-interactively #'helm-org-rifle-agenda-files nil))
                     ((equal arg 16) (helm-org-rifle-occur-agenda-files))
                     (t (helm-org-agenda-files-headings)))))))
- #+END_SRC
+ #+end_src
 
  #+begin_src emacs-lisp
    (use-package helm-org
@@ -516,7 +516,7 @@ Cf https://github.com/emacs-helm/helm/wiki/FAQ#arrow-keys-behavior-have-changed
 *** Hippie expand
  Looks at the word before point and tries  to expand it.
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (setq hippie-expand-try-functions-list
    '(try-complete-file-name-partially
      try-complete-file-name
@@ -527,59 +527,59 @@ Cf https://github.com/emacs-helm/helm/wiki/FAQ#arrow-keys-behavior-have-changed
      try-expand-dabbrev-from-kill
      try-complete-lisp-symbol-partially
      try-complete-lisp-symbol))
- #+END_SRC
+ #+end_src
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (bind-key "M-/" 'hippie-expand)
- #+END_SRC
+ #+end_src
 
 *** Yasnippet
  Snippets for programming.
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (use-package yasnippet
      :ensure t
      :diminish yas-minor-mode
      :config
      (yas-global-mode 1)
      (yas-reload-all))
- #+END_SRC
+ #+end_src
 
  Allow =M-== to choosing a snippet using helm (helm source for yasnippet)
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (use-package helm-c-yasnippet
    :ensure t
    :after yasnippet
    :init (bind-key "M-=" #'helm-yas-complete)
    :config (setq helm-yas-space-match-any-greedy t))
- #+END_SRC
+ #+end_src
 
 ** Buffers
 *** Auto revert mode
 Revert buffers automatically when underlying files are changed externally.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (global-auto-revert-mode 1)
   (setq global-auto-revert-non-file-buffers t
         auto-revert-verbose nil)
-#+END_SRC
+#+end_src
 
 *** Uniquify
 Use file path to ensure buffer name uniqueness
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 (setq uniquify-separator "/")
 (setq uniquify-after-kill-buffer-p t)
 (setq uniquify-ignore-buffers-re "^\\*")
-#+END_SRC
+#+end_src
 ** Dired
 *** Always delete and copy recursively
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (setq dired-recursive-deletes 'always)
 (setq dired-recursive-copies 'always)
-#+END_SRC
+#+end_src
 *** Human readable size
 
 #+begin_src emacs-lisp
@@ -590,28 +590,28 @@ To sort by file size change sort value we can use =C-u s=
 
 *** Dired-x
 Enable C-x C-j
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (require 'dired-x)
-#+END_SRC
+#+end_src
 *** dwim target copy
 
 #+begin_src emacs-lisp
   (setq dired-dwim-target t)
 #+end_src
 *** Font Lock Dired
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package diredfl
     :init (diredfl-global-mode 1))
-#+END_SRC
+#+end_src
 *** All the icons
     Conflict with treemacs icons
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; (use-package all-the-icons-dired
   ;;   :ensure t
   ;;   :diminish all-the-icons-dired-mode
   ;;   :init
   ;;   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
-#+END_SRC
+#+end_src
 *** Dired Narrow </>
 Narrow dired to match filter from http://pragmaticemacs.com/emacs/dynamically-filter-directory-listing-with-dired-narrow/
 #+begin_src emacs-lisp
@@ -623,7 +623,7 @@ Narrow dired to match filter from http://pragmaticemacs.com/emacs/dynamically-fi
 ** Editing
 *** Duplicate line
  Duplicate line with =C-c d=
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (defun nc/duplicate-current-line-or-region (arg)
    "Duplicates the current line or region ARG times.
  If there's no region, the current line will be duplicated.  However, if
@@ -644,11 +644,11 @@ Narrow dired to match filter from http://pragmaticemacs.com/emacs/dynamically-fi
                    (insert region)
                    (setq end (point))))
        (goto-char (+ origin (* (length region) arg) arg)))))
- #+END_SRC
+ #+end_src
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (bind-key "C-c d" 'nc/duplicate-current-line-or-region)
- #+END_SRC
+ #+end_src
 
 *** Expand region
      - expand selection with =C-==
@@ -660,34 +660,34 @@ Narrow dired to match filter from http://pragmaticemacs.com/emacs/dynamically-fi
  [[https://github.com/magnars/expand-region.el]]
  #+END_QUOTE
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (use-package expand-region
    :bind
    ("C-=" . er/expand-region))
- #+END_SRC
+ #+end_src
 *** Join lines
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
- #+END_SRC
+ #+end_src
 *** Kill
  Prefer backward-kill-word over Backspace
  https://sites.google.com/site/steveyegge2/effective-emacs
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (global-set-key "\C-w" 'backward-kill-word)
  (global-set-key "\C-x\C-k" 'kill-region)
- #+END_SRC
+ #+end_src
 **** Kill whole line <S-backspace>
  Kill whole line with
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (global-set-key (kbd "S-<backspace>") 'kill-whole-line)
- #+END_SRC
+ #+end_src
 
 *** Multiple Cursors
 
  This package can create several cursors to all do the same things.
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (use-package multiple-cursors
      :bind
      (("C-S-c C-S-c" .  mc/edit-lines)
@@ -698,12 +698,12 @@ Narrow dired to match filter from http://pragmaticemacs.com/emacs/dynamically-fi
       ("C-S-n" .  mc/mark-next-like-this)
       ("C-S-p" .  mc/mark-previous-like-this)
       ("C-*" .  mc/mark-all-dwim)))
- #+END_SRC
+ #+end_src
 *** Move Line
 **** Move line Up
  Move line Up is bound to =C-S-UpArrow=
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (defun nc/move-line-up ()
    "Move up the current line."
    (interactive)
@@ -712,11 +712,11 @@ Narrow dired to match filter from http://pragmaticemacs.com/emacs/dynamically-fi
    (indent-according-to-mode))
 
  (global-set-key [(control shift up)]  'nc/move-line-up)
- #+END_SRC
+ #+end_src
 **** Move line down
  Move line down is bound to =C-S-DownArrow=
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (defun nc/move-line-down ()
    "Move down the current line."
    (interactive)
@@ -726,10 +726,10 @@ Narrow dired to match filter from http://pragmaticemacs.com/emacs/dynamically-fi
    (indent-according-to-mode))
 
  (global-set-key [(control shift down)]  'nc/move-line-down)
- #+END_SRC
+ #+end_src
 *** Super Save
 Auto save buffers when buffers loose focus, disabled for remote buffers.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package super-save
     :ensure t
     :config
@@ -737,11 +737,11 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
           super-save-remote-files nil)
     (add-to-list 'super-save-triggers 'ace-window)
     (super-save-mode +1))
-#+END_SRC
+#+end_src
 
 *** Undo Tree
  This lets you use =C-x u= (=undo-tree-visualize=)
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (use-package undo-tree
      :diminish undo-tree-mode
      :config
@@ -749,13 +749,13 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
        (global-undo-tree-mode)
        (setq undo-tree-visualizer-timestamps t)
        (setq undo-tree-visualizer-diff t)))
- #+END_SRC
+ #+end_src
 
 ** Files
 *** Revert Buffer <F5>
-    #+BEGIN_SRC emacs-lisp
+    #+begin_src emacs-lisp
       (bind-key "<f5>" 'revert-buffer)
-    #+END_SRC
+    #+end_src
 *** Recent Files
 
  #+BEGIN_QUOTE
@@ -766,21 +766,21 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
  [[https://www.emacswiki.org/emacs/RecentFiles][https://www.emacswiki.org/emacs/RecentFiles]]
  #+END_QUOTE
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (use-package recentf
      :config
      (setq recentf-max-menu-items 15
            recentf-max-saved-items 200))
- #+END_SRC
+ #+end_src
 
 *** Backup files
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (setq delete-old-versions t  ; delete excess backup versions silently
      version-control t        ; numbered versions
 )
- #+END_SRC
+ #+end_src
 *** Copy file name to clipboard <C-c f w>
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
     (defun nc/copy-filename-to-clipboard ()
       "Copy the current buffer file name to the clipboard."
       (interactive)
@@ -792,10 +792,10 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
           (message "Copied buffer file name '%s' to the clipboard." filename))))
 
    (bind-key "C-c f w" #'nc/copy-filename-to-clipboard)
- #+END_SRC
+ #+end_src
 
 *** Delete file <C-c f D>
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun nc/delete-this-file ()
     "Kill the current buffer and deletes the file it is visiting."
     (interactive)
@@ -809,9 +809,9 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
             (kill-buffer))))))
 
   (bind-key "C-c f D" #'nc/delete-this-file)
-#+END_SRC
+#+end_src
 *** Rename file <C-c f R>
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun nc/rename-this-file-and-buffer ()
     "Renames current buffer and file it is visiting."
     (interactive)
@@ -826,7 +826,7 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
             (set-visited-file-name new-name t t)))))))
 
   (bind-key "C-c f R" #'nc/rename-this-file-and-buffer)
-#+END_SRC
+#+end_src
 
 *** Emacs Config File
 
@@ -860,14 +860,14 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
  [[https://github.com/justbur/emacs-which-key][Justin Burkett]]
  #+END_QUOTE
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (use-package which-key
      :config
      (which-key-mode))
- #+END_SRC
+ #+end_src
 
 *** Key Chords
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (use-package key-chord
      :init
      (key-chord-mode 1)
@@ -884,71 +884,71 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
      (key-chord-define-global "WW" 'nc/swap-windows)
      (key-chord-define-global "$$" 'end-of-buffer)
      (key-chord-define-global "kk" 'kill-this-buffer))
- #+END_SRC
+ #+end_src
 *** Globals Keys
 **** Undo
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (bind-key "C-z" #'undo)
-#+END_SRC
+#+end_src
 ** Mac OS
 *** Dired options
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
     ;; brew install coreutils
    (if (executable-find "gls")
        (progn
          (setq insert-directory-program "gls")
          (setq dired-listing-switches "-lFaGh1v --group-directories-first"))
      (setq dired-listing-switches "-ahlF"))
- #+END_SRC
+ #+end_src
 
 *** Keys for apple keyboard
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (when is-mac
      (setq mac-command-modifier 'meta)    ; make cmd key do Meta
      (setq mac-option-modifier 'super)    ; make opt key do Super
      (setq mac-control-modifier 'control) ; make Control key do Control
      (setq ns-function-modifier 'hyper)   ; make Fn key do Hyper
    )
- #+END_SRC
+ #+end_src
 *** Mac right option
  This will allow you to use the right ~⌥~ key to write symbols ={[]}=. The left ~⌥~ key can be used as the Meta
  key.
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (when is-mac
      (setq-default mac-right-option-modifier nil))
- #+END_SRC
+ #+end_src
 *** GPG
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (when is-mac
      (setf epa-pinentry-mode 'loopback))
- #+END_SRC
+ #+end_src
 *** French Locale
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (when is-mac
      (set-locale-environment "fr_FR.UTF-8"))
- #+END_SRC
+ #+end_src
 ** Navigation
 *** Basic navigation
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (bind-key "s-<up>" 'beginning-of-buffer) ;; first line
   (bind-key "s-<down>" 'end-of-buffer)     ;; last line
-#+END_SRC
+#+end_src
 *** ace-jump
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (use-package ace-jump-mode
      :bind
      (("C-c /" . ace-jump-mode)
       ("C-c k". ace-jump-mode-pop-mark)))
- #+END_SRC
+ #+end_src
 *** Goto line
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (global-set-key (kbd "M-g")         'goto-line)
- #+END_SRC
+ #+end_src
 *** Move to beginning of line
  From  [[https://github.com/bbatsov/prelude]]
  See article [[http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/]]
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (defun nc/smarter-move-beginning-of-line (arg)
    "Move point back to indentation of beginning of line.
 
@@ -975,9 +975,9 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
  (global-set-key [remap move-beginning-of-line]
                  'nc/smarter-move-beginning-of-line)
 
- #+END_SRC
+ #+end_src
 *** Dumb Jump
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package dumb-jump
     :bind (("C-M-g" . dumb-jump-go)
            ("C-M-p" . dumb-jump-back)
@@ -988,10 +988,10 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
           dumb-jump-force-searcher 'rg)
     ;; (setq dumb-jump-selector 'helm)
     :ensure)
-#+END_SRC
+#+end_src
 
 ** Projectile
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package projectile
     :diminish projectile-mode
 
@@ -1008,12 +1008,12 @@ Auto save buffers when buffers loose focus, disabled for remote buffers.
     (add-to-list 'projectile-globally-ignored-directories "image-dired")
     (add-to-list 'projectile-globally-ignored-files "node_modules")
     (projectile-global-mode))
-#+END_SRC
+#+end_src
 
 ** Windows
 *** ace-window
 Perhaps I need to use =switch-window= (Cf  https://github.com/dimitri/switch-window)
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (use-package ace-window
      :bind (([remap other-window] . ace-window))
      :config
@@ -1022,11 +1022,11 @@ Perhaps I need to use =switch-window= (Cf  https://github.com/dimitri/switch-win
      (custom-set-faces
       '(aw-leading-char-face
         ((t (:inherit ace-jump-face-foreground :height 3.0))))))
- #+END_SRC
+ #+end_src
 *** golden-ratio
  Resize automatically the windows you are working
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (use-package golden-ratio
      :ensure t
      :diminish t
@@ -1036,11 +1036,11 @@ Perhaps I need to use =switch-window= (Cf  https://github.com/dimitri/switch-win
      (setq golden-ratio-extra-commands
            (append golden-ratio-extra-commands
                    '(ace-window))))
- #+END_SRC
+ #+end_src
 
 *** Toggle window split <C-c w ->
 Bound to =C-c w -=.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun nc/toggle-window-split ()
     (interactive)
     (if (= (count-windows) 2)
@@ -1067,10 +1067,10 @@ Bound to =C-c w -=.
             (if this-win-2nd (other-window 1))))))
 
   (bind-key "C-c w -" 'nc/toggle-window-split)
-#+END_SRC
+#+end_src
 *** Split window right <C-c w |>
 Split window right with =C-c w |= and move there
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun nc/split-window-right-and-move-there-dammit ()
   (interactive)
   (split-window-right)
@@ -1078,7 +1078,7 @@ Split window right with =C-c w |= and move there
 
 (bind-key "C-c w |" 'nc/split-window-right-and-move-there-dammit)
 (bind-key "C-c w l" 'nc/split-window-right-and-move-there-dammit)
-#+END_SRC
+#+end_src
 
 *** Rotate windows <C-c w r>
 Rotate windows with =C-c w r=
@@ -1120,9 +1120,9 @@ Rotate windows with =C-c w r=
 ** Hooks
 *** Cleanup before save
  Remove all trailing whitespace and trailing blank lines before saving the file
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (add-hook 'before-save-hook 'whitespace-cleanup)
- #+END_SRC
+ #+end_src
 *** Copying lines without selecting them
     From http://emacs-fu.blogspot.fr/2009/11/copying-lines-without-selecting-them.html
      - =M-w= will copy current line without selection
@@ -1138,19 +1138,19 @@ Rotate windows with =C-c w r=
 
 *** Emacs Server
 
-  #+BEGIN_SRC emacs-lisp
+  #+begin_src emacs-lisp
     (server-start)
 
     (add-hook 'after-make-frame-functions
               (lambda (frame)
                 (select-frame frame)
                 (nc/setup-font)))
-  #+END_SRC
+  #+end_src
 
 * Org
 ** Org Configuration
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (use-package org
      :ensure org-plus-contrib
      :bind (("C-c l" . org-store-link)
@@ -1188,15 +1188,15 @@ Rotate windows with =C-c w r=
 
      )
 
- #+END_SRC
+ #+end_src
 ** Fonts & Bullets
 *** org-bullets
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
     :after org
     :custom (org-bullets-bullet-list '("◉" "✿" "★" "•")))
-#+END_SRC
+#+end_src
 
 Hiding leading bullets in headers
 
@@ -1204,7 +1204,7 @@ Hiding leading bullets in headers
   (setq org-hide-leading-stars t)
 #+end_src
 *** Heading styles
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (let* ((variable-tuple (cond ((x-list-fonts "Input Sans") '(:font "Input Sans"))
                                ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
                                ((x-list-fonts "Verdana")         '(:font "Verdana"))
@@ -1241,35 +1241,35 @@ Hiding leading bullets in headers
                             `(org-checkbox-statistics-todo ((t (:foreground "#ff4c4f"))))
                             '(org-list-dt               ((t (:foreground "#ff4c4f"))))
                             '(org-link                  ((t (:foreground "#697dff" :underline t))))))
-#+END_SRC
+#+end_src
 *** org-fancy-priorities
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package org-fancy-priorities
         :diminish
         :defines org-fancy-priorities-list
         :hook (org-mode . org-fancy-priorities-mode)
         :config (setq org-fancy-priorities-list '("⚡" "⬆" "⬆" "⬇")))
-#+END_SRC
+#+end_src
 
 Set colors for priority faces
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-lowest-priority ?D
           org-default-priority ?D
           org-priority-faces '((?A . (:foreground "red" :weight bold))
                                (?B . (:foreground "orange"))
                                (?C . (:foreground "yellow"))
                                (?D . (:foreground "green"))))
-#+END_SRC
+#+end_src
 *** Startup Indented
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-startup-indented t
         org-pretty-entities t
         ;; show actually italicized text instead of /italicized text/
         org-hide-emphasis-markers t
         org-fontify-quote-and-verse-blocks t)
-#+END_SRC
+#+end_src
 
 ** Org Files Paths
 
@@ -1301,7 +1301,7 @@ Set colors for priority faces
 
 Helpers Functions
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun nc/go-to-inbox ()
     (interactive)
     (find-file nc/inbox-file )
@@ -1309,18 +1309,18 @@ Helpers Functions
     (beginning-of-buffer)
     (re-search-forward "* Inbox")
     (beginning-of-line))
-#+END_SRC
+#+end_src
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun nc/go-to-resources-dir ()
     (interactive)
     (dired nc/org-default-resources-dir))
-#+END_SRC
+#+end_src
 
 
 ** Journal -> <C-c f j>
  Function to easily load weekly journal
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
 
    (defun nc/journal-file-today ()
          "Create and load a journal file based on today's date."
@@ -1336,12 +1336,12 @@ Helpers Functions
    (setq org-default-notes-file (nc--get-journal-file-today))
 
    (global-set-key (kbd "C-c f j") 'nc/journal-file-today)
- #+END_SRC
+ #+end_src
 
 
 Insert daily header in journal file =C-c-o-i=
 
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (defun nc--autoinsert-yas-expand ()
            "Replace text in yasnippet template."
            (yas-expand-snippet (buffer-string) (point-min) (point-max)))
@@ -1382,19 +1382,19 @@ Insert daily header in journal file =C-c-o-i=
 
          ;; bind-key
          (bind-key "C-c o i" 'nc/journal-file-insert)
-   #+END_SRC
+   #+end_src
 ** Tasks
 My Todos tasks
   - parentheses indicate keyboard shortcuts
   - =@= prompts for a note
   - =!= logs the timestamp of the state change
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (setq org-todo-keywords
     '((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(.)" "MAYBE(M)"  "|" "DONE(d)")
       (sequence "STARTED(s)" "WAITING(w@/!)" "|" "CANCELLED(c@/!)" "INACTIVE(i@)")
       (sequence "MEETING(m)" "RDV(r)"  "|" "DONE(d)")))
- #+END_SRC
+ #+end_src
 
 Keep track when the task is completed.
  #+begin_src emacs-lisp
@@ -1403,7 +1403,7 @@ Keep track when the task is completed.
 
  Tasks faces : colors from https://flatuicolors.com/
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (setq org-todo-keyword-faces
          (quote (("TODO" :foreground "#c0392b" :weight bold)
                  ("NEXT" :foreground "#d35400" :weight bold)
@@ -1416,10 +1416,10 @@ Keep track when the task is completed.
                  ("RDV" :foreground "#e6b68d" :weight bold)
                  ("MAYBE" :foreground "#3498db" :weight bold)
                  ("CANCELLED" :foreground "#7f8c8d" :weight bold))))
- #+END_SRC
+ #+end_src
 ** Tags (contexts)
 In GTD tags are contexts
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (setq org-tag-alist (quote ((:startgroup)
                                ("@office" . ?o)
                                ("@home" . ?h)
@@ -1434,7 +1434,7 @@ In GTD tags are contexts
                                ("CANCELLED" . ?c))))
 
    ;;(setq org-fast-tag-selection-single-key nil)
- #+END_SRC
+ #+end_src
 
 Projects are marked with the =project= tag. They are supposed to
 contain todo items, and are considered stuck unless they do. The
@@ -1480,23 +1480,23 @@ will appear as projects.
 *** TODO Meeting
  Should be moved in gcal.org
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (add-to-list 'org-capture-templates
                   `("m" "Meeting" entry (file+headline nc/calendar-file "Réunions")
             "* MEETING %? :meeting:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
- #+END_SRC
+ #+end_src
 *** TODO RendezVous
  Should be moved in gcal.org
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (add-to-list 'org-capture-templates
                   `("a" "RendezVous" entry (file+headline nc/calendar-file "RendezVous")
                   "* RDV %? :rdv:\n%U\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"))
- #+END_SRC
+ #+end_src
 *** Link
 
  Bookmark entry are captured in journal Links heading.
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (defun org-journal-find-bookmark ()
      ;; Open today's journal, but specify a non-nil prefix argument in order to
      ;; inhibit inserting the heading; org-capture will insert the heading.
@@ -1510,14 +1510,14 @@ will appear as projects.
    (add-to-list 'org-capture-templates
                   `("l" "Linkk" entry (function org-journal-find-bookmark)
                          "* %?\n  %i\n  From: %a" :empty-lines 1))
- #+END_SRC
+ #+end_src
 *** Note
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-to-list 'org-capture-templates
                    '("n" "Note"  entry
                      (file+headline nc/inbox-file "Notes")
                      "* %(org-insert-time-stamp nil nil t) %?\n  %i \n  See: %a" :empty-lines 1))
-#+END_SRC
+#+end_src
 *** Book
 #+begin_src emacs-lisp
   (add-to-list 'org-capture-templates
@@ -1526,13 +1526,13 @@ will appear as projects.
                      "* NEXT %^{Title}\n:PROPERTIES:\n:author: %^{Author}\n:name: %^{Title}\n:type: %^{Type}\n:END:\n\n%i\n\n" :empty-lines 1))
 #+end_src
 *** Interruption task
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (add-to-list 'org-capture-templates
                 `("i" "Interrupting task" entry
                   (function org-journal-find-location)
                   "* %^{Task}"
                   :clock-in t :clock-resume t))
- #+END_SRC
+ #+end_src
 
 
  #+begin_src emacs-lisp
@@ -1547,15 +1547,15 @@ will appear as projects.
 *** New project
 I have my own template for creating new projects
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-to-list 'org-capture-templates
                      `("p" "New Project" entry (file nc/org-default-projects-file)
                (file "~/_PIM/notes/templates/newproject.org")))
-#+END_SRC
+#+end_src
 
 *** Daily Review
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (defun org-journal-find-location ()
     ;; Open today's journal, but specify a non-nil prefix argument in order to
     ;; inhibit inserting the heading; org-capture will insert the heading.
@@ -1569,10 +1569,10 @@ I have my own template for creating new projects
                   `("d" "Review: Daily Review" entry (function org-journal-find-location)
                     (file "~/_PIM/notes/templates/dailyreview.org")
                     :clock-in t :clock-resume t))
- #+END_SRC
+ #+end_src
 
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (defun nc/insert-daily-review ()
          (interactive)
            (progn
@@ -1582,13 +1582,13 @@ I have my own template for creating new projects
              (org-clock-in)))
 
     (bind-key "C-c o D" 'nc/insert-daily-review)
- #+END_SRC
+ #+end_src
 *** WeeklyReview
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (add-to-list 'org-capture-templates
                   `("w" "WeeklyReview" entry (file+datetree+prompt nc/weekly-review-file)
             "* Summary of the week :REVIEW:\n%[~/_PIM/notes/templates/review.org]"))
- #+END_SRC
+ #+end_src
 ** Agenda
 *** Agenda configuration
 By default all files in GTD and journal folder will be in my agenda, to be searchable
@@ -1608,10 +1608,10 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
 #+end_src
 
 *** Diary
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (setq diary-file "~/_PIM/notes/diary"
          org-agenda-include-diary t)
- #+END_SRC
+ #+end_src
 *** Custom Agenda commands
 **** Function to skip headline tagged with =:project:=
 
@@ -1622,7 +1622,7 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
 
 **** Display Header parent
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (defun nc--org-agenda-format-parent (n)
    ;; (s-truncate n (org-format-outline-path (org-get-outline-path)))
    (save-excursion
@@ -1630,10 +1630,10 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
        (widen)
        (org-up-heading-safe)
        (s-truncate n (org-get-heading t t)))))
- #+END_SRC
+ #+end_src
 **** Agenda Commands
 
-     #+BEGIN_SRC emacs-lisp
+     #+begin_src emacs-lisp
        (defun org-current-is-todo ()
          (string= "NEXT" (org-get-todo-state)))
 
@@ -1689,17 +1689,17 @@ Setting =org-agenda-file-regexp= to include all numeric files (journal files)
                  ;; ..other commands here
                ("p" "Projects" tags "project")
                   ))
-     #+END_SRC
+     #+end_src
 *** Recent open loops
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (defun nc/org-agenda-recent-open-loops ()
      (interactive)
      (let ((org-agenda-start-with-log-mode t)
              (org-agenda-use-time-grid nil))
        ;; (fetch-calendar)
        (org-agenda-list nil (org-read-date nil nil "-2d") 4)))
- #+END_SRC
+ #+end_src
 ** Org-clock -> <F11>
 *** Function for clocking in
 #+begin_src emacs-lisp
@@ -1798,27 +1798,27 @@ Targets include this file and any file contributing to the agenda - up to 2 leve
 
  Exclude completed tasks from refile targets.
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (defun nc--verify-refile-target ()
      "Exclude todo keywords with a done state from refile targets"
      (not (member (nth 2 (org-heading-components)) org-done-keywords)))
 
    (setq org-refile-target-verify-function 'nc--verify-refile-target)
- #+END_SRC
+ #+end_src
 
 
  Listing filenames and headings in targets and do not complete in steps, helm will listing filenames & headings.
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (setq org-refile-use-outline-path 'file)
  (setq org-outline-path-complete-in-steps nil)
- #+END_SRC
+ #+end_src
 
  Allow creating parent nodes
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
  (setq org-refile-allow-creating-parent-nodes 'confirm)
- #+END_SRC
+ #+end_src
 ** Searching -> <C-c s>
 *** Searching in my notes ->C-c s n
  #+begin_src emacs-lisp
@@ -1906,7 +1906,7 @@ From GTD Boxes https://gitlab.com/howardabrams/spacemacs.d/-/blob/master/elisp/b
 Documentation : http://www.howardism.org/Technical/Emacs/getting-more-boxes-done.html
 
 **** Refiling subtree helpers
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun org-subtree-region ()
       "Return a list of the start and end of a subtree."
       (save-excursion
@@ -1954,11 +1954,11 @@ Documentation : http://www.howardism.org/Technical/Emacs/getting-more-boxes-done
 
   (bind-key "C-c o r" #'org-refile-directly)
 
-#+END_SRC
+#+end_src
 
 **** Refiling a subtree to a new File
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (require 'cl)
 
   (defun org-subtree-metadata ()
@@ -2123,12 +2123,12 @@ Documentation : http://www.howardism.org/Technical/Emacs/getting-more-boxes-done
     (org-refile-subtree-to-file nc/org-default-personal-dir))
 
 
-#+END_SRC
+#+end_src
 *** Rename Header -> <C-c o R>
 
 From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
     (defun nc/org-rename-header (label)
         "Rename the current section's header to LABEL, and moves the
       point to the end of the line."
@@ -2142,10 +2142,10 @@ From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
 
   ;; Useful keybinding
   (bind-key "C-c o c" 'org-cut-subtree)
-#+END_SRC
+#+end_src
 *** Speed commands
  From https://orgmode.org/worg/org-hacks.html
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
      (defun nc/org-show-next-heading-tidily ()
        "Show next entry, keeping other entries closed."
        (if (save-excursion (end-of-line) (outline-invisible-p))
@@ -2202,17 +2202,17 @@ From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
          (outline-previous-heading))))
 
    (bind-key "C-c o /" 'nc/org-go-speed)
- #+END_SRC
+ #+end_src
 
 *** Publishing my notes
 **** Basic Configuration
  - Headings starts with =<h2>= and with no section numbers.
 
-  #+BEGIN_SRC emacs-lisp
+  #+begin_src emacs-lisp
     (setq org-html-toplevel-hlevel 2)
     (setq org-export-with-section-numbers nil)
     (setq org-export-with-sub-superscripts nil)
-  #+END_SRC
+  #+end_src
 **** CSS Style
 
 #+begin_src emacs-lisp
@@ -2223,7 +2223,7 @@ From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
 
 **** Publishing projects
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (setq org-publish-project-alist
          '(("GTD"
             :base-directory "~/_PIM/notes/GTD"
@@ -2238,7 +2238,7 @@ From https://gitlab.com/howardabrams/spacemacs.d/-/raw/master/elisp/boxes.el
             :recursive t
             :publishing-function org-publish-attachment
             )))
- #+END_SRC
+ #+end_src
 
 **** Table Of Contents
  Only 2 levels
@@ -2259,19 +2259,19 @@ Export Org documents via Pandoc
   `((css . ,(concat "file://" stylesheet))))))
 #+end_src
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package htmlize
   :commands (htmlize-buffer
              htmlize-file
              htmlize-many-files
              htmlize-many-files-dired
              htmlize-region))
-#+END_SRC
+#+end_src
 
 
 *** org-roam
 Org Roam dierctory is tested only in my =~/notes/roam= directory
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (when is-windows
     (add-to-list 'exec-path "C:/ProgramJava/tools/sqlite-tools-win32-x86-3340100"))
@@ -2295,7 +2295,7 @@ Org Roam dierctory is tested only in my =~/notes/roam= directory
                  ("C-c n g" . org-roam-show-graph))
                 :map org-mode-map
                 (("C-c n i" . org-roam-insert))))
-#+END_SRC
+#+end_src
 *** Attachments folder
 I'm not a big fan of =org-attachments= so I prefer to store all my
 attachements in a subfolder *assets/buffer-name-sans-extension* that
@@ -2421,7 +2421,7 @@ From : https://github.com/tecosaur/emacs-config/blob/master/config.org#translate
 
 * Tools
 ** Deft -> <F8>
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package deft
       :bind
       (("<f8>" . deft))
@@ -2445,7 +2445,7 @@ From : https://github.com/tecosaur/emacs-config/blob/master/config.org#translate
               '((noslash . "-")
                 (nospace . "-")
                 (case-fn . downcase))))
-#+END_SRC
+#+end_src
 
 
 ** Magit -> <F6>
@@ -2456,7 +2456,7 @@ Magit a git porcelain inside Emacs !
 [[https://github.com/magit/magit]]
 #+END_QUOTE
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package magit
 
     :init
@@ -2466,7 +2466,7 @@ Magit a git porcelain inside Emacs !
     :bind (("C-x g" . magit-status)
            ("<f6>" . magit-status )
            ("C-<f6>" . magit-log-buffer-file)))
-#+END_SRC
+#+end_src
 ** Shells
 *** Eshell
     Mainly come from [[https://github.com/howardabrams/dot-files/blob/master/emacs-eshell.org]]
@@ -2637,7 +2637,7 @@ Magit a git porcelain inside Emacs !
      Let’s make =eshell= tramp-aware for SSH :
      From: https://gist.github.com/ralt/a36288cd748ce185b26237e6b85b27bb
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (defun eshell-exec-visual (&rest args)
      "Run the specified PROGRAM in a terminal emulation buffer.
        ARGS are passed to the program.  At the moment, no piping of input is
@@ -2703,7 +2703,7 @@ Magit a git porcelain inside Emacs !
    ;; not sure why we have this? just cargo-culting from an answer I saw
    ;; online.
    (setq tramp-verbose 1)
- #+END_SRC
+ #+end_src
 *** vterm
 Last emacs terminal emulator :  https://github.com/akermu/emacs-libvterm
 #+begin_src emacs-lisp
@@ -2733,16 +2733,16 @@ Last emacs terminal emulator :  https://github.com/akermu/emacs-libvterm
 *** Ansi Terminal Emulator
 Sometimes I need an Ansi Term...
 **** Force zsh
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defconst t-term-name "/bin/zsh")
 
   (defadvice ansi-term (before force-zsh)
         (interactive (list t-term-name)))
 
   (ad-activate 'ansi-term)
-#+END_SRC
+#+end_src
 **** Kill buffer on exit
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun nc--ansi-term-mode-hook ()
     "Close current term buffer when `exit' or c-d from term buffer."
     (goto-address-mode)
@@ -2756,15 +2756,15 @@ Sometimes I need an Ansi Term...
            (kill-buffer (process-buffer proc)))))))
 
   (add-hook 'term-mode-hook #'nc--ansi-term-mode-hook)
-#+END_SRC
+#+end_src
 
 **** Bind Key
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (bind-key "C-c t" 'ansi-term)
-#+END_SRC
+#+end_src
 
 ** Yankpad -> <F7>
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package yankpad
     :ensure t
     :init
@@ -2782,12 +2782,12 @@ Sometimes I need an Ansi Term...
 
           ("C-<f7>"   . yankpad-insert)
           ("<f7>"   . yankpad-map)))
-#+END_SRC
+#+end_src
 ** Hydra -> <F1>
 My Hydras are bound by default to =F1=
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package hydra :ensure t)
-#+END_SRC
+#+end_src
 *** Hydra Context Launcher
 
 Hydra context laucher inspired from https://dfeich.github.io/www/org-mode/emacs/2018/05/10/context-hydra.html
@@ -2795,7 +2795,7 @@ Hydra context laucher inspired from https://dfeich.github.io/www/org-mode/emacs/
 =C-c h= will invoke hydra context laucher, if there is no hydra for the
 current context, it display by default org hydra.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun nc/context-hydra-launcher ()
     "A launcher for hydras based on the current context."
     (interactive)
@@ -2812,11 +2812,11 @@ current context, it display by default org hydra.
       (t (nc-hydra-org/body))))
 
   (global-set-key (kbd "<f1>") 'nc/context-hydra-launcher)
-#+END_SRC
+#+end_src
 
 *** Function key settings
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq nc--f-key-settings (concat
 
     (propertize
@@ -2826,11 +2826,11 @@ current context, it display by default org hydra.
     "Hydra   Treemacs  | Revert  Magit  Yankpad  | Deft  Interruption task   Menu     Clock   Agenda
   "
     "---------------------------------------------------------------------------------------------------------------"))
-#+END_SRC
+#+end_src
 
 *** Hydra GTD Workflow -> S-F1
 My Org / Gtd workflow hydra should be always accessible in all mode with =S-F1=
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defhydra nc-hydra-org
       (:color pink :hint nil)
 
@@ -2888,10 +2888,10 @@ My Org / Gtd workflow hydra should be always accessible in all mode with =S-F1=
       ("q" nil "quit" :color red))
 
       (define-key global-map (kbd "S-<f1>") 'nc-hydra-org/body)
-#+END_SRC
+#+end_src
 *** Hydra org-table
 Helper for org tables
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defhydra nc-hydra-org-table
     (:color pink :hint nil)
 
@@ -2916,9 +2916,9 @@ Helper for org tables
       ("D" org-table-toggle-formula-debugger "toggle debugger")
       ("c" org-table-toggle-coordinate-overlays "toggle coordinate" :color blue)
       ("q" nil "quit" :column nil))
-#+END_SRC
+#+end_src
 *** Hydra org-babel
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defhydra nc-hydra-org-babel
     (:color pink :hint nil)
 
@@ -2941,10 +2941,10 @@ Org Babel Functions Helper
     ("e" org-babel-examplify-region "examplify region" :color blue)
     ("r" org-babel-remove-result "remove result" :color blue)
     ("q" nil "quit" :color red :column nil))
-#+END_SRC
+#+end_src
 *** Hydra dired
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
     (defhydra nc-hydra-dired (:hint nil :color pink)
 
    (concat nc--f-key-settings
@@ -3001,17 +3001,17 @@ Org Babel Functions Helper
       ("Z" dired-do-compress)
       ("q" nil)
       ("." nil :color blue))
- #+END_SRC
+ #+end_src
 ** Treemacs -> <F2 C-t>
 
 First unbind emacs function =transpose-chars=
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (unbind-key "C-t")
-#+END_SRC
+#+end_src
 
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (use-package treemacs
       :ensure t
@@ -3078,15 +3078,15 @@ First unbind emacs function =transpose-chars=
     (use-package treemacs-magit
       :after treemacs magit
       :ensure t)
-#+END_SRC
+#+end_src
 * Programming
 ** asciidoc
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package adoc-mode
     :ensure t
     :mode "\\.adoc?\\'")
-#+END_SRC
+#+end_src
 ** Clojure
 Before you need to install Java and Clojure
 *** Clojure Mode
@@ -3210,11 +3210,11 @@ Then we can setup Emacs go mode
 
 #+end_src
 ** Lua
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package lua-mode
   :ensure t
   :mode "\\.lua\\'")
-#+END_SRC
+#+end_src
 ** Python
 
 #+begin_src emacs-lisp
@@ -3227,7 +3227,7 @@ Then we can setup Emacs go mode
 
 ** Markdown
    GitHub Flavored Markdown by default for README.md files.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package markdown-mode
     :mode (("README\\.md\\'" . gfm-mode)
            ("\\.md\\'"       . markdown-mode)
@@ -3242,16 +3242,16 @@ Then we can setup Emacs go mode
                          "--css" ,(concat "file://" stylesheet)
                          "--standalone" "-f" "markdown" "-t" "html5")
                        " "))))
-#+END_SRC
+#+end_src
 
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package markdown-toc
      :after markdown-mode)
-#+END_SRC
+#+end_src
 
 ** Rust
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package rust-mode                  ; Rust major mode
   :ensure t
   :bind (:map rust-mode-map ("C-c <tab>" . rust-format-buffer)))
@@ -3273,20 +3273,20 @@ Then we can setup Emacs go mode
 (use-package toml-mode                  ; Toml for Cargo files
   :ensure t
   :after rust-mode)
-#+END_SRC
+#+end_src
 
 ** Smart Comments
 Smarter commenting for emacs
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package smart-comment
   :bind ("M-;" . smart-comment))
-#+END_SRC
+#+end_src
 
 ** Smartparens
 
 Smart parens for all modes.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package smartparens
     :defer t
     :diminish ""
@@ -3335,15 +3335,15 @@ Smart parens for all modes.
                      '((nc--create-newline-and-enter-sexp "RET")))))
 
 
-#+END_SRC
+#+end_src
 ** Web
 *** Yaml modes
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package yaml-mode
     :mode (("\\.yaml\\'" . restclient-mode)
              ("\\.yml\\'" . restclient-mode)))
 
-#+END_SRC
+#+end_src
 *** Rest Client
 #+begin_src emacs-lisp
   (use-package restclient
@@ -3431,7 +3431,7 @@ Generate a 32 random pseudo uuid
 ** Password generator -> C-c i p
 Generates a strong password
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (defun nc--random-char ()
        (let* ((alnum "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-/%+*?&#[]()={}_<>!$,;:^µ0123456789")
               (i (% (abs (random)) (length alnum))))
@@ -3443,7 +3443,7 @@ Generates a strong password
        (dotimes (i 12) (insert (nc--random-char))))
 
    (bind-key "C-c i p" 'nc/generate-password)
- #+END_SRC
+ #+end_src
 ** TimeSlot -> C-c i t
 Insert time slot mainly used when I schedule meeting or appointment.
 #+begin_src emacs-lisp
@@ -3462,7 +3462,7 @@ Insert time slot mainly used when I schedule meeting or appointment.
 ** Inserting time stamps -> C-c i d/D
    From : https://github.com/novoid/dot-emacs/blob/master/config.org#inserting-time-stamps--my-map-ddtt
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun nc/insert-datestamp()
     "Insert the current date in yyyy-mm-dd format."
     (interactive "*")
@@ -3473,10 +3473,10 @@ Insert time slot mainly used when I schedule meeting or appointment.
         (insert (format-time-string "%Y-%m-%d" (current-time)))))
 
   (bind-key "C-c i d" 'nc/insert-datestamp)
- #+END_SRC
+ #+end_src
 
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (defun nc/insert-datestamp-inactive()
      "Insert the current date in yyyy-mm-dd format."
      (interactive "*")
@@ -3487,12 +3487,12 @@ Insert time slot mainly used when I schedule meeting or appointment.
        (insert (format-time-string "%Y-%m-%d" (current-time)))))
 
    (bind-key "C-c i D" 'nc/insert-datestamp-inactive)
- #+END_SRC
+ #+end_src
 
 ** Manipulate hours/minutes in tables
  From : https://orgmode.org/worg/org-hacks.html#org0d09b33
 
- #+BEGIN_SRC emacs-lisp
+ #+begin_src emacs-lisp
    (defun nc--org-time-string-to-seconds (s)
      "Convert a string HH:MM:SS to a number of seconds."
      (cond
@@ -3534,7 +3534,7 @@ Insert time slot mainly used when I schedule meeting or appointment.
                         (cdr expr))))
              `,@exprs))))
 
- #+END_SRC
+ #+end_src
 * Runtime Performance
 At runtime Garbage Collection can happen more often.
 #+begin_src emacs-lisp
