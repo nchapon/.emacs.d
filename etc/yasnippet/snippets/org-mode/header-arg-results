@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: Header arg - results
+# key: r
+# condition: (nc/org-src-header-p)
+# --
+`(let ((out
+(string-trim-right
+ (concat
+  (nc/org-prompt-header-arg :results "Result collection: " '("value " "output "))
+  (nc/org-prompt-header-arg :results "Results type: " '("table " "vector " "list " "verbatim " "file "))
+  (nc/org-prompt-header-arg :results "Results format: " '("code " "drawer " "html " "latex " "link " "graphics " "org " "pp " "raw "))
+  (nc/org-prompt-header-arg :results "Result output: " '("silent " "replace " "append " "prepend "))))))
+  (if (string= out "") ""
+  (concat ":results " out " ")))
+`$0
