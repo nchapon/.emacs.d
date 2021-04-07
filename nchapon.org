@@ -3287,52 +3287,54 @@ Smarter commenting for emacs
 Smart parens for all modes.
 
 #+begin_src emacs-lisp
-  (use-package smartparens
-    :defer t
-    :diminish ""
-    :init
-    (progn
-      (add-hook 'prog-mode-hook #'turn-on-smartparens-mode)
-      ;; turn on showing the match for clojure and elisp
-      (add-hook 'clojure-mode-hook #'turn-on-show-smartparens-mode)
-      (add-hook 'emacs-lisp-mode-hook #'turn-on-show-smartparens-mode)
-      (add-hook 'java-mode-hook #'turn-on-show-smartparens-mode)
-      (add-hook 'c-mode-hook #'turn-on-show-smartparens-mode))
-    :bind (:map sp-keymap
-                ("M-S-<left>" . sp-backward-sexp)
-                ("M-S-<right>" . sp-backward-sexp))
+   (use-package smartparens
+     :defer t
+     :diminish ""
+     :init
+     (progn
+       (use-package smartparens-config
+         :ensure smartparens)
+       (use-package smartparens-html
+         :ensure smartparens)
+       (smartparens-global-mode 1)
+       (show-smartparens-global-mode 1))
+     :bind (:map sp-keymap
+                 ("C-M-k" . sp-kill-sexp)
+                 ("C-k"   . sp-kill-hybrid-sexp)
+                 ("M-k"   . sp-backward-kill-sexp)
+                 ("C-M-f" . sp-forward-sexp)
+                 ("C-M-b" . sp-backward-sexp)
+                 ("C-M-n" . sp-up-sexp)
+                 ("C-M-d" . sp-down-sexp)
+                 ("C-M-u" . sp-backward-up-sexp)
+                 ("C-M-p" . sp-backward-down-sexp)
+                 ("C-M-w" . sp-copy-sexp)
+                 ("M-s" . sp-splice-sexp)
+                 ("M-r" . sp-splice-sexp-killing-around)
+                 ("C-)" . sp-forward-slurp-sexp)
+                 ("C-M-)" . sp-forward-barf-sexp)
+                 ("C-(" . sp-backward-slurp-sexp)
+                 ("C-M-(" . sp-backward-barf-sexp)
+                 ("M-S" . sp-split-sexp)
+                 ("M-J" . sp-join-sexp)
+                 ("C-M-t" . sp-transpose-sexp))
 
-    :config
-    (setq-default sp-hybrid-kill-entire-symbol nil)
+     :config
+     (progn
+       (setq smartparens-strict-mode t)
+       (sp-local-pair 'emacs-lisp-mode "`" nil :when '(sp-in-string-p)))
 
-    (setq sp-highlight-pair-overlay nil)
+     (defun nc--create-newline-and-enter-sexp (&rest _ignored)
+       "Open a new brace or bracket expression, with relevant newlines and indent. "
+       (newline)
+       (indent-according-to-mode)
+       (forward-line -1)
+       (indent-according-to-mode))
 
-    ;; (define-key sp-keymap (kbd "<delete>") 'sp-delete-char)
-    ;; (define-key sp-keymap (kbd "C-<right>") 'sp-forward-slurp-sexp)
-    ;; (define-key sp-keymap (kbd "C-<left>") 'sp-forward-barf-sexp)
-    ;; (define-key sp-keymap (kbd "C-S-<right>") 'sp-backward-barf-sexp)
-    ;; (define-key sp-keymap (kbd "C-S-<left>") 'sp-backward-slurp-sexp)
-    ;; (define-key sp-keymap (kbd "M-s") 'sp-unwrap-sexp)
-    ;; (define-key sp-keymap (kbd "M-S-s") 'sp-raise-sexp)
-    ;; (define-key sp-keymap (kbd "M-i") 'sp-split-sexp)
-    ;; (define-key sp-keymap (kbd "M-S-i") 'sp-join-sexp)
-    ;; (define-key sp-keymap (kbd "M-t") 'sp-transpose-sexp)
-    ;; (define-key sp-keymap (kbd "M-S-<left>") 'sp-backward-sexp)
-    ;; (define-key sp-keymap (kbd "M-S-<right>") 'sp-forward-sexp)
-
-
-
-    (defun nc--create-newline-and-enter-sexp (&rest _ignored)
-      "Open a new brace or bracket expression, with relevant newlines and indent. "
-      (newline)
-      (indent-according-to-mode)
-      (forward-line -1)
-      (indent-according-to-mode))
-
-    (sp-with-modes '(c-mode c++-mode js-mode js2-mode java-mode
-                            typescript-mode perl-mode)
-      (sp-local-pair "{" nil :post-handlers
-                     '((nc--create-newline-and-enter-sexp "RET")))))
+     (sp-with-modes '(c-mode c++-mode js-mode js2-mode java-mode
+                             typescript-mode perl-mode)
+       (sp-local-pair "{" nil :post-handlers
+                      '((nc--create-newline-and-enter-sexp "RET")))))
 
 
 #+end_src
