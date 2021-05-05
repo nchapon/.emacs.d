@@ -3342,8 +3342,8 @@ Smart parens for all modes.
 *** Yaml modes
 #+begin_src emacs-lisp
   (use-package yaml-mode
-    :mode (("\\.yaml\\'" . restclient-mode)
-             ("\\.yml\\'" . restclient-mode)))
+    :mode (("\\.yaml\\'" . yaml-mode)
+             ("\\.yml\\'" . yaml-mode)))
 
 #+end_src
 *** Rest Client
