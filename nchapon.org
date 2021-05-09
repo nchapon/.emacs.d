@@ -3105,8 +3105,12 @@ Before you need to install Java and Clojure
 *** clj-refactor
 
 #+begin_src emacs-lisp
-(use-package clj-refactor
-  :defer t)
+  (use-package clj-refactor
+    :diminish
+    :defer t
+    :bind
+    (:map clojure-mode-map
+          ("C-c C-r" . hydra-cljr-help-menu/body)))
 #+end_src
 
 
