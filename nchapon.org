@@ -3002,69 +3002,43 @@ Org Babel Functions Helper
       ("q" nil)
       ("." nil :color blue))
  #+end_src
-** Treemacs -> <F2 C-t>
+** Treemacs -> <C-ESC>
 
-First unbind emacs function =transpose-chars=
-
-#+begin_src emacs-lisp
-(unbind-key "C-t")
-#+end_src
-
+From: https://github.com/friemen/emacsd/blob/master/config/my-treemacs.el
 
 #+begin_src emacs-lisp
 
-  (use-package treemacs
-      :ensure t
-      :defer t
-      :init
-      (with-eval-after-load 'winum
-        (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-      :config
-    (progn
-      (setq treemacs-follow-after-init          t
-            treemacs-width                      35
-            treemacs-indentation                2
-            treemacs-git-integration            t
-            treemacs-collapse-dirs              3
-            treemacs-silent-refresh             nil
-            treemacs-change-root-without-asking nil
-            treemacs-sorting                    'alphabetic-desc
-            treemacs-show-hidden-files          t
-            treemacs-never-persist              nil
-            treemacs-is-never-other-window      nil
-            treemacs-goto-tag-strategy          'prefetch-index)
-      (treemacs-follow-mode t)
-      (treemacs-filewatch-mode t)
-      (setq treemacs-icons-hash (make-hash-table :size 200 :test #'equal)
-            treemacs-icon-fallback (concat
-                                    "  "
-                                    (all-the-icons-faicon "file-o"
-                                                          :face 'all-the-icons-dsilver
-                                                          :height 0.9
-                                                          :v-adjust -0.05)
-                                    " ")
-            treemacs-icon-text treemacs-icon-fallback)
-      (dolist (item all-the-icons-icon-alist)
-        (let* ((extension (car item))
-               (func (cadr item))
-               (args (append (list (caddr item))
-                             '(:height 0.9 :v-adjust -0.05)
-                             (cdddr item)))
-               (icon (apply func args))
-               (key (s-replace-all '(("^" . "") ("\\" . "") ("$" . "") ("." . "")) extension))
-               (value (concat "  " icon " ")))
-          (ht-set! treemacs-icons-hash (s-replace-regexp "\\?" "" key) value)
-          (ht-set! treemacs-icons-hash (s-replace-regexp ".\\?" "" key) value))))
-      :bind
-      (:map global-map
-            ("C-t"       . treemacs-select-window)
-            ;; ("C-x t 1"   . treemacs-delete-other-windows)
-            ;; ("C-x t t"   . treemacs)
-            ("<f2>"   . treemacs)
-            ;; ("C-x t B"   . treemacs-bookmark)
-            ;;("C-t C-f" . treemacs-find-file)
-            ;;("C-x t M-t" . treemacs-find-tag)
-            ))
+  (use-package treemacs :ensure t
+    :bind
+    (("<C-escape>" . nc/treemacs-activate)
+     ("C-x t 1"   . treemacs-delete-other-windows)
+     ("C-x t t"   . treemacs)
+     ("C-x t B"   . treemacs-bookmark)
+     ("C-x t C-t" . treemacs-find-file)
+     ("C-x t M-t" . treemacs-find-tag)
+     :map treemacs-mode-map
+     ("C-g" . treemacs-quit))
+
+    :config
+    (setq treemacs-collapse-dirs 3)
+    (setq treemacs-git-mode 'deferred)
+    (treemacs-resize-icons 12)
+
+    (defun nc/treemacs-activate ()
+      (interactive)
+      (if (treemacs-is-treemacs-window-selected?)
+          (treemacs-quit)
+        (treemacs-select-window)))
+
+    (defun nc/treemacs-quit ()
+      (interactive)
+      (when (treemacs-current-visibility)
+        (treemacs-select-window)
+        (treemacs-quit)))
+
+    (add-hook 'ediff-before-setup-hook
+              (lambda () (nc/treemacs-quit)))
+    )
 
     (use-package treemacs-projectile
       :after treemacs projectile
