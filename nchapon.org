@@ -369,7 +369,6 @@ Use Input Font (http://input.fontbureau.com/)  on Linux, Monaco on MacOS
             ("C-h f" . helm-apropos)
             ("C-x C-b" . helm-buffers-list)
             ("M-y" . helm-show-kill-ring)
-            ("C-x c o" . helm-occur)
             ("C-x C-r" . helm-recentf)
             ("C-x c Y" . helm-yas-create-snippet-on-region)
             ("C-x c SPC" . helm-all-mark-rings)))
