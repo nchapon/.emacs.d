@@ -249,73 +249,60 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+;; Configure corfu
 (use-package corfu
   :straight (corfu :files (:defaults "extensions/*")
                    :includes
-                       (corfu-echo       ;; corfu-echo-mode displays a brief candidate documentation in the echo area.
-                        corfu-history    ;; corfu-history-mode remembers selected candidates and sorts the candidates by their history position.
-                        corfu-indexed    ;; corfu-indexed-mode allows you to select indexed candidates with prefix arguments.
-                        corfu-info       ;; Actions to access the candidate location and documentation.
-                        corfu-popupinfo  ;; Display candidate documentation or source in a popup next to the candidate menu.
-                        corfu-quick      ;; Commands to select using Avy-style quick keys.
-                        ))
-  ;; Optional customizations
-  :custom
-  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  (corfu-auto t)                 ;; Enable auto completion
-  (corfu-separator ?\s)          ;; Orderless field separator
-  (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-  ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
-  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-  (corfu-scroll-margin 5)        ;; Use scroll margin
-
-  ;; Enable Corfu only for certain modes.
-  ;; :hook ((prog-mode . corfu-mode)
-  ;;        (shell-mode . corfu-mode)
-  ;;        (eshell-mode . corfu-mode))
-
-  ;; Recommended: Enable Corfu globally.
-  ;; This is recommended since Dabbrev can be used globally (M-/).
-  ;; See also `corfu-excluded-modes'.
-  :init
-  (global-corfu-mode)
-  ;; Enable history
-  (corfu-history-mode t)
-  ;; Enable indexed
-  (corfu-indexed-mode t)
-  ;; ;; Enable info
-  ;; (corfu-info-mode t)
-  ;; Enable popupinfo
-  (corfu-popupinfo-mode t)
-  ;; ;; Enable quick
-  ;; (corfu-quick-mode t)
-  ;; Aggressive completion, cheap prefix filtering.
-  (setq corfu-auto t
-        corfu-auto-delay 0
-        corfu-auto-prefix 0
-        completion-styles '(basic))
-  :bind (:map corfu-map
-              ("C-n" . corfu-next)
+                   (corfu-history    ;; corfu-history-mode remembers selected candidates and sorts the candidates by their history position.
+                    corfu-info       ;; Actions to access the candidate location and documentation.
+                    corfu-popupinfo  ;; Display candidate documentation or source in a popup next to the candidate menu.
+                    ))
+  ;; :hook (after-init . corfu-global-mode)
+  :hook ((prog-mode . corfu-mode)
+         (org-mode . corfu-mode))
+  :bind
+  (:map corfu-map
+        ("C-n" . corfu-next)
               ("C-p" . corfu-previous)
                 ("<escape>" . corfu-quit)
               ("<return>" . corfu-insert)
-              ("M-d" . corfu-show-documentation)
-              ("M-l" . corfu-show-location)
-                )
-  :hook
-  ;; after init
-  (after-init . corfu-mode)
-  ;; ;; yasnippet suggestion for lsp-mode
-  ;; (eglot-managed-mode . ms/eglot-capf)
-  ;; :config
-  ;; ;; add suggestion for yasnippets when using eglot
-  ;; (defun ms/eglot-capf ()
-  ;;   (setq-local completion-at-point-functions
-  ;; 		(list (cape-super-capf
-  ;; 		       #'eglot-completion-at-point
-  ;;                      (cape-company-to-capf #'company-yasnippet)))))
+              ;;("M-d" . corfu-show-documentation)
+              ;;("M-l" . corfu-show-location)
+        )
+
+  :init
+  (setq corfu-auto t)                 ;; Enable auto completion
+  (setq corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+
+  (setq corfu-min-width 80)
+  (setq corfu-max-width corfu-min-width)       ; Always have the same width
+
+  ;; Enable popup info
+  (corfu-popupinfo-mode t)
+
+  ;;Enable history
+  (corfu-history-mode t)
+
+  ;; Aggressive completion 
+  (setq corfu-auto-prefix 2
+        corfu-auto-delay)
+
+  ;; Corfu in mini buffer
+  (defun corfu-enable-always-in-minibuffer ()
+    "Enable Corfu in the minibuffer if Vertico/Mct are not active."
+    (unless (or (bound-and-true-p mct--active) ; Useful if I ever use MCT
+                (bound-and-true-p vertico--input))
+      (setq-local corfu-auto nil)       ; Ensure auto completion is disabled
+      (corfu-mode 1)))
+  (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
+  ;; :custom
+  ;; (corfu-commit-predicate nil)   ;; Do not commit selected candidates on next input
+  ;; (corfu-quit-at-boundary t)     ;; Automatically quit at word boundary
+  ;; (corfu-quit-no-match t)        ;; Automatically quit if there is no match
+  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
+  ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
+  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
   )
 
 (use-package cape
