@@ -285,7 +285,7 @@
 
   ;; Aggressive completion 
   (setq corfu-auto-prefix 2
-        corfu-auto-delay)
+        corfu-auto-delay 0)
 
   ;; Corfu in mini buffer
   (defun corfu-enable-always-in-minibuffer ()
