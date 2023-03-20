@@ -164,6 +164,13 @@
   :custom
   (python-shell-interpreter "python3"))
 
+(use-package lsp-pyright
+  :init
+  (setq lsp-pyright-typechecking-mode "basic") ;; too much noise in "real" projects
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp-deferred))))
+
 (use-package terraform-mode
   :hook ((terraform-mode . lsp)))
 
@@ -177,6 +184,7 @@
          ("\\.tag$" . web-mode)
          ("\\.ftl$" . web-mode)
          ("\\.jsp$" . web-mode)
+         ("\\.vue$" . web-mode)
          ("\\.php$" . web-mode))
   :config
   (add-hook 'web-mode-hook (lambda ()

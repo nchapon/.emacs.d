@@ -244,5 +244,8 @@
   (:map global-map
    ("C-c y" . consult-yasnippet)))
 
+(use-package emojify
+  :hook (after-init . global-emojify-mode))
+
 (provide 'setup-core)
 ;;; setup-core.el ends here
