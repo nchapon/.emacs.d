@@ -2998,7 +2998,7 @@ GitHub Flavored Markdown by default for README.md files.
 
 #+end_src
 *** lsp-pyright
-Needs NPM to install pyright
+:warning: LSP pyright needs NPM
 #+begin_src emacs-lisp
 (use-package lsp-pyright
   :init
