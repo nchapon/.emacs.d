@@ -69,6 +69,13 @@
        (add-hook 'before-save-hook #'lsp-format-buffer t t)
        (add-hook 'before-save-hook #'lsp-organize-imports t t))
 
+(use-package flycheck
+  :hook ((lsp-mode . flycheck-mode))
+  :init
+  (setq flycheck-indication-mode 'right-fringe)
+  ;; only check on save
+  (setq flycheck-check-syntax-automatically '(mode-enabled save)))
+
 (use-package smartparens
   :defer t
   :diminish ""
@@ -170,6 +177,9 @@
   :hook (python-mode . (lambda ()
                          (require 'lsp-pyright)
                          (lsp-deferred))))
+
+(use-package conda
+  )
 
 (use-package terraform-mode
   :hook ((terraform-mode . lsp)))
