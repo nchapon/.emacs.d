@@ -28,7 +28,6 @@
       (exec-path-from-shell-initialize)
       ;; (exec-path-from-shell-copy-env "GOPATH")
       ;;(exec-path-from-shell-copy-env "JAVA_HOME")
-      ;; (exec-path-from-shell-copy-env "PATH")
       (exec-path-from-shell-copy-env "XDG_CONFIG_HOME")
       )))
 

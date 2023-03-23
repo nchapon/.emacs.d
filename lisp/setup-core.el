@@ -244,6 +244,51 @@
   (:map global-map
    ("C-c y" . consult-yasnippet)))
 
+(defun +yas/org-src-header-p ()
+    "Determine whether `point' is within a src-block header or header-args."
+    (pcase (org-element-type (org-element-context))
+      ('src-block (< (point) ; before code part of the src-block
+                     (save-excursion (goto-char (org-element-property :begin (org-element-context)))
+                                     (forward-line 1)
+                                     (point))))
+      ('inline-src-block (< (point) ; before code part of the inline-src-block
+                            (save-excursion (goto-char (org-element-property :begin (org-element-context)))
+                                            (search-forward "]{")
+                                            (point))))
+      ('keyword (string-match-p "^header-args" (org-element-property :value (org-element-context))))))
+
+
+  (defun +yas/org-prompt-header-arg (arg question values)
+  "Prompt the user to set ARG header property to one of VALUES with QUESTION.
+The default value is identified and indicated. If either default is selected,
+or no selection is made: nil is returned."
+  (let* ((src-block-p (not (looking-back "^#\\+property:[ \t]+header-args:.*" (line-beginning-position))))
+         (default
+           (or
+            (cdr (assoc arg
+                        (if src-block-p
+                            (nth 2 (org-babel-get-src-block-info t))
+                          (org-babel-merge-params
+                           org-babel-default-header-args
+                           (let ((lang-headers
+                                  (intern (concat "org-babel-default-header-args:"
+                                                  (+yas/org-src-lang)))))
+                             (when (boundp lang-headers) (eval lang-headers t)))))))
+            ""))
+         default-value)
+    (setq values (mapcar
+                  (lambda (value)
+                    (if (string-match-p (regexp-quote value) default)
+                        (setq default-value
+                              (concat value " "
+                                      (propertize "(default)" 'face 'font-lock-doc-face)))
+                      value))
+                  values))
+    (let ((selection (consult--read values :prompt question :default default-value)))
+      (unless (or (string-match-p "(default)$" selection)
+                  (string= "" selection))
+        selection))))
+
 (use-package emojify
   :hook (after-init . global-emojify-mode))
 
