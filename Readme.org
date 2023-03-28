@@ -2488,9 +2488,11 @@ Customize speed-commands :
 #+end_src
 ** Babel
 *** Babel languages
+- Mermaid needs to install =mmdc= : https://github.com/mermaid-js/mermaid-cli
 
 #+begin_src emacs-lisp
   (use-package ob-restclient)
+  (use-package ob-mermaid)
 
   (setq org-plantuml-jar-path
         (expand-file-name "~/opt/lib/plantuml.jar"))
@@ -2498,6 +2500,7 @@ Customize speed-commands :
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((shell . t)
+     (mermaid .t)
      (awk .t)
      (python . t)
      (calc . t)

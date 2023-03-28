@@ -713,6 +713,7 @@ if nil,the top of the file."
 (require 'ox-md)
 
 (use-package ob-restclient)
+(use-package ob-mermaid)
 
 (setq org-plantuml-jar-path
       (expand-file-name "~/opt/lib/plantuml.jar"))
@@ -720,6 +721,7 @@ if nil,the top of the file."
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((shell . t)
+   (mermaid .t)
    (awk .t)
    (python . t)
    (calc . t)
