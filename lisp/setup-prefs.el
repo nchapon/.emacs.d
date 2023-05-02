@@ -38,6 +38,8 @@
       ring-bell-function 'ignore
       sentence-end-double-space nil)
 
+(setq-default tab-width 4)
+
 (auto-compression-mode t)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
