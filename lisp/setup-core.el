@@ -141,6 +141,16 @@
 (use-package treemacs
   :ensure t
   :defer t
+
+  :init
+
+  (defun nc/extend-treemacs-window-fringe ()
+    "Set Treemacs Window Fringe"
+    (set-window-fringes (selected-window) 15))
+
+
+  :hook
+  (treemacs-mode . nc/extend-treemacs-window-fringe)
   :config
   (progn
     (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
