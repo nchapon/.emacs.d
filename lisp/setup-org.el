@@ -95,7 +95,7 @@
       :diminish
       :defines org-fancy-priorities-list
       :hook (org-mode . org-fancy-priorities-mode)
-      :config (setq org-fancy-priorities-list '("⚡" "⬆" "⬆" "⬇")))
+      :config (setq org-fancy-priorities-list '("⚡" "▲" "▲" "▼")))
 
 (setq org-lowest-priority ?D
         org-default-priority ?D
