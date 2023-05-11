@@ -249,7 +249,24 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
-;; Configure corfu
+(use-package hippie-exp
+  :bind ([remap dabbrev-expand] . hippie-expand)
+  :commands (hippie-expand)
+  :custom
+  (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'"))
+  :config
+  (setq hippie-expand-try-functions-list
+        '(try-expand-dabbrev
+          try-expand-dabbrev-all-buffers
+          try-expand-dabbrev-from-kill
+          try-complete-lisp-symbol-partially
+          try-complete-lisp-symbol
+          try-complete-file-name-partially
+          try-complete-file-name
+          try-expand-all-abbrevs
+          try-expand-list
+          try-expand-line)))
+
 (use-package corfu
   :straight (corfu :files (:defaults "extensions/*")
                    :includes
@@ -257,87 +274,60 @@
                     corfu-info       ;; Actions to access the candidate location and documentation.
                     corfu-popupinfo  ;; Display candidate documentation or source in a popup next to the candidate menu.
                     ))
-  ;; :hook (after-init . corfu-global-mode)
-  :hook ((prog-mode . corfu-mode)
-         (org-mode . corfu-mode))
-  :bind
-  (:map corfu-map
-        ("C-n" . corfu-next)
-              ("C-p" . corfu-previous)
-                ("<escape>" . corfu-quit)
+
+  ;; Optional customizations
+  :custom
+  (corfu-cycle t)                 ; Allows cycling through candidates
+  (corfu-auto t)                  ; Enable auto completion
+  (corfu-auto-prefix 2)
+  (corfu-auto-delay 0.0)
+  (corfu-popupinfo-delay '(0.5 . 0.2))
+  (corfu-preview-current 'insert) ; Do not preview current candidate
+  (corfu-preselect-first nil)
+  (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
+
+  ;; Optionally use TAB for cycling, default is `corfu-complete'.
+  :bind (:map corfu-map
+              ("M-SPC"      . corfu-insert-separator)
+              ("TAB"        . corfu-next)
+              ([tab]        . corfu-next)
+              ("S-TAB"      . corfu-previous)
+              ([backtab]    . corfu-previous)
               ("<return>" . corfu-insert)
-              ;;("M-d" . corfu-show-documentation)
-              ;;("M-l" . corfu-show-location)
-        )
+              ("<escape>"        . corfu-quit))
 
   :init
-  (setq corfu-auto t)                 ;; Enable auto completion
-  (setq corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-
-  (setq corfu-min-width 80)
-  (setq corfu-max-width corfu-min-width)       ; Always have the same width
-
-  ;; Enable popup info
-  (corfu-popupinfo-mode t)
-
-  ;;Enable history
-  (corfu-history-mode t)
-
-  ;; Aggressive completion 
-  (setq corfu-auto-prefix 2
-        corfu-auto-delay 0)
-
-  ;; Corfu in mini buffer
-  (defun corfu-enable-always-in-minibuffer ()
-    "Enable Corfu in the minibuffer if Vertico/Mct are not active."
-    (unless (or (bound-and-true-p mct--active) ; Useful if I ever use MCT
-                (bound-and-true-p vertico--input))
-      (setq-local corfu-auto nil)       ; Ensure auto completion is disabled
-      (corfu-mode 1)))
-  (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
-  ;; :custom
-  ;; (corfu-commit-predicate nil)   ;; Do not commit selected candidates on next input
-  ;; (corfu-quit-at-boundary t)     ;; Automatically quit at word boundary
-  ;; (corfu-quit-no-match t)        ;; Automatically quit if there is no match
-  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-  ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
-  ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
-  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
-  )
+  (global-corfu-mode)
+  (corfu-history-mode)
+  (corfu-popupinfo-mode) ; Popup completion info
+  :config
+  (add-hook 'eshell-mode-hook
+            (lambda () (setq-local corfu-quit-at-boundary t
+                                   corfu-quit-no-match t
+                                   corfu-auto nil)
+              (corfu-mode))))
 
 (use-package cape
-  ;; Bind dedicated completion commands
-  ;; Alternative prefix keys: C-c p, M-p, M-+, ...
-  :bind (("C-c p p" . completion-at-point) ;; capf
-         ("C-c p t" . complete-tag)        ;; etags
-         ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
-         ("C-c p h" . cape-history)
-         ("C-c p f" . cape-file)
-         ("C-c p k" . cape-keyword)
-         ("C-c p s" . cape-symbol)
-         ("C-c p a" . cape-abbrev)
-         ("C-c p i" . cape-ispell)
-         ("C-c p l" . cape-line)
-         ("C-c p w" . cape-dict)
-         ("C-c p _" . cape-tex)
-         ("C-c p ^" . cape-tex)
-         ("C-c p &" . cape-sgml)
-         ("C-c p r" . cape-rfc1345))
+  :defer 10
+  :bind (("M-SPC f" . cape-file)
+         ("M-SPC d" . cape-dabbrev)
+         ("M-SPC a" . cape-abbrev)
+         ("M-SPC s" . cape-symbol)
+         ("M-SPC k" . cape-keyword))
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
+  (defalias 'dabbrev-after-2 (cape-capf-prefix-length #'cape-dabbrev 2))
+  (add-to-list 'completion-at-point-functions 'dabbrev-after-2 t)
   (add-to-list 'completion-at-point-functions #'cape-history)
-  ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
-  ;;(add-to-list 'completion-at-point-functions #'cape-tex)
-  ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-  ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-  ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-  (add-to-list 'completion-at-point-functions #'cape-ispell)
-  ;;(add-to-list 'completion-at-point-functions #'cape-dict)
-  ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
-  ;;(add-to-list 'completion-at-point-functions #'cape-line)
-  )
+  (add-to-list 'completion-at-point-functions #'cape-abbrev)
+  (cl-pushnew #'cape-file completion-at-point-functions)
+  :config
+  ;; Silence then pcomplete capf, no errors or messages!
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
+
+  ;; Ensure that pcomplete does not write to the buffer
+  ;; and behaves as a pure `completion-at-point-function'.
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
 
 (use-package kind-icon
   :after corfu

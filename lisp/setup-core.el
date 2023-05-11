@@ -146,8 +146,14 @@
 
   (defun nc/extend-treemacs-window-fringe ()
     "Set Treemacs Window Fringe"
-    (set-window-fringes (selected-window) 15))
+    (with-selected-window (treemacs-get-local-window)
+      (set-window-fringes nil 15)))
 
+  (defun nc/treemacs-select-window ()
+    "My custom treemacs select window with window fringe"
+    (interactive)
+    (treemacs-select-window)
+    (nc/extend-treemacs-window-fringe))
 
   :hook
   (treemacs-mode . nc/extend-treemacs-window-fringe)
@@ -220,7 +226,7 @@
     (treemacs-hide-gitignored-files-mode nil))
   :bind
   (:map global-map
-        ("C-t"       . treemacs-select-window)
+        ("C-t"       . nc/treemacs-select-window)
         ("C-x t 1"   . treemacs-delete-other-windows)
         ("C-x t t"   . treemacs)
         ("C-x t B"   . treemacs-bookmark)

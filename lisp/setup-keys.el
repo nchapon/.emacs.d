@@ -17,6 +17,7 @@
 (global-set-key (kbd "M-z") nil)
 (global-set-key (kbd "C-x C-z") nil)
 (global-set-key (kbd "M-o") nil)
+(global-set-key (kbd "M-SPC") nil)
 
 
 (global-set-key (kbd "C-+") #'text-scale-increase)
