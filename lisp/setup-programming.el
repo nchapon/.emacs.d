@@ -149,18 +149,18 @@
          ("\\.markdown\\'" . markdown-mode))
   :config
 
+  (setq markdown-live-preview-delete-export 'delete-on-destroy)
   (setq markdown-fontify-code-blocks-natively t)
-
+  (setq markdown-split-window-direction 'right)
   ;; Process Markdown with Pandoc, using GitHub stylesheet for nice output
   (let ((stylesheet (expand-file-name
                      (locate-user-emacs-file "etc/pandoc.css"))))
     (setq markdown-command
-          (mapconcat #'shell-quote-argument
-                     `("pandoc" "--toc" "--section-divs"
-                       "--css" ,(concat "file://" stylesheet)
-                       "--standalone" "-f" "markdown" "-t" "html5")
-                     " "))))
-
+          (concat "pandoc --toc --section-divs"
+                  " --css   file://" stylesheet
+                  " --standalone -f markdown -t html5"
+                     )))
+  )
 
 (use-package markdown-toc
   :after markdown-mode)
