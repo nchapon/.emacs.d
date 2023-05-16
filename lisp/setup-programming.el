@@ -13,7 +13,6 @@
 
 (use-package lsp-mode
   :commands lsp
-  :bind-keymap ("C-l" . lsp-command-map)
   :bind
   (:map lsp-mode-map
         ( ;;("C-\M-b" . lsp-find-implementation)
@@ -68,6 +67,31 @@
 (defun lsp-save-hooks () "Install save hooks for lsp."
        (add-hook 'before-save-hook #'lsp-format-buffer t t)
        (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
+(defhydra hydra-lsp (:exit t :hint nil)
+    "
+   Buffer^^               Server^^                   Symbol
+  -------------------------------------------------------------------------------------
+   [_f_] format           [_M-r_] restart            [_d_] definition   [_i_] implementation  [_o_] documentation
+   [_m_] imenu            [_S_]   shutdown           [_D_] declaration  [_t_] type            [_r_] rename
+   [_x_] execute action   [_M-s_] describe session   [_R_] references   [_s_] signature"
+    ("d" lsp-ui-peek-find-definitions)
+    ("D" lsp-find-declaration)
+    ("R" lsp-ui-peek-find-references)
+    ("i" lsp-ui-peek-find-implementation)
+    ("t" lsp-find-type-definition)
+    ("s" lsp-signature-help)
+    ("o" lsp-describe-thing-at-point)
+    ("r" lsp-rename)
+
+    ("f" lsp-format-buffer)
+    ("m" lsp-ui-imenu)
+    ("x" lsp-execute-code-action)
+
+    ("M-s" lsp-describe-session)
+    ("M-r" lsp-restart-workspace)
+    ("S" lsp-shutdown-workspace))
+(global-set-key (kbd "C-l") 'hydra-lsp/body)
 
 (use-package flycheck
   :hook ((lsp-mode . flycheck-mode))
