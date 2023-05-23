@@ -122,6 +122,9 @@
   :config
   (require 'smartparens-config)
   (sp-use-paredit-bindings)
+  ;; Unbind sp-convolute-xexp (conflict with xref-find-references / lsp-ui-peek-find-references)
+  (unbind-key "M-?" smartparens-mode-map)
+
   (define-key smartparens-mode-map (kbd "M-r") 'sp-rewrap-sexp) ; needs to be set manually, because :bind section runs before config
   (setq smartparens-strict-mode t)
   (sp-local-pair 'emacs-lisp-mode "`" nil :when '(sp-in-string-p))
