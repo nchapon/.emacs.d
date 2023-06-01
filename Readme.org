@@ -3140,7 +3140,9 @@ Use Pandoc to export to HTML.
 *** Conda
 #+begin_src emacs-lisp
   (use-package conda
-    )
+    :config
+    (conda-env-initialize-interactive-shells)
+    (conda-env-initialize-eshell))
 #+end_src
 
 

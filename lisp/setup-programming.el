@@ -206,7 +206,9 @@
                          (lsp-deferred))))
 
 (use-package conda
-  )
+  :config
+  (conda-env-initialize-interactive-shells)
+  (conda-env-initialize-eshell))
 
 (use-package terraform-mode
   :hook ((terraform-mode . lsp)))
