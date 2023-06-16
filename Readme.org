@@ -2872,6 +2872,87 @@ I try to do a lot of things with =org-roam= :
           (nc/complete-project-tags))
       (error "Not an org roam project")))
 #+end_src
+** Denote (testing)
+
+#+begin_src elisp
+    (defun my/denote-random-note (&optional directory)
+    "Open a random denote."
+    (interactive)
+    (let* ((denote-directory (or directory denote-directory))
+           (files (denote-directory-files)))
+      (find-file (nth (random (length files)) files))))
+
+  (defun my/denote-random-personal-note ()
+    "Open a random personal denote."
+    (interactive)
+    (my/denote-random-note (expand-file-name "personal" (denote-directory))))
+
+  (defun my/denote-random-work-note ()
+    "Open a random work denote."
+    (interactive)
+    (my/denote-random-note (expand-file-name "work" (denote-directory))))
+
+  (use-package denote
+    :bind
+    ("M-SPC n n" . 'denote)
+    ("M-SPC n f" . 'denote-open-or-create)
+    ("M-SPC n k" . 'denote-keywords-add)    ;; update file name automatically
+    ("M-SPC n K" . 'denote-keywords-remove) ;; update file name automatically
+    ("M-SPC n u" . 'denote-rename-file-using-front-matter)
+    ("M-SPC n l" . 'denote-link-find-backlink)
+    ("M-SPC n r" . 'my/denote-random-personal-note)
+    ("M-SPC n R" . 'my/denote-random-work-note)
+    :init
+    (setq denote-directory (expand-file-name "C:/Users/nchapon/Nextcloud/Perso/_PIM"))
+    :config
+    (setq denote-known-keywords '("emacs"))
+    (setq denote-prompts '(subdirectory title))
+    (setq denote-excluded-directories-regexp "attachments")
+
+    ;; Makes the denote links different from usual link.
+    (set-face-attribute 'denote-faces-link
+                        nil :foreground "magenta" :inherit 'link)
+
+    ;; Remove the date and the identifier. They are duplicated with the file name.
+    ;; I want to remove filetags too but denote-keyword-* need that.
+    ;;(setq denote-org-front-matter "#+title: %1$s\n#+filetags: %3$s\n")
+
+    (add-hook 'dired-mode-hook #'denote-dired-mode))
+
+  ;; allow empty keyword
+  (defun denote-rename-file-using-front-matter (file &optional auto-confirm)
+    (interactive (list (buffer-file-name) current-prefix-arg))
+    (when (buffer-modified-p)
+      (if (or auto-confirm
+              (y-or-n-p "Would you like to save the buffer?"))
+          (save-buffer)
+        (user-error "Save buffer before proceeding")))
+    (unless (denote-file-is-writable-and-supported-p file)
+      (user-error "The file is not writable or does not have a supported file extension"))
+    (if-let* ((file-type (denote-filetype-heuristics file))
+              (title (denote-retrieve-title-value file file-type))
+              (extension (file-name-extension file t))
+              (id (denote-retrieve-or-create-file-identifier file))
+              (dir (file-name-directory file))
+              (new-name (denote-format-file-name
+                         dir id (denote-retrieve-keywords-value file file-type) (denote-sluggify title) extension)))
+        (when (or auto-confirm
+                  (denote-rename-file-prompt file new-name))
+          (denote-rename-file-and-buffer file new-name)
+          (denote-update-dired-buffers))
+      (user-error "No front matter for title and/or keywords")))
+
+  (use-package consult-denote
+    :straight (consult-denote :type git :host codeberg :repo "whhone/consult-denote")
+    :after denote
+    :bind
+    ("M-SPC n i" . 'consult-denote-link-insert-link)
+    ("M-SPC n f" . 'consult-denote-open-or-create)
+    ("M-SPC n F" . 'consult-denote-ripgrep))
+
+#+end_src
+
+
 * Programming
 :properties:
 :header-args+: :tangle "./lisp/setup-programming.el"
