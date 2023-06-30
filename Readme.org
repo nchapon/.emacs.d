@@ -3070,6 +3070,25 @@ Hydra
     ;; only check on save
     (setq flycheck-check-syntax-automatically '(mode-enabled save)))
 #+end_src
+*** Dap
+
+#+begin_src emacs-lisp
+  (use-package dap-mode
+    ;; Uncomment the config below if you want all UI panes to be hidden by default!
+    ;; :custom
+    ;; (lsp-enable-dap-auto-configure nil)
+    ;; :config
+    ;; (dap-ui-mode 1)
+    :commands dap-debug
+    :config
+    (require 'dap-hydra)
+
+    ;; Bind `C-c l d` to `dap-hydra` for easy access
+     
+
+
+    )
+#+end_src
 
 
 ** Parenthesis
@@ -3200,12 +3219,23 @@ Use Pandoc to export to HTML.
 #+end_src
 ** Python
 *** python-mode
+:PROPERTIES:
+:ID:       02349703-0f5e-4e81-a82f-08be2189690f
+:END:
 #+begin_src emacs-lisp
-(use-package python-mode
-  :straight nil
-  :mode ("\\.py\\'")
-  :custom
-  (python-shell-interpreter "python3"))
+  (use-package python-mode
+    :straight nil
+    :mode ("\\.py\\'")
+    :hook ((python-mode . dap-ui-mode)
+           (python-mode . dap-mode)
+           (python-mode . lsp-deferred))
+    :custom
+    (python-shell-interpreter "python3")
+
+
+    :config
+    (require 'dap-python)
+    (setq dap-python-debugger 'debugpy))
 
 #+end_src
 *** lsp-pyright
