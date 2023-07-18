@@ -168,5 +168,32 @@
   (eshell-toggle-run-command nil)
   :bind ("C-c e" . eshell-toggle))
 
+(use-package dwim-shell-command
+  :bind (([remap shell-command] . dwim-shell-command)
+         :map dired-mode-map
+         ([remap dired-do-async-shell-command] . dwim-shell-command)
+         ([remap dired-do-shell-command] . dwim-shell-command)
+         ([remap dired-smart-shell-command] . dwim-shell-command))
+  :config
+  (defun nc/dwim-shell-command-plantuml-to-png ()
+    "Render plantuml file into PNG"
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Render to puml"
+     "plantuml.bat '<<f>>'"
+     :extensions "puml"
+     :utils "java"
+     :on-completion
+     (lambda (buffer _process)
+       (with-current-buffer buffer
+         (save-excursion
+           (goto-char 0)
+           (when (re-search-forward "output='\\(.*\\)'" nil t)
+               (find-file-other-window (match-string-no-properties 1))
+               (kill-buffer buffer)
+             )))))
+    )
+  )
+
 (provide 'setup-shell)
 ;;; setup-shell.el ends here
