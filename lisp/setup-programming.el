@@ -234,6 +234,15 @@
   (conda-env-initialize-interactive-shells)
   (conda-env-initialize-eshell))
 
+(use-package pyvenv
+  :config
+  (pyvenv-mode))
+
+(use-package blacken
+  :after python
+  :hook (python-mode . blacken-mode)
+  :config (setq blacken-skip-string-normalization t))
+
 (use-package terraform-mode
   :hook ((terraform-mode . lsp)))
 

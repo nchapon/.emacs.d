@@ -67,6 +67,25 @@
         (setq dired-listing-switches "-lFaGh1v --group-directories-first"))
     (setq dired-listing-switches "-ahlF"))
 
+
+  ;; From https://www.emacs.dyerdwelling.family/emacs/20230606213531-emacs--dired-duplicate-here-revisited/
+  (defun nc/dired-duplicate-file (arg)
+    "Duplicate the current file in Dired."
+    (interactive "p")
+    (let ((filename (dired-get-filename)))
+      (setq target (concat (file-name-sans-extension filename)
+                           "-old"
+                           (if (> arg 1) (number-to-string arg))
+                           (file-name-extension filename t)))
+      (if (file-directory-p filename)
+          (copy-directory filename target)
+        (copy-file filename target))
+      )
+    )
+
+  (define-key dired-mode-map (kbd "C-c d") 'nc/dired-duplicate-file)
+
+
   :hook
   (dired-mode . (lambda ()
                   (local-set-key (kbd "<mouse-2>") #'dired-find-alternate-file)
