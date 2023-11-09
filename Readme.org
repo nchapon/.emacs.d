@@ -3202,6 +3202,11 @@ My custom rebinding =C-c C-p= to =cider-pprint-eval-last-sexp-to-comment=
 #+begin_src emacs-lisp
   (use-package go-mode)
 #+end_src
+** Just
+Mode for justfiles used by [[https://github.com/casey/just][Just]] 
+#+begin_src emacs-lisp
+  (use-package just-mode)
+#+end_src
 ** Lua
 #+begin_src emacs-lisp
 (use-package lua-mode
@@ -3284,11 +3289,13 @@ Use Pandoc to export to HTML.
 
 *** Black
 
+
 #+begin_src emacs-lisp
-  (use-package blacken
-    :after python
-    :hook (python-mode . blacken-mode)
-    :config (setq blacken-skip-string-normalization t))
+  ;; Too many open processes on Windows
+  ;; (use-package blacken
+  ;;   :after python
+  ;;   :hook (python-mode . blacken-mode)
+  ;;   :config (setq blacken-skip-string-normalization t))
 #+end_src
 
 ** Terraform

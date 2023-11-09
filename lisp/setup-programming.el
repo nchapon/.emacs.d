@@ -183,6 +183,8 @@
 
 (use-package go-mode)
 
+(use-package just-mode)
+
 (use-package lua-mode
   :mode "\\.lua\\'")
 
@@ -238,10 +240,11 @@
   :config
   (pyvenv-mode))
 
-(use-package blacken
-  :after python
-  :hook (python-mode . blacken-mode)
-  :config (setq blacken-skip-string-normalization t))
+;; Too many open processes on Windows
+;; (use-package blacken
+;;   :after python
+;;   :hook (python-mode . blacken-mode)
+;;   :config (setq blacken-skip-string-normalization t))
 
 (use-package terraform-mode
   :hook ((terraform-mode . lsp)))
