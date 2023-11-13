@@ -615,6 +615,7 @@ Some Emacs Global Bindings are redefined here.
      "Personal Dirs"
      (("A" nc/goto-archives-dir "Archives")
       ("N" nc/goto-notes-dir "Notes")
+      ("P" nc/goto-projects-dir "Templates")
       ("T" nc/goto-templates-dir "Templates"))))
 #+end_src
 
@@ -1820,6 +1821,17 @@ Change priorities colors
      (defun nc/goto-templates-dir ()
        (interactive)
        (dired nc/org-default-templates-dir))
+
+     (defun nc/goto-projects-dir ()
+       (interactive)
+       (dired (nc/projects-dir)))
+   
+     (defun nc/projects-dir ()
+       "Return projects dir"
+       (interactive "P")
+       (cond
+        (is-windows "C:/Projects/")
+        (t "~/Projects")))
    )
  #+end_src
 

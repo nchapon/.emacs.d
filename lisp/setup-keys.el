@@ -83,6 +83,7 @@
    "Personal Dirs"
    (("A" nc/goto-archives-dir "Archives")
     ("N" nc/goto-notes-dir "Notes")
+    ("P" nc/goto-projects-dir "Templates")
     ("T" nc/goto-templates-dir "Templates"))))
 
 (pretty-hydra-define nc-hydra-toggle

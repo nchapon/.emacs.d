@@ -151,6 +151,17 @@
   (defun nc/goto-templates-dir ()
     (interactive)
     (dired nc/org-default-templates-dir))
+
+  (defun nc/goto-projects-dir ()
+    (interactive)
+    (dired (nc/projects-dir)))
+
+  (defun nc/projects-dir ()
+    "Return projects dir"
+    (interactive "P")
+    (cond
+     (is-windows "C:/Projects/")
+     (t "~/Projects")))
 )
 
 (defun nc/goto-journal-file ()
