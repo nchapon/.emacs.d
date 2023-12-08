@@ -309,15 +309,21 @@
 
 (use-package cape
   :defer 10
-  :bind (("M-SPC f" . cape-file)
-         ("M-SPC d" . cape-dabbrev)
-         ("M-SPC a" . cape-abbrev)
-         ("M-SPC s" . cape-symbol)
-         ("M-SPC k" . cape-keyword))
+  :bind (("C-c p p" . completion-at-point)
+         ("C-c p d" . cape-dabbrev)
+         ("C-c p h" . cape-history)
+         ("C-c p f" . cape-file)
+         ("C-c p k" . cape-keyword)
+         ("C-c p a" . cape-abbrev)
+         ("C-c p l" . cape-line)
+         ("C-c p w" . cape-dict)
+         ("C-c p &" . cape-sgml)
+         ("C-c p r" . cape-rfc1345))
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (defalias 'dabbrev-after-2 (cape-capf-prefix-length #'cape-dabbrev 2))
   (add-to-list 'completion-at-point-functions 'dabbrev-after-2 t)
+  (add-to-list 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-history)
   (add-to-list 'completion-at-point-functions #'cape-abbrev)
   (cl-pushnew #'cape-file completion-at-point-functions)

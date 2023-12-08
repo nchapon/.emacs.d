@@ -615,7 +615,7 @@ Some Emacs Global Bindings are redefined here.
      "Personal Dirs"
      (("A" nc/goto-archives-dir "Archives")
       ("N" nc/goto-notes-dir "Notes")
-      ("P" nc/goto-projects-dir "Templates")
+      ("P" nc/goto-projects-dir "Projects")
       ("T" nc/goto-templates-dir "Templates"))))
 #+end_src
 
@@ -1590,15 +1590,21 @@ Bound to =M-SPC=
 #+begin_src emacs-lisp
   (use-package cape
     :defer 10
-    :bind (("M-SPC f" . cape-file)
-           ("M-SPC d" . cape-dabbrev)
-           ("M-SPC a" . cape-abbrev)
-           ("M-SPC s" . cape-symbol)
-           ("M-SPC k" . cape-keyword))
+    :bind (("C-c p p" . completion-at-point)
+           ("C-c p d" . cape-dabbrev)
+           ("C-c p h" . cape-history)
+           ("C-c p f" . cape-file)
+           ("C-c p k" . cape-keyword)
+           ("C-c p a" . cape-abbrev)
+           ("C-c p l" . cape-line)
+           ("C-c p w" . cape-dict)
+           ("C-c p &" . cape-sgml)
+           ("C-c p r" . cape-rfc1345))
     :init
     ;; Add `completion-at-point-functions', used by `completion-at-point'.
     (defalias 'dabbrev-after-2 (cape-capf-prefix-length #'cape-dabbrev 2))
     (add-to-list 'completion-at-point-functions 'dabbrev-after-2 t)
+    (add-to-list 'completion-at-point-functions #'cape-file)
     (add-to-list 'completion-at-point-functions #'cape-history)
     (add-to-list 'completion-at-point-functions #'cape-abbrev)
     (cl-pushnew #'cape-file completion-at-point-functions)
@@ -1609,6 +1615,7 @@ Bound to =M-SPC=
     ;; Ensure that pcomplete does not write to the buffer
     ;; and behaves as a pure `completion-at-point-function'.
     (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
+
 #+end_src
 *** kind-icon
 
@@ -3716,7 +3723,6 @@ Insert time slot mainly used when I schedule meeting or appointment.
     (interactive)
     (consult-ripgrep org-directory ""))
 #+end_src
-
 ** Sudo Edit File
 
 From : https://karthinks.com/software/fifteen-ways-to-use-embark/
@@ -3734,6 +3740,18 @@ From : https://karthinks.com/software/fifteen-ways-to-use-embark/
                                (file-remote-p file 'host) ":" (file-remote-p file 'localname))
                      (concat "/sudo:root@localhost:" file))))
 #+end_src
+** Getting Ready
+Experimental get Ready
+#+begin_src elisp
+  (defun nc/getting-ready()
+    "Getting Ready"
+    (interactive)
+    (toggle-frame-maximized)
+    (split-window-vertically)
+    (nc/goto-journal-file)
+    (org-roam-node-random))
+#+end_src
+
 * Provided modules
 
 ** =setup-prefs= module

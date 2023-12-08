@@ -88,5 +88,13 @@
                          (file-remote-p file 'host) ":" (file-remote-p file 'localname))
                (concat "/sudo:root@localhost:" file))))
 
+(defun nc/getting-ready()
+  "Getting Ready"
+  (interactive)
+  (toggle-frame-maximized)
+  (split-window-vertically)
+  (nc/goto-journal-file)
+  (org-roam-node-random))
+
 (provide 'setup-functions)
 ;;; setup-functions.el ends here
